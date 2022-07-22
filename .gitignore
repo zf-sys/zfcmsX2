@@ -3,11 +3,13 @@
 /application/common/controller/Base.php
 composer.lock
 sitemap.xml
+/runtime
+
+
 /笔记
 /application
 /config
 /extend
 /public
-/route
-/runtime
+
 /vendor
