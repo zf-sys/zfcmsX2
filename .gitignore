@@ -2,7 +2,7 @@ composer.lock
 /runtime/*
 /config
 /extend/*
-
+/public/install.lock
 
 
 /application/common/controller/base_back
@@ -11,6 +11,5 @@ composer.lock
 
 /笔记
 /application
-/public
 
 /vendor

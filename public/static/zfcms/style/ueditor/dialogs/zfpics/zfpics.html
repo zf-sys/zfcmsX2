@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="../internal.js"></script>
+    <script type="text/javascript" src="/public/static/zfcms/style/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="/public/static/zfcms/style/layui/css/layui.css" media="all">
+    <script src="/public/static/zfcms/style/layui/layui.js"></script> 
+</head>
+<style>
+</style>
+<body >
+    <button type="button" class="layui-btn"  id="ueditor_zf" style="background-color: #fff; color: #fff;" >上传</button>
+    <div class="ueditor_zf"   style="background-color: #fff; color: #fff; border: 0;" ></div>
+<script type="text/javascript">
+ layui.use(['form','upload','laydate'], function(){
+    var $ = layui.$
+    ,element = layui.element
+    ,form = layui.form
+    ,upload = layui.upload;
+
+    $('#ueditor_zf').on('click',function(){
+      layer.open({
+        type: 2,
+        area: ['1000px', '700px'],
+        fixed: false,
+        maxmin: true, 
+        content: "/common/Fileupload/upload?cid=0&t=ueditor&name=ueditor_name&zf_class=.ueditor_zf"
+      });
+    })
+    document.getElementById('ueditor_zf').click();
+    
+  });
+  function GetValue(){
+    var html = $('.ueditor_zf').html();
+    if(html!=''){
+        editor.execCommand('insertHtml', html);
+        dialog.close();
+    }
+  }
+        
+    var timer = setInterval("GetValue();",1000);
+</script>
+</body>
+</html>
