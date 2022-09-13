@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+    <?php $form_widget = new \app\common\widget\FormPro(); ?>
+    <div style="width: 500px;">
+      <form class="info_tj" >
+        <?php if(isset($res['id'])){ ?>
+          <input type="hidden" name="id" value="{$res['id']|default=''}">
+          {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>$res['gid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$group_list,'theme'=>4])|raw}
+          {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <input  class="layui-btn layui-btn-sm" onclick="tijiao_data('config/admin_edit')" value="立即提交" type="button"  />
+            </div>
+          </div>
+        <?php }else{ ?>
+          {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>'','id_t'=>'id', 'name_t'=>'name','list_arr'=>$group_list,'theme'=>4])|raw}
+          {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>'1','parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <input  class="layui-btn layui-btn-sm" onclick="tijiao_data('config/admin_add')" value="立即提交" type="button"  />
+            </div>
+          </div>
+        <?php } ?>
+        
+      </form>
+    </div>
+</div>
+
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+
+</body>
+</html>

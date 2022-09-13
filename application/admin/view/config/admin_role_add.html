@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/layuimini/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+      <?php $form_widget = new \app\common\widget\FormPro();  ?>
+      <div style="width: 500px;">
+        <form class="info_tj" >
+          <input type="hidden" name="id" value="{$res.id}">
+          {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'权限','name'=>'value','data'=>$res['value'],'readonly'=>1,'theme'=>2])|raw}
+          {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$list,'theme'=>6])|raw}
+          {$form_widget->form_input(['title'=>'参数','name'=>'parm','data'=>$res['parm'],'theme'=>2])|raw}
+          <div class="layui-form-item">
+            <label class="layui-form-label">图标:</label>
+            <div class="layui-input-block">
+              <input type="text" id="iconPicker" name="icon" lay-filter="iconPicker"  value="{$res['icon']}">
+            </div>
+          </div>
+
+          {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
+          {$form_widget->form_radio(['title'=>'是否菜单项','name'=>'menu','data'=>$res['menu'],'parm_data'=>['0'=>'否','1'=>'是'],'theme'=>2])|raw}
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <input type="button" class="layui-btn layui-btn-sm"   onclick='tijiao_data("config/admin_role_edit")' value="立即提交"  />
+            </div>
+          </div>
+        </form>
+      </div>
+      
+  </div>
+
+ <script src="__STATIC__/layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+
+</body>
+</html>
+<script>
+  layui.config({
+    base: "__STATIC__/layuimini/js/lay-module/"
+  }).extend({
+      iconPickerFa: 'iconPicker/iconPickerFa'
+  });
+  layui.use(['iconPickerFa'], function () {
+        var iconPickerFa = layui.iconPickerFa
+              $=layui.$;
+            iconPickerFa.render({
+                // 选择器，推荐使用input
+                elem: '#iconPicker',
+                // fa 图标接口
+                url: "__STATIC__/layuimini/lib/font-awesome-4.7.0/less/variables.less",
+                // 是否开启搜索：true/false，默认true
+                search: true,
+                // 是否开启分页：true/false，默认true
+                page: true,
+                // 每页显示数量，默认12
+                limit: 28,
+                // 每个图标格子的宽度：'43px'或'20%'
+                cellWidth: '20%',
+                // 点击回调
+                click: function (data) {
+                    iconPickerFa.checkIcon('iconPicker', 'fa '+data.icon);
+                },
+                // 渲染成功后的回调
+                success: function (d) {
+                    console.log('d:',d);
+
+                }
+            });
+    });
+</script>

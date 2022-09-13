@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body">
+        <form  class="info_tj">
+          <table class="layui-table">
+              <colgroup>
+                <col width="10">
+                <col>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>CID</th>
+                  <th>名称</th>
+                  <th>栏目Tpl</th>          
+                  <th>内容Tpl</th>
+                  <th>模型</th>
+                  <th>页数</th>
+                  <th>排序</th>
+                  <th>图片</th>
+                </tr> 
+              </thead>
+              <tbody>
+                <?php foreach($list as $k=>$vo){ ?>
+                  <tr>
+                    
+                    <td>
+                      <input class="layui-input"  type="hidden" name="cid[]" value="{$vo['cid']}" />
+                      {$vo['cid']}
+                    </td>
+                    <td>
+                      <?php echo '┃'.str_repeat('━━', substr_count($vo['cname'],'  '));?> 
+                      <input   name="name[]" value="{$vo['name']}" style="width: 50%;height: 30px;" />
+                    </td>
+                    <td>
+                      <input class="layui-input" name="tpl_category[]" value="{$vo['tpl_category']}" />
+                    </td> 
+                    <td>
+                      <input class="layui-input"  name="tpl_post[]" value="{$vo['tpl_post']}" />
+                    </td>
+                    <td>
+                      <input class="layui-input"  name="mid[]" value="{$vo['mid']}" />
+                    </td>
+                    <td> 
+                      <input class="layui-input"  type="text" name="sort[]"  value="{$vo['sort']}"  >
+                    </td>
+                    <td> 
+                      <input class="layui-input"  type="text" name="page[]"  value="{$vo['page']}"  >
+                    </td>
+                    <td> 
+                      <input class="layui-input"  type="text" name="pic[]"  value="{$vo['pic']}"  >
+                    </td> 
+                    
+                  </tr>
+                <?php } ?>         
+              </tbody>
+          </table>
+          <div style="text-align: center; margin-top: 40px;">
+            <input type="button" class="tj_btn layui-btn" value="提交修改"  />  
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script src="__STATIC__/style/jquery-1.8.3.min.js"></script>  
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script src="__STATIC__/system/common.js"></script>  
+  <script>
+ layui.use([ 'table','element','layer'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,layer = layui.layer
+    ,element = layui.element
+    ,table = layui.table;
+
+    $('.tj_btn').on("click",function(){
+        var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
+        $.ajax({
+            type:'post',
+            url:"{:url('admin/category/cate_all_edit')}",
+            data:data,
+            dataType:'json',
+            success:function(res){
+              if(res.result==1){
+                layer.msg(res.msg, {icon: 1});
+                setTimeout(function() {
+                      window.location.reload();
+                }, 2000);
+              }else{
+                layer.msg(res.msg, {icon: 2});
+              }   
+            }
+        })
+    })
+    
+
+    
+ 
+   
+  });
+  </script>
+</body>
+</html>

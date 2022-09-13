@@ -1,9 +1,3 @@
 composer.lock
 /runtime/*
-/config
-/extend/*
 /public/install.lock
-/application/common/controller/base_back
-/application/common/controller/Base.php
-/application
-/vendor

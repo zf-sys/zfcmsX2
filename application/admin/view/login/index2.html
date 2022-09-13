@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<title>后台登录 - 子枫后台管理系统</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<link href="__STATIC__/system/css/bootstrap.min.css" rel="stylesheet">
+<link href="__STATIC__/system/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="__STATIC__/system/css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="__STATIC__/system/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/system/js/bootstrap.min.js"></script>
+<script src="__STATIC__/style/layer/layer.js"></script>  
+<script src="__STATIC__/style/layui/layui.js"></script>    
+<style>
+body {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 100%;
+}
+.login-box {
+    display: table;
+    table-layout: fixed;
+    overflow: hidden;
+    max-width: 700px;
+}
+.login-left {
+    display: table-cell;
+    position: relative;
+    margin-bottom: 0;
+    border-width: 0;
+    padding: 45px;
+}
+.login-left .form-group:last-child {
+    margin-bottom: 0px;
+}
+.login-right {
+    display: table-cell;
+    position: relative;
+    margin-bottom: 0;
+    border-width: 0;
+    padding: 45px;
+    width: 50%;
+    max-width: 50%;
+    background: #67b26f!important;
+    background: -moz-linear-gradient(45deg,#67b26f 0,#4ca2cd 100%)!important;
+    background: -webkit-linear-gradient(45deg,#67b26f 0,#4ca2cd 100%)!important;
+    background: linear-gradient(45deg,#67b26f 0,#4ca2cd 100%)!important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#67b26f', endColorstr='#4ca2cd', GradientType=1 )!important;
+}
+.login-box .has-feedback.feedback-left .form-control {
+    padding-left: 38px;
+    padding-right: 12px;
+}
+.login-box .has-feedback.feedback-left .form-control-feedback {
+    left: 0;
+    right: auto;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    z-index: 4;
+    color: #dcdcdc;
+}
+.login-box .has-feedback.feedback-left.row .form-control-feedback {
+    left: 15px;
+}
+@media (max-width: 576px) {
+  .login-right {
+      display: none;
+  }   
+}
+</style>
+</head>
+  
+<body style="background-image: url(http://oss002.wangmingchang.com/uploads/f12daa2e867d88c943bd4a8fc5460e3a/20210412_6078755f6701c8505f.jpg); background-size: cover;">
+<div class="bg-translucent p-10">
+  <div class="login-box bg-white clearfix">
+    <div class="login-left">
+      <form class="info_tj">
+        <div class="form-group has-feedback feedback-left">
+          <input type="text" placeholder="请输入您的用户名" class="form-control" name="name" id="username" />
+          <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
+        </div>
+        <div class="form-group has-feedback feedback-left">
+          <input type="password" placeholder="请输入密码" class="form-control" id="password" name="pwd" />
+          <span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
+        </div>
+        {:doZfAction('sys_adminlogin_parm',['type'=>'view'])} 
+        <div class="form-group">
+          <button class="btn btn-block btn-primary tijiao"  type="button" >立即登录</button>
+        </div>
+      </form>
+      其他方式登录:
+        {:doZfAction('sys_zf_wxlogin')} 
+    </div>
+    <div class="login-right">
+      <p><img src="http://oss002.wangmingchang.com/uploads/0bf88d0eaaa69d2bd0cdcd974e190115/20211202_4279820211202091846.png" class="m-b-md m-t-xs" alt="logo"></p>
+      <p class="text-white m-tb-15">子枫博客系统<br>基于Thibkphp5.1+layui开发的通用系统,快速开发上手</p>
+      <p class="text-white">Copyright © {:date("Y",time())} <a href="http://www.zf-sys.com" target="_blank">子枫工作室</a>. All right reserved</p>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
+
+
+  <script>
+    // layer.open({
+    //   type: 2,
+    //   title: '后台赞赏列表',
+    //   closeBtn: 1, //不显示关闭按钮
+    //   shade: [0.1, '#393D49'],
+    //   maxmin:false,
+    //   area: ['340px', '700px'],
+    //   offset: 'rb', //右下角弹出
+    //   anim: 2,
+    //   shadeClose: true,
+    //   content: ['//mctool.wangmingchang.com/index/jspay/dashang', 'yes'], //iframe的url，no代表不显示滚动条
+    // });
+    
+     $('.tijiao').on('click',function(){
+        var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();   
+        var url = "{:url('login/login')}";
+          $.ajax({
+              type:'post',
+              url:url,
+              data:data,
+              dataType:'json',
+              success:function(res){
+                // layer.close(index);
+                if(res.result==1){
+                  layer.msg('登入成功', {
+                    offset: '15px'
+                    ,icon: 1
+                    ,time: 1000
+                  }, function(){
+                    location.href = res.msg; 
+                  });
+                }else{
+                  if(res.msg=='验证码错误'){
+                    $('#captcha').click()
+                  }
+                  layer.msg(res.msg,{icon:2})
+                }
+              }
+          })
+    })
+  </script>

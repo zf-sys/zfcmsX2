@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/template.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/style/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+  <script src="__STATIC__/style/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+
+
+<div class="layui-fluid layadmin-homepage-fluid">
+  <div class="layui-row layui-col-space8">
+    <div class="layui-col-md2">
+      <div class="layadmin-homepage-panel layadmin-homepage-shadow">
+        <div class="layui-card text-center">
+          <div class="layui-card-body">
+            <h4 class="layadmin-homepage-font">栏目</h4>
+            <p class="layadmin-homepage-min-font"></p>
+              <div class="zTreeDemoBackground left">
+                <ul id="tree" class="ztree"></ul>
+              </div>
+          </div>
+        </div>
+        <ul class="layadmin-homepage-list-inline">
+          <!-- <a href="http://www.zf-sys.com/"  target="_blank" class="layui-btn layui-btn-primary">子枫软件</a> -->
+        </ul>
+      </div>
+    </div>
+    <div class="layui-col-md10">
+      <div class="layui-fluid layadmin-homepage-content">
+        <iframe name="main" id="main" src="{:url('admin/index/welcome')}" frameborder="0"  width="100%"  height="100%" onload="changeFrameHeight(this)"  ></iframe> 
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script type="text/javascript" src="__STATIC__/style/ztree/js/jquery.ztree.core.min.js"></script>
+
+<script type="text/javascript">
+	function changeFrameHeight(that){
+        //电脑屏幕高度-iframe上面其他组件的高度
+        //例:我这里iframe上面还有其他一些div组件，一共的高度是120，则减去120
+        $(that).height(document.documentElement.clientHeight - 45);
+        
+    }
+
+  var setting = {
+    view: {
+      dblClickExpand: false
+    },
+    data: {
+      simpleData: {
+        enable: true
+      }
+    },
+    callback: {
+      beforeExpand: beforeExpand,
+      onExpand: onExpand,
+      onClick: onClick
+    }
+  
+  };
+
+  <?php
+$tmpJson = '';
+if(is_array($pro_menu_list)) foreach ($pro_menu_list as $vo) {
+
+  if(if_pid($vo['cid'])){
+    // 判断手否有父类
+    $tmpJson .= '{ id:'.$vo['cid'].', pId:'.$vo['pid'].', name:"'.$vo['name'].'", open:false },';
+  }else{
+    $url = $site_path."admin/category/post_list?cid=".$vo['cid']."&mid=".$vo['mid']."&t=1";
+    $tmpJson .= '{ id:'.$vo['cid'].', pId:'.$vo['pid'].', name:"'.$vo['name'].'", url:"'.$url.'", "target":"main" },';    
+  }
+}
+
+$tmpJson = substr($tmpJson,0,strlen($tmpJson)-1);
+?>
+var zNodes =[ <?php echo $tmpJson;?> ];
+var curExpandNode = null;
+function beforeExpand(treeId, treeNode) {
+	var pNode = curExpandNode ? curExpandNode.getParentNode():null;
+	var treeNodeP = treeNode.parentTId ? treeNode.getParentNode():null;
+	var zTree = $.fn.zTree.getZTreeObj("tree");
+	for(var i=0, l=!treeNodeP ? 0:treeNodeP.children.length; i<l; i++ ) {
+		if (treeNode !== treeNodeP.children[i]) {
+			zTree.expandNode(treeNodeP.children[i], false);
+		}
+	}
+	while (pNode) {
+		if (pNode === treeNode) {
+			break;
+		}
+		pNode = pNode.getParentNode();
+	}
+	if (!pNode) {
+		singlePath(treeNode);
+	}
+
+}
+function singlePath(newNode) {
+	if (newNode === curExpandNode) return;
+	if (curExpandNode && curExpandNode.open==true) {
+		var zTree = $.fn.zTree.getZTreeObj("tree");
+		if (newNode.parentTId === curExpandNode.parentTId) {
+			zTree.expandNode(curExpandNode, false);
+		} else {
+			var newParents = [];
+			while (newNode) {
+				newNode = newNode.getParentNode();
+				if (newNode === curExpandNode) {
+					newParents = null;
+					break;
+				} else if (newNode) {
+					newParents.push(newNode);
+				}
+			}
+			if (newParents!=null) {
+				var oldNode = curExpandNode;
+				var oldParents = [];
+				while (oldNode) {
+					oldNode = oldNode.getParentNode();
+					if (oldNode) {
+						oldParents.push(oldNode);
+					}
+				}
+				if (newParents.length>0) {
+					for (var i = Math.min(newParents.length, oldParents.length)-1; i>=0; i--) {
+						if (newParents[i] !== oldParents[i]) {
+							zTree.expandNode(oldParents[i], false);
+							break;
+						}
+					}
+				} else {
+					zTree.expandNode(oldParents[oldParents.length-1], false);
+				}
+			}
+		}
+	}
+	curExpandNode = newNode;
+}
+
+function onExpand(event, treeId, treeNode) {
+	curExpandNode = treeNode;
+}
+
+function onClick(e,treeId, treeNode) {
+	var zTree = $.fn.zTree.getZTreeObj("tree");
+	zTree.expandNode(treeNode, null, null, null, true);
+}
+		
+$(function(){
+	$.fn.zTree.init($("#tree"), setting, zNodes);
+});
+
+  </script>
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+</body>
+</html>

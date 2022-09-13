@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+  <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
+  <link rel="stylesheet" href="__STATIC__/style/bootstrap/bootstrap-3.3.4.css">
+</head>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body">
+        <blockquote class="layui-elem-quote">
+          默认修改后,半小时后生效 <br>
+          网站根目录执行php think task start  即可生效
+        </blockquote>
+        <div style="padding-bottom: 10px;">
+          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/zfyun/task_add")}')">添加</button>
+
+        </div>
+        <table class="layui-table">
+            <colgroup>
+              <col width="30">
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>类型</th>
+                <th>时间</th>
+                <th>周期</th>          
+                <th>排序</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr> 
+            </thead>
+            <tbody>
+              <?php foreach($list as $k=>$vo){ ?>
+                <tr>
+                  <td>{$vo['id']}</td>
+                  <td>
+                    {$vo['name']}
+                  </td>
+                  <td>{$vo['type']}</td>
+                  <td>
+                    开始时间:{$vo['stime']|date='Y-m-d H:i:s'}<br>
+                    结束时间:{$vo['etime']|date='Y-m-d H:i:s'}<br>
+                    状态:<?php if(($vo['utime']+60*30)>time()){ echo '未生效,还需等待'.(60*30+$vo['utime']-time()).'秒';}else{ echo '已生效';} ?>
+                  </td>
+                  <td>
+                    间隔{$vo['interval_time']}秒<br>
+                    小时周期:{$vo['hours']}
+                  </td>
+                  <td>
+                    <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item1="{$vo['id']}" style="width: 50px;" >
+                  </td>
+                  <td> 
+                    <div class=" layui-form" lay-filter="component-form-element">        
+                       <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
+                    </div>
+                  </td>
+                  <td>
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'task')"  href="#">删除</a> 
+                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/zfyun/task_edit',['id' => $vo['id']] )}")'>编辑</button> 
+                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("日志","{:url('admin/zfyun/task_log',['task_id' => $vo['id']] )}")'>日志</button> 
+                  </td>
+                </tr>
+              <?php } ?>         
+            </tbody>
+          </table>
+          {$page|raw}
+      </div>
+    </div>
+  </div>
+  <script src="__STATIC__/style/jquery-1.8.3.min.js"></script>  
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script src="__STATIC__/system/common.js"></script>  
+
+  <script>
+ layui.use([ 'table','element'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,element = layui.element
+    ,table = layui.table;
+
+    
+    
+    form.on('switch(status_change)', function(data){
+      var id = $(this).attr("item")
+      var dbname = 'task'
+      var status = this.checked ? '1' : '0'
+      console.log(id)
+      $.get("{:url('admin/common/is_switch')}",{id:id,dbname:dbname,status:status},function(res){
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        },"json");
+    });
+    $('.zf_del').on('click',function(){
+      var data = $('.form_info input').serialize()
+      $.ajax({
+          type:'post',
+          url:"{:url('admin/common/del_post_more')}?tb=task",
+          data:data,
+          dataType:'json',
+          success:function(res){
+            if(res.result==1){
+              layer.msg("删除成功", {icon: 1});
+              setTimeout(function() {
+                location.reload(true);
+              }, 1000);
+            }else{
+              layer.msg(res.msg, {icon: 2});
+            }   
+          }
+      })
+    })
+    $('.edit_sort').on('blur',function(){
+      var id = $(this).attr('item1')
+      var dbname = 'task'
+      var field = 'sort'; //得到字段
+      var value = $(this).val(); //得到修改后的值
+      $.get("{:url('admin/common/value_edit')}",{id:id,dbname:dbname,field:field,value:value},function(res){
+          if(res.result==1){
+          window.location.reload();
+        }
+      },"json");
+    })
+   
+  });
+  </script>
+</body>
+</html>

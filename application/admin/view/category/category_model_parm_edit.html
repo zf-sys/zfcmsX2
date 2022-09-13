@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+</head>
+<body>
+  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+      <?php $form_widget = new \app\common\widget\FormPro();  ?>
+      <form class="info_tj" >
+        <div style="width: 500px;">
+
+      <input type="hidden" name="id" value="{$res.id}">
+      {$form_widget->form_input(['title'=>'标题','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+      {$form_widget->form_input(['title'=>'键','name'=>'key','data'=>$res['key'],'theme'=>2])|raw}
+      {$form_widget->form_input(['title'=>'默认值','name'=>'value','data'=>$res['value'],'theme'=>2])|raw}
+
+      {$form_widget->form_radio(['title'=>'位置','name'=>'position','data'=>$res['position'],'parm_data'=>['1'=>'左','2'=>'右'],'theme'=>2])|raw}
+      {$form_widget->form_select(['title'=>'类型','name'=>'type','data'=>$res['type'],'list_arr'=>['form_input','form_textarea','upload_album','filesystem_album','upload_album_title','form_time','upload_pic','filesystem_pic','upload_file','filesystem_file','form_radio','layui_switch','form_checkbox','form_select','form_tinymce','form_wangeditor','form_vditor','form_ueditor'],'theme'=>5])|raw}
+
+
+      {$form_widget->form_select(['title'=>'模板','name'=>'theme','data'=>$res['theme'],'list_arr'=>['1','2','3','4','5','6','7','8','9','10'],'theme'=>5])|raw}
+
+      {$form_widget->form_textarea(['title'=>'扩展参数1','name'=>'append1','data'=>$res['append1'],'theme'=>2])|raw}
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+      模板扩展参数1 :upload_album_title(data_title),form_time(time_type),form_radio(parm_data),form_checkbox(id_t),form_select(id_t)
+        </div>
+      </div>
+
+      {$form_widget->form_textarea(['title'=>'扩展参数2','name'=>'append2','data'=>$res['append2'],'theme'=>2])|raw}
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+      模板扩展参数2 :form_checkbox(name_t),form_select(name_t)
+        </div>
+      </div>
+      {$form_widget->form_textarea(['title'=>'扩展参数3','name'=>'append3','data'=>$res['append3'],'theme'=>2])|raw}
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+      模板扩展参数3 :form_checkbox(list_arr),form_select(list_arr)
+        </div>
+      </div>
+
+      <!-- {$form_widget->form_radio(['title'=>'只读','name'=>'readonly','data'=>$res['readonly'],'parm_data'=>['0'=>'否','1'=>'是'],'theme'=>2])|raw}
+      {$form_widget->form_radio(['title'=>'隐藏','name'=>'hidden','data'=>$res['hidden'],'parm_data'=>['0'=>'否','1'=>'是'],'theme'=>2])|raw}
+      {$form_widget->form_radio(['title'=>'是否多个','name'=>'is_multi','data'=>$res['is_multi'],'parm_data'=>['0'=>'否','1'=>'是'],'theme'=>2])|raw}  -->
+
+      {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
+      {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
+
+      <div class="layui-form-item" >
+        <div class="layui-input-block">
+          <a class="layui-btn layui-btn-sm" href="javascript:;" onclick="tijiao_data('category/category_model_parm_edit')"   >立即提交</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="__STATIC__/style/layui/layui.js"></script>
+  <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+
+  <script>
+ layui.use(['form', 'upload'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,upload = layui.upload ;
+
+    form.on("select(type)", function(data){
+      console.log(data.value)
+      if(data.value=='ueditor-oss'){
+        $('.append_show').html('<a href="http://bbs.wangmingchang.com/forum.php?mod=viewthread&tid=1921&extra=page=1" target="_blank" style="line-height: 35px;color:red;">使用前需先检查是否配置</a>');
+      }
+    });
+
+    
+  })
+  </script>
+</body>
+</html>

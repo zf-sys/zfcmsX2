@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+</head>
+<body>
+
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+
+        <div class="layui-card">
+          <div class="layui-card-header layuiadmin-card-header-auto">
+              <a class="layui-btn layui-btn-sm" href='{:url("admin/config/oss_config")}?type=阿里云'>阿里云</a>
+              <a class="layui-btn layui-btn-sm" href='{:url("admin/config/oss_config")}?type=七牛云'>七牛云</a>
+              <a class="layui-btn layui-btn-sm" href='{:url("admin/config/oss_config")}?type=又拍云'>又拍云</a>
+          </div>
+          <div class="layui-card-header">{$type}</div>
+          <div class="layui-card-body" pad15>
+
+            <form class="info_tj" >
+              <div class="layui-form" wid100 lay-filter="">
+                <?php if($type=='阿里云'){ ?>
+                  <?php if(!is_dir('./vendor/aliyuncs/oss-sdk-php')){ ?>
+                    <blockquote class="layui-elem-quote" style="text-align: center;">
+                      使用此功能需先安装扩展 composer require aliyuncs/oss-sdk-php v2.4.1
+                    </blockquote>
+                  <?php } ?>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">秘钥Ak</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="ali_ak" value="{$config['ali_ak']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_ak']</span>秘钥Ak</div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">秘钥SK</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="ali_sk" value="{$config['ali_sk']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_sk']</span>秘钥SK</div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">空间名称</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="ali_bucket" value="{$config['ali_bucket']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_bucket']</span>空间名称 例如: test001</div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">域名</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="ali_domain" value="{$config['ali_domain']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_domain']</span>域名 例如: oss-cn-shenzhen.aliyuncs.com</div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">自定义域名</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="ali_domain_diy" value="{$config['ali_domain_diy']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_domain_diy']</span>自定义域名,<span style="color:red">需设置反向代理</span>如不使用请留空 例如: http://oss.aaaa.com </div>
+                  </div>
+                
+
+                
+                <?php }elseif($type=='七牛云'){ ?>
+                  <?php if(!is_dir('./vendor/overtrue/flysystem-qiniu')){ ?>
+                    <blockquote class="layui-elem-quote" style="text-align: center;">
+                      使用此功能需先安装扩展 composer require overtrue/flysystem-qiniu v1.0.5
+                    </blockquote>
+                  <?php } ?>
+                
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">秘钥Ak</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="qny_ak" value="{$config['qny_ak']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_ak']</span>秘钥Ak</div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">秘钥SK</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="qny_sk" value="{$config['qny_sk']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_sk']</span>秘钥SK</div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">空间名称</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="qny_bucket" value="{$config['qny_bucket']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_bucket']</span>空间名称 例如: test001</div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">域名</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="qny_domain" value="{$config['qny_domain']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_domain']</span>域名 例如: http://qknkajt4c.hn-bkt.clouddn.com</div>
+                  </div>
+
+                <?php }elseif($type=='又拍云'){ ?>
+                  <?php if(!is_dir('./vendor/upyun/sdk')){ ?>
+                    <blockquote class="layui-elem-quote" style="text-align: center;">
+                      使用此功能需先安装扩展 composer require upyun/sdk
+                    </blockquote>
+                  <?php } ?>
+                
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">服务名</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="upy_name" value="{$config['upy_name']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_name']</span></div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">操作员账号</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="upy_user" value="{$config['upy_user']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_user']</span></div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">操作员密码</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="upy_pwd" value="{$config['upy_pwd']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_pwd']</span></div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">域名</label>
+                    <div class="layui-input-inline" style="width: 500px;">
+                      <input type="text" name="upy_domain" value="{$config['upy_domain']}" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_domain']</span>域名 例如: http://zf-test.b0.aicdn.com</div>
+                  </div>
+  
+                  
+                  
+                
+                <?php } ?>
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <a href="javascript:;" class="layui-btn layui-btn-sm"  onclick="tijiao_data2('config/oss_config',0)" >确认保存</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" href="http://bbs.wangmingchang.com/forum.php?mod=viewthread&tid=2075&extra=page%3D1" target="_blank" >查看帮助</a>
+                  </div>
+                </div>
+
+
+                
+
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+
+  <script>
+ layui.define(['form', 'upload'], function(exports){
+  var $ = layui.$
+  ,layer = layui.layer
+  ,laytpl = layui.laytpl
+  ,setter = layui.setter
+  ,view = layui.view
+  ,admin = layui.admin
+  ,form = layui.form
+  ,upload = layui.upload;
+ 
+    window.tijiao_data2 = function(role,type=1){
+      var index = layer.load(2);
+      var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
+          $.ajax({
+            type:'post',
+            url:'../'+role,
+            data:data,
+            dataType:'json',
+            success:function(res){
+              console.log(res)
+              if(res.result==1){
+                layer.msg(res.msg, {icon: 1});
+                layer.close(index)
+                setTimeout(function() {
+                  if(type==1){
+                  parent.location.reload();
+                  }else{
+                  // location.reload();
+                  }
+                }, 2000);
+              }else{
+                layer.msg(res.msg, {icon: 2});
+                layer.close(index)
+              }   
+            }
+          })
+    }
+   
+
+ })
+  </script>
+</body>
+</html>

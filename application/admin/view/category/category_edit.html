@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+  <script type="text/javascript" src="__STATIC__/style/jquery-1.8.3.min.js"></script>
+  <script src="__STATIC__/style/laydate/laydate.js"></script>    
+  <link rel="stylesheet" type="text/css" href="__STATIC__/style/webuploader/webuploader.css">
+  <script type="text/javascript" src="__STATIC__/style/webuploader/webuploader.js"></script>
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+  <?php if($parm_data['editor_def']=='tinymce'){ ?>
+    <script src="{$site_path}public/static/common/tinymce515/tinymce.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/tinymce/5.7.1/jquery.tinymce.min.js"></script>
+  <?php }elseif($parm_data['editor_def']=='wangeditor'){ ?>
+  <script src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+  <?php }elseif($parm_data['editor_def']=='meditor'){ ?>
+      <!-- <link rel="stylesheet" type="text/css" href="__STATIC__/style/meditor/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/style/meditor/css/editormd.css" />
+    <script src="__STATIC__/style/meditor/editormd.js"></script>
+  <?php }elseif($parm_data['editor_def']=='vditor'){ ?>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
+  <?php }else{ ?>
+    <script src="__STATIC__/style/ueditor/ueditor.config.js"></script>    
+    <script src="__STATIC__/style/ueditor/ueditor.all.js"></script>    
+    <link rel="stylesheet" href="__STATIC__/style/ueditor/themes/default/css/ueditor.css" media="all">               
+  <?php } ?>
+</head>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <?php $form_widget = new \app\common\widget\FormPro();  ?>
+      <form method="post" class="info_tj" >
+        <input type="hidden" name="cid" value="{$res.cid}">
+        <input type="hidden" name="t" value="{$t}">
+        <div class="layui-col-sm12">
+          <div class="layui-row layui-col-space15">
+              <div class="layui-col-sm9">
+                <div class="layui-card">
+                  <div class="layui-card-header">栏目信息</div>
+                  <br/>
+                  {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'栏目T','name'=>'seo_t','data'=>$res['seo_t'],'theme'=>2])|raw}
+                  {$form_widget->form_textarea(['title'=>'栏目D','name'=>'seo_d','data'=>$res['seo_d'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'栏目K','name'=>'seo_k','data'=>$res['seo_k'],'theme'=>2])|raw}
+
+                  {$form_widget->form_textarea(['title'=>'核心关键词','name'=>'main_keys_m','data'=>$res['main_keys_m'],'theme'=>2])|raw}
+                  {$form_widget->form_textarea(['title'=>'次要关键词','name'=>'main_keys_c','data'=>$res['main_keys_c'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'theme'=>2])|raw}
+                  <div class="layui-form-item">
+                    <div class="layui-input-block"><<填写后会跳转到此链接,请填写完整<br> 例: http://www.zf-sys.com/ >></div>
+                  </div>
+                  {$form_widget->form_input(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'链接目标','name'=>'target','data'=>$res['target'],'theme'=>2])|raw}
+                  {$form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}
+                <br>
+                </div>
+                
+                <div class="layui-card">
+                  <br>
+                  <div class="layui-card-body">
+                  <?php if($parm_data['cate_editor_def']=='tinymce'){ ?>
+                  {$form_widget->form_tinymce(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
+                  <?php }elseif($parm_data['cate_editor_def']=='wangeditor'){ ?>
+                  {$form_widget->form_wangeditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
+                  <?php }elseif($parm_data['cate_editor_def']=='vditor'){ ?>
+                    {$form_widget->form_vditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
+                  <?php }elseif($parm_data['cate_editor_def']=='meditor'){ ?>
+                    {$form_widget->form_meditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
+                  <?php }else{ ?>
+                  {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
+                  <?php } ?>
+                  </div>
+                </div>
+              </div>
+              <div class="layui-col-sm3">
+                <div class="layui-card">
+                  {$form_widget->upload_pic(['title'=>'栏目ICON','name'=>'icon','data'=>$res['icon'],'theme'=>1])|raw}
+                  {$form_widget->upload_pic(['title'=>'banner ','name'=>'banner','data'=>$res['banner'],'theme'=>1])|raw}
+                  {$form_widget->form_input(['title'=>'banner alt','name'=>'alt_banner','data'=>$res['alt_banner'],'theme'=>1])|raw}
+                  {$form_widget->upload_pic(['title'=>'封面图','name'=>'pic','data'=>$res['pic'],'theme'=>1])|raw}
+                  {$form_widget->form_input(['title'=>'封面图alt','name'=>'alt_pic','data'=>$res['alt_pic'],'theme'=>1])|raw}
+                  {$form_widget->upload_file(['title'=>'文件','name'=>'file','data'=>$res['file'],'theme'=>1])|raw}
+                  {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$res['ctime']),'theme'=>1,'time_type'=>'datetime'])|raw}
+                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
+                </div>
+                <div class="layui-card">
+                  {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'theme'=>1])|raw}
+                  {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'theme'=>3])|raw}
+                </div>
+                <div class="layui-card">
+                  <div class="layui-card-header">发布</div>
+                  <div class="layui-card-body layui-row layui-col-space10">
+                    <div class="layui-form-item">
+                      <div class="layui-input-block" style="margin-left: 50px;">
+                        <input class="layui-btn tj_btn layui-btn-sm"   lay-filter="component-form-element" type="button" value="发布" />
+                      </div> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </form>
+        
+      </div>
+    </div>
+  </div>
+  
+
+
+  <script>
+
+ layui.use(['form','upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,form = layui.form
+    ,upload = layui.upload;
+
+    <?php if($parm_data['cate_editor_def']=='tinymce'){ ?>
+      $('.tj_btn').on("click",function(){
+          var index = layer.load(2);
+          var content = tinymce.editors[0].getContent() ;   
+        // var e_content = tinymce.editors[1].getContent() ;   
+          var data = $(".info_tj input,.info_tj textarea,.info_tj select").serializeArray();     
+          $.ajax({
+              type:'post',
+              url:"{:url('admin/category/category_edit')}",
+              // data:data,
+              data:{data:data,content:content,editor_type:'tinymce'},
+              dataType:'json',
+              success:function(res){
+                if(res.result==1){
+                  layer.msg(res.msg.msg, {icon: 1});
+                  setTimeout(function() {
+                      if(res.msg.code==1){
+                        window.location.reload();
+                      }else{
+                        window.parent.location.reload();
+                      }
+                  }, 2000);
+                }else{
+                  layer.close(index);
+                  layer.msg(res.msg.msg, {icon: 2});
+                }   
+              }
+          })
+      })
+    <?php }else{ ?>
+      $('.tj_btn').on("click",function(){
+          var index = layer.load(2);
+          var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
+          $.ajax({
+              type:'post',
+              url:"{:url('admin/category/category_edit')}",
+              data:data,
+              dataType:'json',
+              success:function(res){
+                if(res.result==1){
+                  layer.msg(res.msg.msg, {icon: 1});
+                  setTimeout(function() {
+                      if(res.msg.code==1){
+                        window.location.reload();
+                      }else{
+                        window.parent.location.reload();
+                      }
+                  }, 2000);
+                }else{
+                  layer.close(index);
+                  layer.msg(res.msg.msg, {icon: 2});
+                }   
+              }
+          })
+      })
+    <?php } ?>
+
+  });
+  </script>
+</body>
+</html>
+

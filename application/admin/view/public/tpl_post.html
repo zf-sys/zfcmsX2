@@ -1,0 +1,54 @@
+<?php  if($act=='add'){ $_temp_val=$vo['value']; }else{ $_temp_val=$data_res[$vo['key']]; }        ?>
+<?php if($vo['type']=='upload_album_title'){ ?>
+        {$form_widget->upload_album_title(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'data_title'=>$vo['append1'],'theme'=>1])|raw}    
+<?php }elseif($vo['type']=='form_time'){ ?>
+        <?php
+                if($_temp_val!=''){
+                        if($vo['append1']=='year'){
+                                $_temp_val=date("Y",$_temp_val);
+                        }elseif($vo['append1']=='month'){
+                                $_temp_val=date("Y-m",$_temp_val);
+                        }elseif($vo['append1']=='datetime'){
+                                $_temp_val=date("Y-m-d H:i:s",$_temp_val);
+                        }elseif($vo['append1']=='time'){
+                                $_temp_val=date("H:i:s",$_temp_val);
+                        }else{
+                                $_temp_val=date("Y-m-d",$_temp_val);
+                        }
+                } 
+        ?>
+        {$form_widget->form_time(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'time_type'=>$vo['append1'],'theme'=>1])|raw}    
+<?php }elseif($vo['type']=='form_radio'){ ?>
+        {$form_widget->form_radio(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'parm_data'=>$vo['append1'],'theme'=>1])|raw}    
+<?php }elseif($vo['type']=='form_checkbox'){ ?>
+        {$form_widget->form_checkbox(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'id_t'=>$vo['append1'],'name_t'=>$vo['append2'],'list_arr'=>$vo['append3'],'theme'=>1])|raw}    
+<?php }elseif($vo['type']=='form_select'){ ?>
+        {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='form_textarea'){ ?>
+        {$form_widget->form_textarea(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='upload_album'){ ?>
+        {$form_widget->upload_album(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='filesystem_album'){ ?>
+        {$form_widget->filesystem_album(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='upload_pic'){ ?>
+        {$form_widget->upload_pic(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='filesystem_pic'){ ?>
+        {$form_widget->filesystem_pic(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='upload_file'){ ?>
+        {$form_widget->upload_file(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='filesystem_file'){ ?>
+        {$form_widget->filesystem_file(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='layui_switch'){ ?>
+        {$form_widget->layui_switch(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='form_tinymce'){ $tinymce_num++; $tinymce_key[]=$vo['key']; ?>
+        {$form_widget->form_tinymce(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='form_wangeditor'){ ?>
+        {$form_widget->form_wangeditor(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='form_vditor'){ ?>
+        {$form_widget->form_vditor(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }elseif($vo['type']=='form_ueditor'){ ?>
+        {$form_widget->form_ueditor(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php }else{ ?>
+        {$form_widget->form_input(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>1])|raw} 
+<?php } ?>
+   
