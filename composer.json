@@ -28,7 +28,7 @@
         "phpmailer/phpmailer": "^6.3",
         "easy-task/easy-task": "^2.4",
         "zf-sys/think-addons": "^1.0.0",
-        "phpoffice/phpspreadsheet": "v1.16.0"
+        "guzzlehttp/guzzle":"^6.5.8"
     },
     "autoload":{
         "psr-4":{
@@ -39,7 +39,11 @@
         "think-path":"thinkphp"
     },
     "config":{
-        "preferred-install":"dist"
+        "preferred-install":"dist",
+        "allow-plugins": {
+            "topthink/think-installer": false,
+            "easywechat-composer/easywechat-composer": false
+        }
     },
     "repositories":{
         "packagist":{

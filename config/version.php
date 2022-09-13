@@ -15,14 +15,14 @@
   
  return [
 	'version' => 'v0.0.0.1',
-	'soft_id' => '',
+	'soft_id' => '0230873d1167beba153d1a29f88924f4',
 	'ver_name' => '子枫内容管理系统X2',
-	'ver_date' => '20220725',
+	'ver_date' => '20220801',
 	'ver_author' => '子枫',
 	'ver_email' => '287851074@qq.com',
-	'api_domain' => 'http://store-zfsys.90ckm.com',
+	'api_domain' => 'http://zf-sys.wangmingchang.com',
 	'ver_url' => '',
-	'version_temp' => 'v0.0.0.1',
+	'version_temp' => 'v0.0.0.0',
 	'pulg_data_path' => './upgrade',
 	'temp_dir_list' => '/application,/extend,/route,/thinkphp,/vendor,/theme,/public,/runtime',
 ];

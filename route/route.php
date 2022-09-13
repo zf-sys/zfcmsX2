@@ -19,16 +19,19 @@ try {
 		}
 	}else{
 		//web前端
+		if($_SERVER['REQUEST_URI']=='/install'){
+			header('Location: /'); exit();
+		}
 		$_file = './application/index/route.php';
 		if(file_exists($_file)){
 			include $_file;
 		}
+		
 	}
 
 } catch (\Exception $e) {
     $r = $e->getMessage();
 }
-
 
 
 

@@ -13,8 +13,8 @@
   // +----------------------------------------------------------------------
   // 站点信息最后修改于 2020/05/16 20:08:58  
   return [
-	'save_path' => '/public/upload/file',
-	'water_path' => '/public/upload/water.png',
+	'save_path' => '/upload/file',
+	'water_path' => '/public/water.png',
 	'water_clarity' => '33',
 	'water_text' => 'demo',
 	'water_text_size' => '20',

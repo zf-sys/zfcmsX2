@@ -20,5 +20,6 @@ return [
     'type'           => '',
     // 是否自动开启 SESSION
     'auto_start'     => true,
-    'expire'         => 36000000,
+    'expire'         => 3600*24,
+    'path' =>'./runtime/file',
 ];
