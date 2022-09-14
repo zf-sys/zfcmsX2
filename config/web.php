@@ -36,7 +36,7 @@
 	'site_logo' => '',
 	'site_icon' => '',
 	'site_qrcode' => '',
-	'upload_type' => 'ali',
+	'upload_type' => '',
 	'site_token' => '49a845cc3573aae83fb1550b000128f5',
 	'tongji_code' => '',
 	'site_closed_url' => '',
