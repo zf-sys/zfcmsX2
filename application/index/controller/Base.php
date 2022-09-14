@@ -92,7 +92,7 @@ class Base extends Zfb
             // $top_cid_now = ['cid'=>0,'pid'=>0,'name'=>''];
             // $this->assign('top_cid_now',$top_cid_now);
             // dd(request());
-            $this->assign('menu_type','');
+            $this->assign('menu_type',request()->action());
             $this->theme_config = get_plugin_config_db($this->zf_tpl_suffix,'theme','');
             $this->assign('theme_config',$this->theme_config);
             $this->user = session('home');
