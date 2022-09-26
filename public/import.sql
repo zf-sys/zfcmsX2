@@ -273,11 +273,6 @@ CREATE TABLE `zf_category_model` (
 INSERT INTO `zf_category_model` VALUES ('1', '单页模型', 'simple', '2', '1', '1', '0', '', '', '0');
 INSERT INTO `zf_category_model` VALUES ('2', '新闻模型', 'news', '0', '1', '1', '0', '', '', '0');
 INSERT INTO `zf_category_model` VALUES ('3', 'ZF内容模型', 'zf_tpl', '2', '0', '1', '1', '', '', '0');
-INSERT INTO `zf_category_model` VALUES ('4', '标题&图&详情', 'title_pic_content', '0', '0', '1', '1', '', '', '0');
-INSERT INTO `zf_category_model` VALUES ('5', '图&标题', 'pic_title', '0', '0', '1', '1', '', '', '0');
-INSERT INTO `zf_category_model` VALUES ('6', '标题&图集', 'album_title', '0', '0', '1', '1', '', '', '0');
-INSERT INTO `zf_category_model` VALUES ('7', '标题&图&文件', 'title_pic_file', '0', '0', '0', '1', '', '', '0');
-INSERT INTO `zf_category_model` VALUES ('8', '测试ZF模型', 'zf_test', '1', '0', '0', '1', '', '', '0');
 INSERT INTO `zf_category_model` VALUES ('9', '论坛模型', 'bbs', '0', '1', '0', '1', '', '', '0');
 
 -- ----------------------------
