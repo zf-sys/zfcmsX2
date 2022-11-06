@@ -28,7 +28,11 @@
       <div class="layui-card-header layuiadmin-card-header-auto">
         <button class="layui-btn layui-btn-sm " onclick="zfAdminShow('添加','{:url("admin/user/add")}')">添加</button>
         <a class="layui-btn layui-btn-sm layui-btn-normal" href="{:url('admin/user/index')}">全部</a>
+        <?php foreach($glist as $k=>$vo){ ?>
+          <a class="layui-btn layui-btn-sm layui-btn-normal" href="{:url('admin/user/index',['gid'=>$vo['id']])}">{$vo['name']}</a>  
+        <?php } ?>
       </div>
+      
       <table class="layui-table">
         <colgroup>
           <col width="30">

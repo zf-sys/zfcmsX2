@@ -230,7 +230,7 @@ layui.use([ 'table','element','laypage','upload','form'], function(){
     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
     ,jump: function(obj,first){
       if(!first){
-          window.location.href="{:siteUrl('common/Fileupload/upload')}&cid={$cid}&t={$t}&zf_class={$zf_class}&page="+obj.curr+"&limit="+obj.limit;
+          window.location.href="{:siteUrl('common/Fileupload/upload')}&cid={$cid}&name={$name}&t={$t}&zf_class={$zf_class}&page="+obj.curr+"&limit="+obj.limit;
       }
 
     }

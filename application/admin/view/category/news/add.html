@@ -103,7 +103,6 @@
                   {$form_widget->form_textarea(['title'=>'次要关键词','name'=>'main_keys_c','data'=>'','theme'=>1])|raw}
                   {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$cid,'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>1,'theme'=>1])|raw}
-                  {:doZfAction('sys_post_add_view')}
                 <?php }else{ ?>
                   {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>$data_res['author'],'theme'=>1])|raw}
                   {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$data_res['ctime']),'theme'=>1])|raw}
@@ -118,8 +117,6 @@
                   {$form_widget->form_textarea(['title'=>'次要关键词','name'=>'main_keys_c','data'=>$data_res['main_keys_c'],'theme'=>1])|raw}
                   {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$data_res['cid'],'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$data_res['status'],'theme'=>1])|raw}
-                  {:doZfAction('sys_post_edit_view')}
-
 
 
                 <?php } ?>

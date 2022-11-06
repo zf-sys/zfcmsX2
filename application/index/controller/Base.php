@@ -32,6 +32,7 @@ class Base extends Zfb
         // }
         // dd($route_info);
         // dd($load);
+        
         $load=true;
         if($load){
             if(!session('admin')){  $this->assign('admin',false); }else{ $this->assign('admin',true); }

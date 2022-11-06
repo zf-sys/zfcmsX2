@@ -120,7 +120,7 @@ INFO;
               <div class="layui-col-md12 layui-form-item">
                 <div class="layui-input-inline " >';
                 foreach($parm_data as $k=>$vo){
-                  $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
+                  $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
                 }
           $zf_html.='</div>
               </div>
@@ -136,7 +136,30 @@ INFO;
               
         $zf_html.='</div>
           </div>';
-      }
+      }else if($theme==5){
+        $zf_html = '
+        <div class="layui-card-header">'.$title.'</div>
+        <div class="layui-card-body layui-row layui-col-space8 ">
+            <div class="layui-col-md12 layui-form-item">
+              <div class="layui-form" >';
+              foreach($parm_data as $k=>$vo){
+                $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
+              }
+        $zf_html.='</div>
+            </div>
+          </div>';
+    }elseif($theme==6){
+        $zf_html = '
+        <div class="layui-form-item">
+          <label class="layui-form-label">'.$title.':</label>
+          <div class="layui-input-block layui-form">';
+              foreach($parm_data as $k=>$vo){
+                $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
+              }
+            
+      $zf_html.='</div>
+        </div>';
+    }
        
         return $zf_html;
     }

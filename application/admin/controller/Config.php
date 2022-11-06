@@ -94,9 +94,12 @@ class Config extends Admin
         if($is_user){
             return jserror('用户名已存在');exit;
         }
-        $res =ZFTB('admin')->insert($data); 
-        return ZFRetMsg($res,'新增成功','新增失败');
-        
+        try {
+            $res =ZFTB('admin')->insert($data); 
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
     }
 
     /**
@@ -138,9 +141,12 @@ class Config extends Admin
                     return jserror('用户名已存在');exit;
                 }
             }
-            $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'更新成功','更新失败');
-            
+            try {
+                $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'更新成功','更新失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
 
@@ -178,9 +184,12 @@ class Config extends Admin
         $data = input('post.');
         $data = array_merge($data,$this->common_tag);
         $data['ctime'] = time();
-        $res =ZFTB('admin_group')->insert($data);
-        return ZFRetMsg($res,'新增成功','新增失败');
-        
+        try {
+            $res =ZFTB('admin_group')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
     }
 
     /**
@@ -206,9 +215,12 @@ class Config extends Admin
         } 
         if(request()->isPost()){
             $data = input('post.');
-            $res = ZFTB('admin_group')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'更新成功','更新失败');
-            
+            try {
+                $res = ZFTB('admin_group')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'更新成功','更新失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
 
@@ -241,9 +253,12 @@ class Config extends Admin
         if(request()->isPost()){
             $data = input('post.');
             $data['role'] = implode(',',  $data['role']);
-             $res = ZFTB('admin_group')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'更新成功','更新失败');
-                
+            try {
+                $res = ZFTB('admin_group')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'更新成功','更新失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
 
@@ -331,9 +346,12 @@ class Config extends Admin
         $data = $val;
         $data['value'] = $value;
         $data = array_merge($data,$this->common_tag);
-        $res =ZFTB('admin_role')->insert($data); 
-        return ZFRetMsg($res,'新增成功','新增失败');
-         
+        try {
+            $res =ZFTB('admin_role')->insert($data); 
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
     }
 
     /**
@@ -369,8 +387,12 @@ class Config extends Admin
         if(request()->isPost()){
             $data = input('post.');
             $data['token'] = time();
-            $res = ZFTB('admin_role')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'更新成功','更新失败');  
+            try {
+                $res = ZFTB('admin_role')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'更新成功','更新失败');  
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
 
@@ -410,8 +432,12 @@ class Config extends Admin
             if($is){
                 return jserror('该键已存在');exit;
             }
-            $res =ZFTB('config')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
+            try {
+                $res =ZFTB('config')->insert($data);
+                return ZFRetMsg($res,'新增成功','新增失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         }
 
         $list = ZFTB('config')->where([['status','<>',9]])->order("sort desc,id asc")->select();
@@ -419,15 +445,26 @@ class Config extends Admin
         return view();
     }
 
-    public function custom_config_edit($id)
+    public function custom_config_edit()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isPost()){
             $data = input("post.");
-            $res =  ZFTB('config')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败'); 
+            try {
+                $res =  ZFTB('config')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败'); 
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         }
-        $res = ZFTB('config')->where(['id'=>$id])->find();
+        $id = input('id','');
+        $key = input('key','');
+        if($id!=''){
+            $where[] = ['id','=',$id];
+        }elseif($key!=''){
+            $where[] = ['key','=',$key];
+        }
+        $res = ZFTB('config')->where($where)->find();
         $this->assign('res',$res);
         return view();
     }

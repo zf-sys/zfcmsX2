@@ -50,8 +50,8 @@ if (!function_exists('get_cate_res')) {
   }
 }
 if (!function_exists('get_cate_list')) {
-  function get_cate_list($cid,$tb='category',$lang=''){
-      $menu_r =ZFTB($tb)->where(['pid'=>$cid,'status'=>1,'lang'=>$lang])->order("sort asc")->select();
+  function get_cate_list($cid,$tb='category'){
+      $menu_r =ZFTB($tb)->where(['pid'=>$cid,'status'=>1])->order("sort asc")->select();
       return $menu_r;
   }
 }

@@ -35,26 +35,31 @@ class Rests extends Admin
         $where = array_merge($where, $this->common_select_tag);
         $tag = input('tag','');
         $type = input('type','');
-        if($type=='child'){
-            $pid = input('id','');
-            if($tag!=''){
-                $is = ZFTB('advert')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
-                if(!$is){
-                    $is_add = ZFTB('advert')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag.date("YmdHis"),'pid'=>'0']);
-                    if(!$is_add){
-                        dd('添加失败');
-                    }
+        try {
+            if($type=='child'){
+                $pid = input('id','');
+                if($tag!=''){
                     $is = ZFTB('advert')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
+                    if(!$is){
+                        $is_add = ZFTB('advert')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag.date("YmdHis"),'pid'=>'0']);
+                        if(!$is_add){
+                            dd('添加失败');
+                        }
+                        $is = ZFTB('advert')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
+                    }
+                    $pid = $is['id'];
                 }
-                $pid = $is['id'];
+                $tpl='rests/advert_child';
+                $list = ZFTB('advert')->where('pid',$pid)->where($where)->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
+                $this->assign("pid",$pid);
+            }else{
+                $tpl='';
+                $list = ZFTB('advert')->where('pid',0)->where($where)->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
             }
-            $tpl='rests/advert_child';
-            $list = ZFTB('advert')->where('pid',$pid)->where($where)->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
-            $this->assign("pid",$pid);
-        }else{
-            $tpl='';
-            $list = ZFTB('advert')->where('pid',0)->where($where)->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
+        }catch (Exception $e) {
+            return jserror($e);
         }
+        
         $page = $list->render();
         $this->assign("list",$list);
         $this->assign("page",$page);
@@ -85,8 +90,12 @@ class Rests extends Admin
             return jserror('名称不能为空');exit;
         }
         $data = array_merge($data,$this->common_tag);
-        $res = ZFTB('advert')->insert($data);
-        return ZFRetMsg($res,'新增成功','新增失败');
+        try {
+            $res = ZFTB('advert')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
         
     }
 
@@ -108,17 +117,22 @@ class Rests extends Admin
     	if(request()->isGet()){
             $id = input('id','');
             $tag = input('tag','');
-            if($tag!=''){
-                $is = ZFTB('advert')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
-                if(!$is){
-                    $is_add = ZFTB('advert')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag.date("YmdHis"),'pid'=>'0']);
-                    if(!$is_add){
-                        dd('添加失败');
-                    }
+            try {
+                if($tag!=''){
                     $is = ZFTB('advert')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
+                    if(!$is){
+                        $is_add = ZFTB('advert')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag.date("YmdHis"),'pid'=>'0']);
+                        if(!$is_add){
+                            dd('添加失败');
+                        }
+                        $is = ZFTB('advert')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
+                    }
+                    $id = $is['id'];
                 }
-                $id = $is['id'];
+            }catch (Exception $e) {
+                return jserror($e);
             }
+            
             $res =  ZFTB('advert')->where(['id'=>$id])->find(); 
             $this->assign("res",$res);
             if(input('type')=='child'){
@@ -134,9 +148,12 @@ class Rests extends Admin
             if($data['name']==''){
                 return jserror('名称不能为空');exit;
             }
-            $res = ZFTB('advert')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
-             
+            try {
+                $res = ZFTB('advert')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
 
@@ -179,8 +196,12 @@ class Rests extends Admin
         }
         $data['ctime'] = time();
         $data = array_merge($data,$this->common_tag);
-        $res = ZFTB('link')->insert($data);
-        return ZFRetMsg($res,'新增成功','新增失败');
+        try {
+            $res = ZFTB('link')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
         
     }
 
@@ -205,10 +226,13 @@ class Rests extends Admin
             return view('rests/link_add');
         } 
         if(request()->isPost()){
-           $data = input('post.');
-            $res = ZFTB('link')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
-             
+            $data = input('post.');
+            try {
+                $res = ZFTB('link')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
 
@@ -249,8 +273,12 @@ class Rests extends Admin
         }
         $data['ctime'] = time();
         $data = array_merge($data,$this->common_tag);
-        $res = ZFTB('guessbook')->insert($data);
-        return ZFRetMsg($res,'新增成功','新增失败');
+        try {
+            $res = ZFTB('guessbook')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
         
     }
 
@@ -276,9 +304,12 @@ class Rests extends Admin
         } 
         if(request()->isPost()){
             $data = input('post.');
-            $res = ZFTB('guessbook')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
-             
+            try {
+                $res = ZFTB('guessbook')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
 
@@ -290,15 +321,20 @@ class Rests extends Admin
         if($type=='child'){
             $pid = input('id');
             if($tag!=''){
-                $is = ZFTB('menu')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
-                if(!$is){
-                    $is_add = ZFTB('menu')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag.date("YmdHis"),'pid'=>'0']);
-                    if(!$is_add){
-                        dd('添加失败');
-                    }
+                try {
                     $is = ZFTB('menu')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
+                    if(!$is){
+                        $is_add = ZFTB('menu')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag.date("YmdHis"),'pid'=>'0']);
+                        if(!$is_add){
+                            dd('添加失败');
+                        }
+                        $is = ZFTB('menu')->where([['status','<>',9],['tag','=',$tag],['pid','=','0']])->order("id asc")->find();
+                    }
+                    $pid = $is['id'];
+                }catch (Exception $e) {
+                    return jserror($e);
                 }
-                $pid = $is['id'];
+                
             }
             $tpl='rests/menu_child';
             $where_parant[] = ['status','<>',9];
@@ -361,8 +397,12 @@ class Rests extends Admin
             return jserror('名称不能为空');exit;
         }
         $data = array_merge($data,$this->common_tag);
-        $res = ZFTB('menu')->insert($data);
-        return ZFRetMsg($res,'新增成功','新增失败');
+        try {
+            $res = ZFTB('menu')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
         
     }
 
@@ -403,9 +443,12 @@ class Rests extends Admin
             if($data['name']==''){
                 return jserror('名称不能为空');exit;
             }
-            $res = ZFTB('menu')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
-             
+            try {
+                $res = ZFTB('menu')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
     }
   

@@ -21,7 +21,9 @@ class Admin extends Zfb
         $this->assign('admin',session('admin'));
         $this->assign('web_config',config());
         if(!session('admin')){
-            session('zf_login_tap_url',get_url());
+            if(request()->controller()!='Index' &&  request()->action()=='index'){
+                session('zf_login_tap_url',get_url());
+            }
             $this->redirect('/admin/login/index');die; 
         }
         //判断是否认证

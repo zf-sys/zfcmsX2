@@ -18,6 +18,9 @@
 <?php $api_domain = config('version.api_domain'); ?>
 <div class="layui-fluid layadmin-cmdlist-fluid detail-body">
     <div style="padding-bottom: 10px;">
+      <div>
+        {$err_msg|raw}
+      </div>
       <?php $t = input('t','');?>
         <a class="layui-btn layui-btn-sm {$t==''?'':'layui-btn-primary'}" href="/admin/Zfyun/store?t">全部</a>
         <a class="layui-btn layui-btn-sm {$t=='插件'?'':'layui-btn-primary'}" href="/admin/Zfyun/store?t=插件">插件</a>
@@ -42,7 +45,8 @@
               <tr>
                   <td>
                     插件名:{$vo['title']}<br>
-                    作者:{$vo['u_name']}
+                    作者:{$vo['u_name']}<br>
+                    支持站点版本>={$vo['min_site_version']}
                   </td>
                   <td><span class="tan_content">{$vo['plugin_name']}</span></td>
                   <td>
@@ -53,21 +57,25 @@
                     <img src="{$vo['pic']|default=''}" style="width: 100px;height: 50px;"/>
                   </td>
                   <td>
-                    <?php if($vo['location']){ ?>
-                      <?php if($vo['version_new']>$vo['location']){ ?>
-                      <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('升级','{$api_domain}/addons/zf_store_softclient.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 升级</a><br>
-                       
-                      <?php } ?>
-                      <?php if($vo['type']=='插件'){ ?>
-                        <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
-                        <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
-                        <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a>
-                      <?php }elseif($vo['type']=='模板'){ ?>
-                        <a href="javascript:;" onclick='zfAdminShow("配置","{:url('/i_admin')}")' > 配置</a><br>
-                      <?php } ?>
-
+                    <?php if($vo['min_site_version'] > config('version.version')){ ?>
+                      系统版本过低
                     <?php }else{ ?>
-                      <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('授权','{$api_domain}/addons/zf_store_softclient.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 授权</a>
+                      <?php if($vo['location']){ ?>
+                        <?php if($vo['version_new']>$vo['location']){ ?>
+                        <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('升级','{$api_domain}/addons/zf_store_softclient.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 升级</a><br>
+                        
+                        <?php } ?>
+                        <?php if($vo['type']=='插件'){ ?>
+                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
+                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
+                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a>
+                        <?php }elseif($vo['type']=='模板'){ ?>
+                          <a href="javascript:;" onclick='zfAdminShow("配置","{:url('/i_admin')}")' > 配置</a><br>
+                        <?php } ?>
+
+                      <?php }else{ ?>
+                        <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('授权','{$api_domain}/addons/zf_store_softclient.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 授权</a>
+                      <?php } ?>
                     <?php } ?>
 
                   </td>

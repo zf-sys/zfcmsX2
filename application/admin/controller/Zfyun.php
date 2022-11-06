@@ -89,7 +89,7 @@ class Zfyun extends Admin
       return view();
     }
     public function upgrade_sql(){
-        $update = new \app\admin\controller\Updatesql();
+        $update = new \app\common\controller\Updatesql();
         $update_sql = $update->update();
         $this->success('更新Sql成功');
     }

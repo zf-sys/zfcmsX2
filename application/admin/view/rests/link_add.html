@@ -22,7 +22,7 @@
                   {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'url','name'=>'url','data'=>$res['url'],'theme'=>2])|raw}
                   {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}
-                  {$form_widget->form_radio(['title'=>'类别','name'=>'type','data'=>$res['type'],'parm_data'=>['1'=>'友链','2'=>'内页','3'=>'其他'],'theme'=>2])|raw}
+                  {$form_widget->form_radio(['title'=>'类别','name'=>'type','data'=>$res['type'],'parm_data'=>explode(',',ZFC('link_type')),'theme'=>6])|raw}
                   {$form_widget->form_radio(['title'=>'nofollow','name'=>'nofollow','data'=>$res['nofollow'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
 
@@ -37,7 +37,7 @@
                   {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>'','theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'url','name'=>'url','data'=>'','theme'=>2])|raw}
                   {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>2])|raw}
-                  {$form_widget->form_radio(['title'=>'类别','name'=>'type','data'=>3,'parm_data'=>['1'=>'友链','2'=>'内页','3'=>'其他'],'theme'=>2])|raw}
+                  {$form_widget->form_radio(['title'=>'类别','name'=>'type','data'=>3,'parm_data'=>explode(',',ZFC('link_type')),'theme'=>6])|raw}
                   {$form_widget->form_radio(['title'=>'nofollow','name'=>'nofollow','data'=>0,'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>1,'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
 

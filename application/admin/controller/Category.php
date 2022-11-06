@@ -70,18 +70,21 @@ class Category extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isAjax()){
             $data = input('post.');
-            foreach($data['cid'] as $k=>$vo){
-                $save_data['name'] = $data['name'][$k];
-                $save_data['tpl_category'] = $data['tpl_category'][$k];
-                $save_data['tpl_post'] = $data['tpl_post'][$k];
-                $save_data['mid'] = $data['mid'][$k];
-                $save_data['sort'] = $data['sort'][$k];
-                $save_data['page'] = $data['page'][$k];
-                $save_data['pic'] = $data['pic'][$k];
-                ZFTB('category')->where(['cid'=>$vo])->update($save_data);
+            try {
+                foreach($data['cid'] as $k=>$vo){
+                    $save_data['name'] = $data['name'][$k];
+                    $save_data['tpl_category'] = $data['tpl_category'][$k];
+                    $save_data['tpl_post'] = $data['tpl_post'][$k];
+                    $save_data['mid'] = $data['mid'][$k];
+                    $save_data['sort'] = $data['sort'][$k];
+                    $save_data['page'] = $data['page'][$k];
+                    $save_data['pic'] = $data['pic'][$k];
+                    ZFTB('category')->where(['cid'=>$vo])->update($save_data);
+                }
+                return ZFRetMsg(true,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
             }
-            return ZFRetMsg(true,'修改成功','修改失败');
-
         }
 
         $pid =input('pid','0');
@@ -126,8 +129,12 @@ class Category extends Admin
         }
         $data['utime'] = time();
         $data = array_merge($data,$this->common_tag);
-        $res = ZFTB('category')->insert($data);
-        return ZFRetMsg($res,'新增成功','新增失败');
+        try {
+            $res = ZFTB('category')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
     }
 
     /**
@@ -176,9 +183,13 @@ class Category extends Admin
                 $data['ctime'] =  time();
             }
             $data['utime'] = time();
+            try {
+                $res = ZFTB('category')->where(['cid'=>$data['cid']])->update($data);
+                return ZFRetMsg($res,['msg'=>'修改成功'],['msg'=>'修改失败']);
+            }catch (Exception $e) {
+                return jserror($e);
+            }
 
-            $res = ZFTB('category')->where(['cid'=>$data['cid']])->update($data);
-            return ZFRetMsg($res,['msg'=>'修改成功'],['msg'=>'修改失败']);
         }
         $res =ZFTB('category')->where(['cid'=>input('cid')])->find();
         $this->assign("t",0);
@@ -245,8 +256,12 @@ class Category extends Admin
                 return jserror('请填写信息');exit;
             }
             // $data = array_merge($data,$this->common_tag);
-            $res =ZFTB('category_model')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
+            try {
+                $res =ZFTB('category_model')->insert($data);
+                return ZFRetMsg($res,'新增成功','新增失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         }  
         return view();   
     }
@@ -268,9 +283,12 @@ class Category extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isPost()){
             $data = input('post.');
-            $res =  ZFTB('category_model')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
-              
+            try {
+                $res =  ZFTB('category_model')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
         $res = ZFTB('category_model')->where(['id'=>input('id')])->find();
         $this->assign("res",$res);
@@ -419,7 +437,11 @@ class Category extends Admin
             if(count($arr)==0){
                 $res = false;
             }else{
-                $res = ZFTB('post')->insertAll($arr);
+                try {
+                    $res = ZFTB('post')->insertAll($arr);
+                }catch (Exception $e) {
+                    return jserror($e);
+                }
             }
             return ZFRetMsg($res,'新增成功','新增失败'); 
         }
@@ -506,11 +528,15 @@ class Category extends Admin
                 // if(isset($data['summary']) && $data['summary']=='' &&isset($data['content']) && $data['content']!='' ){
                 //     $data['summary'] = mb_substr($data['content'],0,150,'utf8');
                 // }
-                doZfAction('sys_post_edit_action',$data);
+                doZfAction('sys_post_edit',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
-                $res =  ZFTB('post')->where(['id'=>$data['id']])->update($data);
-                return ZFRetMsg($res,'修改成功','修改失败');  
+                try {
+                    $res =  ZFTB('post')->where(['id'=>$data['id']])->update($data);
+                    return ZFRetMsg($res,'修改成功','修改失败');  
+                }catch (Exception $e) {
+                    return jserror($e);
+                }
             }else{
                 $data = array_merge($data,$this->common_tag);
                 if(isset($data['ctime']) && $data['ctime']!=''){
@@ -561,11 +587,15 @@ class Category extends Admin
                 // if(isset($data['summary']) && $data['summary']=='' &&isset($data['content']) && $data['content']!='' ){
                 //     $data['summary'] = mb_substr($data['content'],0,150,'utf8');
                 // }
-                doZfAction('sys_post_add_action',$data);
+                doZfAction('sys_post_add',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
-                $res = ZFTB('post')->insertGetId($data);
-                return ZFRetMsg($res,'新增成功','新增失败'); 
+                try {
+                    $res = ZFTB('post')->insertGetId($data);
+                    return ZFRetMsg($res,'新增成功','新增失败'); 
+                }catch (Exception $e) {
+                    return jserror($e);
+                }
             }
         } 
         $id = input("id",'');
@@ -696,11 +726,15 @@ class Category extends Admin
             //     $c = "无";
             // }
             //插入数据库
-            $res = ZFTB('post')->insertAll($data);
-            if ($res) {
-                return jssuccess("导入成功!!");
-            }else{
-                  return jserror("error");
+            try {
+                $res = ZFTB('post')->insertAll($data);
+                if ($res) {
+                    return jssuccess("导入成功!!");
+                }else{
+                    return jserror("error");
+                }
+            }catch (Exception $e) {
+                return jserror($e);
             }
         }
     }
@@ -748,11 +782,15 @@ class Category extends Admin
               break;
             }
         }
-        foreach($parm_list_src as $k=>$vo){
-            $_is = ZFTB('post_parm_pic')->where(['pic'=>$vo['pic'],'pid'=>$vo['pid']])->value('id');
-            if(!$_is){
-                ZFTB('post_parm_pic')->insert($vo);
+        try {
+            foreach($parm_list_src as $k=>$vo){
+                $_is = ZFTB('post_parm_pic')->where(['pic'=>$vo['pic'],'pid'=>$vo['pid']])->value('id');
+                if(!$_is){
+                    ZFTB('post_parm_pic')->insert($vo);
+                }
             }
+        }catch (Exception $e) {
+            return jserror($e);
         }
         return jssuccess('已保存');
 
@@ -823,9 +861,12 @@ class Category extends Admin
              }
 
             //  $data = array_merge($data,$this->common_tag);
-             $res =ZFTB('category_model_parm')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-             
+            try {
+                $res =ZFTB('category_model_parm')->insert($data);
+                return ZFRetMsg($res,'新增成功','新增失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
          }  
          return view();   
      }
@@ -847,8 +888,12 @@ class Category extends Admin
         //  admin_role_check($this->z_role_list,$this->mca,1);
          if(request()->isPost()){
             $data = input('post.');
-            $res =  ZFTB('category_model_parm')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
+            try {
+                $res =  ZFTB('category_model_parm')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
          } 
          $res = ZFTB('category_model_parm')->where(['id'=>input('id')])->find();
          $this->assign("res",$res);
@@ -874,9 +919,12 @@ class Category extends Admin
             $data = input('post.');
             $data['ctime'] = time();
             $data = array_merge($data,$this->common_tag);
-            $res =ZFTB('special')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-           
+            try {
+                $res =ZFTB('special')->insert($data);
+                return ZFRetMsg($res,'新增成功','新增失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         }  
             return view();   
 
@@ -905,9 +953,12 @@ class Category extends Admin
             }else{
                 $data['ctime'] =  time();
             }
-            $res = ZFTB('special')->where(['id'=>$data['id']])->update($data); 
-            return ZFRetMsg($res,'修改成功','修改失败');
-             
+            try {
+                $res = ZFTB('special')->where(['id'=>$data['id']])->update($data); 
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
         $res =  ZFTB('special')->where(['id'=>input('id')])->find();
         $this->assign("res",$res);
@@ -939,7 +990,11 @@ class Category extends Admin
             $data['ctime'] = time();
             $data['status'] = 1;
             if(isset($data['post_id']) && $data['post_id']!=''){
-                $res = ZFTB('special_post')->insert($data);
+                try {
+                    $res = ZFTB('special_post')->insert($data);
+                }catch (Exception $e) {
+                    return jserror($e);
+                }
             }else{
                 $res = false;
             }
@@ -992,9 +1047,12 @@ class Category extends Admin
             $data = input('post.');
             $data['ctime'] = time();
             $data = array_merge($data,$this->common_tag);
-            $res =ZFTB('tag')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-           
+            try {
+                $res =ZFTB('tag')->insert($data);
+                return ZFRetMsg($res,'新增成功','新增失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         }  
             return view();   
 
@@ -1023,9 +1081,12 @@ class Category extends Admin
             }else{
                 $data['ctime'] =  time();
             }
-            $res = ZFTB('tag')->where(['id'=>$data['id']])->update($data); 
-            return ZFRetMsg($res,'修改成功','修改失败');
-             
+            try {
+                $res = ZFTB('tag')->where(['id'=>$data['id']])->update($data); 
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
         $res =  ZFTB('tag')->where(['id'=>input('id')])->find();
         $this->assign("res",$res);
@@ -1034,8 +1095,7 @@ class Category extends Admin
 
 
 
-    
-
+   
     
 
 

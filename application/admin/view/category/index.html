@@ -58,7 +58,7 @@
             <input name="type" value="{$type}" type="hidden" />
             <input name="menu" value="1" type="hidden" />
             <div class="layui-inline">
-                <button class="layui-btn layui-btn-sm" onclick="tijiao_data('category/category_add',0)"  >新增</button>
+                <button class="layui-btn layui-btn-sm" onclick="tijiao_data_now('{:url("admin/category/category_add")}',0)"  >新增</button>
             </div>
           </div>
         </div>
@@ -196,11 +196,42 @@
       },"json");
 
     })
+    
+
+
 
     
  
    
   });
+
+  window.tijiao_data_now = function(role,type=1){
+      var index = layer.load(2);
+      var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj option,.info_tj radio").serialize();      
+      $.ajax({
+        type:'post',
+        url:role,
+        data:data,
+        dataType:'json',
+        success:function(res){
+          console.log(res)
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+            layer.close()
+            setTimeout(function() {
+        if(type==1){
+        window.parent.location.reload();
+        }else{
+        window.location.reload();
+        }
+            }, 2000);
+          }else{
+            layer.msg(res.msg, {icon: 2});
+            layer.close(index)
+          }   
+        }
+      })
+	 }
   </script>
 </body>
 </html>

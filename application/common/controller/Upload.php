@@ -30,6 +30,7 @@ class Upload extends Controller{
       }
     }
     public function upload_one(){
+      try {
         $file = request()->file('file');
         $this->file = $file;
         if($this->upload_type!=''){
@@ -45,8 +46,12 @@ class Upload extends Controller{
           $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/image/'.$getSaveName;
         }
         $this->save_upload_info($file,$url);
+      }catch (Exception $e) {
+        return jserror($e);
+      }
     }
     public function upload_one_file(){
+      try {
         $file = request()->file('file');
         $this->file = $file;
         if($this->upload_type!=''){
@@ -63,10 +68,14 @@ class Upload extends Controller{
         }
         //保存上传数据
         $this->save_upload_info($file,$url);
+      }catch (Exception $e) {
+        return jserror($e);
+      }
     }
 
    
     public function meditor_upload_one(){
+      try {
         $file = request()->file('editormd-image-file');
         if($this->upload_type!=''){
           $tmp_name = $file->getInfo()['tmp_name'];
@@ -109,6 +118,13 @@ class Upload extends Controller{
                'message'    =>  'error',
             ));
         }
+      }catch (Exception $e) {
+        return json_encode(array(
+          'success'    => 0, 
+          'url'       => '',
+          'message'    =>  $e,
+       ));
+      }
     }
 //     public function upload_pic_liu(){
 // //目录的upload文件夹下
@@ -140,6 +156,7 @@ class Upload extends Controller{
     
   
     public function upload_one_filesystem(){
+      try {
         $file = request()->file('file');
         if($this->upload_type!=''){
           $tmp_name = $file->getInfo()['tmp_name'];
@@ -155,7 +172,9 @@ class Upload extends Controller{
         }
         $cid = input('cid',0);
         $this->save_upload_info($file,$url,$cid);
-        
+      }catch (Exception $e) {
+        return jserror($e);
+      }
     }
     private function save_upload_info($file,$url='',$cid='0'){
         $req_file = $file->getInfo();

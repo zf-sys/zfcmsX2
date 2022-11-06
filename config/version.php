@@ -25,4 +25,5 @@
 	'version_temp' => 'v0.0.0.0',
 	'pulg_data_path' => './upgrade',
 	'temp_dir_list' => '/application,/extend,/route,/thinkphp,/vendor,/theme,/public,/runtime',
+	'sql_version' => '',
 ];

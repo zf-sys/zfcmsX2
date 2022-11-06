@@ -18,28 +18,18 @@
               <div class="layui-col-sm9">
                 <div class="layui-card">
                   <br/>
-                  <div class="layui-row layui-col-space10 layui-form-item">
-                    <div class="layui-col-lg10">
-                      <div class="layui-card-header">键</div>
-                      <div class="layui-card-body layui-row layui-col-space10">
-                        <div class="layui-col-md12">
-                          <input type="text" name="key" placeholder="" autocomplete="off" class="layui-input" value="{$res.key}">
-                        </div>
-                      </div>
+                  <div class="layui-card-header">键</div>
+                  <div class="layui-card-body layui-row layui-col-space12">
+                    <div class="layui-col-md12">
+                      <textarea name="key" placeholder="请输入" class="layui-textarea">{$res.key}</textarea>
                     </div>
                   </div>
-                   <div class="layui-row layui-col-space10 layui-form-item">
-                    <div class="layui-col-lg10">
-                      <div class="layui-card-header">值</div>
-                      <div class="layui-card-body layui-row layui-col-space10">
-                        <div class="layui-col-md12">
-                          <textarea name="value" placeholder="请输入" class="layui-textarea">{$res.value}</textarea>
-                        </div>
-                      </div>
+                  <div class="layui-card-header">值</div>
+                  <div class="layui-card-body layui-row layui-col-space12">
+                    <div class="layui-col-md12">
+                      <textarea name="value" placeholder="请输入" class="layui-textarea">{$res.value}</textarea>
                     </div>
                   </div>
-                   
-                   
                   <div class="layui-card-header">备注</div>
                   <div class="layui-card-body layui-row layui-col-space12">
                     <div class="layui-col-md12">
@@ -61,9 +51,14 @@
                       <div class="layui-col-md12">
                         <div class="layui-input-inline">
                             <select name="type" lay-verify="required" lay-filter="aihao">
-                                <option value="{$res['type']}">{$res['type']=='system'?'系统':'用户'}</option>
+                                <option value="{$res['type']}">
+                                    {$res['type']=='system'?'系统':''}
+                                    {$res['type']=='user'?'用户':''}
+                                    {$res['type']=='addons'?'插件':''}
+                                </option>
                                 <option value="user">用户</option>
                                 <option value="system">系统</option>
+                                <option value="addons">插件</option>
                             </select>
                         </div>
                       </div>

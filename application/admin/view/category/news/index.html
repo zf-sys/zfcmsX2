@@ -92,8 +92,9 @@
                   <td> 
                     <a class="layui-btn btn_del layui-btn-danger layui-btn-sm" rel="{$vo['id']}" href="#">删除</a> <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/category/post_add',['id' => $vo['id'],'cid' => $vo['cid'],'mid' => $mid] )}")'>编辑</button> 
                     <a  class="layui-btn layui-btn-sm" href="{:url('admin/category/post_add',['id' => $vo['id'],'cid' => $vo['cid'],'mid' => $mid] )}" target="_blank"> 编辑(新页面打开)</a>
-                    {:doZfAction('zf_seo_savepic',$vo['id'])}
                     <a class="layui-btn  layui-btn-sm"  href="{$site_path}{$lang!=1?$lang.'/':''}detail/{$vo['id']}.html?t=show_admin" target="_blank">预览</a> 
+                    {:doZfAction('sys_post_list_item',['type'=>'view','id'=>$vo['id']])}
+                    
                   
                   </td>
                 </tr>

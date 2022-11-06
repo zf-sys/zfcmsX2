@@ -39,7 +39,7 @@
                   <td>{$vo['id']}</td>
                   <td>
                     {$vo['name']}
-                    {:doZfAction('sys_ulink_check',$vo['url'])}
+                    {:doZfAction('sys_ulink_check',['data'=>$vo['url']])}
                   </td>
                   <td>{$vo['url']}</td>
                   

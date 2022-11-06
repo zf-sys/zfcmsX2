@@ -42,6 +42,7 @@
           </thead>
           <tbody>
             <?php foreach($list as $k=>$vo){ if($vo['ok']==1){ ?>
+              <?php $_plugin_class = 'addons\\'.$vo['plugin_name'].'\controller\Plugin'; ?>
               <tr>
                   <td>{$vo['name']}</td>
                   <td>{$vo['plugin_name']}</td>
@@ -60,13 +61,20 @@
                   </td>     
                   <td>
                     <?php if(is_dir('./addons/'.$vo['plugin_name']) ){ ?>
-                        <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
-                        <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
-                        <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a><br>
+                      <?php if(class_exists($_plugin_class)){ ?>
+                        <?php if(method_exists(new $_plugin_class(),'index')){ ?>
+                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
+                        <?php } ?>
+                        <?php if(method_exists(new $_plugin_class(),'setting')){ ?>
+                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
+                        <?php } ?>
+                        <?php if(method_exists(new $_plugin_class(),'help')){ ?>
+                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a><br>
+                        <?php } ?>
+                      <?php } ?>
                         <a href="javascript:;" class="plugin_uninstall" item="{$vo['plugin_name']}" style="color: red" > 卸载</a><br>
                         <a href="javascript:;" class="plugin_backup" item="{$vo['plugin_name']}" style="color: red" > 备份</a>
                         <!-- <a href="javascript:;" class="plugin_upgrade" item="{$vo['plugin_name']}" style="color: red" > 升级</a> -->
-
                     <?php }else{ ?>
                      <span style="color: red">代码缺失</span>
                     <?php } ?>

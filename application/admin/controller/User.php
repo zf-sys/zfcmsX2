@@ -36,6 +36,26 @@ class User extends Admin
     public function index()
     {
         admin_role_check($this->z_role_list,$this->mca);
+        $this->_update_sql(1);
+        $type = input('type','');
+        if($type=='add_group'){
+            $tag = input('tag','');
+            $is = ZFTB('user_group')->where([['status','<>',9],['tag','=',$tag]])->order("id asc")->find();
+            if(!$is){
+                try {
+                    $is_add = ZFTB('user_group')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag,'ctime'=>time()]);
+                }catch (Exception $e) {
+                    return jserror($e);
+                }
+                if(!$is_add){
+                    dd('添加失败');
+                }
+                $is = ZFTB('user_group')->where([['status','<>',9],['tag','=',$tag]])->order("id asc")->find();
+            }
+            $gid = $is['id']; 
+            $this->redirect(url('admin/user/index',['gid'=>$gid]));
+        }
+
         $where[] = ['status','<>',9];
         $key = input('key','');
         if($key!=''){
@@ -49,6 +69,8 @@ class User extends Admin
         $page = $list->render();
         $this->assign('list', $list);
         $this->assign('page', $page);
+        $glist = ZFTB('user_group')->where(['status'=>1])->select();
+        $this->assign("glist",$glist);
         return view();
     }
 
@@ -81,10 +103,14 @@ class User extends Admin
         if($is_user){
             return jserror('用户名已存在');exit;
         }
-
-        $res = ZFTB('user')->insert($data);
-        return ZFRetMsg($res,'新增成功','新增失败');
-         
+        try {
+            $res = ZFTB('user')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
+        
+        
     }
 
     /**
@@ -123,10 +149,14 @@ class User extends Admin
                     return jserror('用户名已存在');exit;
                 }
             }
-
-            $res = ZFTB('user')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
-              
+            try {
+                $res = ZFTB('user')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
+            
+            
         } 
     }
 
@@ -141,6 +171,7 @@ class User extends Admin
     public function group()
     {
         admin_role_check($this->z_role_list,$this->mca);
+        $this->_update_sql(1);
         $group_list = ZFTB('user_group')->where('status!=9')->order("id asc")->paginate(10);
         $page = $group_list->render();
         $this->assign("group_list",$group_list);
@@ -162,9 +193,14 @@ class User extends Admin
             $data = input('post.');
             $data['ctime'] = time();
             // $data = array_merge($data,$this->common_tag);
-            $res =ZFTB('user_group')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-           
+            try {
+                $res =ZFTB('user_group')->insert($data);
+                return ZFRetMsg($res,'新增成功','新增失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
+            
+            
         }  
             return view();   
 
@@ -188,9 +224,13 @@ class User extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);   
         if(request()->isPost()){
             $data = input('post.');
-            $res = ZFTB('user_group')->where(['id'=>$data['id']])->update($data); 
-            return ZFRetMsg($res,'修改成功','修改失败');
-             
+            try {
+                $res = ZFTB('user_group')->where(['id'=>$data['id']])->update($data); 
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
+                        
         } 
         $res =  ZFTB('user_group')->where(['id'=>input('id')])->find();
         $this->assign("res",$res);
@@ -212,13 +252,19 @@ class User extends Admin
         if(request()->isPost()){
             $data = input('post.');
             $data['pwd'] = md5('zfcms-'.$data['pwd']);
-            $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
-              if($res){ 
-                  session('admin',null);
-                  return jssuccess('修改成功');
-              }else{
-                  return jserror('修改失败');
-              }   
+            try {
+                $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
+            }catch (Exception $e) {
+                return jserror($e);
+            }
+            
+            
+            if($res){ 
+                session('admin',null);
+                return jssuccess('修改成功');
+            }else{
+                return jserror('修改失败');
+            }   
         } else{
             $res = session('admin');
             $this->assign('res',$res);
@@ -243,9 +289,12 @@ class User extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isPost()){
             $data = input('post.');
-            $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
-            return ZFRetMsg($res,'修改成功','修改失败');
-            
+            try {
+                $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
+                return ZFRetMsg($res,'修改成功','修改失败');
+            }catch (Exception $e) {
+                return jserror($e);
+            }
         } 
         $id = session('admin.id');
         $res = ZFTB('admin')->where(['id'=>$id])->find();
@@ -284,6 +333,14 @@ class User extends Admin
         //数据中对应的字段，用于读取相应数据：
         $keys = ['id','name', 'sex', 'address', 'ctime'];     
         zf_excel_export($head,$keys,$data,$name) ;
+    }
+
+
+    private function _update_sql($t=''){
+        if($t==1){
+            $this->tb_prefix = config()['database']['prefix'];
+            $this->tb_field_add("show columns from {$this->tb_prefix}user_group like 'tag'","alter table {$this->tb_prefix}user_group add tag varchar(50) not null");
+        }
     }
 
 
