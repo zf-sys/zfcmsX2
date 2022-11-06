@@ -1,3 +1,12 @@
 composer.lock
 /runtime/*
 /public/install.lock
+/笔记
+/addons/*
+/theme/*
+!/theme/index/*
+!/theme/install/*
+/application/common/controller/*
+!/application/common/controller/Fileupload.php
+!/application/common/controller/Updatesql.php
+!/application/common/controller/Upload.php
