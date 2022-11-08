@@ -229,122 +229,14 @@
                   </div>
                   <div class="layui-form-mid layui-word-aux">禁止泄露,可修改</div>
                 </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">后台自定义登录路径token</label>
+                  <div class="layui-input-inline" style="width: 500px;">
+                    <input type="text" name="admin_path"  value="{$config['admin_path']|default=''}" class="layui-input">
+                  </div>
+                  <div class="layui-form-mid layui-word-aux">不为空时,后台登录路径改为 /adminLogin/设置的路径token ,原来的登录路径失效</div>
+                </div>
                 
-                <?php }elseif($type=='SEO优化'){ ?>
-                  <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">分页格式</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <select name="cate_page_type">
-                        <option value='1' {$config['cate_page_type']==1?'selected':''}>cate/分类ID.html?page=页码数 </option>
-                        <option value='2' {$config['cate_page_type']==2?'selected':''}>cate/分类ID/页码数.html </option>
-                        <option value='3' {$config['cate_page_type']==3?'selected':''}>cate-分类ID-页码数.html </option>
-                      </select>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['web']['cate_page_type'] 需相应开发功能</span><br>
-                    </div>
-                  </div>
-                  <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">全站克隆(url)</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <select name="site_more">
-                        <option value='0' {$config['site_more']==0?'selected':''}>否</option>
-                        <option value='1' {$config['site_more']==1?'selected':''}>是 </option>
-                      </select>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['web']['site_more'] 需相应开发功能 </span><br>
-                    </div>
-                  </div>
-                <?php }elseif($type=='模板设置'){ ?>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">模板名称</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="theme_name"  value="{$config['theme_name']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['web']['theme_name']</span>模板名称</div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">表</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="tb"  value="{$config['tb']|default=''}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">百度推送接口</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="bd_tsjk"  value="{$config['bd_tsjk']|default=''}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">默认图</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="cms_default_pic"  value="{$config['cms_default_pic']|default='http://oss002.wangmingchang.com/uploads/f12daa2e867d88c943bd4a8fc5460e3a/20210326_50559src%3Dhttp___wxjidi.com_images_defaultpic.gif%26refer%3Dhttp___wxjidi.jpg'}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">oss图片域名(多个用,隔开)</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <textarea name="cms_oss_sites" class="layui-textarea" placeholder="例:a1.com,a2.com">{$config['cms_oss_sites']|default=''}</textarea>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">文章版权声明</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <textarea name="cms_post_copyright" class="layui-textarea" placeholder="例:a1.com,a2.com">{$config['cms_post_copyright']|default=''}</textarea>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">默认内容编辑器</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <select name="editor_def">
-                        <option value="ueditor" {$config['editor_def']=='ueditor'?'selected':''}> ueditor</option>
-                        <option value="wangeditor" {$config['editor_def']=='wangeditor'?'selected':''}> wangeditor</option>
-                        <option value="tinymce" {$config['editor_def']=='tinymce'?'selected':''}> tinymce</option>
-                        <option value="meditor" {$config['editor_def']=='meditor'?'selected':''}> meditor</option>
-                        <option value="vditor" {$config['editor_def']=='vditor'?'selected':''}> vditor</option>
-                        
-                      </select>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">默认栏目编辑器</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <select name="cate_editor_def">
-                        <option value="ueditor" {$config['cate_editor_def']=='ueditor'?'selected':''}> ueditor</option>
-                        <option value="wangeditor" {$config['cate_editor_def']=='wangeditor'?'selected':''}> wangeditor</option>
-                        <option value="tinymce" {$config['cate_editor_def']=='tinymce'?'selected':''}> tinymce</option>
-                        <option value="meditor" {$config['cate_editor_def']=='meditor'?'selected':''}> meditor</option>
-                        <option value="vditor" {$config['cate_editor_def']=='vditor'?'selected':''}> vditor</option>
-                        
-                      </select>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">管理系统模板</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <select name="template_home">
-                        <option value="index" {$config['template_home']=='index'?'selected':''}> Index模板</option>
-                        <option value="index_cms" {$config['template_home']=='index_cms'?'selected':''}> cms模板</option>
-                        <option value="index_blog" {$config['template_home']=='index_blog'?'selected':''}> 博客模板</option>
-                        <option value="index_page" {$config['template_home']=='index_page'?'selected':''}> 单页模板</option>
-                      </select>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">管理系统单页模板CID</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="template_home_cid"  value="{$config['template_home_cid']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['web']['template_home_cid']</span>管理系统单页模板CID</div>
-                </div>
                 
                 <?php } ?>
 
