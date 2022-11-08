@@ -46,6 +46,13 @@ class Login extends Controller
         if(session('admin')){
             $this->error('你已登录,跳转中...','index/index'); 
         }
+        $admin_path = config('web.admin_path');
+        if(isset($admin_path) && $admin_path!=''){
+            $token = input('token','');
+            if($token!=$admin_path){
+                die;
+            }
+        }
         return view('login/index3');
     }
     
@@ -62,27 +69,36 @@ class Login extends Controller
      */
     public function login()
     {
-        if(request()->isPost()){
-            if(request()->isPost()){
-                $data = input('post.');
-                // $lang = session('zf_lang',$data['lang']);
-                $userInfo = ZFTB('admin')->where('name', $data['name'])->where('pwd', md5('zfcms-'.$data['pwd']))->where('status', 1)->find();
-                if (!$userInfo) {
-                    return jserror('用户名或者密码不正确 或没有权限');
+        $admin_path = config('web.admin_path');
+        if(isset($admin_path) && $admin_path!=''){
+            if(isset($_SERVER['HTTP_REFERER'])){
+                $is_ok = strpos($_SERVER['HTTP_REFERER'], $admin_path);
+                if(!$is_ok){
+                    return jserror('后台登录路径错误');
                 }
-                doZfAction('sys_adminlogin_parm',['type'=>'action','data'=>$data]);
-                $admin  = $userInfo;
-                session('admin', $admin);
-                if(!session('zf_login_tap_url')){
-                    $url= url('admin/index/index');
-                }else{
-                    $url= session('zf_login_tap_url');
-                    session('zf_login_tap_url',null);
-                }
-                return jssuccess($url);
             }else{
-                return jserror('异常访问');
+                return jserror('err');
             }
+        }
+
+        if(request()->isPost()){
+            $data = input('post.');
+            $userInfo = ZFTB('admin')->where('name', $data['name'])->where('pwd', md5('zfcms-'.$data['pwd']))->where('status', 1)->find();
+            if (!$userInfo) {
+                return jserror('用户名或者密码不正确 或没有权限');
+            }
+            doZfAction('sys_adminlogin_parm',['type'=>'action','data'=>$data]);
+            $admin  = $userInfo;
+            session('admin', $admin);
+            if(!session('zf_login_tap_url')){
+                $url= url('admin/index/index');
+            }else{
+                $url= session('zf_login_tap_url');
+                session('zf_login_tap_url',null);
+            }
+            return jssuccess($url);
+        }else{
+            return jserror('异常访问');
         }
     }
 
@@ -95,7 +111,7 @@ class Login extends Controller
     public function loginout(){
         session('admin',null);
         $url_tmp = url('admin/login/loginout');
-        $url_login = url('admin/login/index?token='.config('web.site_admin_token'));
+        $url_login = url('/');
         if(session('admin')){
             $this->redirect($url_tmp,302);
         }else{
