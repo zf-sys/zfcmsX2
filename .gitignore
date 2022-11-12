@@ -10,3 +10,9 @@ composer.lock
 !/application/common/controller/Fileupload.php
 !/application/common/controller/Updatesql.php
 !/application/common/controller/Upload.php
+
+#配置文件不需要更新
+/config/database.php
+/config/version.php
+/config/web.php
+/config/zf_auth.php
