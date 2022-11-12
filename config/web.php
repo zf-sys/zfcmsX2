@@ -11,7 +11,7 @@
   // | 码云:  https://gitee.com/wmc1125/zfAdmin_tpfast
   // | Mc技术论坛: http://bbs.wangmingchang.com/forum.php?mod=forumdisplay&fid=77
   // +----------------------------------------------------------------------
-  // 站点信息最后修改于 2022/11/06 21:39:07  
+  // 站点信息最后修改于 2022/11/12 09:44:58  
   
  return [
 	'site_name' => '',
@@ -37,7 +37,7 @@
 	'site_icon' => '',
 	'site_qrcode' => '',
 	'upload_type' => '',
-	'site_token' => '166774194798746135',
+	'site_token' => '99e45691b27d171557e6578f8a5dad44',
 	'tongji_code' => '',
 	'site_closed_url' => '',
 	'cate_page_type' => '1',
@@ -54,6 +54,6 @@
 	'cms_oss_sites' => 'oss002.wangmingchang.com,oss001.wangmingchang.com,oss.wangmingchang.com,oss1.wangmingchang.com',
 	'cms_post_copyright' => '本站文章如未注明出处则为原创,转载请注明出处，如有侵权请邮件联系站长 ',
 	'site_path' => '',
-	'site_admin_token' => '166774194737797129',
+	'site_admin_token' => '1668217498',
 	'site_home_url' => '',
 ];
