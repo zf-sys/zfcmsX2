@@ -1304,7 +1304,7 @@ if(!function_exists('isset_arr_key')){
  */
 if (!function_exists('jsonPro')) {
     function jsonPro($data,$msg,$code=1,$url=''){
-            return json_encode(array('code'=>$code,'data'=> json_encode($data),"msg" => $msg, "url" => $url));exit;
+            echo json_encode(array('code'=>$code,'data'=> $data,"msg" => $msg, "url" => $url));exit;
     }
 }
 
