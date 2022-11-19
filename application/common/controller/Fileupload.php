@@ -34,6 +34,9 @@ class Fileupload extends Controller
         $where[] = ['uniacid','=',session('uniacid')];
 
         $pic_list =Db::name('upload')->where($where)->limit(($page-1)*$limit,$limit)->order('id desc')->select();
+        foreach($pic_list as $k=>$vo){
+            $pic_list[$k]['url'] =  get_domain().'/get_file_out?id='.$vo['id'].'&token='.$vo['token'];
+        }
         $this->assign('pic_list',$pic_list);
         $this->assign("page",$page);
         $this->assign("limit",$limit);

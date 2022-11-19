@@ -89,23 +89,8 @@ class Upload extends Controller{
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
           $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/file/'.$getSaveName;
         }
-        $save_data['size'] =$file->getInfo()['size'];
-        $save_data['mine'] =$file->getInfo()['type'];
-        $save_data['name'] = $file->getInfo()['name'];
-        $save_data['type'] = file_format_cn($save_data['name']);
-        $save_data['url'] = $url;
-        $save_data['ctime'] = time();
-        $save_data['ip'] = request()->ip();
-        $save_data['status'] = 1;
-        $save_data['uniacid'] = session('uniacid');
-        if(session('zf_admin')){
-            $save_data['uid'] = session('zf_admin')['id'];
-        }else{
-            $save_data['uid'] = 'admin-err';
-        }
-        $save_data['cid'] = input('cid',0);
-        $res = Db::name('upload')->insert($save_data);
-        if($res){
+        $url = $this->save_upload_info($file,$url,0,true);
+        if($url){
             return json_encode(array(
                'success'    => 1, 
                'url'       => $url,
@@ -176,11 +161,12 @@ class Upload extends Controller{
         return jserror($e);
       }
     }
-    private function save_upload_info($file,$url='',$cid='0'){
+    private function save_upload_info($file,$url='',$cid='0', $return=false){
         $req_file = $file->getInfo();
         $save_data['size'] =$req_file['size'];
         $save_data['mine'] =$req_file['type'];
         $save_data['name'] = $req_file['name'];
+        $save_data['token'] =date("Ymd").zf_rand_str(10);
         $save_data['type'] = file_format_cn($save_data['name']);
         $save_data['url'] = $url;
         $save_data['ctime'] = time();
@@ -199,12 +185,21 @@ class Upload extends Controller{
         }else{
             $save_data['uid'] = '非登录上传';
         }
-        $save_data['cid'] = $cid;
-        $res = Db::name('upload')->insert($save_data);
+        $save_data['cid'] = '';
+        $res = Db::name('upload')->insertGetId($save_data);
         if($res){
+          $url = get_domain().'/get_file_out?id='.$res.'&token='.$save_data['token'];
+          if($return){
+            return $url;
+          }else{
             return jssuccess($url,$save_data['type']);
+          }
         }else{
+          if($return){
+            return false;
+          }else{
             return jserror("error");
+          }
         }
     }
 
@@ -268,6 +263,8 @@ class Upload extends Controller{
         }
     }
 
+
+    
 
 
 

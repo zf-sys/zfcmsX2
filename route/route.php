@@ -33,5 +33,6 @@ try {
     $r = $e->getMessage();
 }
 
-
+//输出上传文件
+Route::get('get_file_out$', 'common/base/get_file_out');
 
