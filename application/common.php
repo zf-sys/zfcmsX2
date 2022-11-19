@@ -1409,3 +1409,108 @@ if (!function_exists('msubstr')) {
         }
     }
 }
+// 20221115新增  修改env文件
+//只支持一级
+// env_edit(['app_debug'=>'true']);
+if (!function_exists('env_edit')) {
+    function env_edit($arr = []){
+        if(!is_array($arr)) return false;
+        $data = file_get_contents('.env');
+        $_arr = explode(PHP_EOL,$data);
+        $ret_arr = [];
+        foreach($_arr as $k=>$vo){
+            $_arr_item = explode('=',$vo);
+            if(isset($_arr_item[1])){
+                $ret_arr[strtoupper(trim($_arr_item[0]))] = trim($_arr_item[1]);
+            }
+        }
+        $str = '';
+        foreach($arr as $k=>$vo){
+            $ret_arr[strtoupper($k)]=$vo;
+        }
+        $i = 1;
+        foreach($ret_arr as $k=>$vo){
+            if($i>=(count($ret_arr))){
+                $str.= $k.'='.$vo;
+            }else{
+                $str.= $k.'='.$vo.PHP_EOL;
+            }
+            $i++;
+        }
+        file_put_contents('.env', $str);
+        return true;
+    }
+}
+
+
+/**
+ * 根据文件后缀获取其mine类型
+ *20221118新增
+ * @param string $extension
+ * @return string
+ */
+function get_mimetype($extension) {
+    $ct = [
+        'htm'=>'text/html',
+        'html'=>'text/html',
+        'txt'=>'text/plain',
+        'asc'=>'text/plain',
+        'bmp'=>'image/bmp',
+        'gif'=>'image/gif',
+        'jpeg'=>'image/jpeg',
+        'jpg'=>'image/jpeg',
+        'jpe'=>'image/jpeg',
+        'png'=>'image/png',
+        'ico'=>'image/vnd.microsoft.icon',
+        'mp4'=>'video/mp4',
+        'mpeg'=>'video/mpeg',
+        'mpg'=>'video/mpeg',
+        'mpe'=>'video/mpeg',
+        'qt'=>'video/quicktime',
+        'mov'=>'video/quicktime',
+        'avi'=>'video/x-msvideo',
+        'wmv'=>'video/x-ms-wmv',
+        'mp2'=>'audio/mpeg',
+        'mp3'=>'audio/mpeg',
+        'rm'=>'audio/x-pn-realaudio',
+        'ram'=>'audio/x-pn-realaudio',
+        'rpm'=>'audio/x-pn-realaudio-plugin',
+        'ra'=>'audio/x-realaudio',
+        'wav'=>'audio/x-wav',
+        'css'=>'text/css',
+        'zip'=>'application/zip',
+        'pdf'=>'application/pdf',
+        'doc'=>'application/msword',
+        'bin'=>'application/octet-stream',
+        'exe'=>'application/octet-stream',
+        'class'=>'application/octet-stream',
+        'dll'=>'application/octet-stream',
+        'xls'=>'application/vnd.ms-excel',
+        'ppt'=>'application/vnd.ms-powerpoint',
+        'wbxml'=>'application/vnd.wap.wbxml',
+        'wmlc'=>'application/vnd.wap.wmlc',
+        'wmlsc'=>'application/vnd.wap.wmlscriptc',
+        'dvi'=>'application/x-dvi',
+        'spl'=>'application/x-futuresplash',
+        'gtar'=>'application/x-gtar',
+        'gzip'=>'application/x-gzip',
+        'js'=>'application/x-javascript',
+        'swf'=>'application/x-shockwave-flash',
+        'tar'=>'application/x-tar',
+        'xhtml'=>'application/xhtml+xml',
+        'au'=>'audio/basic',
+        'snd'=>'audio/basic',
+        'midi'=>'audio/midi',
+        'mid'=>'audio/midi',
+        'm3u'=>'audio/x-mpegurl',
+        'tiff'=>'image/tiff',
+        'tif'=>'image/tiff',
+        'rtf'=>'text/rtf',
+        'wml'=>'text/vnd.wap.wml',
+        'wmls'=>'text/vnd.wap.wmlscript',
+        'xsl'=>'text/xml',
+        'xml'=>'text/xml',
+    ];
+    
+    return isset($ct[strtolower($extension)]) ? $ct[strtolower($extension)] : '';
+}
