@@ -1511,6 +1511,5 @@ function get_mimetype($extension) {
         'xsl'=>'text/xml',
         'xml'=>'text/xml',
     ];
-    
     return isset($ct[strtolower($extension)]) ? $ct[strtolower($extension)] : '';
 }
