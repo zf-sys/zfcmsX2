@@ -18,3 +18,4 @@ composer.lock
 /config/zf_auth.php
 
 /upgrade_clear.php
+/upgrade_restore.php
