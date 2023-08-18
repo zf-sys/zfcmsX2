@@ -16,3 +16,5 @@ composer.lock
 /config/version.php
 /config/web.php
 /config/zf_auth.php
+
+/upgrade_clear.php
