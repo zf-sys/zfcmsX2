@@ -197,6 +197,7 @@ class Category extends Admin
         $type =input('type','');
         $where[] = ['type','=',$res['type']];
         $where[] = ['status','<>',9];
+        $where[] = ['cid','<>',$res['cid']];
         $this->assign("type",$type);
         $p_list = ZFTB('category')->where($where)->select();
         $cat = new cat(array('cid', 'pid', 'name', 'cname')); 
@@ -768,33 +769,33 @@ class Category extends Admin
      * @author: 子枫
      * @Time: 2019/11/13   10:36 下午
      */
-    public function get_content_pic_list($id){
-        admin_role_check($this->z_role_list,$this->mca);
-        $id = input('id',$id);
-        $content = ZFTB('post')->where(['id'=>$id])->value('content');
-        for($i=1;$i<=100;$i++){
-            $parm_list_src[$i]['pid'] = $id;
-            $parm_list_src[$i]['ctime'] = time() ;
-            $parm_list_src[$i]['status'] = 1;
-            $parm_list_src[$i]['pic'] = GetImgSrc::src($content, $i);  
-            if(empty($parm_list_src[$i]['pic'])){
-              unset($parm_list_src[$i]);
-              break;
-            }
-        }
-        try {
-            foreach($parm_list_src as $k=>$vo){
-                $_is = ZFTB('post_parm_pic')->where(['pic'=>$vo['pic'],'pid'=>$vo['pid']])->value('id');
-                if(!$_is){
-                    ZFTB('post_parm_pic')->insert($vo);
-                }
-            }
-        }catch (Exception $e) {
-            return jserror($e);
-        }
-        return jssuccess('已保存');
+    // public function get_content_pic_list($id){
+    //     admin_role_check($this->z_role_list,$this->mca);
+    //     $id = input('id',$id);
+    //     $content = ZFTB('post')->where(['id'=>$id])->value('content');
+    //     for($i=1;$i<=100;$i++){
+    //         $parm_list_src[$i]['pid'] = $id;
+    //         $parm_list_src[$i]['ctime'] = time() ;
+    //         $parm_list_src[$i]['status'] = 1;
+    //         $parm_list_src[$i]['pic'] = GetImgSrc::src($content, $i);  
+    //         if(empty($parm_list_src[$i]['pic'])){
+    //           unset($parm_list_src[$i]);
+    //           break;
+    //         }
+    //     }
+    //     try {
+    //         foreach($parm_list_src as $k=>$vo){
+    //             $_is = ZFTB('post_parm_pic')->where(['pic'=>$vo['pic'],'pid'=>$vo['pid']])->value('id');
+    //             if(!$_is){
+    //                 ZFTB('post_parm_pic')->insert($vo);
+    //             }
+    //         }
+    //     }catch (Exception $e) {
+    //         return jserror($e);
+    //     }
+    //     return jssuccess('已保存');
 
-    }
+    // }
 
     /**
      * @Notes:模型的参数列表
@@ -822,6 +823,10 @@ class Category extends Admin
         $key_list = $all_list;
         foreach($key_list as $k1=>$vo1){
             foreach($list as $k2=>$vo2){
+                if(!isset($vo1['Field'])){
+                    $vo1['Field'] = $vo1['field'];
+                    $key_list[$k1]['Field'] = $vo1['field'];
+                }
                 if($vo2['key']==$vo1['Field'] || $vo1['Field']=='id'){
                     unset($key_list[$k1]);
                 }
@@ -1023,7 +1028,7 @@ class Category extends Admin
 
         $post_where[] = ['status','=',1];
         $post_where = array_merge($post_where, $this->common_select_tag);
-        $post_list = ZFTB('post')->where($post_where)->order("id desc")->select();
+        $post_list = ZFTB('post')->where($post_where)->limit(100)->order("id desc")->select();
         $this->assign("post_list",$post_list);
         return view();
     }

@@ -14,26 +14,14 @@
   <script type="text/javascript" src="__STATIC__/style/webuploader/webuploader.js"></script>
   <script src="__STATIC__/style/layui/layui.js"></script>    
   <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
-  <?php if($parm_data['editor_def']=='tinymce'){ ?>
-    <script src="{$site_path}public/static/common/tinymce515/tinymce.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/tinymce/5.7.1/jquery.tinymce.min.js"></script>
-  <?php }elseif($parm_data['editor_def']=='wangeditor'){ ?>
-  <script src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
-  <?php }elseif($parm_data['editor_def']=='meditor'){ ?>
-      <!-- <link rel="stylesheet" type="text/css" href="__STATIC__/style/meditor/style.css" /> -->
-    <link rel="stylesheet" type="text/css" href="__STATIC__/style/meditor/css/editormd.css" />
-    <script src="__STATIC__/style/meditor/editormd.js"></script>
-  <?php }elseif($parm_data['editor_def']=='vditor'){ ?>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
-    <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
-  <?php }else{ ?>
-    <script src="__STATIC__/style/ueditor/ueditor.config.js"></script>    
-    <script src="__STATIC__/style/ueditor/ueditor.all.js"></script>    
-    <link rel="stylesheet" href="__STATIC__/style/ueditor/themes/default/css/ueditor.css" media="all">               
-  <?php } ?>
+  <script src="__STATIC__/style/ueditor/ueditor.config.js"></script>    
+  <script src="__STATIC__/style/ueditor/ueditor.all.js"></script>    
+  <link rel="stylesheet" href="__STATIC__/style/ueditor/themes/default/css/ueditor.css" media="all">               
   <!-- 拖动排序 -->
   <!-- <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.8.3/Sortable.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.8.3/Sortable.min.js"></script> -->
+  <link rel="stylesheet" href="__STATIC__/style/input-tag/inputTag.css" media="all">
+  
 </head>
 <body> 
   <div class="layui-fluid">
@@ -49,44 +37,21 @@
                 <?php if($act=='add'){ ?>
                   {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>1])|raw}
                   {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'Tag','name'=>'tags','data'=>'','theme'=>1])|raw}
+                  {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>'','theme'=>1])|raw}
                   {$form_widget->filesystem_album(['title'=>'图集','name'=>'album[]','data'=>'','theme'=>1])|raw}
-
-                  <?php if($parm_data['editor_def']=='tinymce'){ ?>
-                    {$form_widget->form_tinymce(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}
-                  <?php }elseif($parm_data['editor_def']=='wangeditor'){ ?>
-                    {$form_widget->form_wangeditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}   
-                  <?php }elseif($parm_data['editor_def']=='meditor'){ ?>
-                    {$form_widget->form_meditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}     
-                  <?php }elseif($parm_data['editor_def']=='vditor'){ ?>
-                    {$form_widget->form_vditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}    
-                  <?php }else{ ?>
-                    {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}                    
-                    <?php } ?>
-                   
+                  {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}                    
                 <?php }else{ ?>
                   {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>$data_res['title'],'theme'=>1])|raw}
                   {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$data_res['summary'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'Tag','name'=>'tags','data'=>$data_res['tags'],'theme'=>1])|raw}
+                  {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>$data_res['tags'],'theme'=>1])|raw}
                   {$form_widget->filesystem_album(['title'=>'图集','name'=>'album[]','data'=>$data_res['album'],'theme'=>1])|raw}
-
-
-                  <?php if($parm_data['editor_def']=='tinymce'){ ?>
-                    {$form_widget->form_tinymce(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}
-                  <?php }elseif($parm_data['editor_def']=='wangeditor'){ ?>
-                    {$form_widget->form_wangeditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}   
-                  <?php }elseif($parm_data['editor_def']=='meditor'){ ?>
-                    {$form_widget->form_meditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}    
-                  <?php }elseif($parm_data['editor_def']=='vditor'){ ?>
-                    {$form_widget->form_vditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}    
-                  <?php }else{ ?>
-                    {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}                    
-                  <?php } ?>
+                  {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}                    
 
                  <?php } ?> 
-                </div>
+               
                 
               </div>
+            </div>
               <div class="layui-col-sm3">
                 <div class="layui-card">
                 <?php if($act=='add'){ ?>
@@ -121,17 +86,7 @@
 
                 <?php } ?>
                 </div>
-                <div class="layui-card" style="position:fixed; bottom:10px;right:10px;">
-                  <div class="layui-card-header">点击提交</div>
-                  <div class="layui-card-body layui-row layui-col-space10">
-                    <div class="layui-form-item">
-                      <div class="layui-input-block" style="margin-left: 50px;">
-                        <input class="layui-btn tijiao "  lay-filter="component-form-element" type="button" value="提交" />
-                      </div> 
-                    </div>
-                  </div>
-                </div>
-                
+                {include file="public/widget_submit"}
               </div>
           </div>
         </div>
@@ -151,33 +106,7 @@
     ,laydate = layui.laydate
     ,upload = layui.upload;
     
-    <?php if($parm_data['editor_def']=='tinymce'){ ?>
-        $(".tijiao").on("click",function(){
-          var index = layer.load(2);
-          var content = tinymce.editors[0].getContent() ;   //id从0开始
-          var data = $(".info_tj input,.info_tj textarea,.info_tj select").serializeArray();     
-          $.ajax({
-              type:'post',
-              url:"{:url('admin/category/post_add')}",
-              data:{data:data,content:content,editor_type:'tinymce'},
-              dataType:'json',
-              success:function(res){
-                layer.close(index);
-                if(res.result==1){
-                  layer.msg(res.msg, {icon: 1});
-                  setTimeout(function() {
-                    window.parent.location.reload();
-                  }, 2000);
-                }else{
-                  layer.msg(res.msg, {icon: 2});
-                  
-                }
-                
-              }
-          })
-        });
-      
-    <?php }else{ ?>
+   
       $(".tijiao").on("click",function(){
         var index = layer.load(2);
         var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();      
@@ -202,7 +131,6 @@
         })
       });
     
-    <?php } ?>
 
 
   

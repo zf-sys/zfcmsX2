@@ -60,12 +60,12 @@ class Index extends Admin
     public function welcome()
     {
         admin_role_check($this->z_role_list,$this->mca);
-        if(config('zf_auth.email')=='' || config('zf_auth.key')=='' || config('zf_auth.sc')==''){
+        if((config('zf_auth.email')=='' || config('zf_auth.key')=='' || config('zf_auth.sc')=='') && $this->is_professional_edition){
             $this->redirect(url('zfyun/authentication_sys'));
         }
-        // if(is_file('extend/zf/ZfAuth.php')){
+        if($this->is_professional_edition){
         	//授权查询
-	        $ZfAuth = new \app\common\controller\ZfAuth;
+	        $ZfAuth = new \zf\ZfAuth();
 	        $upg_msg = $ZfAuth->get_location_auth_info();
 	        $site_info = $ZfAuth->get_siteplugin_info();
             $this->assign('upg_msg',$upg_msg);
@@ -74,10 +74,10 @@ class Index extends Admin
             }else{
     	        $this->assign('site_info',null);
             }
-        // }else{
-        // 	$this->assign('upg_msg',['code'=>0,'msg'=>'<span style="color:red">开源版</span>']);
-	    //     $this->assign('site_info',null);
-        // }
+        }else{
+        	$this->assign('upg_msg',['code'=>2,'msg'=>'<span style="color:red">社区版</span>']);
+	        $this->assign('site_info',null);
+        }
        
         $post_list = ZFTB('post')
                     ->where([['status','=',1],['ctime','<>','']])
@@ -94,7 +94,13 @@ class Index extends Admin
         $sum['hits'] = db('post')->where([['status','<>',9]])->sum('hits');
         $this->assign('sum',$sum);
 
-        return view();
+        $welcome_type = config('web.admin_welcome_type');
+        if($welcome_type){
+            $tpl = 'index/welcome'.$welcome_type;
+        }else{
+            $tpl = 'index/welcome1';
+        }
+        return view($tpl);
     }
 
     /**
@@ -144,9 +150,14 @@ class Index extends Admin
             'title'=>'首页',
             'href'=>url('index/welcome')
         ];
+        if( !isset(config()['web']['admin_logo_pic']) || config()['web']['admin_logo_pic']==''){ 
+            $admin_logo_pic = 'http://oss002.wangmingchang.com/uploads/0bf88d0eaaa69d2bd0cdcd974e190115/20211202_4279820211202091846.png';
+        }else{ 
+            $admin_logo_pic = config()['web']['admin_logo_pic'];
+        }
         $arr['logoInfo'] = [
             'title'=>'内容管理系统',
-            'image'=>'http://oss002.wangmingchang.com/uploads/0bf88d0eaaa69d2bd0cdcd974e190115/20211202_4279820211202091846.png',
+            'image'=>$admin_logo_pic ,
             'href'=>'http://www.zf-sys.com/',
         ];
         $menu = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=','0']])->select();
@@ -164,19 +175,22 @@ class Index extends Admin
 
             }
         }
+        //插件菜单
         $application_menu = [
-            'title'=>'扩展',
+            'title'=>'插件',
             'href'=>'',
             'child'=>[]
         ];
-        //插件
+        //顶部菜单
+        $application_menu_top = [];
+        //插件/顶部菜单
         if(is_dir('./addons')){
-            $data = scandir('./addons');
+            $data = db('plugin')->where([['status','=',1],['type','=','plugin']])->select();
             foreach ($data as $k => $vo) {
-               if($vo!='.' && $vo!='..' && is_dir('./addons/'.$vo) && is_dir('./addons/'.$vo.'/controller')){
-                    $_file = './addons/'.$vo.'/controller/Plugin.php';
+               if($vo['plugin_name']!='.' && $vo['plugin_name']!='..' && is_dir('./addons/'.$vo['plugin_name']) && is_dir('./addons/'.$vo['plugin_name'].'/controller')){
+                    $_file = './addons/'.$vo['plugin_name'].'/controller/Plugin.php';
                     if(file_exists($_file)){
-                       $_namespace = '\addons\\'.$vo.'\controller\Plugin';
+                       $_namespace = '\addons\\'.$vo['plugin_name'].'\controller\Plugin';
                        if(class_exists($_namespace)){
                             $_obj = new $_namespace;
                             $_is_menu = method_exists($_obj,'menu');
@@ -186,15 +200,28 @@ class Index extends Admin
                                      array_push($application_menu['child'],$plugin_menu_arr);
                                  }
                             }
+                            $_is_menu_top = method_exists($_obj,'menu_top');
+                            if($_is_menu_top){
+                                 $plugin_menu_top_arr = $_obj->menu_top();
+                                 if(is_array($plugin_menu_top_arr) && $plugin_menu_top_arr!=[]){
+                                     array_push($application_menu_top,$plugin_menu_top_arr);
+                                 }
+                            }
                         }
                     }
                }
             }
         }
+        // 插件
         array_push($menu,$application_menu);
         $amenu = new AMenu($menu);
         doZfAction('admin_menu_append',$amenu);
-        $arr['menuInfo'] = $amenu->menu;
+        $ret_menu = $amenu->menu;
+        // //顶部
+        foreach($application_menu_top as $k=>$vo){
+            $ret_menu[] = $vo;
+        }
+        $arr['menuInfo'] = $ret_menu;
         return $arr;
     }
 

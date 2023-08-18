@@ -81,8 +81,8 @@ class Cate extends Base
             }
         }else{
             $where[] = ['status','=',1];
+            $where[] = ['ctime','<',time()];
         }
-        $where[] = ['ctime','<',time()];
         $where[] = ['id','=',$id];
         $where[] =['lang','=',$this->lang];
         
@@ -255,9 +255,12 @@ class Cate extends Base
     {
         $id = input('id',1);
         $this->assign('id',$id);
-        Db::name('special')->where("id=".$id)->setInc('hits');
         //查询专题
-        $special_res = db('special')->where(['id'=>$id])->find();
+        $special_res = db('special')->where(['id'=>$id,'status'=>1])->find();
+        if(!$special_res){
+            $this->error('专题不存在');
+        }
+        Db::name('special')->where("id=".$id)->setInc('hits');
         $this->assign('special_res',$special_res);
         //专题下的文章
         $where[] = ['sp.special_id','=',$id];

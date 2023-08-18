@@ -1,0 +1,6 @@
+<?php if(isset_arr_key(config('web.'),'admin_path','')==''){ ?>
+    <blockquote class="layui-elem-quote layui-quote-nm layui-bg-red" style="margin-top: 10px;">
+    安全提示：
+    为了你的后台安全，需要设置自定义授权token，<a style="color: #fff;" onclick='zfAdminShow("新增内容","{:url('config/index',['type'=>'系统设置'])}")'>点我修改</a>
+</blockquote>
+<?php } ?>

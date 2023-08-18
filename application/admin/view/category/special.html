@@ -10,13 +10,14 @@
   <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
   <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
   <link rel="stylesheet" href="__STATIC__/style/bootstrap/bootstrap-3.3.4.css">
+    <script src="/public/static/zfcms/style/jquery-1.8.3.min.js"></script>  
 </head>
 <body>
 
   <div class="layui-fluid">
     <div class="layui-card">
       <div class="layui-card-header layuiadmin-card-header-auto">
-        <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/category/special_add")}')">添加</button>
+        <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/category/special_add")}',800)">添加</button>
       </div>
       <table class="layui-table">
         <colgroup>
@@ -54,8 +55,8 @@
               </td>
               <td> 
                 <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'special')" href="#">删除</a> 
-                <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/category/special_edit',['id' => $vo['id']] )}")'>编辑</button>
-                <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("关联内容","{:url('admin/category/special_post_edit',['id' => $vo['id']] )}")'>关联内容</button>
+                <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/category/special_edit',['id' => $vo['id']] )}",800)'>编辑</button>
+                <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("关联内容","{:url('admin/category/special_post_edit',['id' => $vo['id']] )}",800)'>关联内容</button>
               </td>
             </tr>
           <?php } ?>

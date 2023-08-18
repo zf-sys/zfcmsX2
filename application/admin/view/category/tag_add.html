@@ -9,16 +9,20 @@
   <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
   <script src="__STATIC__/style/layui/layui.js"></script>    
   <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+  <script src="__STATIC__/style/ueditor/ueditor.config.js"></script>    
+  <script src="__STATIC__/style/ueditor/ueditor.all.js"></script>    
+  <link rel="stylesheet" href="__STATIC__/style/ueditor/themes/default/css/ueditor.css" media="all">   
 </head>
 <body>
   <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
     <form class="info_tj" onclick="return false">
       <?php $form_widget = new \app\common\widget\FormPro();  ?>
-      <div style="width: 500px;">
+      <div >
         <input type="hidden" name="id" value="{$res['id']|default=''}">
         <?php if(isset($res['id'])){ ?>
           {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
+          {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}
         
           <div class="layui-form-item">
             <div class="layui-input-block">
@@ -28,6 +32,7 @@
         <?php }else{ ?>
           {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>'','theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>'','theme'=>2])|raw}
         
           <div class="layui-form-item">
             <div class="layui-input-block">

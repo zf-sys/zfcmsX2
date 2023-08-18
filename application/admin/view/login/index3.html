@@ -15,7 +15,7 @@
 
        
 		.bg-indigo-100 {
-    background-color: #ebf4ff;
+    background-color: #fff;
 }.border-gray-200 {
     border-color: #edf2f7;
 }.bg-gray-100 {
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="flex-1 bg-indigo-100 text-center hidden lg:flex">
-            <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat" style="background-image: url('__STATIC__/login/images/dlbox.svg');"></div>
+            <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat" style="background-image: url(<?php if( !isset(config()['web']['admin_login_right_pic']) || config()['web']['admin_login_right_pic']==''){ echo '__STATIC__/login/images/dlbox.svg';}else{ echo config()['web']['admin_login_right_pic'];}?>);"></div>
         </div>
     </div>
 </body>

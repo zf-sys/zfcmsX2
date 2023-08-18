@@ -17,24 +17,26 @@ use think\Db;
 
 class Base extends Zfb
 {
-    public function __construct ()
+    /**
+     * $load  hook时自定义controller
+     */
+    public function __construct ($load=false)
     {
-        parent::__construct();
-        // $route_info= request()->routeInfo();
-        // if(!$load){
-        //     if(isset($route_info['route']) ){
-        //         if($route_info['route']!='index/index/hook'){
-        //             $load=true;
-        //         }
-        //     }else{
-        //         $load=true;
-        //     }
-        // }
-        // dd($route_info);
-        // dd($load);
-        
-        $load=true;
+       
+        $route_info= request()->routeInfo();
+        if(!$load){
+            if(isset($route_info['route']) ){
+                if($route_info['route']!='index/index/hook'){
+                    $load=true;
+                }else{
+                    $load=false;
+                }
+            }else{
+                $load=true;
+            }
+        }
         if($load){
+            parent::__construct();
             if(!session('admin')){  $this->assign('admin',false); }else{ $this->assign('admin',true); }
             if(config('web.site_path')){
                 if(config('web.site_path')!=''){

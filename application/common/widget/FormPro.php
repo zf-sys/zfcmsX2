@@ -5,7 +5,8 @@ class FormPro {
    public function __construct (){
         $this->upload_one  = siteUrl('common/upload/upload_one');
         $this->upload_one_file  = siteUrl('common/upload/upload_one_file');
-        $this->filesystem_upload  = siteUrl('common/Fileupload/upload');
+        $this->filesystem_upload  = siteUrl('common/Fileupload/upload').'?ttttt=1';
+        // $this->filesystem_upload  = siteUrl('common/Fileupload/upload');
         $this->meditor_upload  = siteUrl('common/upload/meditor_upload_one');
         $this->zfcms_static = '/public/static/zfcms';
     }
@@ -19,13 +20,15 @@ class FormPro {
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $type = isset($request_data['type'])?$request_data['type']:'text';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html = '';
+        $data = str_replace('"',"&quot;",$data);
         if($theme==1){
           $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
-               <input  class="layui-input " type="$type" name="$name"  placeholder="" autocomplete="off"  value="$data">
+               <input  class="layui-input " type="$type" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
              </div>
           </div>
 INFO;
@@ -34,12 +37,217 @@ INFO;
           <div class="layui-form-item">
           <label class="layui-form-label">$title:</label>
           <div class="layui-input-block">
-          <input type="$type" name="$name"  placeholder="" autocomplete="off" class="layui-input" value="$data">
+          <input type="$type" name="$name"  placeholder="$placeholder" autocomplete="off" class="layui-input" value="$data">
           </div>
         </div>
 INFO;
         }
         
+        return $zf_html;
+    }
+    public function form_input_tag($request_data=array())
+    {
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $title = isset($request_data['title'])?$request_data['title']:'';
+        $name = isset($request_data['name'])?$request_data['name']:'';
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $type = isset($request_data['type'])?$request_data['type']:'text';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
+        $zf_html = '';
+        $static_dir = config('template.tpl_replace_string')['__STATIC__'];
+        $data = str_replace('"',"&quot;",$data);
+        $data_arr = explode(',',$data);
+        // dd($data_arr);
+        if($theme==1){
+          $zf_html = '
+          <div class="layui-card-header">'.$title.'</div>
+          <div class="layui-card-body layui-row layui-col-space8">
+             <div class="layui-col-md12 fairy-tag-container">
+                <input type="text" class="fairy-tag-input" id="'.$tpl_id.'"  value="">
+             </div>
+             <input  class="layui-input '.$tpl_id.'" type="hidden" name="'.$name.'"  placeholder="'.$placeholder.'" autocomplete="off"  value="'.$data.'">
+          </div>';
+          $zf_html .= '<script>
+              layui.config({
+                  base: "'.$static_dir.'/style/input-tag/"
+              }).use(["inputTag", "jquery"], function () {
+                  var $ = layui.jquery, inputTag = layui.inputTag;
+                  inputTag.render({
+                      elem: "#'.$tpl_id.'",
+                      data: [';
+                      foreach($data_arr as $k=>$vo){ 
+                        if($data!=''){
+                          if($k<count($data_arr)-1){
+                            $zf_html .=  "'".$vo."',"; 
+                          }else{
+                            $zf_html .=  "'".$vo."'"; 
+                          }
+                        }
+                      }
+                      $zf_html.='],
+                      beforeCreate: function (data, value){ 
+                        return value; 
+                      },
+                      onChange: function (data, value, type) {
+                        var _str = "";
+                        for (let _index = 0; _index < data.length; _index++) {
+                          if(_index<data.length-1){
+                            _str += data[_index]+",";
+                          }else{
+                            _str += data[_index];
+                          }
+                        }
+                        $(".'.$tpl_id.'").val(_str)
+                      }
+                  });
+              })
+          </script>';
+        }elseif($theme==2){
+          $zf_html = '
+          <div class="layui-form-item">
+            <label class="layui-form-label">'.$title.':</label>
+            <div class="layui-input-block fairy-tag-container">
+              <input type="text" class="fairy-tag-input" id="'.$tpl_id.'"  value="">
+            </div>
+            <input  class="layui-input '.$tpl_id.'" type="hidden" name="'.$name.'"  placeholder="'.$placeholder.'" autocomplete="off"  value="'.$data.'">
+          </div>';
+          $zf_html .= '<script>
+              layui.config({
+                  base: "'.$static_dir.'/style/input-tag/"
+              }).use(["inputTag", "jquery"], function () {
+                  var $ = layui.jquery, inputTag = layui.inputTag;
+                  inputTag.render({
+                      elem: "#'.$tpl_id.'",
+                      data: [';
+                      foreach($data_arr as $k=>$vo){ 
+                        if($data!=''){
+                          if($k<count($data_arr)-1){
+                            $zf_html .=  "'".$vo."',"; 
+                          }else{
+                            $zf_html .=  "'".$vo."'"; 
+                          }
+                        }
+                      }
+                      $zf_html.='],
+                      beforeCreate: function (data, value){ 
+                        return value; 
+                      },
+                      onChange: function (data, value, type) {
+                        var _str = "";
+                        for (let _index = 0; _index < data.length; _index++) {
+                          if(_index<data.length-1){
+                            _str += data[_index]+",";
+                          }else{
+                            _str += data[_index];
+                          }
+                        }
+                        $(".'.$tpl_id.'").val(_str)
+                      }
+                  });
+              })
+          </script>';
+        }
+        
+        return $zf_html;
+    }
+    public function form_input_color($request_data=array())
+    {
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $title = isset($request_data['title'])?$request_data['title']:'';
+        $name = isset($request_data['name'])?$request_data['name']:'';
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
+        $zf_html='';
+        if($theme==1){
+          $zf_html = <<<INFO
+          <div class="layui-card-header">$title</div>
+         <div class="layui-card-body layui-row layui-col-space8">
+             <div class="layui-col-md12">
+               <input  class="layui-input $tpl_id" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+                 <div class="layui-upload">
+                   <div  id="$tpl_id"></div>
+                 </div> 
+             </div>
+         </div>
+          <script>
+          layui.use( function(){
+              var colorpicker = layui.colorpicker;
+              colorpicker.render({ 
+                elem: '#$tpl_id',
+                color: '$data', // hex
+                alpha: true, // 开启透明度
+                format: 'rgb',
+                done: function(color){
+                  $('.$tpl_id').val(color)
+                }
+              });
+           });
+         </script>
+INFO;
+        }elseif($theme==2){
+          $zf_html = <<<INFO
+          <div class="layui-form-item">
+            <label class="layui-form-label">$title:</label>
+            <div class="layui-input-block">
+            <input  class="layui-input $tpl_id" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+                 <div class="layui-upload">
+                   <div  id="$tpl_id"></div>
+                 </div> 
+            </div>
+          </div>
+          <script>
+          layui.use( function(){
+            var colorpicker = layui.colorpicker;
+            colorpicker.render({ 
+              elem: '#$tpl_id',
+              color: '$data', // hex
+              alpha: true, // 开启透明度
+              format: 'rgb',
+              done: function(color){
+                $('.$tpl_id').val(color)
+              }
+            });
+         });
+         </script>
+INFO;
+        }
+        
+        return $zf_html;
+    }
+    public function form_note($request_data=array())
+    {
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $zf_html = '';
+        if($theme==1){
+          $zf_html = <<<INFO
+          <div class="layui-card-header"></div>
+          <div class="layui-card-body layui-row layui-col-space8">
+             <div class="layui-col-md12">
+               $data
+             </div>
+          </div>
+INFO;
+        }elseif($theme==2){
+          $zf_html = <<<INFO
+          <div class="layui-form-item">
+          <label class="layui-form-label"></label>
+          <div class="layui-input-block">
+            $data
+          </div>
+        </div>
+INFO;
+        }elseif($theme==3){
+          $zf_html = <<<INFO
+          <label class="layui-form-label"></label>
+          <div class="layui-input-block">
+            $data
+          </div>
+INFO;
+        }
         return $zf_html;
     }
 
@@ -53,13 +261,14 @@ ok
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html = '';
         if($theme==1){
         $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
-      <textarea name="$name" placeholder="请输入" class="layui-textarea">{$data}</textarea>
+      <textarea name="$name" placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
     </div>
 </div>
 INFO;
@@ -68,7 +277,7 @@ INFO;
         <div class="layui-form-item">
         <label class="layui-form-label">$title:</label>
         <div class="layui-input-block">
-          <textarea name="$name" placeholder="" class="layui-textarea">{$data}</textarea>
+          <textarea name="$name" placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
         </div>
       </div>
 INFO;
@@ -234,7 +443,7 @@ INFO;
                 <div class="layui-col-md12 layui-form-item layui-form">
                   <div class="layui-input-inline">';
                   foreach($list as $k=>$vo){
-                      $zf_html.= '<input type="checkbox" name="'.$name.'[]" lay-skin="primary" title="'.$vo[$name_t].'" value="'.$vo[$id_t].'" ';
+                      $zf_html.= '<input type="checkbox" name="zf_list_'.$name.'[]" lay-skin="primary" title="'.$vo[$name_t].'" value="'.$vo[$id_t].'" ';
                       if(in_array($vo[$id_t],$check_data)){
                         $zf_html.=  'checked';
                       }
@@ -249,7 +458,7 @@ INFO;
             <label class="layui-form-label">'.$title.':</label>
             <div class="layui-input-block layui-form">';
               foreach($list as $k=>$vo){
-                $zf_html.= '<input type="checkbox" name="'.$name.'[]" lay-skin="primary" title="'.$vo[$name_t].'" value="'.$vo[$id_t].'" ';
+                $zf_html.= '<input type="checkbox" name="zf_list_'.$name.'[]" lay-skin="primary" title="'.$vo[$name_t].'" value="'.$vo[$id_t].'" ';
                 if(in_array($vo[$id_t],$check_data)){
                   $zf_html.=  'checked';
                 }
@@ -268,6 +477,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $name = $name.'[]';
 
         if($data!='' && $data!=[]){
           $pics=explode(',',$data);
@@ -336,7 +546,7 @@ INFO;
         $data = isset($request_data['data'])?$request_data['data']:'';
         $data_title = isset($request_data['data_title'])?$request_data['data_title']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
-
+        $name = $name.'[]';
         if($data!='' && $data!=[]){
           $pics=explode(',',$data);
           $titles = explode(',',$data_title);
@@ -410,7 +620,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
-
+        $name = $name.'[]';
         if($data!='' && $data!=[]){
           $pics=explode(',',$data);
           $count=count($pics);
@@ -447,8 +657,8 @@ $zf_html .=<<<INFO
     $('#$tpl_id').on('click',function(){
       layer.open({
         type: 2,
-        area: ['1100px', '700px'],
-        fixed: false,
+        area: ['900px', '530px'],
+        fixed: true,
         maxmin: true,
         content: "$this->filesystem_upload&cid=0&t=2&name=$name&zf_class=.$tpl_id"
       });
@@ -468,13 +678,14 @@ INFO;
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $time_type = isset($request_data['time_type'])?$request_data['time_type']:'datetime';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
 
         if($theme==1){
         $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
-      <input type="text" name="$name" id="$name"  placeholder="" autocomplete="off" class="layui-input" lay-key="1" value="{$data}">
+      <input type="text" name="$name" id="$name"  placeholder="$placeholder" autocomplete="off" class="layui-input" lay-key="1" value="{$data}">
     </div>
 </div>
  <script>
@@ -489,7 +700,7 @@ INFO;
           <div class="layui-form-item">
           <label class="layui-form-label">$title:</label>
           <div class="layui-input-block">
-          <input type="text" name="$name" id="$tpl_id"  placeholder="" autocomplete="off" class="layui-input" lay-key="1" value="{$data}">
+          <input type="text" name="$name" id="$tpl_id"  placeholder="$placeholder" autocomplete="off" class="layui-input" lay-key="1" value="{$data}">
           </div>
         </div>
 <script>
@@ -510,13 +721,14 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html='';
         if($theme==1){
           $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
-               <input  class="layui-input" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+               <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
@@ -556,7 +768,7 @@ INFO;
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
-               <input  class="layui-input" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+               <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                  </div> 
@@ -592,7 +804,7 @@ INFO;
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
-            <input  class="layui-input" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+            <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
@@ -631,6 +843,178 @@ INFO;
         
         return $zf_html;
     }
+    public function upload_dragpic($request_data=array())
+    {
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $title = isset($request_data['title'])?$request_data['title']:'';
+        $name = isset($request_data['name'])?$request_data['name']:'';
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
+        $zf_html='';
+        if($theme==1){
+          $zf_html = <<<INFO
+          <div class="layui-card-header">$title</div>
+         <div class="layui-card-body layui-row layui-col-space8">
+             <div class="layui-col-md12">
+                <div class="layui-upload-drag" style="display: block;" id="$tpl_id">
+                  <i class="layui-icon layui-icon-upload"></i> 
+                  <div>点击上传，或将文件拖拽到此处</div>
+                  <div class="layui-hide_" >
+                    <hr> <img class="$tpl_id" src="$data"  style="max-width: 100%">
+                  </div>
+                </div>
+                <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+             </div>
+         </div>
+          <script>
+          layui.use(['upload'], function(){
+             var $ = layui.$
+             ,element = layui.element
+             ,upload = layui.upload;
+             upload.render({
+               elem: '#$tpl_id'
+               ,url: "$this->upload_one"
+               ,before: function(obj){
+                var index = layer.load();
+                }
+               ,done: function(res){
+                layer.closeAll();  
+                 if(res.result==1){
+                     layer.msg("上传成功", {icon: 1});
+                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').attr('src', res.msg);
+                 }else{
+                   layer.msg(res.msg, {icon: 2});
+                 }
+               }
+             });
+           });
+         </script>
+INFO;
+        }elseif($theme==2){
+          $zf_html = <<<INFO
+          <div class="layui-card-header">$title</div>
+         <div class="layui-card-body layui-row layui-col-space8">
+             <div class="layui-col-md12">
+                <div class="layui-upload-drag" style="display: block;" id="$tpl_id">
+                  <i class="layui-icon layui-icon-upload"></i> 
+                  <div>点击上传，或将文件拖拽到此处</div>
+                  <div class="layui-hide_" >
+                    <hr> <img class="$tpl_id" src="$data"  style="max-width: 100%">
+                  </div>
+                </div>
+                <input  class="layui-input" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+             </div>
+         </div>
+          <script>
+          layui.use(['upload'], function(){
+             var $ = layui.$
+             ,element = layui.element
+             ,upload = layui.upload;
+             upload.render({
+               elem: '#$tpl_id'
+               ,url: "$this->upload_one"
+               ,before: function(obj){
+                var index = layer.load();
+                }
+               ,done: function(res){
+                layer.closeAll();  
+                 if(res.result==1){
+                     layer.msg("上传成功", {icon: 1});
+                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').attr('src', res.msg);
+                 }else{
+                   layer.msg(res.msg, {icon: 2});
+                 }
+               }
+             });
+           });
+         </script>
+INFO;
+        }elseif($theme==3){
+          $zf_html = <<<INFO
+          <div class="layui-form-item">
+            <label class="layui-form-label">$title:</label>
+            <div class="layui-input-block">
+                <div class="layui-upload-drag" style="display: block;" id="$tpl_id">
+                  <i class="layui-icon layui-icon-upload"></i> 
+                  <div>点击上传，或将文件拖拽到此处</div>
+                  <div class="layui-hide_" >
+                    <hr> <img class="$tpl_id" src="$data"  style="max-width: 100%">
+                  </div>
+                </div>
+                <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+            </div>
+          </div>
+          <script>
+          layui.use(['upload'], function(){
+             var $ = layui.$
+             ,element = layui.element
+             ,upload = layui.upload;
+             upload.render({
+               elem: '#$tpl_id'
+               ,url: "$this->upload_one"
+               ,before: function(obj){
+                var index = layer.load();
+                }
+               ,done: function(res){
+                layer.closeAll();  
+                 if(res.result==1){
+                     layer.msg("上传成功", {icon: 1});
+                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').attr('src', res.msg);
+                 }else{
+                   layer.msg(res.msg, {icon: 2});
+                 }
+               }
+             });
+           });
+         </script>
+INFO;
+        }elseif($theme==4){
+          $zf_html = <<<INFO
+          <div class="layui-form-item">
+            <label class="layui-form-label">$title:</label>
+            <div class="layui-input-block">
+                <div class="layui-upload-drag" style="display: block;" id="$tpl_id">
+                  <i class="layui-icon layui-icon-upload"></i> 
+                  <div>点击上传，或将文件拖拽到此处</div>
+                  <div class="layui-hide_" >
+                    <hr> <img class="$tpl_id" src="$data"  style="max-width: 100%">
+                  </div>
+                </div>
+                <input  class="layui-input" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+            </div>
+          </div>
+          <script>
+          layui.use(['upload'], function(){
+            var $ = layui.$
+            ,element = layui.element
+            ,upload = layui.upload;
+            upload.render({
+              elem: '#$tpl_id'
+              ,url: "$this->upload_one"
+              ,before: function(obj){
+                var index = layer.load();
+                }
+              ,done: function(res){
+                layer.closeAll();  
+                if(res.result==1){
+                    layer.msg("上传成功", {icon: 1});
+                    $('input[name="$name"]').val(res.msg);
+                    $('.$tpl_id').attr('src', res.msg);
+                }else{
+                  layer.msg(res.msg, {icon: 2});
+                }
+              }
+            });
+          });
+        </script>
+INFO;
+        }
+        return $zf_html;
+    }
 
     public function filesystem_pic($request_data=array())
     {
@@ -639,13 +1023,14 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html ='';
         if($theme==1){
           $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
-               <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+               <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
@@ -663,8 +1048,8 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['1100px', '700px'],
-                 fixed: false,
+                 area: ['900px', '530px'],
+                 fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
                });
@@ -677,7 +1062,7 @@ INFO;
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
-               <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+               <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                  </div> 
@@ -691,8 +1076,8 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['1100px', '700px'],
-                 fixed: false,
+                 area: ['900px', '530px'],
+                 fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
                });
@@ -705,7 +1090,7 @@ INFO;
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
-              <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+              <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
               <div class="layui-upload">
                 <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                 <div class="layui-upload-list">
@@ -723,8 +1108,8 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['1100px', '700px'],
-                 fixed: false,
+                 area: ['900px', '530px'],
+                 fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
                });
@@ -737,7 +1122,7 @@ INFO;
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
-              <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+              <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
               <div class="layui-upload">
                 <button type="button" class="layui-btn" id="$tpl_id">上传</button>
               </div> 
@@ -751,8 +1136,8 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['1100px', '700px'],
-                 fixed: false,
+                 area: ['900px', '530px'],
+                 fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
                });
@@ -772,11 +1157,12 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
-      <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+      <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
     </div>
     <span type="button" class="layui-btn layui-btn-sm" id="$tpl_id">上传文件</span>
 </div>
@@ -818,11 +1204,12 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
-      <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="" autocomplete="off"  value="$data">
+      <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
         <div class="layui-upload">
           <button type="button" class="layui-btn" id="$tpl_id">选择文件</button>
         </div> 
@@ -837,8 +1224,8 @@ INFO;
     $('#$tpl_id').on('click',function(){
       layer.open({
         type: 2,
-        area: ['1100px', '700px'],
-        fixed: false,
+        area: ['900px', '530px'],
+        fixed: true,
         maxmin: true,
         content: "$this->filesystem_upload&cid=0&t=3&zf_class=.$tpl_id"
       });

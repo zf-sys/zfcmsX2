@@ -234,7 +234,7 @@ class User extends Admin
         } 
         $res =  ZFTB('user_group')->where(['id'=>input('id')])->find();
         $this->assign("res",$res);
-        return view();
+        return view('user/group_add');
     }
 
     /**
@@ -337,9 +337,11 @@ class User extends Admin
 
 
     private function _update_sql($t=''){
-        if($t==1){
+        if($t==1 && $this->is_professional_edition){
             $this->tb_prefix = config()['database']['prefix'];
-            $this->tb_field_add("show columns from {$this->tb_prefix}user_group like 'tag'","alter table {$this->tb_prefix}user_group add tag varchar(50) not null");
+            $Yun = new \zf\Yun();
+            $Yun->tb_field_add("show columns from {$this->tb_prefix}user_group like 'tag'","alter table {$this->tb_prefix}user_group add tag varchar(50) not null");
+
         }
     }
 

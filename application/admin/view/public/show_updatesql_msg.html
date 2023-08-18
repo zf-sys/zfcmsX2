@@ -1,0 +1,5 @@
+<?php $plugin_update_check_show = plugin_update_check_show(); if($plugin_update_check_show[0] || $plugin_update_check_show[1]){ ?>
+  <blockquote class="layui-elem-quote">
+    数据库和本地文件不一致 <a class="layui-btn  layui-btn-xs" href="{:url('zfyun/update_sq')}">立即更新</a>
+  </blockquote>
+<?php } ?>

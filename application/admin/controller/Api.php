@@ -47,7 +47,7 @@ class Api extends Zfb
     //更新授权
     public function update_sq(){
         $_SESSION['_zf_temp_remote'] = '1';
-         $this->zfauth = new ZfAuth();
+         $this->zfauth = new \zf\ZfAuth();
         $this->zfauth->plugin_check('@update_sq@','alert');
         $this->success('更新成功');
     }

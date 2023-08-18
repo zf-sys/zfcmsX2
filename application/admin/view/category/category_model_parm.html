@@ -27,7 +27,7 @@
               <label class="layui-form-label">键</label>
               <div class="layui-input-block">
                   <select name="key" lay-filter="key">
-                    <?php foreach($key_list as $k=>$vo){ if($vo['Field']!='id'){ ?>
+                    <?php foreach($key_list as $k=>$vo){ if(!isset($vo['Field'])){ $vo['Field'] = $vo['field']; }  if($vo['Field']!='id'){ ?>
                       <option value="{$vo['Field']}" >{$vo['Field']}</option>
                     <?php }}?>
                   </select>
@@ -109,7 +109,7 @@
                     </div>
                   </td>
                   <td>  
-                      <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/category/category_model_parm_edit',['id' => $vo['id']] )}")'>编辑</button> 
+                      <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/category/category_model_parm_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
                       <a class="layui-btn btn_del layui-btn-danger layui-btn-sm" rel="{$vo['id']}" href="#">删除</a> 
                     </td>
                 </tr>

@@ -17,30 +17,28 @@ if(isset($_SERVER['REQUEST_URI'])){
 	$val = strtolower($val);
 	//路由
 	if($val!=''){
-	    $_file = './theme/'.$val.'/route.php';
-	    if(file_exists($_file)){
-	        include $_file;
-	    }
-	}else{
-	    $_file = './theme/def/route.php';
+		$_file = './theme/'.$val.'/route.php';
 		if(file_exists($_file)){
-	        include $_file;
-	    }
+			include $_file;
+		}
+	}else{
+		$_file = './theme/def/route.php';
+		if(file_exists($_file)){
+			include $_file;
+		}
 	}
 	//方法
 	if($val!=''){
-	    $_file = './theme/'.$val.'/function.php';
+		$_file = './theme/'.$val.'/function.php';
 		if(file_exists($_file)){
 			include $_file;
 		}
 	}else{
-	    $_file = './theme/def/function.php';
+		$_file = './theme/def/function.php';
 		if(file_exists($_file)){
 			include $_file;
 		}
 	}
-	
-
 
 }else{
 	//命令行中不存在$_SERVER['REQUEST_URI']

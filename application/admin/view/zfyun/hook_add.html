@@ -13,14 +13,13 @@
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
           <div class="layui-card">
-            <div class="layui-card-header">基本信息</div>
             <div class="layui-card-body">
                 <?php $form_widget = new \app\common\widget\FormPro();  ?>
                 <form class="layui-form info_tj" onclick="return false;" >
                 <?php if(isset($res['id'])){ ?>
                   <input type="hidden" name="id" value="{$res.id}">
                   {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'类型','name'=>'type','data'=>$res['type'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'钩子类型','name'=>'type','data'=>$res['type'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'类','name'=>'controller','data'=>$res['controller'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'方法','name'=>'action','data'=>$res['action'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'排序(倒序)','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}

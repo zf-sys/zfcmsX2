@@ -10,13 +10,14 @@
   <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
   <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
   <link rel="stylesheet" href="__STATIC__/style/bootstrap/bootstrap-3.3.4.css">
+  <script src="/public/static/zfcms/style/jquery-1.8.3.min.js"></script>  
 </head>
 <body>
 
   <div class="layui-fluid">
     <div class="layui-card">
       <div class="layui-card-header layuiadmin-card-header-auto">
-        <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/config/admin_group_add")}')">添加</button>
+        <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/config/admin_group_add")}',800)">添加</button>
       </div>
       <table class="layui-table">
         <colgroup>
@@ -50,7 +51,7 @@
                    <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
                 </div>
               </td>
-              <td> <a class="layui-btn layui-btn-danger layui-btn-sm " onclick="btn_del('common/del_post',{$vo['id']},'admin_group')"  href="#">删除</a> <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/config/admin_group_edit',['id' => $vo['id']] )}")'>编辑</button><button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑权限","{:url('admin/config/admin_group_role',['id' => $vo['id']] )}")'>权限管理</button></td>
+              <td> <a class="layui-btn layui-btn-danger layui-btn-sm " onclick="btn_del('common/del_post',{$vo['id']},'admin_group')"  href="#">删除</a> <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/config/admin_group_edit',['id' => $vo['id']] )}",800)'>编辑</button><button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑权限","{:url('admin/config/admin_group_role',['id' => $vo['id']] )}",800)'>权限管理</button></td>
             </tr>
           <?php } ?>
         </tbody>

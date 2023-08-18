@@ -26,7 +26,7 @@
         ul, ol {list-style: none outside none;}
         a {text-decoration: none;color:#447BC4}
         a:hover {text-decoration: underline;}
-        .ip-attack{width:600px; margin:200px auto 0;}
+        .ip-attack{width:400px; margin:200px auto 0;}
         .ip-attack dl{ background:#fff; padding:30px; border-radius:10px;border: 1px solid #CDCDCD;-webkit-box-shadow: 0 0 8px #CDCDCD;-moz-box-shadow: 0 0 8px #cdcdcd;box-shadow: 0 0 8px #CDCDCD;}
         .ip-attack dt{text-align:center;}
         .ip-attack dd{font-size:16px; color:#333; text-align:center;}
@@ -38,9 +38,9 @@
 <body>
 <div class="ip-attack"><dl>
           <?php if($code=='1'){ ?>
-            <dt style="color: green"><?php echo(strip_tags($msg));?></dt>
+            <dt style="color: green;font-size:20px;"><?php echo(strip_tags($msg));?></dt>
           <?php }else{ ?>
-            <dt style="color: red"><?php echo(strip_tags($msg));?></dt>
+            <dt style="color: red;font-size:20px;"><?php echo(strip_tags($msg));?></dt>
           <?php } ?>
 
         <br>

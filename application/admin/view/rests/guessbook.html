@@ -16,7 +16,7 @@
     <div class="layui-card">
       <div class="layui-card-body">
         <div style="padding-bottom: 10px;">
-          <!-- <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/rests/guessbook_add")}')">添加</button> -->
+          <!-- <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/rests/guessbook_add")}',800)">添加</button> -->
         </div>
         <table class="layui-table">
             <colgroup>
@@ -49,7 +49,7 @@
                   </td>
                   <td>
                     <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'guessbook')" href="#">删除</a> 
-                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/guessbook_edit',['id' => $vo['id']] )}")'>编辑</button> 
+                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/guessbook_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
                   </td>
                 </tr>
               <?php } ?>         

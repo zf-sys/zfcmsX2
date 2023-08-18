@@ -13,6 +13,7 @@ class Fileupload extends Controller
         return view();
     }
     public function upload(){
+        $this->is_file_dlj = config('web.is_file_dlj');
         $cid = input('cid','0');
         $t = input('t',1);
         $zf_class = input('zf_class','.zf_list');
@@ -25,21 +26,16 @@ class Fileupload extends Controller
         if($cid!='0'){
             $where[] = ['cid','=',$cid];
         }
-
-
-        $count =Db::name('upload')->where($where)->count();
-        $this->assign("count",$count);
-        $page = input('page',1);
-        $limit = input('limit',12);
         $where[] = ['uniacid','=',session('uniacid')];
-
-        $pic_list =Db::name('upload')->where($where)->limit(($page-1)*$limit,$limit)->order('id desc')->select();
-        foreach($pic_list as $k=>$vo){
-            $pic_list[$k]['url'] =  get_domain().'/get_file_out?id='.$vo['id'].'&token='.$vo['token'];
-        }
-        $this->assign('pic_list',$pic_list);
+        $pic_list =Db::name('upload')->where($where)->order('id desc')
+        ->paginate(12,false,['query' => request()->param()])->each(function($item, $key){
+            if(is_file('./extend/zf/Yun.php') && isset($this->is_file_dlj) && $this->is_file_dlj==1 ){
+                $item['url'] = get_domain().'/get_file_out?id='.$item['id'].'&token='.$item['token'];
+            }
+            return $item;
+        });
+        $page = $pic_list->render();
         $this->assign("page",$page);
-        $this->assign("limit",$limit);
         $this->assign('pic_list',$pic_list);
         $this->assign('cid',$cid);
         $this->assign('zf_class',$zf_class);
@@ -93,11 +89,12 @@ class Fileupload extends Controller
 
     public function file_del(){
         $data = input('post.');
-        $urls = $data['files'];
-        if(!$urls){
+        $ids = $data['ids'];
+        $ids = array_filter($ids);
+        if(count($ids)==0){
             return jserror("请选择文件");
         }
-        $res = Db::name('upload')->where([['url','in',$urls],['uniacid','=',session('uniacid')]])->update(['status'=>9]);
+        $res = Db::name('upload')->where([['id','in',$ids],['uniacid','=',session('uniacid')]])->update(['status'=>9]);
         ###伪删除,如需删除文件请手动###
         #unlink()
         if($res){
@@ -108,13 +105,13 @@ class Fileupload extends Controller
     }
     public function file_move(){
         $data = input('post.');
-        $urls = $data['files'];
+        $ids = $data['ids'];
         $cid = input('cid','0');
-        $urls = array_filter($urls);
-        if(count($urls)==0){
+        $ids = array_filter($ids);
+        if(count($ids)==0){
             return jserror("请选择文件");
         }
-        $res = Db::name('upload')->where([['url','in',$urls],['uniacid','=',session('uniacid')]])->update(['cid'=>$cid]);
+        $res = Db::name('upload')->where([['id','in',$ids],['uniacid','=',session('uniacid')]])->update(['cid'=>$cid]);
         if($res){
             return jssuccess('文件移动成功');
         }else{

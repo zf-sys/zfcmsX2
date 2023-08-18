@@ -22,6 +22,9 @@
         <input type="hidden" name="id" value="{$res['id']|default=''}">
         <?php if(isset($res['id'])){ ?>
           {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'seo(t)','name'=>'seo_t','data'=>$res['seo_t'],'theme'=>2])|raw}
+          {$form_widget->form_textarea(['title'=>'seo(d)','name'=>'seo_d','data'=>$res['seo_d'],'theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'seo(k)','name'=>'seo_k','data'=>$res['seo_k'],'theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
           {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}
         
@@ -32,6 +35,9 @@
           </div>
         <?php }else{ ?>
           {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'seo(t)','name'=>'seo_t','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_textarea(['title'=>'seo(d)','name'=>'seo_d','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'seo(k)','name'=>'seo_k','data'=>'','theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'','theme'=>2])|raw}
           {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>'','theme'=>2])|raw}
         

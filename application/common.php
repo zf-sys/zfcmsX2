@@ -13,11 +13,14 @@ use think\Controller;
 use think\Db;
 use think\facade\Hook;
 include './application/common_db.php';
+   
 // 应用公共文件
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 /**
  * @Notes: 后台权限  0 get ajax 全部验证  1 只验证ajax
  * @Interface admin_role_check
@@ -44,29 +47,19 @@ if(!function_exists('admin_role_check')){
             ''
         ];
         if(in_array($mca,$arr_filter)) return ;
-        if(session("admin.gid")!=1){
-            if($methods=="GET"){
-                if (!in_array($mca, $z_role_list)) {
-                    if($type=='1'){
-                        if(strpos($mca,'admin/Common/') !== false){ 
-                            // echo '包含'; 
-                            // return jserror('当前用户无权限');
-                            return ;
-                        }else{
-                            echo "<script>alert('当前用户无权限');</script>";die;
-                        }
-                    }else{
-                        echo "<script>alert('当前用户无权限');</script>";die;
-                    }
+        if(session("admin.gid")==1) return ;
+        if($methods=="GET"){
+            if (!in_array($mca, $z_role_list)) {
+                if($type=='1'){
+                    echo "<script>alert('当前用户无权限');</script>";die;
+                }else{
+                    echo "<script>alert('当前用户无权限');</script>";die;
                 }
-            }else{
-                //post  ajax
-                if (!in_array($mca, $z_role_list)) {
-                    if(strpos($mca,'admin/Common/') !== false){ 
-                        return ;
-                    }
-                    return jserror('当前用户无修改权限');
-                }
+            }
+        }else{
+            //post  ajax
+            if (!in_array($mca, $z_role_list)) {
+                return jserror('当前用户无修改权限3');
             }
         }
     }
@@ -514,7 +507,9 @@ if (!function_exists('extraconfig')) {
             file_put_contents($filepath, $conf);
         }
         $conf = include $filepath;
+        // dd($arr);
         foreach ($arr as $key => $value) {
+            $value = str_replace("'","\'",$value);
             $conf[$key] = $value;
         }
         $time = date('Y/m/d H:i:s');
@@ -535,6 +530,7 @@ if (!function_exists('extraconfig')) {
          $str .= "  \r\n  \r\n return [\r\n";
 
          foreach ($conf as $key => $value) {
+            $value = str_replace("'","\'",$value);
             $str .= "\t'$key' => '$value',";
             $str .= "\r\n";
         }
@@ -711,6 +707,9 @@ if (!function_exists('logOutput')) {
             $filename = $dir.date("Y-m-d").".log";
         }else{
             $filename = $dir.$filename.".log";
+        }
+        if(!file_exists($filename)){
+            file_put_contents($filename, '');
         }
         $str = date("Y-m-d H:i:s")."   $data"."\n";
         file_put_contents($filename, $str, FILE_APPEND|LOCK_EX);
@@ -1114,7 +1113,6 @@ if (!function_exists('doZfActionInit')) {
         } catch (\Exception $e) {
             Log::info(json_encode($e->getMessage()));
         }
-       
     }
 }
 if (!function_exists('doZfAction')) {
@@ -1301,10 +1299,11 @@ if(!function_exists('isset_arr_key')){
 /**
   * 20220722新增
   * 返回消息
+  * 20230217 新增version字段
  */
 if (!function_exists('jsonPro')) {
-    function jsonPro($data,$msg,$code=1,$url=''){
-            echo json_encode(array('code'=>$code,'data'=> $data,"msg" => $msg, "url" => $url));exit;
+    function jsonPro($data,$msg,$code=1,$url='',$version=''){
+            echo json_encode(array('code'=>$code,'data'=> $data,"msg" => $msg, "url" => $url,'version'=>$version));exit;
     }
 }
 
@@ -1512,4 +1511,324 @@ function get_mimetype($extension) {
         'xml'=>'text/xml',
     ];
     return isset($ct[strtolower($extension)]) ? $ct[strtolower($extension)] : '';
+}
+
+/**
+ * 检测上传图片是否包含有非法代码
+ * @return mixed
+ */
+if (!function_exists('check_illegal')) {
+    function check_illegal($image)
+    {
+        try {
+            if (file_exists($image)) {
+                $resource = fopen($image, 'rb');
+                $fileSize = filesize($image);
+                fseek($resource, 0);
+                $hexCode = fread($resource, $fileSize);
+                fclose($resource);
+                if (preg_match('#__HALT_COMPILER()#i', $hexCode) || preg_match('#/script>#i', $hexCode) || preg_match('#<([^?]*)\?php#i', $hexCode) || preg_match('#<\?\=(\s+)#i', $hexCode)) {
+                    return false;
+                }
+            }
+        } catch (\Exception $e) {}
+
+        return true;
+    }
+}
+
+
+/**
+ * 20230217新增
+ * addons自定义输出日志
+ * $plugin_name=''   插件名
+ * $data=[]   数据
+ * $state=''   状态(success/fail/自定义)
+ * $save_log_tag=''    log/后的自定义文件夹,避免被他人恶意通过http获取数据
+ * $filename=''   保存的文件名,如果为空则根据规则生成
+ *                  
+ */
+if (!function_exists('logOutputAddons')) {
+    function logOutputAddons($plugin_name='',$data=[],$state='',$save_log_tag='',$filename='') {
+        //数据类型检测
+        if (is_array($data)) {
+            $data = json_encode($data);
+        }elseif(is_string($data)){
+            $data = $data;
+        }
+        if($save_log_tag==''){
+            $diy_save_dir = '/log/';
+        }else{
+            $diy_save_dir = '/log/'.$save_log_tag.'/';
+        }
+        if($state==''){
+            $dir = './addons/'.$plugin_name.$diy_save_dir.date("Ym").'/';
+        }else{
+            $dir = './addons/'.$plugin_name.$diy_save_dir.$state.'/'.date("Ym").'/';
+        }
+        if(!is_dir($dir)) {
+            mkdir($dir, 0777,true);
+        }
+        if($filename==''){
+            $filename = $dir.date("d").'_'.date('H').'_'.md5($plugin_name).".log";
+        }else{
+            $filename = $dir.$filename.".log";
+        }
+        $str = date("Y-m-d H:i:s")."   $data";
+        $server = request()->server();
+        $str .= '  HTTP_USER_AGENT: '.$server['HTTP_USER_AGENT'];
+        $str .= '  IP: '.$server['REMOTE_ADDR']."\n";
+        file_put_contents($filename, $str, FILE_APPEND|LOCK_EX);
+        return null;
+    }
+}
+/**
+ * 20230227
+ * 字符串在另一个字符串中是否含有
+ */
+if(!function_exists('is_str_find')){
+    function is_str_find($str='',$find_str='') {    
+        if(strpos($str,$find_str) !== false){ 
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+/**
+ * 20230328新增
+ * 发送邮件
+ */
+if(!function_exists('send_email')){
+    function send_email($address,$email_content=[],$debug=0){
+        date_default_timezone_set("PRC"); 
+        $mail = new PHPMailer(true);
+        $data = config()['email'];
+        if(!isset($data['host']) || !isset($data['send_nickname']) || !isset($data['send_email']) || !isset($data['password']) || !isset($data['secure']) || !isset($data['e_number'])  || $data['host']=='' || $data['send_email']==''  || $data['password']=='' || $data['secure']=='' || $data['e_number']==''){
+            return jserror('邮件参数设置不完整');
+        }
+        
+        try {
+            if($debug==1){
+                $mail->SMTPDebug = 2;   // Enable verbose debug output
+            }                                    
+            $mail->isSMTP();     
+            $mail->CharSet = "UTF-8";
+            $mail->Host       = $data['host'];  // Specify main and backup SMTP servers
+            $mail->SMTPAuth   = true;             // Enable SMTP authentication
+            $mail->Username   = $data['send_email'];         // SMTP username
+            $mail->Password   = $data['password'];       // SMTP password
+            $mail->SMTPSecure = $data['secure'];           // Enable TLS encryption, `ssl` also accepted
+            $mail->Port       = $data['e_number'];          // TCP port to connect to
+            //Recipients
+            $mail->setFrom($data['send_email'], $data['send_nickname']);//发送方
+            $address_arr = explode(',',$address);
+            foreach($address_arr as $k=>$vo){
+                $mail->addAddress($vo, $vo);     // Add a recipient
+            }
+            $mail->isHTML(true);                                  // Set email format to HTML
+            if(isset($email_content['title'])){
+                $mail->Subject = $email_content['title'];
+            }else{
+                $mail->Subject = '来自'.$data['send_nickname'].'的邮件';
+            }
+            // $subject = $data['subject']; 
+            // $mail->Subject  = "=?UTF-8?B?".base64_encode($subject)."?="; 
+            if(isset($email_content['body'])){
+                $mail->Body    = $email_content['body'];
+                $mail->AltBody = $email_content['body'];//该属性的设置是在邮件正文不支持HTML的备用显示
+            }else{
+                $mail->Body    = '来自'.$data['send_nickname'].'的邮件';
+                $mail->AltBody = '来自'.$data['send_nickname'].'的邮件';//该属性的设置是在邮件正文不支持HTML的备用显示
+            }
+            $mail->send();
+            return 'ok';
+        } catch (Exception $e) {
+            return  $mail->ErrorInfo;
+        }
+    }
+}
+
+/**
+ * 20230228
+ * 高精度计算加减乘除
+ */
+if(!function_exists('num_compute')){
+    function num_compute($num1,$type='+',$num2,$jd=2){
+        if($type=='+'){
+            return bcadd($num1,$num2,$jd);
+        }elseif($type=='-'){
+            return bcsub($num1,$num2,$jd);
+        }elseif($type=='*'){
+            return bcmul($num1,$num2,$jd);
+        }elseif($type=='/'){
+            return bcdiv($num1,$num2,$jd);
+        }
+    }
+}
+/**
+ * 20230414
+ * 输出当前程序运行所用的时间
+ */
+if(!function_exists('zf_runtime')){
+    function zf_runtime($type,$starttime=[]){
+        if($type=='start'){
+            $starttime = explode(' ',microtime());
+            echo microtime().'<br>';
+            return $starttime;
+        }elseif($type=='end'){
+            $endtime = explode(' ',microtime());
+            $thistime = $endtime[0]+$endtime[1]-($starttime[0]+$starttime[1]);
+            $thistime = round($thistime,3);
+            echo "执行耗时：".$thistime." 秒。";die;
+        }else{
+            return '参数错误';
+        }
+    }
+}
+/**
+ * 20230426
+ * 跳转到自己设置的站点
+ * 不填写http或https   ------>  //dev.zfcmsx2.90ckm.com/bbs_cate/4.html
+ * 填写http后面加了/   ------>  http://dev.zfcmsx2.90ckm.com/bbs_cate/4.html
+ * 填写http后面没加/   ------>  http://dev.zfcmsx2.90ckm.com/bbs_cate/4.html
+ * 
+ * 当前链接 http://dev2.zfcmsx2.90ckm.com   ----> 跳转到https://dev2.zfcmsx2.90ckm.com
+ * 
+ */
+if(!function_exists('zf_to_site_url')){
+    function zf_to_site_url(){
+        $site_url = config('web.site_url');
+        if($site_url && $site_url!='' && !is_str_find(get_url(),$site_url)){
+            if(substr($site_url,-1)=='/'){
+                $site_url = substr($site_url,0,-1);
+            }
+            $url = $site_url.request()->url();
+            if(!is_str_find($url,'http')){
+                $url = '//'.$url;
+            }
+            Header("Location: $url");die;
+        }
+    }
+}
+/**
+ * 20230510
+ * 检测插件模板是否一致
+ * [插件,模板]
+ */
+if(!function_exists('plugin_update_check_show')){
+    function plugin_update_check_show(){
+        $db_theme_count = db('plugin')->where([['type','=','theme'],['status','<>',9]])->group('plugin_name')->count();
+        $db_plugin_count = db('plugin')->where([['type','=','plugin'],['status','<>',9]])->group('plugin_name')->count();
+        $theme_count = 0;
+        $plugin_count = 0;
+
+        $dir_arr = scandir('./theme');
+        $theme_count = 0;
+        foreach ($dir_arr as $k => $vo) {
+            if($vo!='.' && $vo!='..' && $vo!='.DS_Store'  && is_dir('./theme/'.$vo) && is_file('./theme/'.$vo.'/plugin_info.php')){
+                $theme_count++;
+            }
+        }
+        $dir_arr = scandir('./addons');
+        $plugin_count = 0;
+        foreach ($dir_arr as $k => $vo) {
+            if($vo!='.' && $vo!='..' && $vo!='.DS_Store' && is_dir('./addons/'.$vo) && is_dir('./addons/'.$vo.'/config') && is_file('./addons/'.$vo.'/config/plugin_info.php')){
+                $plugin_count++;
+            }
+        } 
+       
+        $ret_data = [true,true];
+        if($db_plugin_count==$plugin_count){
+            $ret_data[0] = false;
+        }
+        if($db_theme_count==$theme_count){
+            $ret_data[1] = false;
+        }
+        // echo "<br>.".$db_plugin_count;
+        // echo "<br>.".$plugin_count;
+        // echo "<br>.".$db_theme_count;
+        // echo "<br>.".$theme_count;
+        // dd($ret_data);
+        return $ret_data;
+    }
+}
+/**
+* 20230511
+* 判断文件或文件夹是否可写.
+* @param  string  $file  文件或目录
+* @return bool
+ */
+if(!function_exists('is_really_writable')){
+    function is_really_writable($file){
+        if (DIRECTORY_SEPARATOR === '/') {
+            return is_writable($file);
+        }
+        if (is_dir($file)) {
+            $file = rtrim($file, '/') . '/' . md5(mt_rand());
+            if (($fp = @fopen($file, 'ab')) === false) {
+                return false;
+            }
+            fclose($fp);
+            @chmod($file, 0777);
+            @unlink($file);
+
+            return true;
+        } elseif (!is_file($file) or ($fp = @fopen($file, 'ab')) === false) {
+            return false;
+        }
+        fclose($fp);
+        return true;
+    }
+}
+/**
+ * 20230517
+ * 创建uuid
+ */
+if(!function_exists('create_uuid')){
+    function create_uuid() {
+        $bytes = random_bytes(16);
+        $uuid = sprintf('%08s-%04s-%04x-%04x-%12s',
+            bin2hex(substr($bytes, 0, 4)),
+            bin2hex(substr($bytes, 4, 2)),
+            hexdec(bin2hex(substr($bytes, 6, 2))) & 0x0fff | 0x4000,
+            hexdec(bin2hex(substr($bytes, 8, 2))) & 0x3fff | 0x8000,
+            bin2hex(substr($bytes, 10, 6))
+        );
+        return  $uuid;
+    }
+}
+
+//列出目录
+if(!function_exists('listdir')){
+    function listdir($start_dir='.') {    
+        $files = array();    
+        if (is_dir($start_dir)) {    
+            $fh = opendir($start_dir);    
+            while (($file = readdir($fh)) !== false) {    
+                if (strcmp($file, '.')==0 || strcmp($file, '..')==0) continue;    
+                $filepath = $start_dir . '/' . $file;    
+                if ( is_dir($filepath) )    
+                    $files = array_merge($files, listdir($filepath));    
+                else   
+                    array_push($files, $filepath);    
+                }    
+                closedir($fh);    
+        } else {    
+            $files = false;    
+        }    
+        return $files;    
+    }
+}
+
+if(is_dir('./application/function')){
+    $func_list = listdir("./application/function");
+    if($func_list){
+        foreach($func_list as $k=>$vo){
+            if(strpos($vo,'.php') !== false){ 
+                include_once($vo);
+            }
+        }
+    }
+    
 }

@@ -11,10 +11,12 @@
 
 <body>
   <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+    <div class="layui-card-body">
     <form class="info_tj" onclick="return false">
       <div style="width: 500px;">
         <?php $form_widget = new \app\common\widget\FormPro();  ?>
         <?php if(isset($res['id'])){ ?>
+          <input type="hidden" name="id" value="{$res['id']|default=''}">
           {$form_widget->form_input(['title'=>'分类名','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
 
@@ -38,6 +40,7 @@
       
     </form>
   </div>
+</div>
 
   <script src="__STATIC__/style/layui/layui.js"></script>    
   <script type="text/javascript" src="__STATIC__/system/common.js"></script>  

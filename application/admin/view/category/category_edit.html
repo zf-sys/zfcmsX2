@@ -14,23 +14,9 @@
   <script type="text/javascript" src="__STATIC__/style/webuploader/webuploader.js"></script>
   <script src="__STATIC__/style/layui/layui.js"></script>    
   <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
-  <?php if($parm_data['editor_def']=='tinymce'){ ?>
-    <script src="{$site_path}public/static/common/tinymce515/tinymce.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/tinymce/5.7.1/jquery.tinymce.min.js"></script>
-  <?php }elseif($parm_data['editor_def']=='wangeditor'){ ?>
-  <script src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
-  <?php }elseif($parm_data['editor_def']=='meditor'){ ?>
-      <!-- <link rel="stylesheet" type="text/css" href="__STATIC__/style/meditor/style.css" /> -->
-    <link rel="stylesheet" type="text/css" href="__STATIC__/style/meditor/css/editormd.css" />
-    <script src="__STATIC__/style/meditor/editormd.js"></script>
-  <?php }elseif($parm_data['editor_def']=='vditor'){ ?>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
-    <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
-  <?php }else{ ?>
-    <script src="__STATIC__/style/ueditor/ueditor.config.js"></script>    
-    <script src="__STATIC__/style/ueditor/ueditor.all.js"></script>    
-    <link rel="stylesheet" href="__STATIC__/style/ueditor/themes/default/css/ueditor.css" media="all">               
-  <?php } ?>
+  <script src="__STATIC__/style/ueditor/ueditor.config.js"></script>    
+  <script src="__STATIC__/style/ueditor/ueditor.all.js"></script>    
+  <link rel="stylesheet" href="__STATIC__/style/ueditor/themes/default/css/ueditor.css" media="all">               
 </head>
 <body>
   <div class="layui-fluid">
@@ -68,17 +54,8 @@
                 <div class="layui-card">
                   <br>
                   <div class="layui-card-body">
-                  <?php if($parm_data['cate_editor_def']=='tinymce'){ ?>
-                  {$form_widget->form_tinymce(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
-                  <?php }elseif($parm_data['cate_editor_def']=='wangeditor'){ ?>
-                  {$form_widget->form_wangeditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
-                  <?php }elseif($parm_data['cate_editor_def']=='vditor'){ ?>
-                    {$form_widget->form_vditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
-                  <?php }elseif($parm_data['cate_editor_def']=='meditor'){ ?>
-                    {$form_widget->form_meditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
-                  <?php }else{ ?>
+                  
                   {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
-                  <?php } ?>
                   </div>
                 </div>
               </div>
@@ -97,16 +74,9 @@
                   {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'theme'=>1])|raw}
                   {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'theme'=>3])|raw}
                 </div>
-                <div class="layui-card">
-                  <div class="layui-card-header">发布</div>
-                  <div class="layui-card-body layui-row layui-col-space10">
-                    <div class="layui-form-item">
-                      <div class="layui-input-block" style="margin-left: 50px;">
-                        <input class="layui-btn tj_btn layui-btn-sm"   lay-filter="component-form-element" type="button" value="发布" />
-                      </div> 
-                    </div>
-                  </div>
-                </div>
+                
+                {include file="public/widget_submit"}
+
               </div>
           </div>
         </div>
@@ -127,42 +97,13 @@
     ,form = layui.form
     ,upload = layui.upload;
 
-    <?php if($parm_data['cate_editor_def']=='tinymce'){ ?>
-      $('.tj_btn').on("click",function(){
-          var index = layer.load(2);
-          var content = tinymce.editors[0].getContent() ;   
-        // var e_content = tinymce.editors[1].getContent() ;   
-          var data = $(".info_tj input,.info_tj textarea,.info_tj select").serializeArray();     
-          $.ajax({
-              type:'post',
-              url:"{:url('admin/category/category_edit')}",
-              // data:data,
-              data:{data:data,content:content,editor_type:'tinymce'},
-              dataType:'json',
-              success:function(res){
-                if(res.result==1){
-                  layer.msg(res.msg.msg, {icon: 1});
-                  setTimeout(function() {
-                      if(res.msg.code==1){
-                        window.location.reload();
-                      }else{
-                        window.parent.location.reload();
-                      }
-                  }, 2000);
-                }else{
-                  layer.close(index);
-                  layer.msg(res.msg.msg, {icon: 2});
-                }   
-              }
-          })
-      })
-    <?php }else{ ?>
-      $('.tj_btn').on("click",function(){
+
+      $('.tijiao').on("click",function(){
           var index = layer.load(2);
           var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
           $.ajax({
               type:'post',
-              url:"{:url('admin/category/category_edit')}",
+              url:"{:url('category/category_edit')}",
               data:data,
               dataType:'json',
               success:function(res){
@@ -182,7 +123,7 @@
               }
           })
       })
-    <?php } ?>
+
 
   });
   </script>

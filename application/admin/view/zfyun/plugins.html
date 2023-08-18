@@ -8,84 +8,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
   <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
-  <link rel="stylesheet" href="__STATIC__/system/style/template.css" media="all">
-  <link rel="stylesheet" type="text/css" href="__STATIC__/style/viewer/viewer.mini.css">
+  <link rel="stylesheet" href="__STATIC__/style/bootstrap/bootstrap-3.3.4.css">
+  <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
   <script src="__STATIC__/style/jquery-1.8.3.min.js"></script>  
-  <script type="text/javascript" src="__STATIC__/style/viewer/viewer.mini.js"></script>
+  <!-- <link rel="stylesheet" type="text/css" href="__STATIC__/style/viewer/viewer.mini.css"> -->
+  <!-- <script type="text/javascript" src="__STATIC__/style/viewer/viewer.mini.js"></script> -->
 </head>
 <body>
 
 <?php $api_domain = config('version.api_domain'); ?>
-<div class="layui-fluid layadmin-cmdlist-fluid detail-body">
-    <div style="padding-bottom: 10px;">
-        <span type="button" class="layui-btn layui-btn-sm" id="up_file">上传插件</span>
-        <a type="button" class="layui-btn layui-btn-sm" href="{:url('zfyun/update_sq')}">更新插件授权</a>
-    </div>
-  <div class="layui-row layui-col-space30">
-      <table class="layui-table">
-          <colgroup>
-              <col width="120">
-              <col width="120">
-              <col width="80">
-              <col>
-          </colgroup>
-          <thead>
-          <tr>
-              <th>插件名</th>
-              <th>路径名</th>
-              <th>版本</th>
-              <th>路径</th>
-              <th>展示图</th>
-              <th>状态</th>
-              <th>操作</th>
-          </tr>
-          </thead>
-          <tbody>
-            <?php foreach($list as $k=>$vo){ if($vo['ok']==1){ ?>
-              <?php $_plugin_class = 'addons\\'.$vo['plugin_name'].'\controller\Plugin'; ?>
-              <tr>
-                  <td>{$vo['name']}</td>
-                  <td>{$vo['plugin_name']}</td>
-                  <td>
-                    {$vo['version']}
-                    <img src="{$api_domain}/addons/zf_store_softclient.api/get_new_version?site={$client_config['site']}&token=11&soft_id={$vo['soft_id']}&ver={$vo['version']}" />
-                  </td>
-                  <td>./addons/{$vo['plugin_name']}</td>
-                  <td>
-                    <img src="{$vo['pic']}" style="width: 100px;height: 50px;" />
-                  </td>
-                  <td> 
-                    <div class=" layui-form" lay-filter="component-form-element">        
-                       <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
-                    </div>
-                  </td>     
-                  <td>
-                    <?php if(is_dir('./addons/'.$vo['plugin_name']) ){ ?>
-                      <?php if(class_exists($_plugin_class)){ ?>
-                        <?php if(method_exists(new $_plugin_class(),'index')){ ?>
-                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
+<div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body">
+        <div style="padding-bottom: 10px;">
+          {include file="public/show_updatesql_msg"}
+        </div>
+        <table class="layui-table">
+            <colgroup>
+                <col width="120">
+                <col width="120">
+                <col width="80">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>插件名</th>
+                <th>路径名</th>
+                <th>版本</th>
+                <th>路径</th>
+                <th>展示图</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+              <?php foreach($list as $k=>$vo){ ?>
+                <?php $_plugin_class = 'addons\\'.$vo['plugin_name'].'\controller\Plugin'; ?>
+                <tr>
+                    <td>{$vo['name']}</td>
+                    <td>{$vo['plugin_name']}</td>
+                    <td>
+                      {$vo['version']}
+                      <img src="{$api_domain}/addons/zf_store_softclient.api/get_new_version?site={$client_config['site']}&token=11&soft_id={$vo['soft_id']}&ver={$vo['version']}&soft_key={$vo['soft_key']}" />
+                    </td>
+                    <td>./addons/{$vo['plugin_name']}</td>
+                    <td style="text-align: center;"> 
+                      <img src="{$vo['pic']}" style="height: 50px;" />
+                    </td>
+                    <td> 
+                      <div class=" layui-form" lay-filter="component-form-element">        
+                        <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
+                      </div>
+                    </td>     
+                    <td>
+                      <?php if(is_dir('./addons/'.$vo['plugin_name']) ){ ?>
+                        <?php if(class_exists($_plugin_class)){ ?>
+                          <?php if(method_exists(new $_plugin_class(),'index')){ ?>
+                            <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
+                          <?php } ?>
+                          <?php if(method_exists(new $_plugin_class(),'setting')){ ?>
+                            <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
+                          <?php } ?>
+                          <?php if(method_exists(new $_plugin_class(),'help')){ ?>
+                            <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a><br>
+                          <?php } ?>
                         <?php } ?>
-                        <?php if(method_exists(new $_plugin_class(),'setting')){ ?>
-                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
-                        <?php } ?>
-                        <?php if(method_exists(new $_plugin_class(),'help')){ ?>
-                          <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a><br>
-                        <?php } ?>
+                      <?php }else{ ?>
+                      <span style="color: red">代码缺失</span>
                       <?php } ?>
-                        <a href="javascript:;" class="plugin_uninstall" item="{$vo['plugin_name']}" style="color: red" > 卸载</a><br>
-                        <a href="javascript:;" class="plugin_backup" item="{$vo['plugin_name']}" style="color: red" > 备份</a>
-                        <!-- <a href="javascript:;" class="plugin_upgrade" item="{$vo['plugin_name']}" style="color: red" > 升级</a> -->
-                    <?php }else{ ?>
-                     <span style="color: red">代码缺失</span>
-                    <?php } ?>
 
-                  </td>
-              </tr>
-            <?php }}  ?>
-          </tbody>
-      </table>
+                    </td>
+                </tr>
+              <?php }  ?>
+            </tbody>
+        </table>
+        {$page|raw}
 
-  </div>
+      </div>
+    </div>
 </div>
 {include file="public/common_tool"}
 
@@ -113,118 +114,6 @@
           }
         },"json");
     });
-
-   
-   upload.render({
-      elem: '#up_file'
-      ,accept: 'file' 
-      ,url:"{:url('zfyun/plugin_upload')}"
-      ,before: function(obj){
-          var index = layer.load();
-      }
-      ,done: function(res){
-        layer.closeAll()
-        if(res.result==1){
-          layer.msg(res.msg, {icon: 1});
-          setTimeout(function() {
-              location.reload(true);
-          }, 3000);
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      }
-    });
-   
-   $('.plugin_uninstall').on('click',function(){
-    var plugin_name = $(this).attr('item')
-     layer.confirm('确认卸载？', {
-        btn: ['卸载','取消']
-      }, function(){
-        var index = layer.load();
-          $.ajax({
-            type:'get',
-            url:"{:url('zfyun/plugin_uninstall')}",
-            data:{plugin_name},
-            dataType:'json',
-            success:function(res){
-              layer.closeAll()
-              if(res.result==1){
-                layer.msg(res.msg, {icon: 1});
-                setTimeout(function() {
-                    location.reload(true);
-                }, 3000);
-              }else{
-                layer.msg(res.msg, {icon: 2});
-              }
-              
-            }
-          })
-
-      }, function(){
-          //取消的操作
-      });
-   })
-   $('.plugin_backup').on('click',function(){
-    var plugin_name = $(this).attr('item')
-     layer.confirm('确认备份？', {
-        btn: ['备份','取消']
-      }, function(){
-        var index = layer.load();
-          $.ajax({
-            type:'get',
-            url:"{:url('zfyun/plugin_backup')}",
-            data:{plugin_name},
-            dataType:'json',
-            success:function(res){
-              layer.closeAll()
-              if(res.result==1){
-                layer.msg(res.msg, {icon: 1});
-                setTimeout(function() {
-                    location.reload(true);
-                }, 3000);
-              }else{
-                layer.msg(res.msg, {icon: 2});
-              }
-              
-            }
-          })
-
-      }, function(){
-          //取消的操作
-      });
-   })
-   
-
-   $('.plugin_upgrade').on('click',function(){
-    var plugin_name = $(this).attr('item')
-     layer.confirm('确认升级？', {
-        btn: ['升级','取消']
-      }, function(){
-        var index = layer.load();
-          $.ajax({
-            type:'get',
-            url:"{:url('zfyun/plugin_act')}?type=plugin&action=upgrade",
-            data:{plugin_name},
-            dataType:'json',
-            success:function(res){
-              layer.closeAll()
-              if(res.result==1){
-                layer.msg(res.msg, {icon: 1});
-                setTimeout(function() {
-                    location.reload(true);
-                }, 3000);
-              }else{
-                layer.msg(res.msg, {icon: 2});
-              }
-              
-            }
-          })
-
-      }, function(){
-          //取消的操作
-      });
-   })
-
 
 });
   </script>

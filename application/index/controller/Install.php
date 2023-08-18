@@ -208,6 +208,7 @@ class Install extends Controller
         if (!$res) {
             return $this->error($user->getError() ? $user->getError() : '管理员账号设置失败！');
         }
+        extraconfig(['sql_version'=>'v0.0.0.1'],'version');
         extraconfig(['site_admin_token'=>time(),'site_token'=>md5(time())],'web');
         file_put_contents('./public/install.lock', "如需重新安装，请手动删除此文件\n安装时间：".date('Y-m-d H:i:s'));
         $hs_auth = <<<INFO

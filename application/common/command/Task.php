@@ -55,9 +55,8 @@ class Task extends Command
             $message = $ex->getMessage();
             $file = $ex->getFile();
             $line = $ex->getLine();
-            https_get('https://api.day.app/m2KPFV9gVk26LZNeMZe2e4/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%8C%82%E6%8E%89%E5%95%A6');
-            logOutput($message);
-            logOutput($file);
+            logOutput("定时任务异常:错误信息:".$message."|相关文件路径:".$file."|行数:".$line."|",'task_error.log');
+
         });
         /**
          * 设置接收运行中的错误或者异常的Http地址(方式2)
@@ -74,18 +73,28 @@ class Task extends Command
         $task->setDaemon(true); //设为守护进程
         
         $task->addFunc(function () {
-           $this->monitor();
+            if(!is_file('./public/task_lock.txt')){
+                file_put_contents('./public/task_lock.txt','0');
+            }
+            try {
+                $this->monitor();
+            } catch (Exception $e) {
+                $msg = $e->getMessage();
+                logOutput('定时任务错误:'.$msg,'task_error.log');
+            }
         }, 'command_tp', 1, 1);
         //半个小时执行一次重启
-        // $command_tp_restart = 'php think task start';
-        // $task->addCommand($command_tp_restart,'command_tp_restart',60*30,1);
+        $command_tp_restart = 'php think task start';
+        $task->addCommand($command_tp_restart,'command_tp_restart',60*30,1);
     
         // 根据命令执行 每隔1s执行一次monitor函数，只开启一个进程
         if ($action == 'start'){
+            file_put_contents('./public/task_lock.txt',time());
             $task->start();
         }elseif ($action == 'status'){
             $task->status();
         }elseif ($action == 'stop'){
+            file_put_contents('./public/task_lock.txt',0);
             $force = ($force == 'force'); //是否强制停止
             $task->stop($force);
         }else{
@@ -99,13 +108,15 @@ class Task extends Command
         // $Base->task_notice();
         $m = date('s');
         if($m=='30'){
-            logOutput('执行中,当前时间:'.date('Y-m-d H:i:s',time()));
+            logOutput('执行中,当前时间:'.date('Y-m-d H:i:s',time()),'task_error.log');
         }
+        Db::startTrans();
         try {
             $where[] = ['status','=',1];
             $where[] = ['stime','<',time()];
             $where[] = ['etime','>',time()];
             $list = Db::name('task')->where($where)->order('sort desc,id desc')->select();
+            // logOutput('执行中,执行数量:'.count($list),'task_error.log');
             foreach($list as $k=>$vo){
                 $is = Db::name('task_log')->where([['task_id','=',$vo['id']],['status','=',1]])->order('ctime desc')->find();
                 $hour = date('H');
@@ -116,19 +127,34 @@ class Task extends Command
                         $_arr = explode('@',$vo['data']);
                         $controller_name =$_arr[0]; 
                         $action_name =$_arr[1]; 
-                        $class = new $controller_name;
-                        $ret_data = $class->$action_name();
+                        //判断类是否存在
+                        if(!class_exists($controller_name)){
+                            Db::name('task')->where(['id'=>$vo['id']])->order('sort desc,id desc')->update(['status'=>0]);
+                            $ret_data = 'class类不存在,已停止执行';
+                        }else{
+                            $class = new $controller_name;
+                            //判断方法是否存在
+                            if(!method_exists($class,$action_name)){
+                                Db::name('task')->where(['id'=>$vo['id']])->order('sort desc,id desc')->update(['status'=>0]);
+                                $ret_data = 'class方法不存在,已停止执行';
+                            }else{
+                                $ret_data = $class->$action_name();
+                            }
+                        }
+                        
                     }else{
                         $ret_data = '';
                     }
-                    logOutput($ret_data);
                     $this->save_log($vo,$ret_data);
                 }
             }
+            Db::commit();   
             Db::close();
         } catch (\Exception $e) {
+            Db::rollback();
+            Db::close();
             $r = $e->getMessage();
-            logOutput($r);
+            logOutput('定时任务,执行monitor错误 :'.$r,'task_error.log');
         }
     }
     protected function save_log($task_data,$ret_data=null){

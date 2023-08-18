@@ -282,10 +282,27 @@ class Config extends Admin
         $this->assign("list",$list);
 
         $controllers = getControllers('./application/admin/controller');// 控制器
+        $controllers = array_merge(array_diff($controllers,['Api','Updatesql','Login']));
         $this->assign("controllers",$controllers);
         return view();
     }
 
+    /**
+     * 获取类
+     */
+    public function get_controller()
+    {
+        $module = input('module','admin');
+        $now_controller_now = [];
+        if($module=='admin'){
+            $controllers = getControllers('./application/admin/controller');// 控制器
+            $controllers = array_merge(array_diff($controllers,['Api','Updatesql','Login']));
+            foreach($controllers as $k=>$vo){
+                $now_controller_now[$k] = $vo;
+            }
+        } 
+        echo json_encode(array_values($now_controller_now));
+    }
     /**
      * @Notes:获取方法
      * @Interface get_action
@@ -304,12 +321,17 @@ class Config extends Admin
             foreach($now_act as $k=>$vo){
                 $now_act_now[$k] = $vo['act'];
             }
+            $now_act_now[] = '__call';
+            $now_act_now[] = 'get_menu';
             $actions = getActions('app\admin\controller' . '\\' . $control);
-            //筛选后的方法(未添加的)
-            $fin_act = array_merge(array_diff($actions,$now_act_now));
         }else{
-            $fin_act = getActions('app\admin\controller' . '\\' . $control);
-        }        
+            $now_act_now[] = '__call';
+            $now_act_now[] = 'get_menu';
+            $actions = getActions('app\admin\controller' . '\\' . $control);
+        }  
+        //筛选后的方法(未添加的)
+        $fin_act = array_merge(array_diff($actions,$now_act_now));
+
         echo json_encode(array_values($fin_act));
     }
 
@@ -510,6 +532,31 @@ class Config extends Admin
                 return $res;
             }
         } 
+    }
+    public function version()
+    {
+        admin_role_check($this->z_role_list,$this->mca,1);
+        if(request()->isPost()){
+            $data = input('post.');
+            $res = extraconfig(input('post.'),'version');
+            return ZFRetMsg($res,'保存成功','保存失败');
+        }
+       
+        $this->assign("config",config()['version']);
+        return view();
+    }
+    public function zf_auth()
+    {
+        admin_role_check($this->z_role_list,$this->mca,1);
+        if(request()->isPost()){
+            $data = input('post.');
+            $res = extraconfig(input('post.'),'zf_auth');
+            return ZFRetMsg($res,'保存成功','保存失败');
+        }
+       dd(2);
+        $this->assign("config",config()['zf_auth']);
+        dd(1);
+        return view();
     }
 
 

@@ -1,3 +1,4 @@
+<?php if(ZFC('default_theme_index_content')==''){?>
 <!doctype html>
 <html>
 <head>
@@ -36,5 +37,9 @@
             <li><a href="http://store.zf-sys.com/">子枫插件网站</a></li>
         </ul>
     </div>
+
 </body>
 </html>
+<?php }else{ ?>
+{:ZFC('default_theme_index_content')}
+<?php } ?>

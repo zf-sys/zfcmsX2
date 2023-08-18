@@ -16,7 +16,7 @@
     <div class="layui-card">
       <div class="layui-card-body">
         <div style="padding-bottom: 10px;">
-          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/rests/advert_add",["pid"=>$pid,"type"=>"child"])}')">添加</button>
+          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/rests/advert_add",["pid"=>$pid,"type"=>"child"])}',800)">添加</button>
         </div>
         <table class="layui-table">
             <colgroup>
@@ -52,7 +52,7 @@
                   </td>
                   <td>
                     <a class="layui-btn layui-btn-sm btn_del layui-btn-danger" rel="{$vo['id']}" href="#">删除</a> 
-                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/advert_edit',['id' => $vo['id'],'type'=>'child','pid'=>$vo['pid']] )}")'>编辑</button> 
+                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/advert_edit',['id' => $vo['id'],'type'=>'child','pid'=>$vo['pid']] )}",800)'>编辑</button> 
                   </td>
                 </tr>
               <?php } ?>         

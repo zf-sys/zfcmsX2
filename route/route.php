@@ -35,4 +35,9 @@ try {
 
 //输出上传文件
 Route::get('get_file_out$', 'common/base/get_file_out');
+//静态文件
+Route::get('statics$', 'common/base/statics');
+Route::get('gourl$', 'common/base/gourl');
+
+
 

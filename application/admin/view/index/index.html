@@ -48,6 +48,7 @@
             </ul>
 
             <ul class="layui-nav layui-layout-right">
+                {:doZfAction('admin_right_menu',['data'=>''])}
 
                 <li class="layui-nav-item" >
                     <a target="_blank" href="{$site_path}" data-refresh="管理系统"><i class="fa fa-home"></i></a>
@@ -62,6 +63,15 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
+                    <a href="javascript:;">{$lang=='1'?'默认语言':$lang}</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="{:url('index/change_lang',['lang'=>'1'])}">默认语言 {$lang=='1'?'<span class="layui-badge-dot"></span>':''}</a></dd>
+                        <?php $config_lang = ZFC('lang'); if($config_lang){ $lang_list = explode(',',$config_lang); foreach($lang_list as $k=>$vo){  ?>
+                            <dd><a href="{:url('index/change_lang',['lang'=>$vo])}" >{$vo} {$lang==$vo?'<span class="layui-badge-dot"></span>':''}</a></dd>
+                        <?php }} ?>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layuimini-setting">
                     <a href="javascript:;">{$admin['name']}</a>
                     <dl class="layui-nav-child">
                         <dd>
@@ -71,20 +81,18 @@
                             <a href="javascript:;" layuimini-content-href="{:url('user/pwd_edit')}" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
                         </dd>
                         <dd>
+                            <a href="{:url('zfyun/update_sq')}" data-title="更新插件Sql" data-icon="fa fa-gears">更新插件Sql</a>
+                        </dd>
+                        <dd>
+                            <a href="{:url('zfyun/upgrade_sql')}" data-title="更新系统Sql" data-icon="fa fa-gears">更新系统Sql</a>
+                        </dd>
+                        
+                        <dd>
                             <hr>
                         </dd>
                         <dd>
                             <a href="javascript:;" class="login-out">退出登录</a>
                         </dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;">当前语言版本:{$lang=='1'?'默认语言':$lang}</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="{:url('index/change_lang',['lang'=>'1'])}">默认语言 {$lang=='1'?'<span class="layui-badge-dot"></span>':''}</a></dd>
-                        <?php $config_lang = ZFC('lang'); if($config_lang){ $lang_list = explode(',',$config_lang); foreach($lang_list as $k=>$vo){  ?>
-                            <dd><a href="{:url('index/change_lang',['lang'=>$vo])}" >{$vo} {$lang==$vo?'<span class="layui-badge-dot"></span>':''}</a></dd>
-                        <?php }} ?>
                     </dl>
                 </li>
                 <li class="layui-nav-item layuimini-select-bgcolor" lay-unselect>
@@ -109,7 +117,7 @@
     <!-- 移动导航 -->
     <div class="layuimini-site-mobile"><i class="layui-icon"></i></div>
 
-    <div class="layui-body">
+    <div class="layui-body" style="padding-bottom:0px">
 
         <div class="layuimini-tab layui-tab-rollTool layui-tab" lay-filter="layuiminiTab" lay-allowclose="true">
             <ul class="layui-tab-title">
@@ -133,7 +141,9 @@
             </div>
             <div class="layui-tab-content">
                 <div id="layuiminiHomeTabIframe" class="layui-tab-item layui-show"></div>
+
             </div>
+
         </div>
 
     </div>
@@ -141,11 +151,10 @@
 <script src="__STATIC__/layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="__STATIC__/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
 <script>
-    layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
+    layui.use(['jquery', 'layer', 'miniAdmin'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
-            miniAdmin = layui.miniAdmin,
-            miniTongji = layui.miniTongji;
+            miniAdmin = layui.miniAdmin;
 
         var options = {
             iniUrl: "{:url('index/get_menu')}",    // 初始化接口

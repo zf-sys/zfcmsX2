@@ -8,15 +8,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
   <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
-  <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
   <link rel="stylesheet" href="__STATIC__/style/bootstrap/bootstrap-3.3.4.css">
+  <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
+  <script src="__STATIC__/style/jquery-1.8.3.min.js"></script>  
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script src="__STATIC__/system/common.js"></script>  
+
 </head>
 <body>
   <div class="layui-fluid">
     <div class="layui-card">
       <div class="layui-card-body">
         <div style="padding-bottom: 10px;">
-          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/zfyun/hook_add")}')">添加</button>
+          {include file="public/show_updatesql_msg"}
+
+          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/zfyun/hook_add")}',800)">添加</button>
 
         </div>
         <table class="layui-table">
@@ -28,10 +34,9 @@
               <tr>
                 <th>ID</th>
                 <th>名称</th>
-                <th>类型</th>
+                <th>钩子类型</th>
                 <th>位置</th>
-                <th>类</th>          
-                <th>方法</th>
+                <th>类/方法</th>          
                 <th>排序</th>
                 <th>状态</th>
                 <th>操作</th>
@@ -46,8 +51,10 @@
                   </td>
                   <td>{$vo['type']}</td>
                   <td>{$vo['position']}</td>
-                  <td>{$vo['controller']}</td>
-                  <td>{$vo['action']}</td>
+                  <td>
+                    {$vo['controller']}<br>
+                    {$vo['action']}
+                  </td>
                   <td>
                     <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item1="{$vo['id']}" style="width: 50px;" >
                   </td>
@@ -58,7 +65,7 @@
                   </td>
                   <td>
                     <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'hook')"  href="#">删除</a> 
-                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/zfyun/hook_edit',['id' => $vo['id']] )}")'>编辑</button> 
+                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/zfyun/hook_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
                   </td>
                 </tr>
               <?php } ?>         
@@ -68,9 +75,7 @@
       </div>
     </div>
   </div>
-  <script src="__STATIC__/style/jquery-1.8.3.min.js"></script>  
-  <script src="__STATIC__/style/layui/layui.js"></script>    
-  <script src="__STATIC__/system/common.js"></script>  
+
 
   <script>
  layui.use([ 'table','element'], function(){
@@ -85,7 +90,6 @@
       var id = $(this).attr("item")
       var dbname = 'hook'
       var status = this.checked ? '1' : '0'
-      console.log(id)
       $.get("{:url('admin/common/is_switch')}",{id:id,dbname:dbname,status:status},function(res){
           if(res.result==1){
             layer.msg(res.msg, {icon: 1});

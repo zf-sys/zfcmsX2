@@ -38,6 +38,7 @@ class Index extends Base
     
    
     public function hook($func=''){   
+        
         $theme_name = $this->zf_tpl_suffix;
         $route_info= request()->routeInfo();
         if(!isset($route_info['option']['append']['controller'])){ die('未配置controller'); }
@@ -47,10 +48,12 @@ class Index extends Base
         $controller = $_arr_router[0];
         $action = $_arr_router[1];
         \think\Loader::addAutoLoadDir( './theme');
+
         $controller_name = '\\'.$theme_name.'\controller\\'.ucwords($controller);
         $base = new $controller_name();
         $ret = $base->$action();
         $this->tpl = $theme_name.'/'.$controller.'/'.$action;
+        
         if(is_object($ret)){
             $obj_name = get_class($ret);
             if($obj_name=='think\response\View'){

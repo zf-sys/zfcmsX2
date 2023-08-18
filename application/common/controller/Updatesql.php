@@ -31,6 +31,9 @@ class Updatesql extends Controller
             ],
             'v0.0.3'=>$this->v0_0_3(),
             'v0.0.4'=>$this->v0_0_4(),
+            'v0.0.6'=>$this->v0_0_6(),
+            'v0.0.8'=>$this->v0_0_8(),
+            'v0.0.9'=>$this->v0_0_9(),
         ]; 
     }
 
@@ -51,7 +54,13 @@ class Updatesql extends Controller
         return $up_arr;
 
     }
-
+    public function v0_0_0_2(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}user_group like 'tag'",
+            "alter table {$this->tb_prefix}user_group add tag varchar(50) not null"
+        ];
+    }
     
     public function v0_0_3(){
         $ret_data[1] = [ 
@@ -72,6 +81,40 @@ class Updatesql extends Controller
 
         return $ret_data;
     }
+    /**
+     * 1. upload新增thumb字段
+     */
+    public function v0_0_6(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}upload like 'thumb'",
+            "alter table {$this->tb_prefix}upload add thumb varchar(255) not null "
+        ];
+        // dd(2);
+        return $ret_data;
+    }
+    public function v0_0_8(){
+        $ret_data[1] = [ 
+            'tb_post_add',
+            $this->tb_prefix.'config',
+            ['key'=>'default_theme_index_content','type'=>'system','msg'=>'默认首页显示信息','value'=>''],
+            false,  //是否允许重复
+            ['key'=>'default_theme_index_content','type'=>'system'],
+        ];
+        return $ret_data;
+    }
+    public function v0_0_9(){
+        $ret_data[1] = [ 
+            'tb_post_add',
+            $this->tb_prefix.'config',
+            ['key'=>'gourl_tokens','type'=>'system','msg'=>'goUrl中特殊的tokens 每行一个,token@跳转链接','value'=>'bd@https://www.baidu.com'],
+            false,  //是否允许重复
+            ['key'=>'gourl_tokens','type'=>'system'],
+        ];
+        return $ret_data;
+    }
+
+
 
 
     public function index(){

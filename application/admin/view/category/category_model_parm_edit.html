@@ -20,7 +20,7 @@
       {$form_widget->form_input(['title'=>'默认值','name'=>'value','data'=>$res['value'],'theme'=>2])|raw}
 
       {$form_widget->form_radio(['title'=>'位置','name'=>'position','data'=>$res['position'],'parm_data'=>['1'=>'左','2'=>'右'],'theme'=>2])|raw}
-      {$form_widget->form_select(['title'=>'类型','name'=>'type','data'=>$res['type'],'list_arr'=>['form_input','form_textarea','upload_album','filesystem_album','upload_album_title','form_time','upload_pic','filesystem_pic','upload_file','filesystem_file','form_radio','layui_switch','form_checkbox','form_select','form_tinymce','form_wangeditor','form_vditor','form_ueditor'],'theme'=>5])|raw}
+      {$form_widget->form_select(['title'=>'类型','name'=>'type','data'=>$res['type'],'list_arr'=>['form_input','form_input_tag','form_textarea','upload_album','filesystem_album','upload_album_title','form_time','upload_pic','upload_dragpic','filesystem_pic','upload_file','filesystem_file','form_radio','layui_switch','form_checkbox','form_select','form_tinymce','form_wangeditor','form_vditor','form_ueditor','form_input_color'],'theme'=>5])|raw}
 
 
       {$form_widget->form_select(['title'=>'模板','name'=>'theme','data'=>$res['theme'],'list_arr'=>['1','2','3','4','5','6','7','8','9','10'],'theme'=>5])|raw}
@@ -28,7 +28,7 @@
       {$form_widget->form_textarea(['title'=>'扩展参数1','name'=>'append1','data'=>$res['append1'],'theme'=>2])|raw}
       <div class="layui-form-item">
         <div class="layui-input-block">
-      模板扩展参数1 :upload_album_title(data_title),form_time(time_type),form_radio(parm_data),form_checkbox(id_t),form_select(id_t)
+      模板扩展参数1 :form_time(time_type),form_radio(parm_data),form_checkbox(id_t),form_select(id_t)
         </div>
       </div>
 
@@ -52,11 +52,13 @@
       {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
       {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
 
-      <div class="layui-form-item" >
+      <!-- <div class="layui-form-item" >
         <div class="layui-input-block">
           <a class="layui-btn layui-btn-sm" href="javascript:;" onclick="tijiao_data('category/category_model_parm_edit')"   >立即提交</a>
         </div>
-      </div>
+      </div> -->
+      {include file="public/widget_submit"}
+
     </form>
   </div>
 
@@ -75,6 +77,31 @@
         $('.append_show').html('<a href="http://bbs.wangmingchang.com/forum.php?mod=viewthread&tid=1921&extra=page=1" target="_blank" style="line-height: 35px;color:red;">使用前需先检查是否配置</a>');
       }
     });
+
+
+    $(".tijiao").on("click",function(){
+        var index = layer.load(2);
+        var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();      
+        $.ajax({
+            type:'post',
+            url:"{:url('admin/category/category_model_parm_edit')}",
+            data:data,
+            dataType:'json',
+            success:function(res){
+              layer.close(index);
+              if(res.result==1){
+                layer.msg(res.msg, {icon: 1});
+                setTimeout(function() {
+                  window.parent.location.reload();
+                }, 2000);
+              }else{
+                layer.msg(res.msg, {icon: 2});
+                
+              }
+              
+            }
+        })
+      });
 
     
   })

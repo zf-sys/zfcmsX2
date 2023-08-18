@@ -107,8 +107,8 @@ CREATE TABLE `zf_admin_role` (
   `sort` tinyint(10) NOT NULL DEFAULT '0',
   `pid` int(11) NOT NULL DEFAULT '0',
   `module` varchar(255) DEFAULT NULL,
-  `control` varchar(50) NOT NULL,
-  `act` varchar(50) NOT NULL,
+  `control` varchar(50) NOT NULL DEFAULT '',
+  `act` varchar(50) NOT NULL DEFAULT '',
   `menu` tinyint(1) NOT NULL DEFAULT '1',
   `parm` varchar(255) DEFAULT NULL,
   `token` varchar(255) NOT NULL DEFAULT '',
@@ -116,58 +116,125 @@ CREATE TABLE `zf_admin_role` (
   `lang` varchar(50) NOT NULL DEFAULT '',
   `lang_pid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COMMENT='管理员权限表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员权限表';
 
 -- ----------------------------
 -- Records of zf_admin_role
 -- ----------------------------
-INSERT INTO `zf_admin_role` VALUES ('154', '网站设置', 'admin/Config/', '1', '1', null, '50', '180', 'admin', 'Config', '', '1', '', '1638408660', 'fa fa-cog', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('157', '管理组', 'admin/Config/admin_group', '1', '1', null, '0', '154', 'admin', 'Config', 'admin_group', '1', '', '1638408991', 'fa fa-users', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('158', '管理员列表', 'admin/Config/admin_index', '1', '1', null, '0', '154', 'admin', 'Config', 'admin_index', '1', '', '1638409004', 'fa fa-user-secret', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('159', '权限管理', 'admin/Config/admin_role', '1', '1', null, '0', '154', 'admin', 'Config', 'admin_role', '1', '', '1638409120', 'fa fa-american-sign-language-interpreting', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('160', '操作日志', 'admin/Config/action_log', '1', '1', null, '0', '154', 'admin', 'Config', 'action_log', '1', '', '1638409211', 'fa fa-bandcamp', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('161', '新增管理员', 'admin/Config/admin_add', '1', '1', null, '0', '158', 'admin', 'Config', 'admin_add', '0', '', '', '', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('162', '编辑管理员', 'admin/Config/admin_edit', '1', '1', null, '0', '158', 'admin', 'Config', 'admin_edit', '0', '', '', '', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('163', '新增管理组', 'admin/Config/admin_group_add', '1', '1', null, '0', '157', 'admin', 'Config', 'admin_group_add', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('164', '编辑管理组', 'admin/Config/admin_group_edit', '1', '1', null, '0', '157', 'admin', 'Config', 'admin_group_edit', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('165', '新增权限', 'admin/Config/admin_role_add', '1', '1', null, '0', '159', 'admin', 'Config', 'admin_role_add', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('166', '编辑权限', 'admin/Config/admin_role_edit', '1', '1', null, '0', '159', 'admin', 'Config', 'admin_role_edit', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('167', '管理组权限', 'admin/Config/admin_group_role', '1', '1', null, '0', '157', 'admin', 'Config', 'admin_group_role', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('168', '获取方法', 'admin/Config/get_action', '1', '1', null, '0', '159', 'admin', 'Config', 'get_action', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('169', 'OSS设置', 'admin/Config/oss_config', '1', '1', null, '0', '154', 'admin', 'Config', 'oss_config', '1', '', '1638409235', 'fa fa-arrow-circle-up', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('170', '其他设置', 'admin/Rests/', '1', '1', null, '30', '180', 'admin', 'Rests', '', '1', '', '1638408588', 'fa fa-cubes', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('171', '广告管理', 'admin/Rests/advert', '1', '1', null, '0', '170', 'admin', 'Rests', 'advert', '1', '', '1634719759', 'fa fa-adjust', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('172', '新增广告', 'admin/Rests/advert_add', '1', '1', null, '0', '171', 'admin', 'Rests', 'advert_add', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('173', '编辑广告', 'admin/Rests/advert_edit', '1', '1', null, '0', '171', 'admin', 'Rests', 'advert_edit', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('174', '超链管理', 'admin/Rests/link', '1', '1', null, '0', '170', 'admin', 'Rests', 'link', '1', '', '1634719773', 'fa fa-link', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('175', '新增超链', 'admin/Rests/link_add', '1', '1', null, '0', '174', 'admin', 'Rests', 'link_add', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('176', '编辑超链', 'admin/Rests/link_edit', '1', '1', null, '0', '174', 'admin', 'Rests', 'link_edit', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('177', '留言管理', 'admin/Rests/guessbook', '1', '1', null, '0', '170', 'admin', 'Rests', 'guessbook', '1', '', '1634719799', 'fa fa-align-justify', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('178', '新增留言', 'admin/Rests/guessbook_add', '1', '1', null, '0', '177', 'admin', 'Rests', 'guessbook_add', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('179', '留言详情', 'admin/Rests/guessbook_edit', '1', '1', null, '0', '177', 'admin', 'Rests', 'guessbook_edit', '0', '', '', null, '', '0');
-INSERT INTO `zf_admin_role` VALUES ('180', '内容管理', 'admin/Category/', '1', '1', null, '10', '0', 'admin', 'Category', '', '1', '', '', 'fa fa-book', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('182', '内容板块', 'admin/Category/index', '1', '1', null, '0', '180', 'admin', 'Category', 'index', '1', '', '1646270646', 'fa fa-book', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('183', '内容模型', 'admin/Category/category_model', '1', '1', null, '0', '180', 'admin', 'Category', 'category_model', '1', '', '', 'fa fa-modx', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('184', '内容列表', 'admin/Category/post_all_list', '1', '1', null, '0', '180', 'admin', 'Category', 'post_all_list', '1', '', '', 'fa fa-book', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('185', '专题列表', 'admin/Category/special', '1', '1', null, '0', '180', 'admin', 'Category', 'special', '1', '', '1634719563', 'fa fa-book', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('186', '用户管理', 'admin/User/', '1', '1', null, '20', '180', 'admin', 'User', '', '1', '', '1638408530', 'fa fa-user-circle', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('187', '用户列表', 'admin/User/index', '1', '1', null, '0', '186', 'admin', 'User', 'index', '1', '', '1634719634', 'fa fa-user', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('188', '用户分组', 'admin/User/group', '1', '1', null, '0', '186', 'admin', 'User', 'group', '1', '', '1634719658', 'fa fa-users', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('193', 'Tag标签', 'admin/Category/tag', '1', '1', null, '0', '180', 'admin', 'Category', 'tag', '1', '', '1634719581', 'fa fa-tags', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('195', '分组', 'plugins/zf_querylist.index/cate', '1', '1', null, '0', '194', 'plugins', 'index', 'cate', '1', '', '', '', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('196', '列表', 'plugins/zf_querylist.index/index', '1', '1', null, '0', '194', 'plugins', 'index', 'index', '1', '', '', '', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('198', '商店', 'admin/0/0', '1', '1', null, '80', '0', 'admin', '0', '0', '1', '', '1637805157', '', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('199', '模板', 'admin/Zfyun/themes', '1', '1', null, '1', '198', 'admin', 'Zfyun', 'themes', '1', '', '1634719930', 'fa fa-align-justify', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('200', '插件', 'admin/Zfyun/plugins', '1', '1', null, '2', '198', 'admin', 'Zfyun', 'plugins', '1', '', '1634719907', 'fa fa-plug', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('201', '其他参数', 'admin/Config/custom_config', '1', '1', null, '0', '154', 'admin', 'Config', 'custom_config', '1', '', '1638409253', 'fa fa-sticky-note-o', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('202', '基本设置', 'admin/Config/index', '1', '1', null, '0', '154', 'admin', 'Config', 'index', '1', '', '1638409341', 'fa fa-cube', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('203', '邮箱配置', 'admin/Config/email', '1', '1', null, '0', '154', 'admin', 'Config', 'email', '1', '', '1638409286', 'fa fa-window-maximize', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('209', '升级', 'admin/Zfyun/upgrade', '1', '1', null, '5', '198', 'admin', 'Zfyun', 'ZfUpgrade', '1', '', '1637822193', 'fa fa-gratipay', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('213', '菜单管理', 'admin/Rests/menu', '1', '1', null, '0', '170', 'admin', 'Rests', 'menu', '1', '', '1644927259', 'fa fa-certificate', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('214', '论坛板块', 'admin/Category/index', '1', '1', null, '0', '180', 'admin', 'Category', 'index', '1', 'type=bbs', '1646224208', 'fa fa-500px', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('215', '在线商店', 'admin/Zfyun/store', '1', '1', null, '6', '198', 'admin', 'Zfyun', 'store', '1', '', '1646401835', 'fa fa-window-restore', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('216', '钩子', 'admin/Zfyun/hook', '1', '1', null, '3', '198', 'admin', 'Zfyun', 'hook', '1', '', '1648289288', 'fa fa-500px', '', '0');
-INSERT INTO `zf_admin_role` VALUES ('217', '任务', 'admin/Zfyun/task', '1', '1', null, '4', '198', 'admin', 'Zfyun', 'task', '1', '', '1656988690', 'fa fa-bolt', '', '0');
+INSERT INTO `zf_admin_role` (`id`, `name`, `value`, `check`, `status`, `summary`, `sort`, `pid`, `module`, `control`, `act`, `menu`, `parm`, `token`, `icon`, `lang`, `lang_pid`) VALUES
+(154,	'网站设置',	'admin/Config/',	1,	1,	NULL,	10,	218,	'admin',	'Config',	'',	1,	'',	'1680477269',	'fa fa-cog',	'',	0),
+(157,	'管理组',	'admin/Config/admin_group',	1,	1,	NULL,	0,	219,	'admin',	'Config',	'admin_group',	1,	'',	'1680477401',	'fa fa-users',	'',	0),
+(158,	'管理员列表',	'admin/Config/admin_index',	1,	1,	NULL,	0,	219,	'admin',	'Config',	'admin_index',	1,	'',	'1680477410',	'fa fa-user-secret',	'',	0),
+(159,	'权限管理',	'admin/Config/admin_role',	1,	1,	NULL,	0,	219,	'admin',	'Config',	'admin_role',	1,	'',	'1680477424',	'fa fa-american-sign-language-interpreting',	'',	0),
+(160,	'操作日志',	'admin/Config/action_log',	1,	1,	NULL,	4,	154,	'admin',	'Config',	'action_log',	1,	'',	'1638409211',	'fa fa-bandcamp',	'',	0),
+(161,	'新增管理员',	'admin/Config/admin_add',	1,	1,	NULL,	0,	158,	'admin',	'Config',	'admin_add',	0,	'',	'',	'',	'',	0),
+(162,	'编辑管理员',	'admin/Config/admin_edit',	1,	1,	NULL,	0,	158,	'admin',	'Config',	'admin_edit',	0,	'',	'',	'',	'',	0),
+(163,	'新增管理组',	'admin/Config/admin_group_add',	1,	1,	NULL,	0,	157,	'admin',	'Config',	'admin_group_add',	0,	'',	'',	NULL,	'',	0),
+(164,	'编辑管理组',	'admin/Config/admin_group_edit',	1,	1,	NULL,	0,	157,	'admin',	'Config',	'admin_group_edit',	0,	'',	'',	NULL,	'',	0),
+(165,	'新增权限',	'admin/Config/admin_role_add',	1,	1,	NULL,	0,	159,	'admin',	'Config',	'admin_role_add',	0,	'',	'',	NULL,	'',	0),
+(166,	'编辑权限',	'admin/Config/admin_role_edit',	1,	1,	NULL,	0,	159,	'admin',	'Config',	'admin_role_edit',	0,	'',	'',	NULL,	'',	0),
+(167,	'管理组权限',	'admin/Config/admin_group_role',	1,	1,	NULL,	0,	157,	'admin',	'Config',	'admin_group_role',	0,	'',	'',	NULL,	'',	0),
+(168,	'获取方法',	'admin/Config/get_action',	1,	1,	NULL,	0,	159,	'admin',	'Config',	'get_action',	0,	'',	'',	NULL,	'',	0),
+(169,	'OSS设置',	'admin/Config/oss_config',	1,	1,	NULL,	3,	154,	'admin',	'Config',	'oss_config',	1,	'',	'1638409235',	'fa fa-arrow-circle-up',	'',	0),
+(170,	'其他设置',	'admin/Rests/',	1,	1,	NULL,	30,	180,	'admin',	'Rests',	'',	1,	'',	'1638408588',	'fa fa-cubes',	'',	0),
+(171,	'广告管理',	'admin/Rests/advert',	1,	1,	NULL,	0,	170,	'admin',	'Rests',	'advert',	1,	'',	'1634719759',	'fa fa-adjust',	'',	0),
+(172,	'新增广告',	'admin/Rests/advert_add',	1,	1,	NULL,	0,	171,	'admin',	'Rests',	'advert_add',	0,	'',	'',	NULL,	'',	0),
+(173,	'编辑广告',	'admin/Rests/advert_edit',	1,	1,	NULL,	0,	171,	'admin',	'Rests',	'advert_edit',	0,	'',	'',	NULL,	'',	0),
+(174,	'超链管理',	'admin/Rests/link',	1,	1,	NULL,	0,	170,	'admin',	'Rests',	'link',	1,	'',	'1634719773',	'fa fa-link',	'',	0),
+(175,	'新增超链',	'admin/Rests/link_add',	1,	1,	NULL,	0,	174,	'admin',	'Rests',	'link_add',	0,	'',	'',	NULL,	'',	0),
+(176,	'编辑超链',	'admin/Rests/link_edit',	1,	1,	NULL,	0,	174,	'admin',	'Rests',	'link_edit',	0,	'',	'',	NULL,	'',	0),
+(177,	'留言管理',	'admin/Rests/guessbook',	1,	1,	NULL,	0,	170,	'admin',	'Rests',	'guessbook',	1,	'',	'1634719799',	'fa fa-align-justify',	'',	0),
+(178,	'新增留言',	'admin/Rests/guessbook_add',	1,	1,	NULL,	0,	177,	'admin',	'Rests',	'guessbook_add',	0,	'',	'',	NULL,	'',	0),
+(179,	'留言详情',	'admin/Rests/guessbook_edit',	1,	1,	NULL,	0,	177,	'admin',	'Rests',	'guessbook_edit',	0,	'',	'',	NULL,	'',	0),
+(180,	'内容',	'admin/Category/',	1,	1,	NULL,	20,	0,	'admin',	'Category',	'',	1,	'',	'1680477523',	'fa fa-book',	'',	0),
+(182,	'内容板块',	'admin/Category/index',	1,	1,	NULL,	0,	180,	'admin',	'Category',	'index',	1,	'',	'1646270646',	'fa fa-book',	'',	0),
+(183,	'内容模型',	'admin/Category/category_model',	1,	1,	NULL,	0,	180,	'admin',	'Category',	'category_model',	1,	'',	'',	'fa fa-modx',	'',	0),
+(184,	'内容列表',	'admin/Category/post_all_list',	1,	1,	NULL,	0,	180,	'admin',	'Category',	'post_all_list',	1,	'',	'',	'fa fa-book',	'',	0),
+(185,	'专题列表',	'admin/Category/special',	1,	1,	NULL,	0,	180,	'admin',	'Category',	'special',	1,	'',	'1634719563',	'fa fa-book',	'',	0),
+(186,	'用户管理',	'admin/User/',	1,	1,	NULL,	20,	220,	'admin',	'User',	'',	1,	'',	'1680478112',	'fa fa-user-circle',	'',	0),
+(187,	'用户列表',	'admin/User/index',	1,	1,	NULL,	0,	186,	'admin',	'User',	'index',	1,	'',	'1634719634',	'fa fa-user',	'',	0),
+(188,	'用户分组',	'admin/User/group',	1,	1,	NULL,	0,	186,	'admin',	'User',	'group',	1,	'',	'1634719658',	'fa fa-users',	'',	0),
+(193,	'Tag标签',	'admin/Category/tag',	1,	1,	NULL,	0,	180,	'admin',	'Category',	'tag',	1,	'',	'1634719581',	'fa fa-tags',	'',	0),
+(195,	'分组',	'plugins/zf_querylist.index/cate',	1,	1,	NULL,	0,	194,	'plugins',	'index',	'cate',	1,	'',	'',	'',	'',	0),
+(196,	'列表',	'plugins/zf_querylist.index/index',	1,	1,	NULL,	0,	194,	'plugins',	'index',	'index',	1,	'',	'',	'',	'',	0),
+(198,	'商店',	'admin/0/0',	1,	1,	NULL,	80,	0,	'admin',	'0',	'0',	1,	'',	'1637805157',	'',	'',	0),
+(199,	'模板',	'admin/Zfyun/themes',	1,	1,	NULL,	1,	198,	'admin',	'Zfyun',	'themes',	1,	'',	'1634719930',	'fa fa-align-justify',	'',	0),
+(200,	'插件',	'admin/Zfyun/plugins',	1,	1,	NULL,	2,	198,	'admin',	'Zfyun',	'plugins',	1,	'',	'1634719907',	'fa fa-plug',	'',	0),
+(201,	'其他参数',	'admin/Config/custom_config',	1,	1,	NULL,	2,	154,	'admin',	'Config',	'custom_config',	1,	'',	'1638409253',	'fa fa-sticky-note-o',	'',	0),
+(202,	'基本设置',	'admin/Config/index',	1,	1,	NULL,	0,	154,	'admin',	'Config',	'index',	1,	'',	'1638409341',	'fa fa-cube',	'',	0),
+(203,	'邮箱配置',	'admin/Config/email',	1,	1,	NULL,	1,	154,	'admin',	'Config',	'email',	1,	'',	'1638409286',	'fa fa-window-maximize',	'',	0),
+(209,	'升级',	'admin/Zfyun/upgrade',	1,	1,	NULL,	5,	198,	'admin',	'Zfyun',	'upgrade',	1,	'',	'1637822193',	'fa fa-gratipay',	'',	0),
+(213,	'菜单管理',	'admin/Rests/menu',	1,	1,	NULL,	0,	170,	'admin',	'Rests',	'menu',	1,	'',	'1644927259',	'fa fa-certificate',	'',	0),
+(214,	'论坛板块',	'admin/Category/index',	1,	1,	NULL,	0,	180,	'admin',	'Category',	'index',	1,	'type=bbs',	'1646224208',	'fa fa-500px',	'',	0),
+(215,	'在线商店',	'admin/Zfyun/store',	1,	1,	NULL,	6,	198,	'admin',	'Zfyun',	'store',	1,	'',	'1646401835',	'fa fa-window-restore',	'',	0),
+(216,	'钩子',	'admin/Zfyun/hook',	1,	1,	NULL,	3,	198,	'admin',	'Zfyun',	'hook',	1,	'',	'1648289288',	'fa fa-500px',	'',	0),
+(217,	'任务',	'admin/Zfyun/task',	1,	1,	NULL,	4,	198,	'admin',	'Zfyun',	'task',	1,	'',	'1656988690',	'fa fa-bolt',	'',	0),
+(218,	'系统',	'admin/0/0',	1,	1,	NULL,	10,	0,	'admin',	'0',	'0',	1,	'',	'1680477301',	'fa fa-server',	'',	0),
+(219,	'权限管理',	'admin/0/0',	1,	1,	NULL,	20,	218,	'admin',	'0',	'0',	1,	'',	'1680482183',	'fa fa-rocket',	'',	0),
+(220,	'会员',	'admin/0/0',	1,	1,	NULL,	30,	0,	'admin',	'0',	'0',	1,	'',	'',	NULL,	'',	0),
+(221,	'系统参数',	'admin/0/0',	1,	1,	NULL,	30,	218,	'admin',	'0',	'0',	1,	'',	'1680499509',	'fa fa-adn',	'',	0),
+(222,	'版本信息',	'admin/Config/version',	1,	1,	NULL,	0,	221,	'admin',	'Config',	'version',	1,	'',	'',	NULL,	'',	0),
+(223,	'授权信息',	'admin/Config/zf_auth',	1,	1,	NULL,	0,	221,	'admin',	'Config',	'zf_auth',	1,	'',	'',	NULL,	'',	0),
+(224,	'测试邮件',	'admin/Config/test_email',	1,	1,	NULL,	0,	203,	'admin',	'Config',	'test_email',	0,	'',	'',	NULL,	'',	0),
+(225,	'其他参数修改',	'admin/Config/custom_config_edit',	1,	1,	NULL,	0,	201,	'admin',	'Config',	'custom_config_edit',	0,	'',	'',	NULL,	'',	0),
+(226,	'批量修改栏目',	'admin/Category/cate_all_edit',	1,	1,	NULL,	0,	182,	'admin',	'Category',	'cate_all_edit',	0,	'',	'',	NULL,	'',	0),
+(227,	'新增栏目',	'admin/Category/category_add',	1,	1,	NULL,	0,	182,	'admin',	'Category',	'category_add',	0,	'',	'',	NULL,	'',	0),
+(228,	'编辑栏目',	'admin/Category/category_edit',	1,	1,	NULL,	0,	182,	'admin',	'Category',	'category_edit',	0,	'',	'',	NULL,	'',	0),
+(229,	'新增模型',	'admin/Category/category_model_add',	1,	1,	NULL,	0,	183,	'admin',	'Category',	'category_model_add',	0,	'',	'',	NULL,	'',	0),
+(230,	'编辑模型',	'admin/Category/category_model_edit',	1,	1,	NULL,	0,	183,	'admin',	'Category',	'category_model_edit',	0,	'',	'',	NULL,	'',	0),
+(231,	'文章列表',	'admin/Category/post_list',	1,	1,	NULL,	0,	184,	'admin',	'Category',	'post_list',	0,	'',	'1680490759',	'',	'',	0),
+(232,	'批量新增内容',	'admin/Category/post_add_pl',	1,	1,	NULL,	0,	184,	'admin',	'Category',	'post_add_pl',	0,	'',	'',	NULL,	'',	0),
+(233,	'新增/编辑内容',	'admin/Category/post_add',	1,	1,	NULL,	0,	184,	'admin',	'Category',	'post_add',	0,	'',	'',	NULL,	'',	0),
+(234,	'导入内容',	'admin/Category/import',	1,	1,	NULL,	0,	184,	'admin',	'Category',	'import',	0,	'',	'',	NULL,	'',	0),
+(235,	'根据关键字搜索内容',	'admin/Category/ajax_search_post',	1,	1,	NULL,	0,	184,	'admin',	'Category',	'ajax_search_post',	0,	'',	'',	NULL,	'',	0),
+(236,	'模型参数列表',	'admin/Category/category_model_parm',	1,	1,	NULL,	0,	183,	'admin',	'Category',	'category_model_parm',	0,	'',	'',	NULL,	'',	0),
+(237,	'模型参数列表新增',	'admin/Category/category_model_parm_add',	1,	1,	NULL,	0,	236,	'admin',	'Category',	'category_model_parm_add',	0,	'',	'',	NULL,	'',	0),
+(238,	'模型参数列表编辑',	'admin/Category/category_model_parm_edit',	1,	1,	NULL,	0,	183,	'admin',	'Category',	'category_model_parm_edit',	0,	'',	'',	NULL,	'',	0),
+(239,	'新增专题',	'admin/Category/special_add',	1,	1,	NULL,	0,	185,	'admin',	'Category',	'special_add',	0,	'',	'',	NULL,	'',	0),
+(240,	'编辑专题',	'admin/Category/special_edit',	1,	1,	NULL,	0,	185,	'admin',	'Category',	'special_edit',	0,	'',	'',	NULL,	'',	0),
+(241,	'专题关联',	'admin/Category/special_post_edit',	1,	1,	NULL,	0,	185,	'admin',	'Category',	'special_post_edit',	0,	'',	'',	NULL,	'',	0),
+(242,	'新增标签',	'admin/Category/tag_add',	1,	1,	NULL,	0,	193,	'admin',	'Category',	'tag_add',	0,	'',	'',	NULL,	'',	0),
+(243,	'编辑标签',	'admin/Category/tag_edit',	1,	1,	NULL,	0,	193,	'admin',	'Category',	'tag_edit',	0,	'',	'',	NULL,	'',	0),
+(244,	'Index',	'admin/Index/',	1,	1,	NULL,	0,	0,	'admin',	'Index',	'',	0,	'',	'',	NULL,	'',	0),
+(245,	'欢迎页',	'admin/Index/welcome',	1,	1,	NULL,	0,	244,	'admin',	'Index',	'welcome',	0,	'',	'',	NULL,	'',	0),
+(246,	'清除伪删除数据',	'admin/Index/db_clear',	1,	1,	NULL,	0,	244,	'admin',	'Index',	'db_clear',	0,	'',	'',	NULL,	'',	0),
+(247,	'清除缓存',	'admin/Index/temp_clear',	1,	1,	NULL,	0,	244,	'admin',	'Index',	'temp_clear',	0,	'',	'',	NULL,	'',	0),
+(248,	'切换语言',	'admin/Index/change_lang',	1,	1,	NULL,	0,	244,	'admin',	'Index',	'change_lang',	0,	'',	'',	NULL,	'',	0),
+(249,	'公共',	'admin/Common/',	1,	1,	NULL,	0,	0,	'admin',	'Common',	'',	0,	'',	'',	NULL,	'',	0),
+(250,	'验证码',	'admin/Common/verify',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'verify',	0,	'',	'',	NULL,	'',	0),
+(251,	'状态切换',	'admin/Common/is_switch',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'is_switch',	0,	'',	'',	NULL,	'',	0),
+(252,	'是否推荐',	'admin/Common/is_recommend',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'is_recommend',	0,	'',	'',	NULL,	'',	0),
+(253,	'是否置顶',	'admin/Common/is_istop',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'is_istop',	0,	'',	'',	NULL,	'',	0),
+(254,	'是否菜单',	'admin/Common/is_menu',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'is_menu',	0,	'',	'',	NULL,	'',	0),
+(255,	'删除内容',	'admin/Common/del_post',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'del_post',	0,	'',	'',	NULL,	'',	0),
+(256,	'批量删除',	'admin/Common/more_del',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'more_del',	0,	'',	'',	NULL,	'',	0),
+(257,	'修改字段',	'admin/Common/value_edit',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'value_edit',	0,	'',	'1680492510',	'',	'',	0),
+(258,	'配置修改',	'admin/Common/config_edit',	1,	1,	NULL,	0,	249,	'admin',	'Common',	'config_edit',	0,	'',	'',	NULL,	'',	0),
+(259,	'新增菜单',	'admin/Rests/menu_add',	1,	1,	NULL,	0,	213,	'admin',	'Rests',	'menu_add',	0,	'',	'',	NULL,	'',	0),
+(260,	'编辑菜单',	'admin/Rests/menu_edit',	1,	1,	NULL,	0,	213,	'admin',	'Rests',	'menu_edit',	0,	'',	'',	NULL,	'',	0),
+(261,	'新增用户',	'admin/User/add',	1,	1,	NULL,	0,	187,	'admin',	'User',	'add',	0,	'',	'',	NULL,	'',	0),
+(262,	'编辑用户',	'admin/User/edit',	1,	1,	NULL,	0,	187,	'admin',	'User',	'edit',	0,	'',	'',	NULL,	'',	0),
+(263,	'新增用户组',	'admin/User/group_add',	1,	1,	NULL,	0,	188,	'admin',	'User',	'group_add',	0,	'',	'',	NULL,	'',	0),
+(264,	'编辑用户组',	'admin/User/group_edit',	1,	1,	NULL,	0,	188,	'admin',	'User',	'group_edit',	0,	'',	'',	NULL,	'',	0),
+(265,	'修改密码',	'admin/User/pwd_edit',	1,	1,	NULL,	0,	244,	'admin',	'User',	'pwd_edit',	0,	'',	'',	NULL,	'',	0),
+(266,	'账号信息',	'admin/User/admin_info',	1,	1,	NULL,	0,	244,	'admin',	'User',	'admin_info',	0,	'',	'',	NULL,	'',	0),
+(267,	'导出用户',	'admin/User/export',	1,	1,	NULL,	0,	187,	'admin',	'User',	'export',	0,	'',	'1680493511',	'',	'',	0),
+(268,	'模板上传',	'admin/Zfyun/themes_upload',	1,	1,	NULL,	0,	199,	'admin',	'Zfyun',	'themes_upload',	0,	'',	'',	NULL,	'',	0),
+(269,	'插件上传',	'admin/Zfyun/plugin_upload',	1,	1,	NULL,	0,	200,	'admin',	'Zfyun',	'plugin_upload',	0,	'',	'',	NULL,	'',	0),
+(270,	'插件卸载',	'admin/Zfyun/plugin_uninstall',	1,	1,	NULL,	0,	200,	'admin',	'Zfyun',	'plugin_uninstall',	0,	'',	'',	NULL,	'',	0),
+(271,	'模板下载',	'admin/Zfyun/themes_uninstall',	1,	1,	NULL,	0,	199,	'admin',	'Zfyun',	'themes_uninstall',	0,	'',	'',	NULL,	'',	0),
+(272,	'插件备份',	'admin/Zfyun/plugin_backup',	1,	1,	NULL,	0,	200,	'admin',	'Zfyun',	'plugin_backup',	0,	'',	'',	NULL,	'',	0),
+(273,	'模板备份',	'admin/Zfyun/theme_backup',	1,	1,	NULL,	0,	199,	'admin',	'Zfyun',	'theme_backup',	0,	'',	'',	NULL,	'',	0),
+(274,	'任务日志',	'admin/Zfyun/task_log',	1,	1,	NULL,	0,	217,	'admin',	'Zfyun',	'task_log',	0,	'',	'',	NULL,	'',	0),
+(275,	'新增钩子',	'admin/Zfyun/hook_add',	1,	1,	NULL,	0,	216,	'admin',	'Zfyun',	'hook_add',	0,	'',	'',	NULL,	'',	0),
+(276,	'编辑钩子',	'admin/Zfyun/hook_edit',	1,	1,	NULL,	0,	216,	'admin',	'Zfyun',	'hook_edit',	0,	'',	'1680494371',	'',	'',	0),
+(277,	'新增任务',	'admin/Zfyun/task_add',	1,	1,	NULL,	0,	217,	'admin',	'Zfyun',	'task_add',	0,	'',	'',	NULL,	'',	0),
+(278,	'编辑任务',	'admin/Zfyun/task_edit',	1,	1,	NULL,	0,	217,	'admin',	'Zfyun',	'task_edit',	0,	'',	'',	NULL,	'',	0),
+(279,	'更新授权',	'admin/Zfyun/update_sq',	1,	1,	NULL,	0,	200,	'admin',	'Zfyun',	'update_sq',	0,	'',	'',	NULL,	'',	0),
+(280,	'系统Sql升级',	'admin/Zfyun/upgrade_sql',	1,	1,	NULL,	0,	209,	'admin',	'Zfyun',	'upgrade_sql',	0,	'',	'',	NULL,	'',	0),
+(281,	'更新站点授权',	'admin/Zfyun/authentication_sys',	1,	1,	NULL,	0,	209,	'admin',	'Zfyun',	'authentication_sys',	0,	'',	'',	NULL,	'',	0),
+(282,	'跳转模板配置',	'admin/Zfyun/jump_theme_config',	1,	1,	NULL,	0,	199,	'admin',	'Zfyun',	'jump_theme_config',	0,	'',	'1680499167',	'',	'',	0),
+(283,	'插件操作',	'admin/Zfyun/plugin_act',	1,	1,	NULL,	0,	200,	'admin',	'Zfyun',	'plugin_act',	0,	'',	'',	NULL,	'',	0);
 
 -- ----------------------------
 -- Table structure for zf_advert

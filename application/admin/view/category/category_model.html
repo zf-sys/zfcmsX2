@@ -76,7 +76,7 @@
                     </div>
                   </td>
                   <td>  
-                      <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/category/category_model_edit',['id' => $vo['id']] )}")'>编辑</button>
+                      <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/category/category_model_edit',['id' => $vo['id']] )}",800)'>编辑</button>
                     <?php if($vo['is_parm']==1){ ?>
                       <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("参数列表","{:url('admin/category/category_model_parm',['mid' => $vo['id']] )}")'>设置参数</button>
                     <?php } ?>

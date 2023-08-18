@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
     <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
   <link rel="stylesheet" href="__STATIC__/style/bootstrap/bootstrap-3.3.4.css">
+  <script src="/public/static/zfcms/style/jquery-1.8.3.min.js"></script>  
 </head>
 <body>
 
@@ -17,7 +18,7 @@
     <div class="layui-card">
       <div class="layui-card-body">
         <div style="padding-bottom: 10px;">
-          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/config/admin_add")}')">添加
+          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/config/admin_add")}',800)">添加
           </button>
           <a class="layui-btn layui-btn-sm" href="{:url('admin/config/admin_group')}">管理员分类</a>
         </div>
@@ -54,7 +55,7 @@
                     </div>
                   </td>
                   <td>
-                      <button class="layui-btn-sm layui-btn" onclick='zfAdminShow("编辑用户","{:url('admin/config/admin_edit',['id' => $vo['id']] )}")'>编辑</button>
+                      <button class="layui-btn-sm layui-btn" onclick='zfAdminShow("编辑用户","{:url('admin/config/admin_edit',['id' => $vo['id']] )}",800)'>编辑</button>
                       <?php if($vo['name']!='admin'){ ?> 
                           <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="btn_del('common/del_post',{$vo['id']},'admin')"  href="#">删除</a> 
                       <?php } ?>

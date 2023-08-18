@@ -21,6 +21,7 @@ class Login extends Controller
 {
     public function __construct (){
         parent::__construct();
+        zf_to_site_url();
         $this->assign('web_config',config());
         if(config('web.site_path')){
             if(config('web.site_path')!=''){

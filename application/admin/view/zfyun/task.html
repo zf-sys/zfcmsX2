@@ -16,11 +16,31 @@
     <div class="layui-card">
       <div class="layui-card-body">
         <blockquote class="layui-elem-quote">
+          当前状态: <span class="layui-badge" >{$task_status}</span>&nbsp;
+          <!-- <a target="_blank" href="{:url('zfyun/task_active',['t'=>'start'])}" >开启</a>
+          <a target="_blank" href="{:url('zfyun/task_active',['t'=>'stop'])}" >关闭</a> -->
+        </blockquote>
+        <blockquote class="layui-elem-quote">
           默认修改后,半小时后生效 <br>
           网站根目录执行php think task start  即可生效
+          <?php 
+          if(!function_exists('shell_exec')){
+              echo '解除禁用函数:shell_exec';
+          }
+          
+          ?>
+          
+          <!-- pcntl_fork,
+          pcntl_wait,
+          pcntl_signal,
+          pcntl_alarm,
+          pcntl_waitpid,
+          pcntl_signal_dispatch,
+          shell_exec
+          -->
         </blockquote>
         <div style="padding-bottom: 10px;">
-          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/zfyun/task_add")}')">添加</button>
+          <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/zfyun/task_add")}',800)">添加</button>
 
         </div>
         <table class="layui-table">
@@ -51,7 +71,7 @@
                   <td>
                     开始时间:{$vo['stime']|date='Y-m-d H:i:s'}<br>
                     结束时间:{$vo['etime']|date='Y-m-d H:i:s'}<br>
-                    状态:<?php if(($vo['utime']+60*30)>time()){ echo '未生效,还需等待'.(60*30+$vo['utime']-time()).'秒';}else{ echo '已生效';} ?>
+                    <!-- 状态:<?php if(($vo['utime']+60*30)>time() &&  $vo['utime']>$start_time){ echo '未生效,还需等待'.(60*30+$vo['utime']-time()).'秒';}else{ echo '已生效';} ?> -->
                   </td>
                   <td>
                     间隔{$vo['interval_time']}秒<br>
@@ -67,7 +87,7 @@
                   </td>
                   <td>
                     <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'task')"  href="#">删除</a> 
-                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/zfyun/task_edit',['id' => $vo['id']] )}")'>编辑</button> 
+                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/zfyun/task_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
                     <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("日志","{:url('admin/zfyun/task_log',['task_id' => $vo['id']] )}")'>日志</button> 
                   </td>
                 </tr>
@@ -95,7 +115,6 @@
       var id = $(this).attr("item")
       var dbname = 'task'
       var status = this.checked ? '1' : '0'
-      console.log(id)
       $.get("{:url('admin/common/is_switch')}",{id:id,dbname:dbname,status:status},function(res){
           if(res.result==1){
             layer.msg(res.msg, {icon: 1});

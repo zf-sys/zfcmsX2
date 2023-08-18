@@ -8,6 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
   <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/style/bootstrap/bootstrap-3.3.4.css">
+  <script src="__STATIC__/style/bootstrap/bootstrap-3.3.4.js"></script>
   <link rel="stylesheet" href="__STATIC__/system/style/template.css" media="all">
   <link rel="stylesheet" type="text/css" href="__STATIC__/style/viewer/viewer.mini.css">
   <script src="__STATIC__/style/jquery-1.8.3.min.js"></script>  
@@ -17,13 +19,15 @@
 
 <?php $api_domain = config('version.api_domain'); ?>
 
-<div class="layui-fluid layadmin-cmdlist-fluid detail-body">
-    <div style="padding-bottom: 10px;">
-      <span type="button" class="layui-btn layui-btn-sm" id="up_file">上传模板</span>
-      <a type="button" class="layui-btn layui-btn-sm btn_edit_mr">还原默认模板</a>
-      <a type="button" class="layui-btn layui-btn-sm " href="/?theme=-1" target="_blank">访问当前模板</a>
-  </div>
-  <div class="layui-row layui-col-space30">
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        {include file="public/show_updatesql_msg"}
+
+        <a type="button" class="layui-btn layui-btn-sm btn_edit_mr">还原默认模板</a>
+        <a type="button" class="layui-btn layui-btn-sm " href="/?theme=-1" target="_blank">访问当前模板</a>
+      </div>
       <table class="layui-table">
           <colgroup>
               <col width="120">
@@ -42,46 +46,49 @@
           </tr>
           </thead>
           <tbody>
-            <?php foreach($list as $k=>$vo){ if($vo['ok']==1){ ?>
+            <?php foreach($list as $k=>$vo){  ?>
               <tr>
-                  <td>{$vo['data']['name']}</td>
-                  <td>{$vo['data']['plugin_name']}</td>
+                  <td>{$vo['name']}</td>
+                  <td>{$vo['plugin_name']}</td>
                   <td>
-                    {$vo['data']['version']}
-                    <img src="{$api_domain}/addons/zf_store_softclient.api/get_new_version?site={$client_config['site']}&token=11&soft_id={$vo['data']['soft_id']}&ver={$vo['data']['version']}" />
+                    {$vo['version']}
+                    <?php if(isset($vo['soft_key'])){ ?>
+                    <img src="{$api_domain}/addons/zf_store_softclient.api/get_new_version?site={$client_config['site']}&token=11&soft_id={$vo['soft_id']}&ver={$vo['version']}&soft_key={$vo['soft_key']}" />
+                    <?php } ?>
                   </td>
                   <td>{$vo['path']}</td>
-                  <td>
-                    <img src="{$vo['data']['pic']}" style="width: 100px;height: 50px;" />
+                  <td style="text-align: center;">
+                    <img src="{$vo['pic']}" style="height: 50px;" /> 
                   </td>
                   <td>
-                        <a  href="/?theme={$vo['data']['plugin_name']}" target="_blank">查看演示</a>   
+                    <?php if(is_dir('./theme/'.$vo['plugin_name']) ){ ?>
+                        <a  href="/?theme={$vo['plugin_name']}" target="_blank">查看演示</a>   
                         <span class="flow  "  >
-                          <?php if($tpl_name==$vo['data']['plugin_name']){ ?>
-                            <a class="layui-btn layui-btn-sm btn_edit layui-btn-primary layui-border-green" style="color:red" item="{$vo['data']['plugin_name']}">
+                          <?php if($tpl_name==$vo['plugin_name']){ ?>
+                            <a class="layui-btn layui-btn-sm btn_edit layui-btn-primary layui-border-green" style="color:red" item="{$vo['plugin_name']}">
                               <i class="layui-icon layui-icon-rate"></i>默认模板
                             </a>
                             <a class="layui-btn layui-btn-sm  layui-btn-primary layui-border-green" onclick='zfAdminShow("模板配置","{:url('/i_admin')}")' >
                               <i class="layui-icon layui-icon-rate"></i>配置
                             </a>
                           <?php }else{ ?>
-                            <a class="layui-btn layui-btn-sm btn_edit  layui-btn-primary layui-border-green" item="{$vo['data']['plugin_name']}" >
+                            <a class="layui-btn layui-btn-sm btn_edit  layui-btn-primary layui-border-green" item="{$vo['plugin_name']}" >
                               <i class="layui-icon layui-icon-rate"></i>设为默认模板
                             </a>
                           <?php } ?>
                         </span>
-                        <a href="javascript:;" class="plugin_uninstall" item="{$vo['data']['plugin_name']}" style="color: red" > 卸载</a>
-                        <a href="javascript:;" class="plugin_backup" item="{$vo['data']['plugin_name']}" style="color: red" > 备份</a>
-
-                        
-                        <!-- <a href="javascript:;" class="plugin_upgrade" item="{$vo['data']['plugin_name']}" style="color: red" > 升级</a> -->
-
+                        <?php if($is_professional_edition){ ?>
+                        <?php } ?>
+                    <?php }else{ ?>
+                      <span style="color: red">代码缺失</span>
+                    <?php } ?>
                   </td>
               </tr>
-            <?php }}  ?>
+            <?php }  ?> 
           </tbody>
+        {$page|raw}
       </table>
-
+    </div>
   </div>
 </div>
 {include file="public/common_tool"}
@@ -96,25 +103,7 @@
     ,element = layui.element
     ,upload = layui.upload;
 
-    upload.render({
-      elem: '#up_file'
-      ,accept: 'file' 
-      ,url:"{:url('zfyun/themes_upload')}"
-      ,before: function(obj){
-          var index = layer.load();
-      }
-      ,done: function(res){
-        layer.closeAll()
-        if(res.result==1){
-          layer.msg(res.msg, {icon: 1});
-          setTimeout(function() {
-              location.reload(true);
-          }, 3000);
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      }
-    });
+    
    $('.btn_edit').on("click",function(){
       var value = $(this).attr('item');
       var key = 'zf_tpl_suffix'
@@ -158,95 +147,6 @@
           }   
         }
       })
-   })
-
-   
-   $('.plugin_uninstall').on('click',function(){
-    var plugin_name = $(this).attr('item')
-     layer.confirm('确认卸载？', {
-        btn: ['卸载','取消']
-      }, function(){
-        var index = layer.load();
-          $.ajax({
-            type:'get',
-            url:"{:url('zfyun/themes_uninstall')}",
-            data:{plugin_name},
-            dataType:'json',
-            success:function(res){
-              layer.closeAll()
-              if(res.result==1){
-                layer.msg(res.msg, {icon: 1});
-                setTimeout(function() {
-                    location.reload(true);
-                }, 3000);
-              }else{
-                layer.msg(res.msg, {icon: 2});
-              }
-              
-            }
-          })
-
-      }, function(){
-          //取消的操作
-      });
-   })
-   $('.plugin_backup').on('click',function(){
-    var plugin_name = $(this).attr('item')
-     layer.confirm('确认备份？', {
-        btn: ['备份','取消']
-      }, function(){
-        var index = layer.load();
-          $.ajax({
-            type:'get',
-            url:"{:url('zfyun/theme_backup')}",
-            data:{plugin_name},
-            dataType:'json',
-            success:function(res){
-              layer.closeAll()
-              if(res.result==1){
-                layer.msg(res.msg, {icon: 1});
-                setTimeout(function() {
-                    location.reload(true);
-                }, 3000);
-              }else{
-                layer.msg(res.msg, {icon: 2});
-              }
-              
-            }
-          })
-
-      }, function(){
-          //取消的操作
-      });
-   })
-   $('.plugin_upgrade').on('click',function(){
-    var plugin_name = $(this).attr('item')
-     layer.confirm('确认升级？', {
-        btn: ['升级','取消']
-      }, function(){
-        var index = layer.load();
-          $.ajax({
-            type:'get',
-            url:"{:url('zfyun/plugin_act')}?type=themes&action=upgrade",
-            data:{plugin_name},
-            dataType:'json',
-            success:function(res){
-              layer.closeAll()
-              if(res.result==1){
-                layer.msg(res.msg, {icon: 1});
-                setTimeout(function() {
-                    location.reload(true);
-                }, 3000);
-              }else{
-                layer.msg(res.msg, {icon: 2});
-              }
-              
-            }
-          })
-
-      }, function(){
-          //取消的操作
-      });
    })
 
 
