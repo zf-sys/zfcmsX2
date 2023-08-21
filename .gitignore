@@ -19,3 +19,4 @@ composer.lock
 
 /upgrade_clear.php
 /upgrade_restore.php
+/upgrade_box/*
