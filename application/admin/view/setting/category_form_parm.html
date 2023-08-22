@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+  <script type="text/javascript" src="__STATIC__/style/jquery-1.8.3.min.js"></script>
+  <script src="__STATIC__/style/laydate/laydate.js"></script>    
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+</head>
+<style>
+  .line-through {
+    text-decoration: line-through;
+    color: red;
+  }
+  .layui-col-sm2{
+    text-align: center;
+  }
+</style>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <?php $form_widget = new \app\common\widget\FormPro();  ?>
+      <a href="/admin/setting/form_pro_show" target="_blank">参考模板</a>
+      <form method="post" class="info_tj" >
+        <div class="layui-col-sm12">
+          <div class="layui-row layui-col-space15">
+              <div class="layui-col-sm12">
+                <div class="layui-card">
+                  <div class="layui-card-header">参数信息</div>
+                  <br/>
+                  <h1>左边栏目</h1>
+                  <?php foreach($list['left'] as $k=>$vo){ ?>
+                    <div class="layui-row">
+                      <div class="layui-col-sm1">
+                        <input name="name[]" type="hidden" value="{$vo['name']}" />
+                        <span class="{$vo['checked']==0?'line-through':''}" >{$vo['name']}<br>({$vo['type']})</span>
+                      </div>
+                      <div class="layui-col-sm2">
+                        <input name="comment[]" value="{$vo['comment']|default=''}" placeholder="标题" />
+                      </div>
+                      
+                      <div class="layui-col-sm1">
+                        <input name="sort[]" value="{$vo['sort']|default=''}" placeholder="排序" style="width: 40px;" />
+                      </div>
+                      <div class="layui-col-sm3">
+                        <select name="model[]">
+                          <?php foreach(formProActionArrCate() as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['model']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                     
+                        <select name="checked[]">
+                          <?php foreach([['id'=>'1','name'=>'显示'],['id'=>'0','name'=>'隐藏']] as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['checked']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                 
+                        <select name="postion[]">
+                          <?php foreach([['id'=>'left','name'=>'左边'],['id'=>'right','name'=>'右边']] as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['postion']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                      
+                        <select name="theme[]">
+                          <?php foreach([['id'=>'1','name'=>'模板1'],['id'=>'2','name'=>'模板2'],['id'=>'3','name'=>'模板3'],['id'=>'4','name'=>'模板4'],['id'=>'5','name'=>'模板5'],['id'=>'6','name'=>'模板6'],['id'=>'7','name'=>'模板7']] as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['theme']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                      <div class="layui-col-sm4">
+                        <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
+                        <textarea name="append[]" placeholder="内容">{$vo['append']|default=''}</textarea>
+                      </div>
+                    </div>
+
+                    <br>
+                  <?php } ?>
+                  
+                  <h1>右边栏目</h1>
+                  <?php if(isset($list['right'][0]['name'])){  foreach($list['right'] as $k=>$vo){ ?>
+                    <div class="layui-row">
+                      <div class="layui-col-sm1">
+                        <input name="name[]" type="hidden" value="{$vo['name']}" />
+                        <span class="{$vo['checked']==0?'line-through':''}" >{$vo['name']}<br>({$vo['type']})</span>
+                      </div>
+                      <div class="layui-col-sm2">
+                        <input name="comment[]" value="{$vo['comment']|default=''}" placeholder="标题" />
+                      </div>
+                      
+                      <div class="layui-col-sm1">
+                        <input name="sort[]" value="{$vo['sort']|default=''}" placeholder="排序" style="width: 40px;" />
+                      </div>
+                      <div class="layui-col-sm3">
+                        <select name="model[]">
+                          <?php foreach(formProActionArrCate() as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['model']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                     
+                        <select name="checked[]">
+                          <?php foreach([['id'=>'1','name'=>'显示'],['id'=>'0','name'=>'隐藏']] as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['checked']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                 
+                        <select name="postion[]">
+                          <?php foreach([['id'=>'left','name'=>'左边'],['id'=>'right','name'=>'右边']] as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['postion']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                      
+                        <select name="theme[]">
+                          <?php foreach([['id'=>'1','name'=>'模板1'],['id'=>'2','name'=>'模板2'],['id'=>'3','name'=>'模板3'],['id'=>'4','name'=>'模板4'],['id'=>'5','name'=>'模板5'],['id'=>'6','name'=>'模板6'],['id'=>'7','name'=>'模板7']] as $k1=>$vo1){ ?>
+                            <option value="{$vo1['id']}" <?php if($vo['theme']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                      <div class="layui-col-sm2">
+                        <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
+                        <textarea name="append[]" placeholder="内容">{$vo['append']|default=''}</textarea>
+                      </div>
+                    </div>
+
+                    <br>
+                  <?php }} ?>
+                  
+                
+
+                 
+                 <br>
+                </div>
+                
+                <br><br><br><br><br><br>
+                <br><br><br><br><br><br>
+              </div>
+                
+              {include file="public/widget_submit"}
+          </div>
+        </div>
+      </form>
+        
+      </div>
+    </div>
+  </div>
+  
+
+
+  <script>
+
+ layui.use(['form','upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,form = layui.form
+    ,upload = layui.upload;
+
+
+      $('.tijiao').on("click",function(){
+          // var index = layer.load(2);
+          var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
+          $.ajax({
+              type:'post',
+              data:data,
+              dataType:'json',
+              success:function(res){
+                if(res.result==1){
+                  layer.msg(res.msg, {icon: 1});
+                  setTimeout(function() {
+                      if(res.msg.code==1){
+                        window.location.reload();
+                      }else{
+                        window.parent.location.reload();
+                      }
+                  }, 2000);
+                }else{
+                  // layer.close(index);
+                  layer.msg(res.msg, {icon: 2});
+                }   
+              }
+          })
+      })
+
+
+  });
+  </script>
+</body>
+</html>
+

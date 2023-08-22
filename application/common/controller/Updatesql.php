@@ -34,6 +34,7 @@ class Updatesql extends Controller
             'v0.0.6'=>$this->v0_0_6(),
             'v0.0.8'=>$this->v0_0_8(),
             'v0.0.9'=>$this->v0_0_9(),
+            'v0.230809'=>$this->v0_230809(),
         ]; 
     }
 
@@ -113,6 +114,16 @@ class Updatesql extends Controller
         ];
         return $ret_data;
     }
+    public function v0_230809(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}category like 'form_parm'",
+            "alter table {$this->tb_prefix}category add form_parm text(0)"
+        ];
+        return $ret_data;
+    }
+
+    
 
 
 

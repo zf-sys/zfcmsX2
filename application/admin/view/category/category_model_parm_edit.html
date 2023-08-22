@@ -20,7 +20,7 @@
       {$form_widget->form_input(['title'=>'默认值','name'=>'value','data'=>$res['value'],'theme'=>2])|raw}
 
       {$form_widget->form_radio(['title'=>'位置','name'=>'position','data'=>$res['position'],'parm_data'=>['1'=>'左','2'=>'右'],'theme'=>2])|raw}
-      {$form_widget->form_select(['title'=>'类型','name'=>'type','data'=>$res['type'],'list_arr'=>['form_input','form_input_tag','form_textarea','upload_album','filesystem_album','upload_album_title','form_time','upload_pic','upload_dragpic','filesystem_pic','upload_file','filesystem_file','form_radio','layui_switch','form_checkbox','form_select','form_tinymce','form_wangeditor','form_vditor','form_ueditor','form_input_color'],'theme'=>5])|raw}
+      {$form_widget->form_select(['title'=>'类型','name'=>'type','data'=>$res['type'],'list_arr'=>formProActionArr(),'theme'=>4])|raw}
 
 
       {$form_widget->form_select(['title'=>'模板','name'=>'theme','data'=>$res['theme'],'list_arr'=>['1','2','3','4','5','6','7','8','9','10'],'theme'=>5])|raw}

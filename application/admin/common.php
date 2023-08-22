@@ -65,3 +65,66 @@ if (!function_exists('content2keyword')) {
         return $content;
     }
 }
+
+
+
+if (!function_exists( 'formProActionArr')) {
+    function formProActionArr(){ 
+        $arr = [
+            ['id'=>'form_input','name'=>'Input框'],
+            ['id'=>'form_input_tag','name'=>'Tag框'],
+            ['id'=>'form_textarea','name'=>'Textarea框'],
+            ['id'=>'upload_album','name'=>'图集'],
+            ['id'=>'filesystem_album','name'=>'系统图集'],
+            ['id'=>'upload_album_title','name'=>'图集+标题'],
+            ['id'=>'form_time','name'=>'时间'],
+            ['id'=>'upload_pic','name'=>'图片'],
+            ['id'=>'upload_dragpic','name'=>'拖拽图片'],
+            ['id'=>'filesystem_pic','name'=>'系统图片'],
+            ['id'=>'upload_file','name'=>'文件'],
+            ['id'=>'filesystem_file','name'=>'系统文件'],
+            ['id'=>'form_radio','name'=>'单选radio'],
+            ['id'=>'layui_switch','name'=>'开关switch'],
+            ['id'=>'form_checkbox','name'=>'多选checkbox'],
+            ['id'=>'form_select','name'=>'选择select'],
+            ['id'=>'form_tinymce','name'=>'tinymce'],
+            ['id'=>'form_wangeditor','name'=>'wangeditor'],
+            ['id'=>'form_vditor','name'=>'vditor'],
+            ['id'=>'form_ueditor','name'=>'ueditor'],
+            ['id'=>'form_input_color','name'=>'颜色']
+            // ['id'=>'form_meditor','name'=>'']
+            // ['id'=>'form_note','name'=>'']
+        ];
+        return $arr;
+    }
+}
+if (!function_exists( 'formProActionArrCate')) {
+    function formProActionArrCate(){ 
+        $arr = [
+            ['id'=>'form_input','name'=>'Input框'],
+            ['id'=>'form_input_tag','name'=>'Tag框'],
+            ['id'=>'form_textarea','name'=>'Textarea框'],
+            ['id'=>'upload_album','name'=>'图集'],
+            ['id'=>'filesystem_album','name'=>'系统图集'],
+            ['id'=>'upload_album_title','name'=>'图集+标题'],
+            ['id'=>'form_time','name'=>'时间'],
+            ['id'=>'upload_pic','name'=>'图片'],
+            ['id'=>'upload_dragpic','name'=>'拖拽图片'],
+            ['id'=>'filesystem_pic','name'=>'系统图片'],
+            ['id'=>'upload_file','name'=>'文件'],
+            ['id'=>'filesystem_file','name'=>'系统文件'],
+            ['id'=>'form_radio','name'=>'单选radio'],
+            ['id'=>'layui_switch','name'=>'开关switch'],
+            ['id'=>'form_checkbox','name'=>'多选checkbox'],
+            ['id'=>'form_select','name'=>'选择select'],
+            ['id'=>'form_ueditor','name'=>'ueditor'],
+            ['id'=>'form_input_color','name'=>'颜色']
+             // ['id'=>'form_tinymce','name'=>'tinymce'],
+            // ['id'=>'form_wangeditor','name'=>'wangeditor'],
+            // ['id'=>'form_vditor','name'=>'vditor'],
+            // ['id'=>'form_meditor','name'=>'']
+            // ['id'=>'form_note','name'=>'']
+        ];
+        return $arr;
+    } 
+}

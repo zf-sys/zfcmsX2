@@ -166,11 +166,15 @@ class Zfyun extends Admin
     }
     public function upgrade_sql(){
         admin_role_check($this->z_role_list,$this->mca);
-        $update = new \app\common\controller\Updatesql();
-        $update_sql_arr = $update->update('v0');
-        $this->handle_sql_version($update_sql_arr,'site');
-        $this->handle_update_db_zdxg();
-        $this->success('更新Sql成功');
+        if(!$this->is_professional_edition){
+            echo $this->sqb_error_msg; die;
+        }else{
+            $update = new \app\common\controller\Updatesql();
+            $update_sql_arr = $update->update('v0');
+            $this->handle_sql_version($update_sql_arr,'site');
+            $this->handle_update_db_zdxg();
+            $this->success('更新Sql成功');
+        }
     }
     public function authentication_sys(){
         admin_role_check($this->z_role_list,$this->mca);

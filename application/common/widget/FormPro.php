@@ -2,6 +2,7 @@
 namespace app\common\widget;
 use think\Controller;
 class FormPro {
+
    public function __construct (){
         $this->upload_one  = siteUrl('common/upload/upload_one');
         $this->upload_one_file  = siteUrl('common/upload/upload_one_file');
@@ -224,7 +225,6 @@ INFO;
         $zf_html = '';
         if($theme==1){
           $zf_html = <<<INFO
-          <div class="layui-card-header"></div>
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                $data
@@ -1257,7 +1257,7 @@ INFO;
           $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
                   <div class="layui-card-body layui-row layui-col-space10">
-                     <select class="layui-input" name="'.$name.'" >';
+                     <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
                       foreach($list as $k=>$vo){
                            $zf_html .= '<option value="'.$vo[$id_t].'" ';
                            if($data==$vo[$id_t]){
@@ -1273,7 +1273,7 @@ INFO;
           $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
                   <div class="layui-card-body layui-row layui-col-space10">
-                     <select class="layui-input" name="'.$name.'" >';
+                     <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
                       foreach($list as $k=>$vo){
                            $zf_html .= '<option value="'.$vo.'" ';
                            if($data==$vo){
@@ -1288,7 +1288,7 @@ INFO;
           $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
                   <div class="layui-card-body layui-row layui-col-space10">
-                     <select name="'.$name.'" class="layui-input '.$name.'" >';
+                     <select lay-filter="'.$name.'" name="'.$name.'" class="layui-input '.$name.'" >';
                       foreach($list as $k=>$vo){
                            $zf_html .= '<option value="'.$vo[$id_t].'" ';
                            if($data==$vo[$id_t]){
@@ -1304,7 +1304,7 @@ INFO;
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.'</label>
             <div class="layui-input-block">
-            <select class="layui-input" name="'.$name.'" >';
+            <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
             foreach($list as $k=>$vo){
                  $zf_html .= '<option value="'.$vo[$id_t].'" ';
                  if($data==$vo[$id_t]){
@@ -1321,7 +1321,7 @@ INFO;
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.'</label>
             <div class="layui-input-block">
-            <select class="layui-input" name="'.$name.'" >';
+            <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
             foreach($list as $k=>$vo){
               $zf_html .= '<option value="'.$vo.'" ';
               if($data==$vo){
@@ -1338,7 +1338,7 @@ INFO;
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.'</label>
             <div class="layui-input-block">
-            <select class="layui-input" name="'.$name.'" >';
+            <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
             foreach($list as $k=>$vo){
                   $zf_html .= '<option value="'.$vo[$id_t].'" ';
                   if($data==$vo[$id_t]){
@@ -1350,7 +1350,21 @@ INFO;
             </div>
           </div>
                   ';
-
+        }elseif($theme==7){
+          $zf_html = '
+          <div class="layui-card-header">'.$title.'</div>
+          <div class="layui-card-body layui-row layui-col-space10">
+            <select class="layui-input" name="'.$name.'" >';
+            foreach($list as $k=>$vo){
+              $zf_html .= '<option value="'.$vo.'" ';
+              if($data==$vo){
+              $zf_html.='selected';
+              }
+              $zf_html.='> '.$vo.'</option>';
+          }
+          $zf_html.='</select>
+            </div>
+                  ';
         }
         
         return $zf_html;
@@ -1811,6 +1825,205 @@ const $vditor_num = new Vditor("$tpl_id", {
 INFO;
       return $zf_html;
   }
+
+
+  public function form_input_select($request_data=array())
+    {
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $title = isset($request_data['title'])?$request_data['title']:'';
+        $name = isset($request_data['name'])?$request_data['name']:'';
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $_data = isset($request_data['_data'])?$request_data['_data']:'';
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
+        $list = isset($request_data['list_arr'])?$request_data['list_arr']:[];
+        $url = isset($request_data['url'])?$request_data['url']:'';
+        if(is_string($list)){
+          eval("\$list = ".$request_data['list_arr'].'; ');
+        }
+        if($url!=''){
+          $url_js = "url: '".$url."',";
+          $data_js = false;
+        }else{
+          $url_js = false;
+          //本地
+          $data_js = " data:".json_encode($list).",";
+        }
+        $zf_html='';
+
+        if($theme==1){
+          $zf_html = <<<INFO
+          <div class="layui-card-header">$title</div>
+         <div class="layui-card-body layui-row layui-col-space8">
+             <div class="layui-col-md12">
+                 <div class="$tpl_id">
+             </div>
+         </div>
+          <script>
+           window.selectInput.render({
+              elem: ".$tpl_id",
+              $url_js
+              statusOK: 1,
+              name: "$name",
+              initValue: "$data",
+              localSearch:true,
+              $data_js
+              hasSelectIcon: true,
+              hasInitShow: true,
+              paging: true,
+              remoteSearch: false,
+              pageRemote: false,
+              ignoreCase:true,
+              pageSize: 10,
+              invisibleMode:true,
+              onFocus(item) {
+                  console.log(item)
+              },
+              onBlur(item) {
+                  console.log(item)
+              },
+              onClick(item) {
+                // console.log('click')
+                  console.log(item)
+              },
+              done() {
+                  // console.log('我渲染完成了哦')
+              }
+          })
+
+         </script>
+INFO;
+        }elseif($theme==2){
+          $zf_html = <<<INFO
+          <div class="layui-form-item">
+            <label class="layui-form-label">$title:</label>
+            <div class="layui-input-block">
+              <div class="$tpl_id">
+            </div>
+          </div>
+          <script>
+          window.selectInput.render({
+            elem: ".$tpl_id",
+            $url_js
+            statusOK: 1,
+            name: "$name",
+            initValue: "$data",
+            localSearch:true,
+            $data_js
+            hasSelectIcon: true,
+            hasInitShow: true,
+            paging: true,
+            remoteSearch: false,
+            pageRemote: false,
+            ignoreCase:true,
+            pageSize: 10,
+            invisibleMode:true,
+            onFocus(item) {
+                console.log(item)
+            },
+            onBlur(item) {
+                console.log(item)
+            },
+            onClick(item) {
+              // console.log('click')
+                console.log(item)
+            },
+            done() {
+                // console.log('我渲染完成了哦')
+            }
+        })
+         </script>
+INFO;
+        }elseif($theme==3){
+          $zf_html = <<<INFO
+          <div class="layui-card-header">$title</div>
+         <div class="layui-card-body layui-row layui-col-space8">
+             <div class="layui-col-md12">
+                 <div class="$tpl_id">
+                <input id="$tpl_id" type="hidden" name="_$name" value="$_data" />
+             </div>
+         </div>
+          <script>
+           window.selectInput.render({
+              elem: ".$tpl_id",
+              $url_js
+              statusOK: 1,
+              name: "$name",
+              initValue: "$data",
+              localSearch:true,
+              $data_js
+              hasSelectIcon: true,
+              hasInitShow: true,
+              paging: true,
+              remoteSearch: false,
+              pageRemote: false,
+              ignoreCase:true,
+              pageSize: 10,
+              invisibleMode:true,
+              onFocus(item) {
+                  console.log(item)
+              },
+              onBlur(item) {
+                  console.log(item)
+              },
+              onClick(item) {
+                // console.log('click')
+                $("#$tpl_id").val(item.value)
+              },
+              done() {
+                  // console.log('我渲染完成了哦')
+              }
+          })
+
+         </script>
+INFO;
+        }elseif($theme==4){
+          $zf_html = <<<INFO
+          <div class="layui-form-item">
+            <label class="layui-form-label">$title:</label>
+            <div class="layui-input-block">
+              <div class="$tpl_id">
+              <input id="$tpl_id" type="hidden" name="_$name" value="$_data" />
+            </div>
+          </div>
+          <script>
+          window.selectInput.render({
+            elem: ".$tpl_id",
+            $url_js
+            statusOK: 1,
+            name: "$name",
+            initValue: "$data",
+            localSearch:true,
+            $data_js
+            hasSelectIcon: true,
+            hasInitShow: true,
+            paging: true,
+            remoteSearch: false,
+            pageRemote: false,
+            ignoreCase:true,
+            pageSize: 10,
+            invisibleMode:true,
+            onFocus(item) {
+                console.log(item)
+            },
+            onBlur(item) {
+                console.log(item)
+            },
+            onClick(item) {
+              // console.log('click')
+              $("#$tpl_id").val(item.value)
+            },
+            done() {
+                // console.log('我渲染完成了哦')
+            }
+        })
+        </script>
+INFO;
+        }
+
+
+        return $zf_html;
+    }
 
 
     

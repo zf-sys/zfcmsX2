@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__STATIC__/system/style/admin.css" media="all">
+  <script type="text/javascript" src="__STATIC__/style/jquery-1.8.3.min.js"></script>
+  <script src="__STATIC__/style/laydate/laydate.js"></script>    
+  <script src="__STATIC__/style/layui/layui.js"></script>    
+  <script type="text/javascript" src="__STATIC__/system/common.js"></script>  
+  <!-- tag -->
+  <link rel="stylesheet" href="__STATIC__/style/input-tag/inputTag.css" media="all">
+  <!-- ueditor -->
+  <script src="__STATIC__/style/ueditor/ueditor.config.js"></script>    
+  <script src="__STATIC__/style/ueditor/ueditor.all.js"></script>    
+  <link rel="stylesheet" href="__STATIC__/style/ueditor/themes/default/css/ueditor.css" media="all">      
+
+  <!-- selectInput -->
+  <script src="__STATIC__/style/input-select/selectInput.js"></script>    
+
+
+</head>
+<style>
+  .line-through {
+    text-decoration: line-through;
+    color: red;
+  }
+  .layui-col-sm2{
+    text-align: center;
+  }
+</style>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <?php $form_widget = new \app\common\widget\FormPro();  ?>
+        <div class="layui-col-sm12">
+          <div class="layui-card">
+            <div class="layui-card-header">函数列表</div>
+           
+            <blockquote class="layui-elem-quote"> Common.php</blockquote>
+            <div class="layui-collapse">
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  admin_role_check </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      后台路由权限 <br>
+                      admin_role_check($z_role_list=[],$mca='',$type='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> get_admin_role  读取权限,并组成数组  </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      读取权限,并组成数组<br>
+get_admin_role($gid)
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  get_role_value   通过id,获取权限value(控制器/方法)</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      通过id,获取权限value(控制器/方法)<br>
+get_role_value($id)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> file_format  返回文件格式(zip...) </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      返回文件格式(zip...)<br>
+file_format($file_dir)
+ 
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  parse_sql  解析sql语句</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      解析sql语句<br>
+@param  string $content sql内容<br>
+@param  int $limit  如果为1，则只返回一条sql语句，默认返回所有<br>
+@param  array $prefix 替换表前缀<br>
+@return array|string 除去注释之后的sql语句数组或一条语句<br>
+parse_sql($sql = '', $limit = 0, $prefix = [])<br>
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> getDirInfo  计算整个目录文件大小/文件数量 </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      计算整个目录文件大小/文件数量<br>
+getDirInfo($dir, $f = 'size')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> getRealSize  单位自动转换函数 </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      单位自动转换函数<br>
+                      getRealSize($size)
+                      
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  get_pinyin  汉字转拼音</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      汉字转拼音<br>
+get_pinyin($srt = '')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> del_dir   遍历删除目录和目录下所有文件</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+遍历删除目录和目录下所有文件<br>
+del_dir($dir)
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  color_txt  彩虹字符串</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      彩虹字符串<br>
+color_txt($str)
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  rand_color  随机颜色</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ 随机颜色<br>
+ rand_color()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> isMobile   是否是移动端</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+是否是移动端<br>
+isMobile()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> check_email  验证邮箱 </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ 验证邮箱<br>
+ check_email($email)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> zf_joint_url   判断url地址是否完整,不完整进行拼接</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      判断url地址是否完整,不完整进行拼接<br>
+zf_joint_url($domain='',$url='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">   dikaer 笛卡尔积</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      笛卡尔积<br>
+                      $arr = array(
+                        array(2),
+                        array(6,7),
+                        array('a','b','c')
+                      );<br>
+                      dikaer($arr)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  dikaer_str  笛卡尔积以字符串形式输出</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+
+笛卡尔积以字符串形式输出<br>
+dikaer_str($arr)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  get_domain  获取当前域名</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+获取当前域名<br>
+get_domain($http = true) 
+
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  zf_excel_export  excel导出</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ excel<br>
+ zf_excel_export($head,$keys,$data,$name)
+ 
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> extraconfig   修改扩展配置文件</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      修改扩展配置文件<br>
+extraconfig($arr = [], $file = '')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  getControllers  获取某个目录下的php文件名的控制器</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+获取某个目录下的php文件名的控制器<br>
+getControllers($dir)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  getActions  获取某个控制器的方法名的函数,此方法过滤父级Base控制器的方法，只保留自己的</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+
+获取某个控制器的方法名的函数,此方法过滤父级Base控制器的方法，只保留自己的<br>
+getActions($className, $base='\app\admin\controller\Admin') 
+
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> https_post   发起POST网络提交</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      发起POST网络提交<br>
+https_post($url,$data,$aHeader=FALSE)
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> https_get   发起GET网络提交</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+发起GET网络提交<br>
+https_get($url,$aHeader=FALSE)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> jssuccess   成功之后返回json</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+成功之后返回json<br>
+jssuccess($msg, $url = 'back')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> jserror   失败之后返回json</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      失败之后返回json<br>
+jserror($msg, $url = 'back') 
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> ZFRetMsg   返回json整合成功/失败</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      返回json整合成功/失败<br>
+                      ZFRetMsg($is,$success_msg,$error_msg)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> object_to_array   对象 转 数组</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+对象 转 数组<br>
+object_to_array($obj)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> array_to_object   数组 转 对象</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      数组 转 对象<br>
+array_to_object($arr) 
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  logOutput  输出日志</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ 输出日志<br>
+ logOutput($data,$filename='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  replaceimg  获取替换文章中的图片路径</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      获取替换文章中的图片路径<br>
+replaceimg($xstr, $oriweb,$param_src='src',$keyword='caiji')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  rand_post_first_pic  获取文章的第一个图片</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+
+获取文章的第一个图片<br>
+rand_post_first_pic($content)
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> dd   </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+dd<br>
+dd($msg)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  saveFileService  保存文件到服务器</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ 保存文件到服务器<br>
+ saveFileService($url, $save_dir = '', $filename = '', $type = 0)
+ 
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  admin_auth  判断后台是否登录</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ 判断后台是否登录<br>
+ admin_auth()
+ 
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  zf_controller_func_fast 运行某个类下面的方法</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+运行某个类下面的方法<br>
+zf_controller_func_fast($controller,$function,$parm=[])
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> 加密/解密   </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      加密
+zf_encrypt($data, $key='zf')
+<br>
+解密
+zf_decrypt($data, $key='zf')
+<br>
+              
+加密
+aes_encrypt($data,$key='1234567887654321',$iv='1234567887654321')
+<br>
+解密
+aes_decrypt($data,$key='1234567887654321',$iv='1234567887654321')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> file_format_cn   返回文件格式(附件类型) 文件格式(1：文件、2：压缩包、3：图片、4：视频、5：音频、6、其他)</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      返回文件格式(附件类型) 文件格式(1：文件、2：压缩包、3：图片、4：视频、5：音频、6、其他)<br>
+file_format_cn($file)
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> isHTTPS   判断是否HTTPS</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+判断是否HTTPS<br>
+isHTTPS()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> siteUrl   生成url</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+生成url<br>
+siteUrl($url = '', $vars = '', $weDoor = '')
+
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  str_replace_limit  对字符串执行指定次数替换</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      对字符串执行指定次数替换 (查找目标值,替换值,执行替换的字符串／数组,允许替换的次数，默认为-1，不限次数)<br>
+str_replace_limit($search, $replace, $subject, $limit=-1)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  get_location  返回重定向后的地址</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      返回重定向后的地址<br>
+get_location($url,$ua=0)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> or_url   判断是否为链接</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ 判断是否为链接<br>
+ or_url($url)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  pingAddress  ping 地址</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      ping 地址<br>
+                      pingAddress($address)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> zf_rand_str  获取指定长度的随机字符串 </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      获取指定长度的随机字符串<br>
+                      zf_rand_str($length=8)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  toUnderScore  驼峰转下划线</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+ 驼峰转下划线<br>
+ toUnderScore($str)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  toCamelCase  下划线命名到驼峰命名</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+下划线命名到驼峰命名<br>
+toCamelCase($str)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">钩子    </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      钩子<br>
+doZfActionInit($action_name='')<br>
+doZfAction($name='',$params='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> judgepassword   判断密码重点级别</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+判断密码重点级别<br>
+judgepassword($code)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> get_theme_config   获取模板data数据</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+获取模板data数据<br>
+get_theme_config($theme_name)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  获取模板data数据  </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      获取模板data数据(保存到数据库)<br>
+get_plugin_config_db($plugin_name,$type='',$tag='')<br>
+save_plugin_config_db($arr = [], $plugin_name='',$type='',$tag='')<br>
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> zf_wjt_rule   </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      zf_wjt_rule($url='',$type='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  get_url  </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      get_url()
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  zf_jump_error  </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+20220610新增
+没啥用
+zf_jump_error($msg,$path)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  is_weixin  是否微信端</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      是否微信端<br>
+is_weixin()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  is_top_menu_cur  判断是否菜单顶级</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+判断是否菜单顶级<br>
+is_top_menu_cur($vo=[],$_two_menu=[],$menu_type='',$cid='')
+
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">isset_arr_key   判断数组是否有某一个键,没有则返回默认值 </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+判断数组是否有某一个键,没有则返回默认值<br>
+isset_arr_key($arr,$key,$default='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  jsonPro  返回消息</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+返回消息<br>
+jsonPro($data,$msg,$code=1,$url='',$version='')
+
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> is_ie_browser   判断是否为ie浏览器</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      判断是否为ie浏览器<br>
+is_ie_browser()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  route_home  前台路由</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      前台路由<br>
+                      route_home($type,$router,$controller,$menu_type='')
+                      
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  html_out_par  处理html截取,指定字数</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+处理html截取,指定字数<br>
+html_out_par($str,$num)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  msubstr  字符串截取，支持中文和其他编码</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      字符串截取，支持中文和其他编码<br>
+msubstr($str, $start=0, $length, $suffix=true,$showall=0, $charset="utf-8")
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  env_edit   修改env文件,只支持一级</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+
+ 修改env文件,只支持一级 env_edit(['app_debug'=>'true']);<br>
+ env_edit($arr = [])
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> get_mimetype   根据文件后缀获取其mine类型</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+根据文件后缀获取其mine类型<br>
+get_mimetype($extension)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> check_illegal   检测上传图片是否包含有非法代码</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+检测上传图片是否包含有非法代码<br>
+check_illegal($image)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  logOutputAddons  addons自定义输出日志</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      addons自定义输出日志<br>
+$plugin_name=''   插件名
+$data=[]   数据
+$state=''   状态(success/fail/自定义)
+$save_log_tag=''    log/后的自定义文件夹,避免被他人恶意通过http获取数据
+$filename=''   保存的文件名,如果为空则根据规则生成<br>
+logOutputAddons($plugin_name='',$data=[],$state='',$save_log_tag='',$filename='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> is_str_find  字符串在另一个字符串中是否含有</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      字符串在另一个字符串中是否含有 (全字符,搜索词)<br>
+is_str_find($str='',$find_str='')
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">send_email   发送邮件 </div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+发送邮件<br>
+send_email($address,$email_content=[],$debug=0)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title"> num_compute   高精度计算加减乘除</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+高精度计算加减乘除<br>
+num_compute($num1,$type='+',$num2,$jd=2)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">   zf_runtime 输出当前程序运行所用的时间</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      输出当前程序运行所用的时间<br>
+zf_runtime($type,$starttime=[])
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  zf_to_site_url  跳转到自己设置的站点</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+跳转到自己设置的站点<br>
+不填写http或https   ------>  //dev.zfcmsx2.90ckm.com/bbs_cate/4.html
+填写http后面加了/   ------>  http://dev.zfcmsx2.90ckm.com/bbs_cate/4.html
+填写http后面没加/   ------>  http://dev.zfcmsx2.90ckm.com/bbs_cate/4.html
+当前链接 http://dev2.zfcmsx2.90ckm.com   ----> 跳转到https://dev2.zfcmsx2.90ckm.com<br>
+zf_to_site_url()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  plugin_update_check_show  检测插件模板是否一致</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+检测插件模板是否一致<br>
+plugin_update_check_show()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  is_really_writable  判断文件或文件夹是否可写</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+判断文件或文件夹是否可写<br>
+is_really_writable($file)
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <div class="layui-colla-title">  create_uuid  创建uuid</div>
+                <div class="layui-colla-content">
+                  <fieldset class="layui-elem-field">
+                    <div class="layui-field-box">
+                      
+创建uuid<br>
+create_uuid()
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+
+
+
+
+
+
+            </div>    
+               
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+  <script>
+
+ layui.use(['form','upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,form = layui.form
+    ,upload = layui.upload;
+
+
+
+  });
+  </script>
+</body>
+</html>
+

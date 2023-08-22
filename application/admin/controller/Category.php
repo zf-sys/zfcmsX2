@@ -217,6 +217,37 @@ class Category extends Admin
             $mlist = [];
         }
         $this->assign("mlist",$mlist);
+
+        #####参数模式
+        $form_parm = $res['form_parm'];
+        if($form_parm==''){
+            $form_parm_arr = false;
+        }else{
+            $_form_parm_arr = json_decode($form_parm,true);
+            $left = false;
+            $right = false;
+            foreach($_form_parm_arr as $k=>$vo){
+                if($vo['checked']==1){
+                    if($vo['postion']=='left'){
+                        $left[] = $vo;
+                    }else{
+                        $right[] = $vo;
+                    }
+                }
+            }
+            if($left){
+                $sort_left = array_column($left,'sort');
+                array_multisort($sort_left,SORT_ASC,$left);
+            }
+            if($right){
+                $sort_right = array_column($right,'sort');
+                array_multisort($sort_right,SORT_ASC,$right);
+            }
+            $form_parm_arr['left'] = $left;
+            $form_parm_arr['right'] = $right;
+        }
+        $this->assign('form_parm_arr',$form_parm_arr);
+
         return view();
     }
 
@@ -334,6 +365,12 @@ class Category extends Admin
             if(!$plist){
                 $plist = [];
             }
+            $plist[999] =
+            [
+                'cid'=>0,
+                'name'=>'顶级目录',
+                'cname'=>'顶级目录'
+            ];
             $this->assign("plist",$plist);
             $mlist =  ZFTB('category_model')->where(['status'=>1])->select();
             if(!$mlist){

@@ -24,6 +24,15 @@ class Http extends Handle
             if ($e instanceof \think\exception\HttpException) {
                 $statuscode = $code = $e->getStatusCode();
             }
+            // 业务异常
+            if ($e instanceof \app\common\exception\BusinessException) {
+                $code = $e->getCode();
+                $msg = $e->getMessage();
+            }
+            // 其它异常
+            if ($e instanceof \Exception) {
+                $msg = $e->getMessage();
+            }
             return json(['code' => $code, 'msg' => $msg, 'time' => time(), 'data' => null], $statuscode);
         }
 

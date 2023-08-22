@@ -553,9 +553,7 @@ class Config extends Admin
             $res = extraconfig(input('post.'),'zf_auth');
             return ZFRetMsg($res,'保存成功','保存失败');
         }
-       dd(2);
         $this->assign("config",config()['zf_auth']);
-        dd(1);
         return view();
     }
 

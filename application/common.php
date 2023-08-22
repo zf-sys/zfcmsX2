@@ -1354,7 +1354,9 @@ if (!function_exists('is_ie_browser')) {
 // 前台路由
 if (!function_exists('route_home')) {
     function route_home($type,$router,$controller,$menu_type='') {
-        Route::rule($router, 'index/index/hook',$type)->append(['controller'=>$controller,'menu_type'=>$menu_type]);
+        Route::rule($router, 'index/index/hook',$type)
+        ->middleware(app\common\middleware\Check::class)
+        ->append(['controller'=>$controller,'menu_type'=>$menu_type]);
     }
 }
 
