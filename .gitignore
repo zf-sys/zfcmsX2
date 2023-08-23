@@ -1,8 +1,10 @@
 composer.lock
 /runtime/*
+!/runtime/.gitignore
 /public/install.lock
 /笔记
 /addons/*
+!/addons/.gitignore
 /theme/*
 !/theme/index/*
 !/theme/install/*

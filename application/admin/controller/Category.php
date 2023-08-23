@@ -263,12 +263,46 @@ class Category extends Admin
      */
     public function category_model()
     {
-        admin_role_check($this->z_role_list,$this->mca);
+        admin_role_check($this->z_role_list,$this->mca,1);
+        $t = input('t','');
+        if($t=='export'){
+            $mid = input('id','');
+            $list = db('category_model_parm')->field('id,mid',true)->where([['status','<>',9],['mid','=',$mid]])->select();
+            echo json_encode($list);
+            die;
+        }elseif($t=='import'){
+            if(request()->isPost()){
+                $data = input('post.');
+                $content_json = trim($data['content']);
+                $list = json_decode($content_json,true);
+                if(!$list){
+                    return ZFRetMsg(false,'','json数据错误');
+                }
+                foreach($list as $k=>$vo){
+                    $is_res = db('category_model_parm')->where([['mid','=',$data['mid']],['key','=',$vo['key']],['status','<>',9]])->find();
+                    if($is_res){
+                        unset($list[$k]);
+                    }else{
+                        $list[$k]['mid'] = $data['mid'];
+                    }
+                }
+                
+                $res = ZFTB('category_model_parm')->insertAll($list);
+                if($res){
+                    return ZFRetMsg(true,'导入成功','');
+                }
+                if(count($list)==0){
+                    return ZFRetMsg(false,'','没有字段可供更新');
+                }
+            }
+            $mid = input('id','');
+            return view('category/category_model_import',['mid'=>$mid]);
+        }
+
          //读取
         $list = ZFTB('category_model')->where([['status','<>',9]])->order("id asc")->select();
         $this->assign("list",$list);
         return view();
-
     }
 
 
