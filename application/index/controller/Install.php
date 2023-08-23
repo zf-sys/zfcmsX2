@@ -387,12 +387,9 @@ return [
     'query'           => '\\think\\db\\Query',
 ];
 INFO;
-        file_put_contents('./config/database.php', $code);
-
+        $is_add =  file_put_contents('./config/database.php', $code);
         // 判断写入是否成功
-        $config = include './config/database.php';
-         
-        if (empty($config['database']) || $config['database'] != $data['database']) {
+        if(!$is_add){
             return $this->error('[condig/database.php]数据库配置写入失败！');
             exit;
         }
