@@ -160,21 +160,67 @@ class Index extends Admin
             'image'=>$admin_logo_pic ,
             'href'=>'http://www.zf-sys.com/',
         ];
-        $menu = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=','0']])->select();
-        foreach($menu as $k=>$vo){
-            $menu[$k]['href'] = $site_path.'/'.$vo['value'].'?'.$vo['parm'];
-            $menu[$k]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vo['id']]])->select();
-            foreach($menu[$k]['child'] as $kk=>$vv){
-                $menu[$k]['href'] = '';
-                $menu[$k]['child'][$kk]['href'] = $site_path.'/'.$vv['value'].'?'.$vv['parm'];
-                $menu[$k]['child'][$kk]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vv['id']]])->select();
-                foreach($menu[$k]['child'][$kk]['child'] as $kkk=>$vvv){
-                  $menu[$k]['child'][$kk]['href']='';
-                  $menu[$k]['child'][$kk]['child'][$kkk]['href'] = $site_path.'/'.$vvv['value'].'?'.$vvv['parm'];
+        // $menu = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=','0']])->select();
+        // foreach($menu as $k=>$vo){
+        //     $menu[$k]['href'] = $site_path.'/'.$vo['value'].'?'.$vo['parm'];
+        //     $menu[$k]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vo['id']]])->select();
+        //     foreach($menu[$k]['child'] as $kk=>$vv){
+        //         $menu[$k]['href'] = '';
+        //         $menu[$k]['child'][$kk]['href'] = $site_path.'/'.$vv['value'].'?'.$vv['parm'];
+        //         $menu[$k]['child'][$kk]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vv['id']]])->select();
+        //         foreach($menu[$k]['child'][$kk]['child'] as $kkk=>$vvv){
+        //           $menu[$k]['child'][$kk]['href']='';
+        //           $menu[$k]['child'][$kk]['child'][$kkk]['href'] = $site_path.'/'.$vvv['value'].'?'.$vvv['parm'];
+        //         }
+
+        //     }
+        // }
+
+        //用户权限
+        $admin = session('admin');
+        $role_str = db('admin_group')->where(['id'=>$admin['gid']])->value('role');
+        $role_arr = explode(',', $role_str);
+        $_menu = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=','0']])->select();
+        $menu = [];
+        $select_menu = [];
+        foreach($_menu as $k=>$vo){
+            if($admin['gid']!='1' && !in_array($vo['id'], $role_arr)){
+                unset($_menu[$k]);
+                continue;
+            }
+            $select_menu[] = $vo['id'];
+
+            $_menu[$k]['href'] = $site_path.'/'.$vo['value'].'?'.$vo['parm'];
+            $_menu[$k]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vo['id']]])->select();
+            foreach($_menu[$k]['child'] as $kk=>$vv){
+                if($admin['gid']!='1' && !in_array($vv['id'], $role_arr)){
+                    unset($_menu[$k]['child'][$kk]);
+                    continue;
+                }
+                $_menu[$k]['href'] = '';
+                $_menu[$k]['child'][$kk]['href'] = $site_path.'/'.$vv['value'].'?'.$vv['parm'];
+                $_menu[$k]['child'][$kk]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vv['id']]])->select();
+                foreach($_menu[$k]['child'][$kk]['child'] as $kkk=>$vvv){
+                    if($admin['gid']!='1' && !in_array($vvv['id'], $role_arr)){
+                        unset($_menu[$k]['child'][$kk]['child'][$kkk]);
+                        continue;
+                    }
+                    $_menu[$k]['child'][$kk]['href']='';
+                    $_menu[$k]['child'][$kk]['child'][$kkk]['href'] = $site_path.'/'.$vvv['value'].'?'.$vvv['parm'];
                 }
 
             }
+            $menu[] = $_menu[$k];
         }
+        $menu = array_values($menu);
+        foreach($menu as $k=>$vo){
+            $menu[$k]['child'] = array_values($vo['child']);
+            foreach($menu[$k]['child'] as $kk=>$vv){
+                $menu[$k]['child'][$kk]['child'] = array_values($vv['child']);
+            }
+
+        }
+        
         //插件菜单
         $application_menu = [
             'title'=>'插件',
