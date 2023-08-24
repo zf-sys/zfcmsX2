@@ -161,6 +161,26 @@ class Config extends Admin
     public function admin_group()
     {
         admin_role_check($this->z_role_list,$this->mca);
+        $t = input('t','');
+        if($t=='copy'){
+            $id = input('id','');
+            if($id==''){
+                $this->error('参数错误',url('config/admin_group'));
+            }
+            $res = ZFTB('admin_group')->field('id,mid',true)->where(['id'=>$id])->find();
+            if(!$res){
+                $this->error('参数错误',url('config/admin_group'));
+            }
+            $res['name'] = 'copy_'.$res['name'];
+            $res['ctime'] = time();
+            $res['status'] = 1;
+            $is_add = ZFTB('admin_group')->insert($res);
+            if($is_add){
+                $this->success('复制成功',url('config/admin_group'));
+            }else{
+                $this->error('复制失败',url('config/admin_group'));
+            }
+        }
         $group_list = ZFTB('admin_group')->where([['status','<>',9]])->order("id asc")->paginate(10);
         $page = $group_list->render();
         $this->assign("group_list",$group_list);
