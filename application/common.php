@@ -1801,6 +1801,127 @@ if(!function_exists('create_uuid')){
     }
 }
 
+/**
+ * 20230824
+ * 组件引用
+ */
+ /**
+  {:widget_st('layui','css')}
+  {:widget_st('admin','css')}
+  {:widget_st('jq','js')}
+  {:widget_st('laydate','js')}
+  {:widget_st('webuploader')}
+  {:widget_st('layui','js')}
+  {:widget_st('common','js')}
+  {:widget_st('ueditor')}
+  {:widget_st('bootstrap')}
+  {:widget_st('input-tag')}
+  */
+if(!function_exists('widget_st')){
+    function widget_st($name='',$type='widget') {
+        $_static = config('template.tpl_replace_string.__STATIC__');
+        $v = 'v=1';
+        if($type=='css'){
+            if(in_array($name,['layui'])){
+                return "<link rel='stylesheet' href='$_static/style/layui/css/layui.css?$v' media='all'>\n";
+            }
+            if(in_array($name,['admin'])){
+                return "<link rel='stylesheet' href='$_static/system/style/admin.css?$v' media='all'>\n";
+            }
+
+        }
+        if($type=='js'){
+            if(in_array($name,['jq183','jq'])){
+                return "<script type='text/javascript' src='$_static/style/jquery-1.8.3.min.js?$v'></script>\n";
+            }
+            if(in_array($name,['layui'])){
+                return "<script type='text/javascript' src='$_static/style/layui/layui.js?$v'></script>\n";
+            }
+            if(in_array($name,['laydate'])){
+                return "<script type='text/javascript' src='$_static/style/laydate/laydate.js?$v'></script>\n";
+            }
+            if(in_array($name,['layer'])){
+                return "<script type='text/javascript' src='$_static/style/layer/layer.js?$v'></script>\n";
+            }
+            if(in_array($name,['common'])){
+                return "<script type='text/javascript' src='$_static/system/common.js?$v'></script>\n";
+            }
+        }
+        if($type=='widget'){
+            if(in_array($name,['webuploader'])){
+                return "<link rel='stylesheet' type='text/css' href='$_static/style/webuploader/webuploader.css?$v'>\n<script type='text/javascript' src='$_static/style/webuploader/webuploader.js?$v'></script>\n";
+            }
+            if(in_array($name,['ueditor'])){
+                return "<script type='text/javascript' src='$_static/style/ueditor/ueditor.config.js?$v'></script>\n<script type='text/javascript' src='$_static/style/ueditor/ueditor.all.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/ueditor/themes/default/css/ueditor.css?$v' media='all'>\n";
+            }
+            if(in_array($name,['bootstrap','bootstrap334'])){
+               return "<script src='$_static/style/bootstrap/bootstrap-3.3.4.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/bootstrap/bootstrap-3.3.4.css?$v'>\n";
+            }
+            if(in_array($name,['input-tag'])){
+                return "<link rel='stylesheet' href='$_static/style/input-tag/inputTag.css?$v' media='all'>\n";
+            }
+            if(in_array($name,['viewer'])){
+                return "<link rel='stylesheet' type='text/css' href='$_static/style/viewer/viewer.mini.css?$v'>\n<script type='text/javascript' src='$_static/style/viewer/viewer.mini.js?$v'></script>\n";
+            }
+            if(in_array($name,['tinymce'])){
+                return "<script src='$_static/style/tinymce515/tinymce.min.js?$v'></script>\n";
+                //<script src='https://cdn.bootcdn.net/ajax/libs/tinymce/5.7.1/jquery.tinymce.min.js?$v'></script>\n
+            }
+            if(in_array($name,['meditor'])){
+                return "<link rel='stylesheet' type='text/css' href='$_static/style/meditor/css/editormd.css?$v'>\n<script src='$_static/style/meditor/editormd.js?$v'></script>\n";
+            }
+            if(in_array($name,['wangEditor'])){
+                return "<script src='$_static/style/wangEditor/wangEditor.min.js?$v'></script>\n";
+            }
+            if(in_array($name,['vditor'])){
+                // return "<link rel='stylesheet' href='$_static/style/vditor/dist/index.css?$v' />\n<script src='$_static/style/vditor/dist/index.min.js?$v'></script>\n";
+                // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
+                // <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
+            }
+            if(in_array($name,['autosize'])){
+                return "<script src='$_static/style/autosize/dist/autosize.js?$v'></script>\n";
+            }
+            if(in_array($name,['echarts'])){
+                return "<script src='$_static/style/echarts.min.js?$v'></script>\n";
+            }
+            if(in_array($name,['input-select'])){
+                return "<script src='$_static/style/input-select/selectInput.js?$v'></script>\n";
+            }
+            if(in_array($name,['fcup'])){
+                return "<script src='$_static/style/fcup.min.js?$v'></script>\n";
+            }
+
+
+
+
+
+           
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+        // <!-- 拖动排序 -->
+        // <!-- <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script> -->
+        // <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.8.3/Sortable.min.js"></script> -->
+        
+    }
+}
+
+
+
+
+
+
 //列出目录
 if(!function_exists('listdir')){
     function listdir($start_dir='.') {    

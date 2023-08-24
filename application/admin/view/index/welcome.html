@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="__STATIC__/style/layui/css/layui.css" media="all">
+    {:widget_st('layui','css')}
     <style>
         .layui-col-xs3{
             border: 1px solid #ccc;
@@ -213,8 +213,9 @@
         </div>
     </div>
 </div>
-<script src="__STATIC__/style/layui/layui.js" charset="utf-8"></script>
-<script src="__STATIC__/style/echarts.min.js" charset="utf-8"></script>
+{:widget_st('layui','js')}  
+{:widget_st('echarts','js')}  
+
 <script>
     layui.use(['layer'], function () {
         var $ = layui.jquery,
