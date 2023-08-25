@@ -18,6 +18,8 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
           <div class="layui-form-item">
             <form method="get">
+              <input type="hidden" name="mid" value="{$mid}" />
+              <input type="hidden" name="cid" value="{$cid}" />
               <div class="layui-inline">
                 <label class="layui-form-label">标题</label>
                 <div class="layui-input-block">
@@ -29,7 +31,7 @@
               </div>
             </form>
               <div class="layui-inline">
-                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("新增内容","{:url('admin/category/post_add',['cid' => $res['cid'],'mid' => $res['mid']] )}")'>新增</button> 
+                <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("新增内容","{:url('admin/category/post_add',['cid' => $cid,'mid' => $mid] )}")'>新增</button> 
               </div>
           </div>
         </div>

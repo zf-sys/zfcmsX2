@@ -16,6 +16,8 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
           <div class="layui-form-item">
             <form method="get">
+              <input type="hidden" name="mid" value="{$mid}" />
+              <input type="hidden" name="cid" value="{$cid}" />
               <div class="layui-inline">
                 <label class="layui-form-label">关键词</label>
                 <div class="layui-input-block">
@@ -27,15 +29,15 @@
               </div>
             </form>
               <div class="layui-inline">
-                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("新增内容","{:url('admin/category/post_add',['cid' => $res['cid'],'mid' => $res['mid']] )}")'>新增</button> 
-                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("批量新增","{:url('admin/category/post_add_pl',['cid' => $res['cid'],'mid' => $res['mid']] )}")'>批量新增</button> 
-                  <a  class="layui-btn layui-btn-sm" href="{:url('admin/category/post_add',['cid' => $res['cid'],'mid' => $res['mid']] )}" target="_blank"> 新增(新页面打开)</a>
+                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("新增内容","{:url('admin/category/post_add',['cid' => $cid,'mid' => $mid] )}")'>新增</button> 
+                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("批量新增","{:url('admin/category/post_add_pl',['cid' => $cid,'mid' => $mid] )}")'>批量新增</button> 
+                  <a  class="layui-btn layui-btn-sm" href="{:url('admin/category/post_add',['cid' => $cid,'mid' => $mid] )}" target="_blank"> 新增(新页面打开)</a>
               </div>
-            <a class="layui-btn layui-btn-sm layui-btn-normal" href="?where_type="> 全部</a>
-            <!-- <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?where_type=wsl"> 未收录</a>
-            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?where_type=sl"> 收录</a>
-            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?where_type=wfb"> 未发布</a>
-            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?where_type=fb"> 已发布</a> -->
+              <a class="layui-btn layui-btn-sm layui-btn-normal" href="?cid={$cid}&mid={$mid}"> 全部</a>
+            <!-- <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=wsl"> 未收录</a>
+            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=sl"> 收录</a>
+            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=wfb"> 未发布</a>
+            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=fb"> 已发布</a> -->
           </div>
         </div>
       <div class="layui-card-body">

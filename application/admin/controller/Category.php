@@ -219,33 +219,38 @@ class Category extends Admin
         $this->assign("mlist",$mlist);
 
         #####参数模式
-        $form_parm = $res['form_parm'];
-        if($form_parm==''){
-            $form_parm_arr = false;
-        }else{
-            $_form_parm_arr = json_decode($form_parm,true);
-            $left = false;
-            $right = false;
-            foreach($_form_parm_arr as $k=>$vo){
-                if($vo['checked']==1){
-                    if($vo['postion']=='left'){
-                        $left[] = $vo;
-                    }else{
-                        $right[] = $vo;
+        if(isset($res['form_parm'])){
+            $form_parm = $res['form_parm'];
+            if($form_parm==''){
+                $form_parm_arr = false;
+            }else{
+                $_form_parm_arr = json_decode($form_parm,true);
+                $left = false;
+                $right = false;
+                foreach($_form_parm_arr as $k=>$vo){
+                    if($vo['checked']==1){
+                        if($vo['postion']=='left'){
+                            $left[] = $vo;
+                        }else{
+                            $right[] = $vo;
+                        }
                     }
                 }
+                if($left){
+                    $sort_left = array_column($left,'sort');
+                    array_multisort($sort_left,SORT_ASC,$left);
+                }
+                if($right){
+                    $sort_right = array_column($right,'sort');
+                    array_multisort($sort_right,SORT_ASC,$right);
+                }
+                $form_parm_arr['left'] = $left;
+                $form_parm_arr['right'] = $right;
             }
-            if($left){
-                $sort_left = array_column($left,'sort');
-                array_multisort($sort_left,SORT_ASC,$left);
-            }
-            if($right){
-                $sort_right = array_column($right,'sort');
-                array_multisort($sort_right,SORT_ASC,$right);
-            }
-            $form_parm_arr['left'] = $left;
-            $form_parm_arr['right'] = $right;
+        }else{
+            $form_parm_arr = false;
         }
+        
         $this->assign('form_parm_arr',$form_parm_arr);
 
         return view();
