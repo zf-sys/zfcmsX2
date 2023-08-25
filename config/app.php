@@ -127,8 +127,8 @@ return [
     'route_cache_option'     => [],
 
     // 默认跳转页面对应的模板文件
-    'dispatch_success_tmpl'  => Env::get('root_path').'public/tpl/jump_sky.tpl',
-    'dispatch_error_tmpl'    => Env::get('root_path').'public/tpl/jump_sky.tpl',
+    'dispatch_success_tmpl'  => Env::get('root_path').'public/tpl/jump.tpl',
+    'dispatch_error_tmpl'    => Env::get('root_path').'public/tpl/jump.tpl',
 
     // 异常页面的模板文件
     'exception_tmpl'         => Env::get('root_path').'public/tpl/think_exception.tpl',
