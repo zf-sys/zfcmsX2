@@ -12,7 +12,8 @@ composer.lock
 !/application/common/controller/Fileupload.php
 !/application/common/controller/Updatesql.php
 !/application/common/controller/Upload.php
-./extend/zf/Yun.php
+/extend/zf/Yun.php
+/extend/zf/yun_bak/*
 
 
 #配置文件不需要更新
