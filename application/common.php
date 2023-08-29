@@ -1891,32 +1891,72 @@ if(!function_exists('widget_st')){
                 return "<script src='$_static/style/fcup.min.js?$v'></script>\n";
             }
 
-
-
-
-
-           
-
-
-
-
-
-
-
-
-
         }
-
-
-
-
         // <!-- 拖动排序 -->
         // <!-- <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script> -->
         // <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.8.3/Sortable.min.js"></script> -->
-        
+    }
+}
+/**
+ * 20230829
+ * 处理加密数据,返回原始数组
+ */
+if(!function_exists('deal_post_message')){
+    function deal_post_message($data){
+        if($data!=[]){
+            $str = aes_decrypt($data,'1234567890123456','1234567890123450');
+            $data = json_decode($str,true);
+            return $data;
+        }
+        return $data;
     }
 }
 
+
+/**
+ * 20230829
+ * 加密返回
+ */
+if(!function_exists('jsonProJm')){
+    function jsonProJm($arr,$msg='',$code=''){
+        $jm = aes_encrypt(json_encode($arr),'1234567890123456','1234567890123450');
+        return jsonPro($jm,$msg,$code);
+    }
+}
+/**
+ * 20230829
+ * aes加密
+ */
+if(!function_exists('aes_encrypt')){
+    function aes_encrypt($plainText,$keyStr='1234567890123456',$ivStr='1234567890123450') {
+        try {
+            $key = utf8_encode($keyStr);
+            $iv = utf8_encode($ivStr);
+            $cipherText = openssl_encrypt($plainText, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            return strtoupper(bin2hex($cipherText));
+        } catch (\Exception $e) {
+            return "aes encode error: ".$e->getMessage();
+        }
+    }
+}
+/**
+ * 20230829
+ * aes解密
+ */
+if(!function_exists('aes_decrypt')){
+    function aes_decrypt($encrypted,$keyStr='1234567890123456',$ivStr='1234567890123450') {
+        try {
+            $key = utf8_encode($keyStr);
+            $iv = utf8_encode($ivStr);
+            // dd($encrypted);
+            $encryptedHexStr = hex2bin($encrypted);
+            $decrypt = openssl_decrypt($encryptedHexStr, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            return $decrypt;  
+        } catch (\Exception $e) {
+            return "aes encode error: ".$e->getMessage();
+        }
+    }
+}
 
 
 
