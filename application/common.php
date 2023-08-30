@@ -1300,10 +1300,11 @@ if(!function_exists('isset_arr_key')){
   * 20220722新增
   * 返回消息
   * 20230217 新增version字段
+  * 20230830 新增字段encry  是否加密
  */
 if (!function_exists('jsonPro')) {
-    function jsonPro($data,$msg,$code=1,$url='',$version=''){
-            echo json_encode(array('code'=>$code,'data'=> $data,"msg" => $msg, "url" => $url,'version'=>$version));exit;
+    function jsonPro($data,$msg,$code=1,$url='',$version='',$encry=0){
+            echo json_encode(array('code'=>$code,'data'=> $data,"msg" => $msg, "url" => $url,'version'=>$version,'encry'=>$encry));exit;
     }
 }
 
@@ -1916,11 +1917,16 @@ if(!function_exists('deal_post_message')){
 /**
  * 20230829
  * 加密返回
+ * 20230830新增字段$url ,$version,$encry
  */
 if(!function_exists('jsonProJm')){
-    function jsonProJm($arr,$msg='',$code=''){
-        $jm = aes_encrypt(json_encode($arr),'1234567890123456','1234567890123450');
-        return jsonPro($jm,$msg,$code);
+    function jsonProJm($arr,$msg='',$code='',$url = '',$version='',$encry=0){
+        if($encry==1){
+            $jm = aes_encrypt(json_encode($arr),'1234567890123456','123456789012345a');
+        }else{
+            $jm = $arr;
+        }
+        return jsonPro($jm,$msg,$code,$url,$version,$encry);
     }
 }
 /**
