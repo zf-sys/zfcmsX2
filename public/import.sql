@@ -373,16 +373,6 @@ CREATE TABLE `zf_category_model_parm` (
 -- Records of zf_category_model_parm
 -- ----------------------------
 INSERT INTO `zf_category_model_parm` VALUES ('2', '1', '图集', 'album', '', 'filesystem_album', '1', '0', '0', '2', '3', '1', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('3', '1', '标题', 'title', '', 'layui-input', '1', '0', '0', '14', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('4', '1', '栏目描述', 'summary', '', 'layui-textarea', '1', '0', '0', '14', '2', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('5', '1', '缩略图', 'album', '', 'album', '0', '0', '0', '14', '3', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('6', '1', '栏目详情', 'content', '', 'ueditor', '1', '0', '0', '14', '4', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('7', '2', '作者', 'author', '', 'layui-input', '1', '0', '0', '14', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('8', '1', '时间', 'ctime', '', 'layui-time', '1', '0', '0', '14', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('9', '2', '排序', 'sort', '', 'layui-input', '1', '0', '0', '14', '0', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('10', '2', '扩展参数', 'append', '', 'layui-radio', '0', '0', '0', '14', '0', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('11', '2', '封面图', 'pic', '', 'layui-pic', '1', '0', '0', '14', '5', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('12', '2', '文件', 'file', '', 'layui-file', '1', '0', '0', '14', '6', '0', '', '1', '', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('17', '1', '标题', 'title', '', 'form_input', '1', '0', '0', '2', '1', '0', '', '1', '', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('18', '1', '简介', 'summary', '', 'form_textarea', '1', '0', '0', '2', '2', '0', '', '1', '', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('19', '2', '图片', 'pic', '', 'filesystem_pic', '1', '0', '0', '2', '4', '0', '', '1', '', '', '', '', '0');
@@ -390,21 +380,6 @@ INSERT INTO `zf_category_model_parm` VALUES ('20', '2', '排序', 'sort', '', 'f
 INSERT INTO `zf_category_model_parm` VALUES ('21', '2', '时间', 'ctime', '', 'form_time', '1', '0', '0', '2', '2', '0', '', '1', 'datetime', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('22', '1', '详情', 'content', '', 'form_tinymce', '1', '0', '0', '2', '4', '0', '', '1', '', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('23', '2', '作者', 'author', '', 'form_input', '1', '0', '0', '2', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('24', '2', '推荐', 'recommend', '', 'layui-switch', '1', '0', '0', '14', '9', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('25', '1', '标题', 'title', '', 'form_input', '1', '0', '0', '4', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('26', '1', '图片', 'pic', '', 'upload_pic', '1', '0', '0', '4', '2', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('27', '1', '详情', 'content', '', 'form_ueditor', '1', '0', '0', '4', '3', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('28', '1', '标题', 'title', '', 'form_input', '1', '0', '0', '5', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('29', '1', '图', 'pic', '', 'upload_pic', '1', '0', '0', '5', '2', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('30', '1', '状态', 'status', '', 'form_radio', '1', '0', '0', '5', '3', '0', '', '1', '[\'0\'=>\'是\',\'1\'=>\'否\']', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('31', '1', '标题', 'title', '', 'form_input', '1', '0', '0', '6', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('32', '1', '图集', 'album', '', 'upload_album', '1', '0', '0', '6', '2', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('33', '1', '标题', 'title', '', 'form_input', '1', '0', '0', '8', '1', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('34', '1', '多选1', 'append', '', 'form_radio', '1', '0', '0', '8', '2', '0', '', '1', '[\'0\'=>\'是\',\'1\'=>\'否\']', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('35', '1', '描述1', 'summary', '', 'form_input', '1', '0', '0', '8', '3', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('36', '1', '标题', 'title', '', 'layui-input', '1', '0', '0', '7', '0', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('37', '1', '图', 'pic', '', 'upload_pic', '1', '0', '0', '7', '0', '0', '', '1', '', '', '', '', '0');
-INSERT INTO `zf_category_model_parm` VALUES ('38', '1', '文件', 'file', '', 'upload_file', '1', '0', '0', '7', '0', '0', '', '1', '', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('39', '1', 'Tag', 'tags', '', 'form_textarea', '1', '0', '0', '2', '2', '0', '', '1', '', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('40', '1', '标题', 'title', '', 'layui-input', '1', '0', '0', '9', '0', '0', '', '1', '', '', '', '', '0');
 INSERT INTO `zf_category_model_parm` VALUES ('41', '1', '内容', 'content', '', 'form_ueditor', '1', '0', '0', '9', '0', '0', '', '1', '', '', '', '', '0');
