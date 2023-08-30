@@ -1922,7 +1922,7 @@ if(!function_exists('deal_post_message')){
 if(!function_exists('jsonProJm')){
     function jsonProJm($arr,$msg='',$code='',$url = '',$version='',$encry=0){
         if($encry==1){
-            $jm = aes_encrypt(json_encode($arr),'1234567890123456','123456789012345a');
+            $jm = aes_encrypt(json_encode($arr),'1234567890123456','1234567890123450');
         }else{
             $jm = $arr;
         }
