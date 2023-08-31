@@ -22,20 +22,6 @@ class Setting extends Admin
         $this->assign('form_widget',$form_widget);
     } 
 
-    /**
-     * 分类
-     * 广告
-     * message
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 1.获取当前表的所有字段
-     * 2.
-     * 
-     * 
-     */
     public function category_form_parm()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
@@ -163,49 +149,6 @@ class Setting extends Admin
         return view();
     }
 
-
-    /**
-     * 组件展示
-     */
-    public function form_pro_show(){
-
-        $list = getActions('app\common\widget\FormPro');
-
-        // dd($list);
-        $this->assign("list",$list);
-        return view();
-    }
-    
-
-    public function test_inputselect_json(){
-        $arr = [
-            [
-                'name'=>'AA','value'=>'1'
-            ],
-            [
-                'name'=>'BB','value'=>'2'
-            ],
-            [
-                'name'=>'A','value'=>'3'
-            ],
-            [
-                'name'=>'CC','value'=>'4'
-            ],
-
-        ];
-
-        return  jsonPro($arr,'请求成功',1,$url='',$version='');
-    }
-    /**
-     * 方法展示
-     * 
-     */
-    public function function_show(){
-
-        return view();
-    }
-
-    
 
     
 }
