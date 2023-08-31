@@ -22,6 +22,10 @@ class FormPro {
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $type = isset($request_data['type'])?$request_data['type']:'text';
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
+        $readonly = isset($request_data['readonly'])?$request_data['readonly']:'';
+        if($readonly!=''){
+          $readonly = 'readonly=""';
+        }
         $zf_html = '';
         $data = str_replace('"',"&quot;",$data);
         if($theme==1){
@@ -29,7 +33,7 @@ class FormPro {
           <div class="layui-card-header">$title</div>
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
-               <input  class="layui-input " type="$type" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               <input  class="layui-input " type="$type" name="$name" $readonly  placeholder="$placeholder" autocomplete="off"  value="$data">
              </div>
           </div>
 INFO;
@@ -38,7 +42,7 @@ INFO;
           <div class="layui-form-item">
           <label class="layui-form-label">$title:</label>
           <div class="layui-input-block">
-          <input type="$type" name="$name"  placeholder="$placeholder" autocomplete="off" class="layui-input" value="$data">
+          <input type="$type" name="$name" $readonly  placeholder="$placeholder" autocomplete="off" class="layui-input" value="$data">
           </div>
         </div>
 INFO;
@@ -262,13 +266,17 @@ ok
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
+        $readonly = isset($request_data['readonly'])?$request_data['readonly']:'';
+        if($readonly!=''){
+          $readonly = 'readonly=""';
+        }
         $zf_html = '';
         if($theme==1){
         $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
-      <textarea name="$name" placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
+      <textarea name="$name"  $readonly placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
     </div>
 </div>
 INFO;
@@ -277,7 +285,7 @@ INFO;
         <div class="layui-form-item">
         <label class="layui-form-label">$title:</label>
         <div class="layui-input-block">
-          <textarea name="$name" placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
+          <textarea name="$name"  $readonly placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
         </div>
       </div>
 INFO;
