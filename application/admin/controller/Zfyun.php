@@ -178,6 +178,11 @@ class Zfyun extends Admin
     }
     public function authentication_sys(){
         admin_role_check($this->z_role_list,$this->mca);
+        //是否存在某个文件
+        $yun_file = './extend/zf/Yun.php';
+        if(!file_exists($yun_file)) {
+            $this->redirect(url('index/welcome'));
+        }
         $t = input('t','');
         if($t=='status'){
             // 判断是否正确
