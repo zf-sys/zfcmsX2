@@ -70,13 +70,6 @@
         <table class="layui-table">
             <colgroup>
               <col width="50">
-              <col width="160">
-              <col width="60">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-              <col width="120">
               <col>
             </colgroup>
             <thead>
@@ -95,7 +88,13 @@
               <?php foreach($list as $k=>$vo){ ?>
                 <tr>
                   <td>{$vo['cid']}</td>
-                  <td><?php echo '┃'.str_repeat('━━', substr_count($vo['cname'],'  '));?> {$vo['name']}</td>
+                  <td>
+                    <?php echo '┃'.str_repeat('━━', substr_count($vo['cname'],'  '));?> 
+                    <a  onclick='zfAdminShow("编辑栏目","{:url('admin/setting/category_form_parm',['id' => $vo['cid']] )}")' >
+                      {$vo['name']}
+                    </a>
+                    <?php if(isset($vo['form_parm']) && $vo['form_parm']!=''){ echo ''; } ?>
+                  </td>
                   <td>{$vo['tpl_category']}</td> 
                   <td>{$vo['tpl_post']}</td>
                   <td><?php echo m_name($vo['mid'],'category_model'); ?></td>

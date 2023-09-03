@@ -35,6 +35,7 @@ class Updatesql extends Controller
             'v0.0.8'=>$this->v0_0_8(),
             'v0.0.9'=>$this->v0_0_9(),
             'v0.230809'=>$this->v0_230809(),
+            'v0.230902'=>$this->v0_230902(),
         ]; 
     }
 
@@ -122,7 +123,21 @@ class Updatesql extends Controller
         ];
         return $ret_data;
     }
+    public function v0_230902(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}category like 'cate_gl_arr_dx'",
+            "alter table {$this->tb_prefix}category add cate_gl_arr_dx text(0)"
+        ];
+        $ret_data[2] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}category like 'post_gl_arr_dx'",
+            "alter table {$this->tb_prefix}category add post_gl_arr_dx text(0)"
+        ];
+        return $ret_data;
+    }
 
+    
     
 
 

@@ -25,6 +25,7 @@ class Setting extends Admin
     public function category_form_parm()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
+        $tb_name = input('tb_name','zf_category');
         if(request()->isPost()){
             $_data = input('post.');
             // dd($_data);
@@ -45,19 +46,27 @@ class Setting extends Admin
             // dd($parm_data);
             $save_data['form_parm'] = json_encode($parm_data);
             $save_data['utime'] = time();
-            $cid = input('cid','');
-            $res = db('category')->where('cid',$cid)->update($save_data);
+            $id = input('id','');
+            if($tb_name=='zf_category'){
+                $res = db('category')->where('cid',$id)->update($save_data);
+            }else{
+                return ZFRetMsg(false,'','暂不支持数据表');
+            }
+            
             return ZFRetMsg($res,'保存成功','保存失败');
         }
         ###############################
-        $tb_name = 'zf_category';
         //过滤key数组
         $gl_key = [
             'cid','form_parm'
         ];
         ###############################
-        $cid = input('cid','');
-        $form_parm = db('category')->where('cid',$cid)->value('form_parm');
+        $id = input('id','');
+        if($tb_name=='zf_category'){
+            $form_parm = db('category')->where('cid',$id)->value('form_parm');
+        }else{
+            $this->error('暂不支持');
+        }
         if($form_parm==''){
             $form_parm_arr = false;
         }else{
@@ -66,13 +75,20 @@ class Setting extends Admin
         $_list = Db::query("show full columns from ".$tb_name);
         // dd($_list);
         $list_left = [];
+
         foreach($_list as $k=>$vo){
             if(isset($vo['Field'])){
                 $_name = strtolower($vo['Field']);
             }else{
                 $_name = strtolower($vo['field']);
             }
+            if(isset($vo['Comment'])){
+                $vo['comment'] = strtolower($vo['Comment']);
+            }else{
+                $vo['comment'] = strtolower($vo['comment']);
+            }
             if(!in_array($_name,$gl_key)){
+                
                 //判断是否存在
                 if(isset($form_parm_arr[$_name])){
                     $_model = $form_parm_arr[$_name]['model'];

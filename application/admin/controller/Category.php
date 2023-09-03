@@ -47,7 +47,7 @@ class Category extends Admin
         //     $where[] = ['pid','=' ,$pid];
         // }
         // $pid = 0;
-        $res = ZFTB('category')->field('cid,pid,name,cname,icon,tpl_category,tpl_post,mid,sort,status,menu')->where($where)->order("sort asc,cid asc")->select();
+        $res = ZFTB('category')->field('cid,pid,name,cname,icon,tpl_category,tpl_post,mid,sort,status,menu,form_parm')->where($where)->order("sort asc,cid asc")->select();
         $cat = new cat(array('cid', 'pid', 'name', 'cname')); 
         $list = $cat->getTree($res,$pid); 
         if(!$list){
@@ -182,6 +182,33 @@ class Category extends Admin
             }else{
                 $data['ctime'] =  time();
             }
+            $key_list = array_keys($data);
+            $_temp_list = [];
+            foreach($key_list as $k=>$vo){
+                if(strpos($vo,'zf_list_') === 0){
+                    $_temp_list[] = $vo;  
+                }
+            }
+            if($_temp_list){
+                foreach($_temp_list as $k=>$vo){
+                    if(isset($data[$vo]) && is_array($data[$vo])){
+                        $data[explode('zf_list_',$vo)[1]] = implode(",", $data[$vo]);
+                        unset($data[$vo]);
+                    }
+                }
+            }
+            #########过滤多选时,如果删除了全部时的问题#########
+            $cate_gl_arr_dx = ZFTB('category')->where(['cid'=>$data['cid']])->value('cate_gl_arr_dx');
+            if($cate_gl_arr_dx && $cate_gl_arr_dx!=''){
+                $gl_arr_dx = explode(',',$cate_gl_arr_dx);
+                foreach($gl_arr_dx as $k=>$vo){
+                    if(!isset($data[$vo])){
+                        $data[$vo] = '';
+                    }
+                }
+            }
+            
+
             $data['utime'] = time();
             try {
                 $res = ZFTB('category')->where(['cid'=>$data['cid']])->update($data);
@@ -486,7 +513,7 @@ class Category extends Admin
 
     /**
      * @Notes:内容增加
-     * @Interface post_add
+     * @Interface post_add_pl
      * @return \think\response\View|void
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -578,6 +605,7 @@ class Category extends Admin
                         $_temp_list[] = $vo;  
                     }
                 }
+                // dd($_temp_list);
                 if($_temp_list){
                     foreach($_temp_list as $k=>$vo){
                         if(isset($data[$vo]) && is_array($data[$vo])){
@@ -586,18 +614,18 @@ class Category extends Admin
                         }
                     }
                 }else{
-                    //查询字段
-                    $mid = ZFTB('post p')
-                        ->where(['p.id'=>$data['id']])
-                        ->join(ZFJoinStrLang('category c'),'c.cid = p.cid')
-                        ->value('c.mid');
-                    $tb_parm_list = ZFTB('category_model_parm')->where([['status','<>',9],['is_multi','=',1],['mid','=',$mid]])->order("position asc,sort asc, id asc")->select();
-                    // 判断是否含有该字段,没有则为空
-                    foreach($tb_parm_list as $k=>$vo){
-                        if(!isset($data[$vo['key']])){
-                            $data[$vo['key']] = '';
-                        }
-                    }
+                    // //查询字段
+                    // $mid = ZFTB('post p')
+                    //     ->where(['p.id'=>$data['id']])
+                    //     ->join(ZFJoinStrLang('category c'),'c.cid = p.cid')
+                    //     ->value('c.mid');
+                    // $tb_parm_list = ZFTB('category_model_parm')->where([['status','<>',9],['is_multi','=',1],['mid','=',$mid]])->order("position asc,sort asc, id asc")->select();
+                    // // 判断是否含有该字段,没有则为空
+                    // foreach($tb_parm_list as $k=>$vo){
+                    //     if(!isset($data[$vo['key']])){
+                    //         $data[$vo['key']] = '';
+                    //     }
+                    // }
                 }
                 // if(isset($data['tags']) && isset($data['content'])){
                 //     $data['content'] = content2keyword($data['content'],$data['tags']);
@@ -605,6 +633,18 @@ class Category extends Admin
                 // if(isset($data['summary']) && $data['summary']=='' &&isset($data['content']) && $data['content']!='' ){
                 //     $data['summary'] = mb_substr($data['content'],0,150,'utf8');
                 // }
+
+                #########过滤多选时,如果删除了全部时的问题#########
+                $post_gl_arr_dx = ZFTB('category')->where(['cid'=>$data['cid']])->value('post_gl_arr_dx');
+                if($post_gl_arr_dx && $post_gl_arr_dx!=''){
+                    $gl_arr_dx = explode(',',$post_gl_arr_dx);
+                    foreach($gl_arr_dx as $k=>$vo){
+                        if(!isset($data[$vo])){
+                            $data[$vo] = '';
+                        }
+                    }
+                }
+
                 doZfAction('sys_post_edit',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
@@ -645,18 +685,18 @@ class Category extends Admin
                 }elseif(count($_temp_list)==0){
                     //数组为空,不做操作
                 }else{
-                    //查询字段
-                    $mid = ZFTB('post p')
-                        ->where(['p.id'=>$data['id']])
-                        ->join(ZFJoinStrLang('category c'),'c.cid = p.cid')
-                        ->value('c.mid');
-                    $tb_parm_list = ZFTB('category_model_parm')->where([['status','<>',9],['is_multi','=',1],['mid','=',$mid]])->order("position asc,sort asc, id asc")->select();
-                    // 判断是否含有该字段,没有则为空
-                    foreach($tb_parm_list as $k=>$vo){
-                        if(!$data[$vo['name']]){
-                            $data[$vo['key']] = '';
-                        }
-                    }
+                    //查询字段 暂不使用
+                    // $mid = ZFTB('post p')
+                    //     ->where(['p.id'=>$data['id']])
+                    //     ->join(ZFJoinStrLang('category c'),'c.cid = p.cid')
+                    //     ->value('c.mid');
+                    // $tb_parm_list = ZFTB('category_model_parm')->where([['status','<>',9],['is_multi','=',1],['mid','=',$mid]])->order("position asc,sort asc, id asc")->select();
+                    // // 判断是否含有该字段,没有则为空
+                    // foreach($tb_parm_list as $k=>$vo){
+                    //     if(!$data[$vo['name']]){
+                    //         $data[$vo['key']] = '';
+                    //     }
+                    // }
                 }
                 // if(isset($data['tags']) && isset($data['content'])){
                 //     $data['content'] = content2keyword($data['content'],$data['tags']);
@@ -664,6 +704,8 @@ class Category extends Admin
                 // if(isset($data['summary']) && $data['summary']=='' &&isset($data['content']) && $data['content']!='' ){
                 //     $data['summary'] = mb_substr($data['content'],0,150,'utf8');
                 // }
+
+
                 doZfAction('sys_post_add',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();

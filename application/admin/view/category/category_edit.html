@@ -54,8 +54,12 @@
                           {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
                       <?php }elseif($vo['model']=='form_ueditor'){ ?>
                         {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'theme'=>$vo['theme']])|raw}
-                      <?php }elseif($vo['model']==''){ ?>
-                      <?php }elseif($vo['model']==''){ ?>
+                        <?php }elseif($vo['model']=='form_radio'){ ?>
+                          {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'theme'=>$vo['theme']])|raw}
+                      <?php }elseif($vo['model']=='upload_album'){ ?>
+                        {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'theme'=>$vo['theme']])|raw}
+                      <?php }else{ ?>
+                        模型{$vo['model']}暂未实现
                       <?php } ?>
                   <?php } ?>
                 <br>
@@ -89,8 +93,12 @@
                         {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
                     <?php }elseif($vo['model']=='form_ueditor'){ ?>
                       {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'theme'=>$vo['theme']])|raw}
-                    <?php }elseif($vo['model']==''){ ?>
-                    <?php }elseif($vo['model']==''){ ?>
+                    <?php }elseif($vo['model']=='form_radio'){ ?>
+                      {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'theme'=>$vo['theme']])|raw}
+                    <?php }elseif($vo['model']=='upload_album'){ ?>
+                      {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>$res[$vo['name']],'theme'=>$vo['theme']])|raw}
+                    <?php }else{ ?>
+                      模型{$vo['model']}暂未实现
                     <?php } ?>
                   <?php } ?>
                 </div>
@@ -160,7 +168,7 @@
 
 
       $('.tijiao').on("click",function(){
-          var index = layer.load(2);
+          // var index = layer.load(2);
           var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
           $.ajax({
               type:'post',
@@ -187,6 +195,9 @@
 
 
   });
+  function deleteFile(obj) {
+   $(obj).parent().remove();
+  }
   </script>
 </body>
 </html>

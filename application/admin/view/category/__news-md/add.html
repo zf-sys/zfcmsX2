@@ -31,7 +31,7 @@
                   {$form_widget->form_input('标题','title','')|raw}
                   {$form_widget->form_textarea('描述','summary','')|raw}
                   {$form_widget->form_textarea('Tag','tags','')|raw}
-                  {$form_widget->upload_album('图集','album[]','')|raw}
+                  {$form_widget->upload_album('图集','album','')|raw}
                   {$form_widget->form_input('作者','author','')|raw}
                   {$form_widget->form_time('时间','ctime',date("Y-m-d H:i:s",time()) )|raw}
                   {$form_widget->form_input('排序','sort','')|raw}
@@ -63,7 +63,7 @@
                   {$form_widget->form_input('标题','title',$data_res['title'])|raw}
                   {$form_widget->form_textarea('描述','summary',$data_res['summary'])|raw}
                   {$form_widget->form_textarea('Tag','tags',$data_res['tags'])|raw}
-                  {$form_widget->upload_album('图集','album[]',$data_res['album'])|raw}
+                  {$form_widget->upload_album('图集','album',$data_res['album'])|raw}
                   {$form_widget->form_input('作者','author',$data_res['author'])|raw}
                   {$form_widget->form_time('时间','ctime',date("Y-m-d H:i:s",$data_res['ctime']) )|raw}
                   {$form_widget->form_input('排序','sort',$data_res['sort'])|raw}
