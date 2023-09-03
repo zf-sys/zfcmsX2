@@ -1,6 +1,17 @@
+<style>
+    .p10{
+        padding: 5px 10px 0 10px;
+    }
+</style>
+<blockquote class="layui-elem-quote layui-quote-nm layui-bg-red" style="margin-top: 10px;padding: 0;padding-bottom: 5px;">
 <?php if(isset_arr_key(config('web.'),'admin_path','')==''){ ?>
-    <blockquote class="layui-elem-quote layui-quote-nm layui-bg-red" style="margin-top: 10px;">
-    安全提示：
-    为了你的后台安全，需要设置自定义授权token，<a style="color: #fff;" onclick='zfAdminShow("新增内容","{:url('config/index',['type'=>'系统设置'])}")'>点我修改</a>
-</blockquote>
+    <div class="p10">
+        为了你的后台安全，需要设置自定义授权token，<a style="culor: #fff;" onclick='zfAdminShow("新增内容","{:url('config/index',['type'=>'系统设置'])}")'>点我修改</a><br>
+    </div>
 <?php } ?>
+<?php if(config('app.app_debug')){?>
+    <div class="p10">
+        Debug模式未关闭,如果您的项目已上线请关闭debug. <a style="color: #fff;" >修改/config/app.php中的app_debug为false,或.env中的APP_DEBUG为false</a><br>
+    </div>
+<?php } ?>
+</blockquote>
