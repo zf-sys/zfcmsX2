@@ -90,7 +90,7 @@
                   <td>{$vo['cid']}</td>
                   <td>
                     <?php echo '┃'.str_repeat('━━', substr_count($vo['cname'],'  '));?> 
-                    <a  onclick='zfAdminShow("编辑栏目","{:url('admin/setting/category_form_parm',['id' => $vo['cid']] )}")' >
+                    <a  onclick='zfAdminShow("编辑参数","{:url('admin/setting/category_form_parm',['id' => $vo['cid']] )}")' >
                       {$vo['name']}
                     </a>
                     <?php if(isset($vo['form_parm']) && $vo['form_parm']!=''){ echo ''; } ?>

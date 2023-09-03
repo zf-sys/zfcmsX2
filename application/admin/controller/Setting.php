@@ -26,25 +26,32 @@ class Setting extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca,1);
         $tb_name = input('tb_name','zf_category');
+        $t = input('t','1');
+        $this->assign('t',$t);
+        $id = input('id','');
         if(request()->isPost()){
             $_data = input('post.');
-            // dd($_data);
-            // dd($_data['append']);
-            $parm_data = [];
-            foreach($_data['name'] as $k=>$vo){
-                $parm_data[$vo] = [
-                    'name'=>$vo,
-                    'model'=>$_data['model'][$k],
-                    'checked'=>$_data['checked'][$k],
-                    'sort'=>$_data['sort'][$k],
-                    'postion'=>$_data['postion'][$k],
-                    'comment'=>$_data['comment'][$k],
-                    'theme'=>$_data['theme'][$k],
-                    'append'=>$_data['append'][$k],
-                ];
+            if($t==1){
+                $parm_data = [];
+                foreach($_data['name'] as $k=>$vo){
+                    $parm_data[$vo] = [
+                        'name'=>$vo,
+                        'model'=>$_data['model'][$k],
+                        'checked'=>$_data['checked'][$k],
+                        'sort'=>$_data['sort'][$k],
+                        'postion'=>$_data['postion'][$k],
+                        'comment'=>$_data['comment'][$k],
+                        'theme'=>$_data['theme'][$k],
+                        'append'=>$_data['append'][$k],
+                    ];
+                }
+                // dd($parm_data);
+                $save_data['form_parm'] = json_encode($parm_data);
+            }elseif($t==2){
+                $save_data['form_parm'] = $_data['form_parm'];
+            }else{
+                return ZFRetMsg(false,'','参数不支持'); 
             }
-            // dd($parm_data);
-            $save_data['form_parm'] = json_encode($parm_data);
             $save_data['utime'] = time();
             $id = input('id','');
             if($tb_name=='zf_category'){
@@ -55,113 +62,124 @@ class Setting extends Admin
             
             return ZFRetMsg($res,'保存成功','保存失败');
         }
-        ###############################
-        //过滤key数组
-        $gl_key = [
-            'cid','form_parm'
-        ];
-        ###############################
-        $id = input('id','');
-        if($tb_name=='zf_category'){
-            $form_parm = db('category')->where('cid',$id)->value('form_parm');
-        }else{
-            $this->error('暂不支持');
-        }
-        if($form_parm==''){
-            $form_parm_arr = false;
-        }else{
-            $form_parm_arr = json_decode($form_parm,true);
-        }
-        $_list = Db::query("show full columns from ".$tb_name);
-        // dd($_list);
-        $list_left = [];
 
-        foreach($_list as $k=>$vo){
-            if(isset($vo['Field'])){
-                $_name = strtolower($vo['Field']);
+
+
+        if($t==1){
+            ###############################
+            //过滤key数组
+            $gl_key = [
+                'cid','form_parm'
+            ];
+            ###############################
+            if($tb_name=='zf_category'){
+                $form_parm = db('category')->where('cid',$id)->value('form_parm');
             }else{
-                $_name = strtolower($vo['field']);
+                $this->error('暂不支持');
             }
-            if(isset($vo['Comment'])){
-                $vo['comment'] = strtolower($vo['Comment']);
+            if($form_parm==''){
+                $form_parm_arr = false;
             }else{
-                $vo['comment'] = strtolower($vo['comment']);
+                $form_parm_arr = json_decode($form_parm,true);
             }
-            if(!in_array($_name,$gl_key)){
-                
-                //判断是否存在
-                if(isset($form_parm_arr[$_name])){
-                    $_model = $form_parm_arr[$_name]['model'];
-                    $_checked = $form_parm_arr[$_name]['checked'];
-                    $_sort = $form_parm_arr[$_name]['sort'];
-                    $_comment = $form_parm_arr[$_name]['comment'];
-                    if($_comment==''){
+            $_list = Db::query("show full columns from ".$tb_name);
+            // dd($_list);
+            $list_left = [];
+
+            foreach($_list as $k=>$vo){
+                if(isset($vo['Field'])){
+                    $_name = strtolower($vo['Field']);
+                }else{
+                    $_name = strtolower($vo['field']);
+                }
+                if(isset($vo['Comment'])){
+                    $vo['comment'] = strtolower($vo['Comment']);
+                }else{
+                    $vo['comment'] = strtolower($vo['comment']);
+                }
+                if(!in_array($_name,$gl_key)){
+                    
+                    //判断是否存在
+                    if(isset($form_parm_arr[$_name])){
+                        $_model = $form_parm_arr[$_name]['model'];
+                        $_checked = $form_parm_arr[$_name]['checked'];
+                        $_sort = $form_parm_arr[$_name]['sort'];
+                        $_comment = $form_parm_arr[$_name]['comment'];
+                        if($_comment==''){
+                            $_comment = $vo['comment'];
+                        }
+                        if(isset($form_parm_arr[$_name]['theme'])){
+                            $_theme = $form_parm_arr[$_name]['theme'];
+                            // $_theme = 1;
+
+                        }else{
+                            $_theme = 1;
+                        }
+                        if(isset($form_parm_arr[$_name]['append'])){
+                            $_append = $form_parm_arr[$_name]['append'];
+                        }else{
+                            $_append = '';
+                        }
+
+                    }else{
+                        $_model = '';
+                        $_checked = '0';
+                        $_sort = '0';
                         $_comment = $vo['comment'];
-                    }
-                    if(isset($form_parm_arr[$_name]['theme'])){
-                        $_theme = $form_parm_arr[$_name]['theme'];
-                        // $_theme = 1;
-
-                    }else{
                         $_theme = 1;
-                    }
-                    if(isset($form_parm_arr[$_name]['append'])){
-                        $_append = $form_parm_arr[$_name]['append'];
-                    }else{
                         $_append = '';
                     }
-
-                }else{
-                    $_model = '';
-                    $_checked = '0';
-                    $_sort = '0';
-                    $_comment = $vo['comment'];
-                    $_theme = 1;
-                    $_append = '';
+                    if($_comment==''){
+                        $_checked = '0';
+                    }
+                    if(isset($vo['Type'])){
+                        $_type = $vo['Type'];
+                    }else{
+                        $_type = $vo['type'];
+                    }
+                    if(isset($form_parm_arr[$_name]['postion']) && $form_parm_arr[$_name]['postion']=='right'){
+                        $list_right[] = [
+                            'name'=>$_name,
+                            'model'=>$_model,
+                            'checked'=>$_checked,
+                            'sort'=>$_sort,
+                            'postion'=>'right',
+                            'comment'=>$_comment,
+                            'type'=>$_type,
+                            'theme'=>$_theme,
+                            'append'=>$_append,
+                        ];
+                    }else{
+                        $list_left[] = [
+                            'name'=>$_name,
+                            'model'=>$_model,
+                            'checked'=>$_checked,
+                            'sort'=>$_sort,
+                            'postion'=>'left',
+                            'comment'=>$_comment,
+                            'type'=>$_type,
+                            'theme'=>$_theme,
+                            'append'=>$_append,
+                        ];
+                    }
+                    
                 }
-                if($_comment==''){
-                    $_checked = '0';
-                }
-                if(isset($vo['Type'])){
-                    $_type = $vo['Type'];
-                }else{
-                    $_type = $vo['type'];
-                }
-                if(isset($form_parm_arr[$_name]['postion']) && $form_parm_arr[$_name]['postion']=='right'){
-                    $list_right[] = [
-                        'name'=>$_name,
-                        'model'=>$_model,
-                        'checked'=>$_checked,
-                        'sort'=>$_sort,
-                        'postion'=>'right',
-                        'comment'=>$_comment,
-                        'type'=>$_type,
-                        'theme'=>$_theme,
-                        'append'=>$_append,
-                    ];
-                }else{
-                    $list_left[] = [
-                        'name'=>$_name,
-                        'model'=>$_model,
-                        'checked'=>$_checked,
-                        'sort'=>$_sort,
-                        'postion'=>'left',
-                        'comment'=>$_comment,
-                        'type'=>$_type,
-                        'theme'=>$_theme,
-                        'append'=>$_append,
-                    ];
-                }
-                
             }
+            $list = [
+                'left'=>(isset($list_left)?$list_left:false),
+                'right'=>(isset($list_right)?$list_right:false)
+            ];
+            $this->assign("list",$list);
+        }elseif($t==2){
+
+        }elseif($t==3){
+            if($tb_name=='zf_category'){
+                $form_parm = db('category')->where('cid',$id)->value('form_parm');
+            }else{
+                $this->error('暂不支持');
+            }
+            $this->assign('form_parm',$form_parm);
         }
-        $list = [
-            'left'=>(isset($list_left)?$list_left:false),
-            'right'=>(isset($list_right)?$list_right:false)
-        ];
-        // dd($list);
-        // dd($form_parm_arr);
-        $this->assign("list",$list);
         return view();
     }
 
