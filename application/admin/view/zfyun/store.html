@@ -61,7 +61,7 @@
                     <?php }else{ ?>
                       <?php if($vo['location']){ ?>
                         <?php if($vo['version_new']>$vo['location']){ ?>
-                        <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('升级','{$api_domain}/addons/zf_store_softclient.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 升级</a><br>
+                        <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('升级','{$api_domain}/addons/zf_store_softclientv2.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 升级</a><br>
                         
                         <?php } ?>
                         <?php if($vo['type']=='插件'){ ?>
@@ -73,7 +73,7 @@
                         <?php } ?>
 
                       <?php }else{ ?>
-                        <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('授权','{$api_domain}/addons/zf_store_softclient.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 授权</a>
+                        <a href="javascript:;" class="layui-btn layui-btn-sm" onclick="zfAdminShow('授权','{$api_domain}/addons/zf_store_softclientv2.user/soft_site_client.html?soft_id={$vo['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 授权</a>
                       <?php } ?>
                     <?php } ?>
 

@@ -34,7 +34,7 @@ class Zfyun extends Admin
         if(is_file('./addons/zfcms_plugin_store/controller/Zfplu.php')){
             $this->redirect('/addons/zfcms_plugin_store.zfplu/index');
         }else{
-            echo 'Please use the plugin version upgrade tool<a target="_blank" href="'.config('version.api_domain').'/addons/zf_store_softclient.api/cmsurl?t=zfcms_plugin_store">Click</a>';die;
+            echo 'Please use the plugin version upgrade tool<a target="_blank" href="'.config('version.api_domain').'/addons/zf_store_softclientv2.api/cmsurl?t=zfcms_plugin_store">Click</a>';die;
         }
     }
     public function themes(){
@@ -138,7 +138,7 @@ class Zfyun extends Admin
         if(is_file('./addons/zfcms_plugin_store/controller/Zfcms.php')){
             $this->redirect('/addons/zfcms_plugin_store.zfcms/index');
         }else{
-            echo 'Please use the plugin version upgrade tool<a target="_blank" href="'.config('version.api_domain').'/addons/zf_store_softclient.api/cmsurl?t=zfcms_plugin_store">Click</a>';die;
+            echo 'Please use the plugin version upgrade tool<a target="_blank" href="'.config('version.api_domain').'/addons/zf_store_softclientv2.api/cmsurl?t=zfcms_plugin_store">Click</a>';die;
         }
     }
     /**
