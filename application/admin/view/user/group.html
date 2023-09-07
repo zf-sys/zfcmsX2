@@ -45,7 +45,7 @@
                    <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
                 </div>
               </td>
-              <td> <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'user_group')" href="#">删除</a> <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/user/group_edit',['id' => $vo['id']] )}",800)'>编辑</button></td>
+              <td> <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'user_group')" href="#">删除</a> <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/user/group_edit',['id' => $vo['id']] )}",800)'>编辑</button></td>
             </tr>
           <?php } ?>
         </tbody>

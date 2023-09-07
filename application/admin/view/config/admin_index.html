@@ -56,7 +56,7 @@
                   <td>
                       <button class="layui-btn-sm layui-btn" onclick='zfAdminShow("编辑用户","{:url('admin/config/admin_edit',['id' => $vo['id']] )}",800)'>编辑</button>
                       <?php if($vo['name']!='admin'){ ?> 
-                          <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="btn_del('common/del_post',{$vo['id']},'admin')"  href="#">删除</a> 
+                          <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'admin')"  href="#">删除</a> 
                       <?php } ?>
                   </td>
 

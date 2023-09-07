@@ -47,7 +47,7 @@
                     </div>
                   </td>
                   <td>
-                    <a class="layui-btn layui-btn-sm  layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'menu')"  href="#">删除</a> 
+                    <a class="layui-btn layui-btn-sm  layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'menu')"  href="#">删除</a> 
                     <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/menu_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
                     <a class="layui-btn layui-btn-sm" href="{:url('admin/rests/menu',['id' => $vo['id'],'type' =>'child' ] )}">子菜单列表</a>
                   </td>

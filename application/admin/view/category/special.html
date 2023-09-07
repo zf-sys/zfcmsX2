@@ -53,7 +53,7 @@
                 </div>
               </td>
               <td> 
-                <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'special')" href="#">删除</a> 
+                <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'special')" href="#">删除</a> 
                 <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/category/special_edit',['id' => $vo['id']] )}",800)'>编辑</button>
                 <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("关联内容","{:url('admin/category/special_post_edit',['id' => $vo['id']] )}",800)'>关联内容</button>
               </td>

@@ -85,7 +85,7 @@
                     </div>
                   </td>
                   <td>
-                    <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('common/del_post',{$vo['id']},'task')"  href="#">删除</a> 
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'task')"  href="#">删除</a> 
                     <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/zfyun/task_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
                     <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("日志","{:url('admin/zfyun/task_log',['task_id' => $vo['id']] )}")'>日志</button> 
                   </td>

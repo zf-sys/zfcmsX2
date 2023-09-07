@@ -51,7 +51,7 @@
                 </div>
               </td>
               <td> 
-                <a class="layui-btn layui-btn-danger layui-btn-sm " onclick="btn_del('common/del_post',{$vo['id']},'admin_group')"  href="#">删除</a> 
+                <a class="layui-btn layui-btn-danger layui-btn-sm " onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'admin_group')"  href="#">删除</a> 
                 <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑分类","{:url('admin/config/admin_group_edit',['id' => $vo['id']] )}",800)'>编辑</button><button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑权限","{:url('admin/config/admin_group_role',['id' => $vo['id']] )}",800)'>权限管理</button>
                 <a class="layui-btn layui-btn-sm" href="{:url('config/admin_group',['id'=>$vo['id'],'t'=>'copy'])}">复制权限</a>
               </td>

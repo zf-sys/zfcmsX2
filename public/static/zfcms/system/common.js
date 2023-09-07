@@ -103,7 +103,7 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 		  btn: ['删除','取消'] //按钮
 		}, function(){
 		  //执行删除操作
-		  $.get('../'+role,{id:id,db:db},function(res){
+		  $.get(role,{id:id,db:db},function(res){
 			if(res.result==1){
 			  layer.msg("删除成功", {icon: 1});
 			  setTimeout(function() {
@@ -124,7 +124,7 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 	window.is_switch = function(dbname,id,status){
 		$.ajax({
 		  type:'post',
-		  url:"../common/is_switch",
+		  url:"/admin/common/is_switch",
 		  data:{dbname:dbname,id:id,status:status},
 		  dataType:'json',
 		  success:function(res){
@@ -149,7 +149,7 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 		var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj option,.info_tj radio").serialize();      
       	$.ajax({
           type:'post',
-          url:'../'+role,
+          url:role,
           data:data,
           dataType:'json',
           success:function(res){
