@@ -30,7 +30,7 @@
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
                   <div class="layui-form-item">
                     <div class="layui-input-block">
-                      <button class="layui-btn layui-btn-sm" onclick="tijiao_data('rests/guessbook_edit')" lay-submit="" lay-filter="component-form-element">提交</button>
+                      <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/rests/guessbook_edit')" lay-submit="" lay-filter="component-form-element">提交</button>
                     </div>
                   </div>
                 <?php }else{ ?>
@@ -42,7 +42,7 @@
                   
                   <div class="layui-form-item">
                     <div class="layui-input-block">
-                      <button class="layui-btn layui-btn-sm" onclick="tijiao_data('rests/guessbook_add')" lay-submit="" lay-filter="component-form-element">提交</button>
+                      <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/rests/guessbook_add')" lay-submit="" lay-filter="component-form-element">提交</button>
                     </div>
                   </div>
                 <?php } ?>

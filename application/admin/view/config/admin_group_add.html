@@ -21,7 +21,7 @@
           {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
           <div class="layui-form-item">
             <div class="layui-input-block">
-              <input  class="layui-btn layui-btn-sm" onclick="tijiao_data('config/admin_group_edit')" value="立即提交" type="button"  />
+              <input  class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/config/admin_group_edit')" value="立即提交" type="button"  />
             </div>
           </div>
         <?php }else{ ?>
@@ -30,7 +30,7 @@
           {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>'1','parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
           <div class="layui-form-item">
             <div class="layui-input-block">
-              <input  class="layui-btn layui-btn-sm" onclick="tijiao_data('config/admin_group_add')" value="立即提交" type="button"  />
+              <input  class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/config/admin_group_add')" value="立即提交" type="button"  />
             </div>
           </div>
         <?php } ?>

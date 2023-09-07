@@ -35,7 +35,7 @@
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
                   <div class="layui-form-item">
                     <div class="layui-input-block">
-                      <a class="layui-btn layui-btn-sm" onclick="tijiao_data('rests/advert_edit')" >提交</a>
+                      <a class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/rests/advert_edit')" >提交</a>
                     </div>
                   </div>
                 <?php }else{ ?>
@@ -51,7 +51,7 @@
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>'0','parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
                   <div class="layui-form-item">
                     <div class="layui-input-block">
-                      <a class="layui-btn layui-btn-sm" onclick="tijiao_data('rests/advert_add')" >提交</a>
+                      <a class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/rests/advert_add')" >提交</a>
                     </div>
                   </div>
                 <?php } ?>
