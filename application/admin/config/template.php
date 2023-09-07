@@ -1,7 +1,7 @@
 <?php
-$web_config = config()['web'];
+$web_config = ZFC('webconfig','db','arr');
 if(isset($web_config['site_path']) && $web_config['site_path']!=''){
-    $site_path = '/'.config()['web']['site_path'];
+    $site_path = '/'.ZFC("webconfig.site_path");
 }else{
     $site_path = '';
 }

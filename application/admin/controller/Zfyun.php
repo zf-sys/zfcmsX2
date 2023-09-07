@@ -90,7 +90,7 @@ class Zfyun extends Admin
             }else{
                 $client_config['http'] = 'http';
             }
-            $client_config['token'] = config()["web"]['site_token'];
+            $client_config['token'] = config()["zf_auth"]['site_token'];
             $this->assign('client_config',$client_config);
 
         }

@@ -50,7 +50,7 @@ class Admin extends Zfb
         $this->mca =  $m.'/'.ucwords($c) . '/' . $a;
 
         //插入日志
-        if(config('web.is_log')==1){
+        if(ZFC("webconfig.is_log")==1){
             $log['action'] = $m.'/'.$c.'/'.$a ;
             $log['ctime'] = time() ;
             $log['ip'] = request()->ip();
@@ -58,10 +58,8 @@ class Admin extends Zfb
             $log['post'] = json_encode(input('param.'));
             ZFTB('admin_log')->insert($log);
         }
-        $parm_data = config()['web'];
-        $this->tb_pre = $parm_data['tb'];
+        $parm_data = ZFC('webconfig','db','arr');
         $this->parm_data = $parm_data;
-        $this->assign('tb_pre',$this->tb_pre );
         $this->assign('parm_data',$parm_data );
         if(isset($parm_data['site_path']) && $parm_data['site_path']!=''){
             $this->site_path = '/'.$parm_data['site_path'].'/';

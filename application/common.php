@@ -1701,7 +1701,7 @@ if(!function_exists('zf_runtime')){
  */
 if(!function_exists('zf_to_site_url')){
     function zf_to_site_url(){
-        $site_url = config('web.site_url');
+        $site_url = ZFC("webconfig.site_url");
         if($site_url && $site_url!='' && !is_str_find(get_url(),$site_url)){
             if(substr($site_url,-1)=='/'){
                 $site_url = substr($site_url,0,-1);

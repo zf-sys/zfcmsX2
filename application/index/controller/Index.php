@@ -82,9 +82,9 @@ class Index extends Base
                 ->order('p.ctime desc,p.id desc')->paginate(15);
        	$this->assign('list',$list);
         
-        $seo['title'] = config()['web']['site_title'];
-        $seo['keywords'] = config()['web']['site_keywords'];
-        $seo['description'] = config()['web']['site_description'];
+        $seo['title'] = ZFC("webconfig.site_title");
+        $seo['keywords'] = ZFC("webconfig.site_keywords");
+        $seo['description'] = ZFC("webconfig.site_description");
         $this->assign('seo', $seo);
         // doZfAction('home_tdk',['type'=>'index','data'=>'','request'=>request()]);
 

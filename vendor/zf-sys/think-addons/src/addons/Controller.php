@@ -16,7 +16,7 @@ class Controller extends \think\Controller
 {
     protected function __construct(){
         parent::__construct();
-        $site_path = config('web.site_path');
+        $site_path = ZFC("webconfig.site_path");
         if($site_path){
           if($site_path!=''){
             $this->site_path = '/'.$site_path.'/';

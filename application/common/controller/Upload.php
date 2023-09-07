@@ -18,19 +18,17 @@ use Upyun\Config as UpyConfig;
 
 class Upload extends Controller{
     public function __construct (){
-      $this->upload_type = config('web.upload_type');
-      $this->is_upload_compress = config('web.is_upload_compress');
-      $this->upload_pic_max_w = config('web.upload_pic_max_w');
-      $this->is_file_dlj = config('web.is_file_dlj');
-      if(config('web.site_path')){
-        if(config('web.site_path')!=''){
-          $this->site_path = '/'.config('web.site_path').'/';
-        }else{
-          $this->site_path = '/';
-        }
+      $this->upload_type = ZFC("webconfig.upload_type");
+      $this->is_upload_compress = ZFC("webconfig.is_upload_compress");
+      $this->upload_pic_max_w = ZFC("webconfig.upload_pic_max_w");
+      $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
+
+      if(ZFC("webconfig.site_path")!=''){
+        $this->site_path = '/'.ZFC("webconfig.site_path").'/';
       }else{
         $this->site_path = '/';
       }
+
     }
     private function _check_pic_mm($file){
       
@@ -55,7 +53,7 @@ class Upload extends Controller{
             return jserror('上传方式不存在');
           }
         }else{
-          $info = $file->validate(['ext'=>config()['web']['pic_ext']])->move('.'.$this->site_path.'upload/common/image');
+          $info = $file->validate(['ext'=>ZFC("webconfig.pic_ext")])->move('.'.$this->site_path.'upload/common/image');
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
           $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/image/'.$getSaveName;
           
@@ -115,7 +113,7 @@ class Upload extends Controller{
             return jserror('上传方式不存在');
           }
         }else{
-          $info = $file->validate(['ext'=>config()['web']['file_ext']])->move('.'.$this->site_path.'upload/common/file');
+          $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.'upload/common/file');
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
           $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/file/'.$getSaveName;
         }
@@ -206,7 +204,7 @@ class Upload extends Controller{
             return jserror('上传方式不存在');
           }
         }else{
-          $info = $file->validate(['ext'=>config()['web']['file_ext']])->move('.'.$this->site_path.'upload/common/filesystem/fp');
+          $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.'upload/common/filesystem/fp');
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
           $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/filesystem/fp/'.$getSaveName;
         }

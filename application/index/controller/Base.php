@@ -38,28 +38,25 @@ class Base extends Zfb
         if($load){
             parent::__construct();
             if(!session('admin')){  $this->assign('admin',false); }else{ $this->assign('admin',true); }
-            if(config('web.site_path')){
-                if(config('web.site_path')!=''){
-                    $this->site_path = '/'.config('web.site_path').'/';
-                }else{
-                    $this->site_path = '/';
-                }
+            if(ZFC("webconfig.site_path")!=''){
+                $this->site_path = '/'.ZFC("webconfig.site_path").'/';
             }else{
                 $this->site_path = '/';
             }
+            
             $this->assign('site_path',$this->site_path);
-            $cms_config = config()['web'];
+            $cms_config = ZFC('webconfig','db','arr');
             $this->assign('cms_config',$cms_config);
             $this->cms_config = $cms_config;
             //使用:Db::name($this->sys['lang].'config')
             $this->sys = [
                 'lang'=>'',
             ];
-            if(config('web.site_closed')){
-                $this->error('站点已关闭',config('web.site_closed_url'));
+            if(ZFC("webconfig.site_closed")){
+                $this->error('站点已关闭',ZFC("webconfig.site_closed_url"));
             }
             $this->assign('home',session('home'));
-            $this->assign('web_config',config()['web']);
+            $this->assign('web_config',$cms_config);
             $this->zf_tpl_suffix = ZFC('zf_tpl_suffix');
             if($this->zf_tpl_suffix==''){
                 $this->zf_tpl_suffix = '';
@@ -120,10 +117,10 @@ class Base extends Zfb
             // $data = array_merge($data,$this->common_tag);
             // $where = array_merge($where, $this->common_select_tag);
 
-
-            $seo['title'] = config()['web']['site_title'];
-            $seo['keywords'] = config()['web']['site_keywords'];
-            $seo['description'] = config()['web']['site_description'];
+            $web_config = ZFC('webconfig','db','arr');
+            $seo['title'] = $web_config['site_title'];
+            $seo['keywords'] = $web_config['site_keywords'];
+            $seo['description'] = $web_config['site_description'];
             $this->assign('seo', $seo);
             if(!$this->lang){ $this->lang = ''; }
         }

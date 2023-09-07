@@ -150,10 +150,6 @@ class Install extends Controller
      */
     private function step5()
     {
-        //重置站点token
-        $web_config = ['site_token'=>time().mt_rand(1,99999999),'site_path'=>'','site_admin_token'=>time().mt_rand(100000,99999999)];
-        extraconfig($web_config,'web');
-        
         $account = input('post.account');//用户名
         $password = input('post.password');//密码
 
@@ -209,7 +205,6 @@ class Install extends Controller
             return $this->error($user->getError() ? $user->getError() : '管理员账号设置失败！');
         }
         extraconfig(['sql_version'=>'v0.0.0.1'],'version');
-        extraconfig(['site_admin_token'=>time(),'site_token'=>md5(time())],'web');
         file_put_contents('./public/install.lock', "如需重新安装，请手动删除此文件\n安装时间：".date('Y-m-d H:i:s'));
         $hs_auth = <<<INFO
 <?php
@@ -227,6 +222,7 @@ class Install extends Controller
 return ['email' => '', 'key'=>'', 'sc'=>'' ];
 INFO;
         file_put_contents('./config/zf_auth.php', $hs_auth);
+        extraconfig(['site_admin_token'=>time(),'site_token'=>md5(time())],'zf_auth');
         // 获取站点根目录
         $root_dir = request()->baseFile();
         $root_dir  = preg_replace(['/index.php$/'], [''], $root_dir);

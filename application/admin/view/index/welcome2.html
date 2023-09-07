@@ -99,7 +99,7 @@
                                 <?php if(is_file('./application/index/controller/Install.php')){ echo '<span style="color:red">未删除安装文件 路径:./application/index/controller/Install.php</span><br>'; } ?>
                                 
                                 2.token强弱提醒<br>
-                                <?php echo judgepassword(config('web.site_token')); ?><br>
+                                <?php echo judgepassword(config('zf_auth.site_token')); ?><br>
                                 修改路径 网站设置>基本设置>系统设置>站点Token   <br>
                                 3. runtime 权限<br>
                                 <?php $runtime_pow =  posix_getpwuid(fileowner('./runtime'))['name']; if($runtime_pow=='root'){ echo  '<span style="color:red">无文件夹权限</span><br>'; }else{ echo '有文件夹操作权限<br>'; } ?>

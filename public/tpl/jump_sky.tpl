@@ -1,8 +1,8 @@
 {__NOLAYOUT__}
 <?php
-if(config('web.site_path')){
-    if(config('web.site_path')!=''){
-    $this->site_path = config('web.site_path').'/';
+if(ZFC("webconfig.site_path")){
+    if(ZFC("webconfig.site_path")!=''){
+    $this->site_path = ZFC("webconfig.site_path").'/';
     }else{
     $this->site_path = '';
     }

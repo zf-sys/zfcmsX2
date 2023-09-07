@@ -26,9 +26,9 @@ class User extends Base
                 $this->redirect('/user/set',302);
             }
         }
-        $seo['title'] = config()['web']['site_title'];
-        $seo['keywords'] = config()['web']['site_keywords'];
-        $seo['description'] = config()['web']['site_description'];
+        $seo['title'] = ZFC("webconfig.site_title");
+        $seo['keywords'] = ZFC("webconfig.site_keywords");
+        $seo['description'] = ZFC("webconfig.site_description");
         $this->assign('seo', $seo);
 
         
@@ -116,7 +116,7 @@ class User extends Base
                 if($is) return jserror('昵称已存在,请换一个'); 
             }
             //过滤违禁词
-            $wjc = explode(',',config('web.key_filter'));
+            $wjc = explode(',',ZFC("webconfig.key_filter"));
             $data['sign'] = str_replace($wjc,'*',$data['sign']);
             $data['utime'] = time();
             $data['ip'] = request()->ip();
@@ -148,7 +148,7 @@ class User extends Base
             if($data['content']=='') return jserror('内容不能为空'); 
 
             //过滤违禁词
-            $wjc = explode(',',config('web.key_filter'));
+            $wjc = explode(',',ZFC("webconfig.key_filter"));
             $data['content'] = str_replace($wjc,'*',$data['content']);
             $data['title'] = str_replace($wjc,'*',$data['title']);
             if($data['id']==''){
@@ -219,7 +219,7 @@ class User extends Base
                     }
                 }
             }
-            $wjc = explode(',',config('web.key_filter'));
+            $wjc = explode(',',ZFC("webconfig.key_filter"));
             $data['content'] = str_replace($wjc,'*',$data['content']);
             $is = db('post_reply')->where($data)->find();
             if($is){

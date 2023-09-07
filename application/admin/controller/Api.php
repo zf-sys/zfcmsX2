@@ -22,7 +22,7 @@ class Api extends Zfb
     }
     //通过token自动登录
     public function auto_login(){
-        $token_site = config()['web']['site_token'];
+        $token_site = config()['zf_auth']['site_token'];
         $token = input('token','');
         if($token==''){
             echo 'token不能为空';die;
@@ -33,7 +33,7 @@ class Api extends Zfb
         $userInfo = ZFTB('admin')->where('name', 'admin')->where('status', 1)->find();
         $admin  = $userInfo;
         session('admin', $admin);
-        $web_config = config()['web'];
+        $web_config = ZFC('webconfig','db','arr');
         if(isset($web_config['site_path']) && $web_config['site_path']!=''){
             $site_path = '/'.$web_config['site_path'].'/admin';
         }else{

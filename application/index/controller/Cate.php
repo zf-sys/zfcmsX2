@@ -60,9 +60,9 @@ class Cate extends Base
         //当前位置{{面包屑导航}}
         $currentPath = '<a href="/" class="zfcss_mbx">首页</a> ' . $this->get_path($cid);
         $this->assign('currentPath', $currentPath);
-        $seo['title'] = ($cate_res['seo_t']==''?$cate_res['name'].'-'.config()['web']['site_name']:$cate_res['seo_t']);
-        $seo['description'] = ($cate_res['seo_d']==''?config()['web']['site_description']:$cate_res['seo_d']);
-        $seo['keywords'] = ($cate_res['seo_k']==''?config()['web']['site_keywords']:$cate_res['seo_k']);
+        $seo['title'] = ($cate_res['seo_t']==''?$cate_res['name'].'-'.ZFC("webconfig.site_name"):$cate_res['seo_t']);
+        $seo['description'] = ($cate_res['seo_d']==''?ZFC("webconfig.site_description"):$cate_res['seo_d']);
+        $seo['keywords'] = ($cate_res['seo_k']==''?ZFC("webconfig.site_keywords"):$cate_res['seo_k']);
         $this->assign('seo', $seo);
         doZfAction('home_tdk',['type'=>$this->action,'data'=>$cate_res,'request'=>request()]);
         $this->assign('act', 'list');
@@ -151,9 +151,9 @@ class Cate extends Base
         }
         $this->assign('tui_arr', $tui_arr);
         
-        $seo['title'] = ($content['seo_t']==''?$content['title'].'-'.config()['web']['site_name']:$content['seo_t']);
-        $seo['description'] = ($content['seo_d']==''?config()['web']['site_description']:$content['seo_d']);
-        $seo['keywords'] = ($content['seo_k']==''?config()['web']['site_keywords']:$content['seo_k']);
+        $seo['title'] = ($content['seo_t']==''?$content['title'].'-'.ZFC("webconfig.site_name"):$content['seo_t']);
+        $seo['description'] = ($content['seo_d']==''?ZFC("webconfig.site_description"):$content['seo_d']);
+        $seo['keywords'] = ($content['seo_k']==''?ZFC("webconfig.site_keywords"):$content['seo_k']);
         $this->assign('seo', $seo);
         doZfAction('home_tdk',['type'=>$this->action,'data'=>$content,'request'=>request()]);
         $tpl =$this->zf_tpl_suffix.($this->lang==''?'':'/'.$this->lang).'/cate/'.$cate_res['tpl_post'];
@@ -184,8 +184,8 @@ class Cate extends Base
         $this->assign('keyword',$keyword);
         $this->assign('act', 'list');
 
-        $seo['title'] = $keyword . ' - ' . config()['web']['site_name'];
-        $seo['description'] = config()['web']['site_description'];
+        $seo['title'] = $keyword . ' - ' . ZFC("webconfig.site_name");
+        $seo['description'] = ZFC("webconfig.site_description");
         $seo['keywords'] =   $keyword ;
         $this->assign('seo', $seo);
         doZfAction('home_tdk',['type'=>$this->action,'data'=>$keyword,'request'=>request()]);
@@ -226,9 +226,9 @@ class Cate extends Base
         $this->assign('page', $page);
         $this->assign('tag', $tag);
         
-        $seo['title'] = $tag.'-'.config()['web']['site_name'];
-        $seo['description'] = config()['web']['site_description'];
-        $seo['keywords'] =$tag.','.config()['web']['site_keywords'];
+        $seo['title'] = $tag.'-'.ZFC("webconfig.site_name");
+        $seo['description'] = ZFC("webconfig.site_description");
+        $seo['keywords'] =$tag.','.ZFC("webconfig.site_keywords");
         $this->assign('seo', $seo);
         doZfAction('home_tdk',['type'=>$this->action,'data'=>$tag,'request'=>request()]);
         $tpl = $this->zf_tpl_suffix.($this->lang==''?'':'/'.$this->lang).'/cate/tag';
@@ -242,9 +242,9 @@ class Cate extends Base
         $this->assign('list', $list);
         $this->assign('page', $page);
         
-        $seo['title'] = '专题-'.config()['web']['site_name'];
-        $seo['description'] = config()['web']['site_description'];
-        $seo['keywords'] =config()['web']['site_keywords'];
+        $seo['title'] = '专题-'.ZFC("webconfig.site_name");
+        $seo['description'] = ZFC("webconfig.site_description");
+        $seo['keywords'] =ZFC("webconfig.site_keywords");
         $this->assign('seo', $seo);
         doZfAction('home_tdk',['type'=>$this->action,'data'=>'','request'=>request()]);
         $tpl = $this->zf_tpl_suffix.($this->lang==''?'':'/'.$this->lang).'/cate/special';
@@ -279,9 +279,9 @@ class Cate extends Base
         $relevant = Db::name('post')->where([['ctime','<',time()],['status','=',1]])->order('hits desc,ctime asc')->limit(10)->select();
         $this->assign('relevant',$relevant);
 
-        $seo['title'] = ($special_res['seo_t']==''?$special_res['name']:$special_res['seo_t']).'-'.config()['web']['site_name'];
-        $seo['description'] = ($special_res['seo_d']==''?config()['web']['site_description']:$special_res['seo_d']);
-        $seo['keywords'] = ($special_res['seo_k']==''?config()['web']['site_keywords']:$special_res['seo_k']);
+        $seo['title'] = ($special_res['seo_t']==''?$special_res['name']:$special_res['seo_t']).'-'.ZFC("webconfig.site_name");
+        $seo['description'] = ($special_res['seo_d']==''?ZFC("webconfig.site_description"):$special_res['seo_d']);
+        $seo['keywords'] = ($special_res['seo_k']==''?ZFC("webconfig.site_keywords"):$special_res['seo_k']);
         $this->assign('seo', $seo);
         doZfAction('home_tdk',['type'=>$this->action,'data'=>$special_res,'request'=>request()]);
         $this->assign('act', 'list');
@@ -294,9 +294,9 @@ class Cate extends Base
 
         $this->assign('content',$content);
         $this->assign('cid',$cid);
-        $seo['title'] = $content['name'].'-'.config()['web']['site_name'];
-        $seo['keywords'] = config()['web']['site_keywords'];
-        $seo['description'] = config()['web']['site_description'];
+        $seo['title'] = $content['name'].'-'.ZFC("webconfig.site_name");
+        $seo['keywords'] = ZFC("webconfig.site_keywords");
+        $seo['description'] = ZFC("webconfig.site_description");
         $this->assign('seo', $seo);
         doZfAction('home_tdk',['type'=>$this->action,'data'=>$content,'request'=>request()]);
         $tpl = $this->zf_tpl_suffix.($this->lang==''?'':'/'.$this->lang).'/cate/page';

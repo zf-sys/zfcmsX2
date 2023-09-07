@@ -36,6 +36,7 @@ class Updatesql extends Controller
             'v0.0.9'=>$this->v0_0_9(),
             'v0.230809'=>$this->v0_230809(),
             'v0.230902'=>$this->v0_230902(),
+            'v0.230907'=>$this->v0_230907(),
         ]; 
     }
 
@@ -133,6 +134,16 @@ class Updatesql extends Controller
             'tb_field_add',
             "show columns from {$this->tb_prefix}category like 'post_gl_arr_dx'",
             "alter table {$this->tb_prefix}category add post_gl_arr_dx text(0)"
+        ];
+        return $ret_data;
+    }
+    public function v0_230907(){
+        $ret_data[1] = [ 
+            'tb_post_add',
+            $this->tb_prefix.'config',
+            ['key'=>'webconfig','type'=>'system','msg'=>'网站配置','value'=>'{"site_name":"","site_url":"","site_mail":"","site_hotline":"","site_fax":"","site_qq":"","site_wx":"","site_address":"","site_copyright":"","site_icp":"","site_title":"","site_keywords":"","site_description":"","site_closed":"0","is_log":"0","key_filter":"","theme_name":"","pic_ext":"pjpeg,jpeg,jpg,gif,bmp,png","file_ext":"txt,pdf,doc,xls,ppt,mp4,zip,jpg,pjpeg,jpeg,jpg,gif,bmp,png,log","site_logo":"","site_icon":"","site_qrcode":"","upload_type":"","site_token":"ea85849590a5c8cadd45baab3af68744","tongji_code":"","site_closed_url":"","cate_page_type":"1","cate_lm":"cate","site_more":"0","tb":"xcxzk","bd_tsjk":"","editor_def":"ueditor","update_config_time":"1618492674","cms_default_pic":"","cate_editor_def":"ueditor","template_home":"index","template_home_cid":"6","cms_oss_sites":"oss002.wangmingchang.com,oss001.wangmingchang.com,oss.wangmingchang.com,oss1.wangmingchang.com","cms_post_copyright":"\u672c\u7ad9\u6587\u7ae0\u5982\u672a\u6ce8\u660e\u51fa\u5904\u5219\u4e3a\u539f\u521b,\u8f6c\u8f7d\u8bf7\u6ce8\u660e\u51fa\u5904\uff0c\u5982\u6709\u4fb5\u6743\u8bf7\u90ae\u4ef6\u8054\u7cfb\u7ad9\u957f ","site_path":"","site_admin_token":"1692615450","site_home_url":""}'],
+            false,  //是否允许重复
+            ['key'=>'webconfig','type'=>'system'],
         ];
         return $ret_data;
     }

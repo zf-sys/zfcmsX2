@@ -10,8 +10,8 @@
 // +----------------------------------------------------------------------
 // | 模板设置
 // +----------------------------------------------------------------------
-if(isset(config()['web']['site_path']) && config()['web']['site_path']!=''){
-    $site_path = '/'.config()['web']['site_path'];
+if(ZFC("webconfig.site_path")!=''){
+    $site_path = '/'.ZFC("webconfig.site_path");
 }else{
     $site_path = '';
 }

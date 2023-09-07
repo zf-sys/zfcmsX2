@@ -210,7 +210,7 @@ class Common extends Admin
     // public function upload_one(){
     //     admin_role_check($this->z_role_list,$this->mca,1);
     //     $file = request()->file('file');
-    //     $info = $file->validate(['ext'=>config()['web']['pic_ext']])->move( './public/upload/admin/image');
+    //     $info = $file->validate(['ext'=>ZFC("webconfig.pic_ext")])->move( './public/upload/admin/image');
     //     $getSaveName = str_replace('\\', '/', $info->getSaveName());//win下反斜杠替换成斜杠
     //     $msg = 'http://'.$_SERVER['SERVER_NAME'].'/public/upload/admin/image/'.$getSaveName;
     //     if($msg){
@@ -230,7 +230,7 @@ class Common extends Admin
     // public function upload_one_file(){
     //     admin_role_check($this->z_role_list,$this->mca,1);
     //     $file2 = request()->file('file');
-    //     $info = $file2->validate(['ext'=>config()['web']['file_ext']])->move('./public/upload/admin/file');
+    //     $info = $file2->validate(['ext'=>ZFC("webconfig.file_ext")])->move('./public/upload/admin/file');
     //     $getSaveName = str_replace('\\', '/', $info->getSaveName());//win下反斜杠替换成斜杠
     //     $msg = 'http://'.$_SERVER['SERVER_NAME'].'/public/upload/admin/file/'.$getSaveName;
     //     return ZFRetMsg($msg,$msg,'error');

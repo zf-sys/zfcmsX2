@@ -32,19 +32,18 @@ class Config extends Admin
     public function index()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
+        $config = ZFC('webconfig','db','arr');
         if(request()->isPost()){
             $data = input('post.');
-            // tongji_code
-            if(isset($data['tongji_code'])){
-                $data['tongji_code'] = json_encode($data['tongji_code']);
+            foreach($data as $k=>$vo){
+                $config[$k] = $vo;
             }
-            $res = extraconfig($data,'web');
+            $res = ZFTB('config')->where(['key'=>'webconfig'])->cache('webconfig')->update(['value'=>json_encode($config),'token'=>time()]);
             return ZFRetMsg($res,'保存成功','保存失败');
         }
         $type = input('type','网站设置');
         $this->assign("type",$type);
-        $config = config()['web'];
-        $config['tongji_code'] = json_decode($config['tongji_code']);
+        
         $this->assign("config",$config);
         return view();
     }

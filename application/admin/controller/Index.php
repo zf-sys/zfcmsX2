@@ -94,7 +94,7 @@ class Index extends Admin
         $sum['hits'] = db('post')->where([['status','<>',9]])->sum('hits');
         $this->assign('sum',$sum);
 
-        $welcome_type = config('web.admin_welcome_type');
+        $welcome_type = ZFC("webconfig.admin_welcome_type");
         if($welcome_type){
             $tpl = 'index/welcome'.$welcome_type;
         }else{
@@ -140,8 +140,8 @@ class Index extends Admin
         $this->success('切换语言中');
     }
     public function get_menu(){
-        if(isset(config()['web']['site_path']) && config()['web']['site_path']!='' ){
-            $site_path = '/'.config()['web']['site_path'];
+        if(ZFC("webconfig.site_path")!='' ){
+            $site_path = '/'.ZFC("webconfig.site_path");
         }else{
             $site_path = '';
         }
@@ -150,10 +150,11 @@ class Index extends Admin
             'title'=>'首页',
             'href'=>url('index/welcome')
         ];
-        if( !isset(config()['web']['admin_logo_pic']) || config()['web']['admin_logo_pic']==''){ 
+        
+        if( ZFC("webconfig.admin_logo_pic") ==''){ 
             $admin_logo_pic = 'http://oss002.wangmingchang.com/uploads/0bf88d0eaaa69d2bd0cdcd974e190115/20211202_4279820211202091846.png';
         }else{ 
-            $admin_logo_pic = config()['web']['admin_logo_pic'];
+            $admin_logo_pic = ZFC("webconfig.admin_logo_pic");
         }
         $arr['logoInfo'] = [
             'title'=>'内容管理系统',

@@ -13,7 +13,7 @@ class Fileupload extends Controller
         return view();
     }
     public function upload(){
-        $this->is_file_dlj = config('web.is_file_dlj');
+        $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
         $cid = input('cid','0');
         $t = input('t',1);
         $zf_class = input('zf_class','.zf_list');
