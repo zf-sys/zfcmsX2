@@ -37,6 +37,7 @@ class Updatesql extends Controller
             'v0.230809'=>$this->v0_230809(),
             'v0.230902'=>$this->v0_230902(),
             'v0.230907'=>$this->v0_230907(),
+            'v0.230910'=>$this->v0_230910(),
         ]; 
     }
 
@@ -145,6 +146,15 @@ class Updatesql extends Controller
             false,  //是否允许重复
             ['key'=>'webconfig','type'=>'system'],
         ];
+        return $ret_data;
+    }
+    public function v0_230910(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}admin_log like 'method'",
+            "alter table {$this->tb_prefix}admin_log add method varchar(50) not null"
+        ];
+
         return $ret_data;
     }
 

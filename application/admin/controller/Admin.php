@@ -56,6 +56,7 @@ class Admin extends Zfb
             $log['ip'] = request()->ip();
             $log['uid'] = session('admin')['id'] ;
             $log['post'] = json_encode(input('param.'));
+            $log['method'] = request()->method();
             ZFTB('admin_log')->insert($log);
         }
         $parm_data = ZFC('webconfig','db','arr');

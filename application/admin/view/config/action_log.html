@@ -38,18 +38,22 @@
                 <th>时间</th>
                 <th>IP</th>
                 <th>uid</th>
-                <th>操作</th>
+                <th>参数</th>
               </tr> 
             </thead>
             <tbody>
               <?php foreach($list as $k=>$vo){ ?>
                 <tr>
                   <td>{$vo['id']}</td>
-                  <td>{$vo['action']}</td>
+                  <td>
+                    方式:{$vo['method']}<br>
+                    方法:{$vo['action']}
+                  </td>
                   <td><?php echo date("Y-m-d H:i:s",$vo['ctime']); ?></td>
                   <td>{$vo['ip']}</td>
                   <td>{$vo['uid']}</td>
-                  <td> 
+                  <td class="zf-layui-tips" data-d="{$vo['post']}"  data-t="{$vo['method']}" > 
+                    {$vo['post']|mb_substr=0,15,'utf-8'}
                   </td>
                 </tr>
               <?php } ?>
@@ -68,6 +72,23 @@
     var $ = layui.$
     ,form = layui.form
     ,table = layui.table;
+    $('.zf-layui-tips').on('click', function(){
+    var othis = $(this).attr('data-d')
+    var t = $(this).attr('data-t')
+    var html = ''
+    html+='方式:'+t+'<br>'
+    html+='参数:'+othis+'<br>'
+    layer.open({
+      type: 1, // page 层类型
+      area: ['500px', '300px'],
+      title: '相关参数',
+      shade: 0.6, // 遮罩透明度
+      shadeClose: true, // 点击遮罩区域，关闭弹层
+      maxmin: true, // 允许全屏最小化
+      anim: 0, // 0-6 的动画形式，-1 不开启
+      content: '<div style="padding: 10px;word-break: break-all;">'+html+'</div>'
+    });
+  });
 
     form.on('switch(status_change)', function(data){
       var id = $(this).attr("item")
