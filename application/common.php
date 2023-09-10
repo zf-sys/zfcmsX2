@@ -1308,35 +1308,7 @@ if (!function_exists('jsonPro')) {
     }
 }
 
-//20220805新增
-/**加密
- * @param $data
- * @return string
- * $key = "1234567887654321";//秘钥必须为：8/16/32位
- * $iv = "1234567887654321";
- */
-if (!function_exists('aes_encrypt')) {
-    function aes_encrypt($data,$key='1234567887654321',$iv='1234567887654321')
-    {
-        $base64_str = base64_encode(json_encode($data));
-        $encrypted = openssl_encrypt($base64_str, "aes-128-cbc", $key, OPENSSL_ZERO_PADDING, $iv);
-        return base64_encode($encrypted);
-    }
-}
-/**解密
- * @param $data
- * @return mixed
- * $key = "1234567887654321";//秘钥必须为：8/16/32位
- * $iv = "1234567887654321";
- */
-if (!function_exists('aes_decrypt')) {
-    function aes_decrypt($data,$key='1234567887654321',$iv='1234567887654321')
-    {
-        $encrypted = base64_decode($data);
-        $decrypted = openssl_decrypt($encrypted, 'aes-128-cbc', $key, OPENSSL_ZERO_PADDING, $iv);
-        return json_decode(base64_decode($decrypted), true);
-    }
-}
+
 // 20220812 新增
 //判断是否为ie浏览器
 if (!function_exists('is_ie_browser')) {
