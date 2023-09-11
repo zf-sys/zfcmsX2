@@ -184,7 +184,6 @@ class Base extends Controller
         zf_to_site_url();
     }
     private function _admin_init(){
-        zf_to_site_url();
         if(!isset(config()['zf_auth']['key']) || !isset(config()['zf_auth']['sc']) || !isset(config()['zf_auth']['email']) ||  config()['zf_auth']['key']=='' ||  config()['zf_auth']['sc']=='' ||  config()['zf_auth']['email']=='' ){
             $this->assign('is_zf_auth','n');
         }else{
