@@ -1356,7 +1356,7 @@ if (!function_exists('html_out_par')) {
  * @return string
  */
 if (!function_exists('msubstr')) {
-    function msubstr($str, $start=0, $length, $suffix=true,$showall=0, $charset="utf-8") {
+    function msubstr($str, $start=0, $length=100, $suffix=true,$showall=0, $charset="utf-8") {
         $oldlen=strlen($str);
         if(function_exists("mb_substr"))
             $slice = mb_substr($str, $start, $length, $charset);
@@ -1629,7 +1629,7 @@ if(!function_exists('send_email')){
  * 高精度计算加减乘除
  */
 if(!function_exists('num_compute')){
-    function num_compute($num1,$type='+',$num2,$jd=2){
+    function num_compute($num1=1,$type='+',$num2=1,$jd=2){
         if($type=='+'){
             return bcadd($num1,$num2,$jd);
         }elseif($type=='-'){
