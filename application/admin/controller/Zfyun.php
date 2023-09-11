@@ -20,7 +20,7 @@ class Zfyun extends Admin
     public function __construct (){
         parent::__construct();
         $this->zfyun_init();
-        $this->sqb_error_msg = base64_decode('PGRpdj5UaGUgY29tbXVuaXR5IHZlcnNpb24gZG9lcyBub3Qgc3VwcG9ydCB0aGlzIGZlYXR1cmUuIENsaWNrIHRvIHVwZ3JhZGUgdG8gdGhlIHByb2Zlc3Npb25hbCB2ZXJzaW9uIDxhIGhyZWY9J2h0dHA6Ly96Zi1zeXMud2FuZ21pbmdjaGFuZy5jb20vJyB0YXJnZXQ9J19ibGFuayc+Q2xpY2s8L2E+PC9kaXY+');
+        $this->sqb_error_msg = base64_decode(base64_encode("<div>".base64_decode('VGhlIGNvbW11bml0eSB2ZXJzaW9uIGRvZXMgbm90IHN1cHBvcnQgdGhpcyBmZWF0dXJlLiBDbGljayB0byB1cGdyYWRlIHRvIHRoZSBwcm9mZXNzaW9uYWwgdmVyc2lvbiA=')."<a href='".ZFC('version.api_domain','file').'/yun_down_list?v='.ZFC('version.version','file')."' target='_blank'>".base64_decode('Q2xpY2s=')."</a></div>"));
         if(is_file('extend/zf/Yun.php')){
             $this->is_professional_edition = true;
         }else{
