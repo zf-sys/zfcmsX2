@@ -167,14 +167,20 @@
                           <option value="" >本地</option>
                          <?php if(isset($config['upload_type'])){ ?>
                           <?php if(is_dir('./vendor/aliyuncs/oss-sdk-php')){ ?>
-                          <option value="ali" {$config['upload_type']=='ali'?'selected':''}>阿里云oss</option>
-                          <?php } ?>
-                          <?php if(is_dir('./vendor/overtrue/flysystem-qiniu')){ ?>
-                          <option value="qny" {$config['upload_type']=='qny'?'selected':''}>七牛云oss</option>
-                          <?php } ?>
-                          <?php if(is_dir('./vendor/upyun/sdk')){ ?>
-                          <option value="upy" {$config['upload_type']=='upy'?'selected':''}>又拍云oss</option>
-                          <?php } ?>
+                            <option value="ali" {$config['upload_type']=='ali'?'selected':''}>
+                              阿里云oss <?php if(ZFC('oss.ali_ak','file')=='' || ZFC('oss.ali_sk','file')=='' || ZFC('oss.ali_bucket','file')==''){ echo '(参数未配置)'; }?>
+                            </option>
+                            <?php } ?>
+                            <?php if(is_dir('./vendor/overtrue/flysystem-qiniu')){ ?>
+                            <option value="qny" {$config['upload_type']=='qny'?'selected':''}>
+                              七牛云oss <?php if(ZFC('oss.qny_ak','file')=='' || ZFC('oss.qny_sk','file')=='' || ZFC('oss.qny_bucket','file')==''){ echo '(参数未配置)'; }?>
+                            </option>
+                            <?php } ?>
+                            <?php if(is_dir('./vendor/upyun/sdk')){ ?>
+                            <option value="upy" {$config['upload_type']=='upy'?'selected':''}>
+                              又拍云oss <?php if(ZFC('oss.upy_name','file')=='' || ZFC('oss.upy_user','file')=='' || ZFC('oss.upy_pwd','file')==''){ echo '(参数未配置)'; }?>
+                            </option>
+                            <?php } ?>
                         <?php } ?>
 
                         </select>
