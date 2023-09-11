@@ -43,7 +43,8 @@ class Config extends Admin
         }
         $type = input('type','网站设置');
         $this->assign("type",$type);
-        
+        $_t = input('_t','');
+        $this->assign("_t",$_t);
         $this->assign("config",$config);
         return view();
     }

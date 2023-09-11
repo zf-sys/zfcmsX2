@@ -113,47 +113,50 @@
                 </div>
                 
                 <?php }elseif($type=='系统设置'){ ?>
-                 
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">网站域名</a></a>','name'=>'site_url','data'=>isset_arr_key($config,'site_url',''),'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_url")<br>参考:  http://www.zf-sys.com , 如果不填则不限制,填写后,当前访问地址不匹配时自动跳转(只用于前台页面)</span></div>','theme'=>2])|raw}
+                  <?php if($_t==''){ ?>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">网站域名</a></a>','name'=>'site_url','data'=>isset_arr_key($config,'site_url',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_url")<br>参考:  http://www.zf-sys.com , 如果不填则不限制,填写后,当前访问地址不匹配时自动跳转(只用于前台页面)</span></div>','theme'=>2])|raw}
+                      
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">关键词过滤</a></a>','name'=>'key_filter','data'=>isset_arr_key($config,'key_filter',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.key_filter")</span><br>使用说明:$config["content"] = str_replace(explode(",",ZFC("webconfig.key_filter")),"*",$config["content"]);</div>','theme'=>2])|raw}
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">统计代码</a>','name'=>'tongji_code','data'=>isset_arr_key($config,'tongji_code',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.tongji_code"] 统计代码</span></div>','theme'=>2])|raw}
+                    </div>
                     
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">关键词过滤</a></a>','name'=>'key_filter','data'=>isset_arr_key($config,'key_filter',''),'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.key_filter")</span><br>使用说明:$config["content"] = str_replace(explode(",",ZFC("webconfig.key_filter")),"*",$config["content"]);</div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">统计代码</a>','name'=>'tongji_code','data'=>isset_arr_key($config,'tongji_code',''),'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.tongji_code"] 统计代码</span></div>','theme'=>2])|raw}
-                  </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_radio(['title'=>'开启日志','name'=>'is_log','data'=>isset_arr_key($config,'is_log',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_log")</span>开启日志</div>','theme'=>2])|raw}
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_radio(['title'=>'Yun异常记录','name'=>'yun_trylog_is','data'=>isset_arr_key($config,'yun_trylog_is',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.yun_trylog_is")</span>记录yun.php的异常信息,日志位置:/runtime/log/yun_try.log</div>','theme'=>2])|raw}
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_radio(['title'=>'站点状态','name'=>'site_closed','data'=>isset_arr_key($config,'site_closed',''),'parm_data'=>['1'=>'关闭','0'=>'开启'],'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed")</span>站点状态</div>','theme'=>2])|raw}
+                    </div>
                   
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'开启日志','name'=>'is_log','data'=>isset_arr_key($config,'is_log',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_log")</span>开启日志</div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'Yun异常记录','name'=>'yun_trylog_is','data'=>isset_arr_key($config,'yun_trylog_is',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.yun_trylog_is")</span>记录yun.php的异常信息,日志位置:/runtime/log/yun_try.log</div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'站点状态','name'=>'site_closed','data'=>isset_arr_key($config,'site_closed',''),'parm_data'=>['1'=>'关闭','0'=>'开启'],'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed")</span>站点状态</div>','theme'=>2])|raw}
-                  </div>
                 
-               
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">关闭站点跳转</a>','name'=>'site_closed_url','data'=>isset_arr_key($config,'site_closed_url',''),'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed_url")</span>站点关闭后跳转的链接</div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">首页跳转链接</a>','name'=>'site_home_url','data'=>isset_arr_key($config,'site_home_url',''),'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_home_url")</span>打开站点首页跳转的链接</div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">后台自定义登录路径token</a>','name'=>'admin_path','data'=>isset_arr_key($config,'admin_path',''),'theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_path")</span>不为空时,后台登录路径改为 /adminLogin/设置的路径token ,原来的登录路径失效</div>','theme'=>2])|raw}
-                  </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">关闭站点跳转</a>','name'=>'site_closed_url','data'=>isset_arr_key($config,'site_closed_url',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed_url")</span>站点关闭后跳转的链接</div>','theme'=>2])|raw}
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">首页跳转链接</a>','name'=>'site_home_url','data'=>isset_arr_key($config,'site_home_url',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_home_url")</span>打开站点首页跳转的链接</div>','theme'=>2])|raw}
+                    </div>
+                  <?php } ?>
+                  <?php if($_t=='admin_path' || $_t==''){ ?>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">后台自定义登录路径token</a>','name'=>'admin_path','data'=>isset_arr_key($config,'admin_path',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_path")</span>不为空时,后台登录路径改为 /adminLogin/设置的路径token ,原来的登录路径失效</div>','theme'=>2])|raw}
+                    </div>
+                  <?php } ?>
                 
                 
                 <?php }elseif($type=='上传设置'){ ?>
