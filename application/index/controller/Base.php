@@ -118,9 +118,9 @@ class Base extends Zfb
             // $where = array_merge($where, $this->common_select_tag);
 
             $web_config = ZFC('webconfig','db','arr');
-            $seo['title'] = $web_config['site_title'];
-            $seo['keywords'] = $web_config['site_keywords'];
-            $seo['description'] = $web_config['site_description'];
+            $seo['title'] = isset_arr_key($web_config,'site_title','');
+            $seo['keywords'] = isset_arr_key($web_config,'site_keywords','');
+            $seo['description'] = isset_arr_key($web_config,'site_description','');
             $this->assign('seo', $seo);
             if(!$this->lang){ $this->lang = ''; }
         }

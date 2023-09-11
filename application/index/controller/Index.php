@@ -93,7 +93,7 @@ class Index extends Base
         }else{
             $tpl = $this->zf_tpl_suffix.'/index/index';
         }
-        if($this->cms_config['site_home_url'] && $this->cms_config['site_home_url']!=''){
+        if(isset($this->cms_config['site_home_url']) && $this->cms_config['site_home_url']!=''){
            $this->redirect($this->cms_config['site_home_url'],302);
         }
         return view($tpl);
