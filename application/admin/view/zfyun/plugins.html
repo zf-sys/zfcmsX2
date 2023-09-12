@@ -62,17 +62,23 @@
                     </td>     
                     <td>
                       <?php if(is_dir('./addons/'.$vo['plugin_name']) ){ ?>
-                        <?php if(class_exists($_plugin_class)){ ?>
-                          <?php if(method_exists(new $_plugin_class(),'index')){ ?>
-                            <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
-                          <?php } ?>
-                          <?php if(method_exists(new $_plugin_class(),'setting')){ ?>
-                            <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
-                          <?php } ?>
-                          <?php if(method_exists(new $_plugin_class(),'help')){ ?>
-                            <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a><br>
+                        <?php if($vo['menu_act']){ foreach($vo['menu_act'] as $kk=>$vv){   ?>
+                          {$vv|raw}<br>
+                        <?php } }else{ ?>
+                          <?php if(class_exists($_plugin_class)){ ?>
+                            <?php if(method_exists(new $_plugin_class(),'index')){ ?>
+                              <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/index")' > 首页</a><br>
+                            <?php } ?>
+                            <?php if(method_exists(new $_plugin_class(),'setting')){ ?>
+                              <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/setting")' > 配置</a><br>
+                            <?php } ?>
+                            <?php if(method_exists(new $_plugin_class(),'help')){ ?>
+                              <a href="javascript:;" onclick='zfAdminShow("{$vo['plugin_name']}说明","/addons/{$vo["plugin_name"]}.plugin/help")' > 说明</a><br>
+                            <?php } ?>
                           <?php } ?>
                         <?php } ?>
+
+                        
                       <?php }else{ ?>
                       <span style="color: red">代码缺失</span>
                       <?php } ?>
