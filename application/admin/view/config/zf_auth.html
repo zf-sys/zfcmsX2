@@ -32,31 +32,32 @@
           <div class="layui-card-body" pad15>
 
             <form class="info_tj" >
+              <div class="layui-form-item">
+                <div class="layui-input-block_">
+                  <a href="javascript:;" class="layui-btn layui-btn-sm  layui-bg-red"  onclick="tijiao_data2('config/zf_auth',0)" >点击更新授权</a>
+                </div>
+              </div>
               <div class="layui-form" wid100 lay-filter="">
                     <blockquote class="layui-elem-quote" style="text-align: center;">
                      非开发人员,请勿修改
                     </blockquote>
                   <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'邮箱','name'=>'email','data'=>isset_arr_key($config,'email',''),'theme'=>2])|raw}
+                    {$form_widget->form_input(['title'=>'邮箱','name'=>'email','readonly'=>1,'data'=>isset_arr_key($config,'email',''),'theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<span class="layui-badge_  layui-bg-cyan_ "></span>','theme'=>2])|raw}
                   </div>
                   <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'KEY','name'=>'key','data'=>isset_arr_key($config,'key',''),'theme'=>2])|raw}
+                    {$form_widget->form_input(['title'=>'KEY','name'=>'key','readonly'=>1,'data'=>isset_arr_key($config,'key',''),'theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<span class="layui-badge_  layui-bg-cyan_ "></span>','theme'=>2])|raw}
                   </div>
 
                   <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'SC','name'=>'sc','data'=>isset_arr_key($config,'sc',''),'theme'=>2])|raw}
+                    {$form_widget->form_textarea(['title'=>'SC','name'=>'sc','readonly'=>1,'data'=>isset_arr_key($config,'sc',''),'theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<span class="layui-badge_  layui-bg-cyan_ "></span>','theme'=>2])|raw}
                   </div>
 
                 
                 
-                <div class="layui-form-item">
-                  <div class="layui-input-block">
-                    <a href="javascript:;" class="layui-btn layui-btn-sm"  onclick="tijiao_data2('config/zf_auth',0)" >确认保存</a>
-                  </div>
-                </div>
+                
 
 
                 

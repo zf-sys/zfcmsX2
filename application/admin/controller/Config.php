@@ -569,9 +569,15 @@ class Config extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isPost()){
-            $data = input('post.');
-            $res = extraconfig(input('post.'),'zf_auth');
-            return ZFRetMsg($res,'保存成功','保存失败');
+            if(!$this->is_professional_edition){
+                return ZFRetMsg(false,'','Yun.php文件不存在');
+            }
+            $this->Yun->_save_site_auth();
+            if($this->Yun->_get_site_auth('','',1)){
+                return ZFRetMsg(true,'更新成功','');
+            } else{
+                return ZFRetMsg(false,'','更新失败');
+            }
         }
         $this->assign("config",config()['zf_auth']);
         return view();
