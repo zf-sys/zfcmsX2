@@ -60,7 +60,7 @@ class Index extends Admin
     public function welcome()
     {
         admin_role_check($this->z_role_list,$this->mca);
-        if((config('zf_auth.email')=='' || config('zf_auth.key')=='' || config('zf_auth.sc')=='') && $this->is_professional_edition){
+        if($this->is_professional_edition && $this->Yun->_get_site_auth('','',1)==false){
             $this->redirect(url('zfyun/authentication_sys'));
         }
         if($this->is_professional_edition){
