@@ -27,7 +27,7 @@
         "overtrue/flysystem-qiniu": "^1.0",
         "phpmailer/phpmailer": "^6.3",
         "easy-task/easy-task": "^2.4",
-        "zf-sys/think-addons": "^1.0.0",
+        "zf-sys/think-addons": "^2.0.0",
         "guzzlehttp/guzzle":"^6.5.8"
     },
     "autoload":{
