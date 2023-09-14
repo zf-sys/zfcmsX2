@@ -63,3 +63,44 @@ class Controller extends \think\Controller
       $this->error('没有此方法');
     }
 }
+if (!function_exists('ZFC')) {
+  function ZFC($key='',$type='db',$ret_type=''){
+    if($type=='db'){
+      if(config('database.database')==''){
+        return '';
+      }
+      try{
+        if(!ZFTBExist('config')){ return ''; }
+        //$key 是否含有.
+        if(strpos($key,'.')!==false){
+          $_key_arr = explode('.',$key);
+          if(!$_key_arr[0] || !$_key_arr[1]){
+            return '';
+          }
+          $res =ZFTB('config')->cache($_key_arr[0],360000)->where(['key'=>$_key_arr[0]])->value('value');
+          $res_arr =json_decode($res,true);
+          if($res_arr[$_key_arr[1]]){
+            $res = $res_arr[$_key_arr[1]];
+          }else{
+            $res = '';
+          }
+        }else{
+          $res =ZFTB('config')->cache($key,360000)->where(['key'=>$key])->value('value');
+          if($ret_type=='arr'){
+            $res =json_decode($res,true);
+          }
+        }
+        if(!$res){
+          return '';
+        }
+        return $res;
+      } catch (\Exception $e) { 
+        return '';
+      }
+    }elseif($type=='file'){
+      return config($key);
+    }else{
+      return '';
+    }
+  }
+}
