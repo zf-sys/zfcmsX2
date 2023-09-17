@@ -394,7 +394,8 @@ if (!function_exists('ZFC')) {
             $res = '';
           }
         }else{
-          $res =ZFTB('config')->cache($key,6000000)->where(['key'=>$key])->value('value');
+          // ->cache($key,6000000)
+          $res =ZFTB('config')->where(['key'=>$key])->value('value');
           if($ret_type=='arr'){
             $res =json_decode($res,true);
           }
