@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Sitemap: /sitemap.xml
+Disallow: /gourl?url=*
+
+# robots.txt for zf 2023.09.17
