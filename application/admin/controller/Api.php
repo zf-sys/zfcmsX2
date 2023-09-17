@@ -59,7 +59,7 @@ class Api extends Zfb
         $path = input('path','');
         $path_str = base64_decode($path);
         $this->temp_dir_list = explode(',', $path_str);
-        $sys_list = $this->_api_get_sys_all_file();
+        $sys_list = $this->_api_get_sys_all_file($this->temp_dir_list);
         return json_encode($sys_list);
     }
 
