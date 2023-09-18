@@ -55,6 +55,19 @@ if (!function_exists('get_cate_list')) {
       return $menu_r;
   }
 }
+if (!function_exists('get_cate_list_all')) {
+  function get_cate_list_all($pid=0,$tb='category'){
+    $where[] = ['status','=',1];
+    $res = ZFTB('category')->field('cid,pid,name,cname,icon,tpl_category,tpl_post,mid,sort,status,menu,form_parm')->where($where)->order("sort asc,cid asc")->select();
+    $cat = new cat(array('cid', 'pid', 'name', 'cname')); 
+    $list = $cat->getTree($res,$pid); 
+    if(!$list){
+        $list = [];
+    }
+    return $list;
+  }
+}
+
 //查询文章名称
 if (!function_exists('post_info')) {
   function post_info($id){
