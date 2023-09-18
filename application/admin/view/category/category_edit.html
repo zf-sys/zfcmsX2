@@ -13,7 +13,9 @@
   {:widget_st('webuploader')}
   {:widget_st('layui','js')}
   {:widget_st('common','js')}
-  {:widget_st('ueditor')}            
+  {:widget_st('ueditor')}       
+  {:widget_st('input-select')}       
+       
 </head>
 <body>
   <div class="layui-fluid">
@@ -49,6 +51,12 @@
                               $id_t = 'id';
                               $_plist = $mlist;
                               $theme_select = 3;
+                            }elseif(in_array($vo['name'],['tpl_category','tpl_post'] )){
+                              $id_t = 'id';
+                              $_plist = $theme_arr;
+                              $theme_select = $vo['theme'];
+                            }else{
+                              echo 'select模型参数错误';die;
                             }
                             $name_t = 'name';
                             ?>
@@ -90,6 +98,12 @@
                             $id_t = 'id';
                             $_plist = $mlist;
                             $theme_select = 3;
+                          }elseif(in_array($vo['name'],['tpl_category','tpl_post'] )){
+                            $id_t = 'id';
+                            $_plist = $theme_arr;
+                            $theme_select = 4;
+                          }else{
+                            echo 'select模型参数错误';die;
                           }
                           $name_t = 'name';
                           ?>
@@ -118,8 +132,11 @@
                   {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'theme'=>2])|raw}
+                  {$form_widget->form_select(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                  {$form_widget->form_select(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+
+
+                 
                   {$form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'theme'=>2])|raw}
                   <!-- {$form_widget->form_input(['title'=>'链接目标','name'=>'target','data'=>$res['target'],'theme'=>2])|raw} -->
                   {$form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}

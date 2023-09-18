@@ -284,6 +284,31 @@ class Category extends Admin
         
         $this->assign('form_parm_arr',$form_parm_arr);
 
+
+        //获取模板文件名
+        $now_theme = ZFC('zf_tpl_suffix');
+        $theme_arr = [['name'=>'默认','id'=>'']];
+        if($now_theme!=''){
+            //获取对应目录下的文件
+            $theme_path = './theme/'.$now_theme.'/cate/';
+            //判断目录是否存在
+            if(is_dir($theme_path)){
+                $_theme_arr = scandir($theme_path);
+                foreach($_theme_arr as $k=>$vo){
+                    //判断是否是文件,非文件夹
+                    if(!is_dir($theme_path.$vo)){
+                        if($vo=='.' || $vo=='..'){
+                            unset($_theme_arr[$k]);
+                        }else{
+                            $theme_arr[] = ['name'=>$vo,'id'=>str_replace('.html','',$vo)];
+                        }
+                    }
+                }
+            }
+        }
+        $this->assign('theme_arr',$theme_arr);
+        
+
         return view();
     }
 
@@ -487,6 +512,29 @@ class Category extends Admin
             }
             
             $this->assign('form_parm_arr',$form_parm_arr);
+
+            //获取模板文件名
+            $now_theme = ZFC('zf_tpl_suffix');
+            $theme_arr = [['name'=>'默认','id'=>'']];
+            if($now_theme!=''){
+                //获取对应目录下的文件
+                $theme_path = './theme/'.$now_theme.'/cate/';
+                //判断目录是否存在
+                if(is_dir($theme_path)){
+                    $_theme_arr = scandir($theme_path);
+                    foreach($_theme_arr as $k=>$vo){
+                        //判断是否是文件,非文件夹
+                        if(!is_dir($theme_path.$vo)){
+                            if($vo=='.' || $vo=='..'){
+                                unset($_theme_arr[$k]);
+                            }else{
+                                $theme_arr[] = ['name'=>$vo,'id'=>str_replace('.html','',$vo)];
+                            }
+                        }
+                    }
+                }
+            }
+            $this->assign('theme_arr',$theme_arr);
 
             return view('/category/category_edit');
         }else{
