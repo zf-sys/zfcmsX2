@@ -1789,11 +1789,25 @@ if(!function_exists('create_uuid')){
   {:widget_st('ueditor')}
   {:widget_st('bootstrap')}
   {:widget_st('input-tag')}
+  {:widget_st($tpl_static.'js/jquery-1.11.0.min.js','diy_js')}
+  {:widget_st($tpl_static.'css/media.css','siy_css')}
   */
 if(!function_exists('widget_st')){
     function widget_st($name='',$type='widget') {
         $_static = config('template.tpl_replace_string.__STATIC__');
-        $v = 'v=1';
+        $_v = ZFC('webconfig.js_version_type');
+        if($_v=='time'){
+            $v = 'v='.time();
+        }elseif($_v=='ymd'){
+            $v = 'v='.date('Ymd');
+        }elseif($_v=='ym'){
+            $v = 'v='.date('Ym');
+        }elseif($_v=='y'){
+            $v = 'v='.date('Y');
+        }else{
+            $v = 'v=1';
+        }
+
         if($type=='css'){
             if(in_array($name,['layui'])){
                 return "<link rel='stylesheet' href='$_static/style/layui/css/layui.css?$v' media='all'>\n";
@@ -1817,7 +1831,11 @@ if(!function_exists('widget_st')){
                 return "<script type='text/javascript' src='$_static/style/layer/layer.js?$v'></script>\n";
             }
             if(in_array($name,['common'])){
-                return "<script type='text/javascript' src='$_static/system/common.js?$v'></script>\n";
+                $tan_type = ZFC('webconfig.js_tan_type');
+                if($tan_type!='newwindow'){
+                    $tan_type = '';
+                }
+                return "<script type='text/javascript' src='$_static/system/common.js?$v&tan_type=$tan_type'></script>\n";
             }
         }
         if($type=='widget'){
@@ -1868,6 +1886,13 @@ if(!function_exists('widget_st')){
         // <!-- 拖动排序 -->
         // <!-- <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script> -->
         // <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.8.3/Sortable.min.js"></script> -->
+
+        if($type=='diy_css'){
+            return "<link rel='stylesheet' href='$name?$v' media='all'>\n";
+        }
+        if($type=='diy_js'){
+            return "<script type='text/javascript' src='$name?$v'></script>\n";
+        }
     }
 }
 /**
