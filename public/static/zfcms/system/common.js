@@ -7,7 +7,19 @@
 // | Author: 子枫 <287851074@qq.com>
 // | 子枫社区:  http://bbs.90ckm.com/
 // +----------------------------------------------------------------------
-
+var urlparse;
+urlparse = document.scripts[document.scripts.length - 1].src.split("\?");
+ 
+var values = {};
+if(urlparse.length > 1){
+    var parms = urlparse[1].split("&");
+    for (var i = 0; i < parms.length; i++) {
+        var parm = parms[i].split("=");
+        values[parm[0]] = parm[1];
+    }
+}
+// console.log(values);
+// {v: "123", p: "445"}
 layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 	var $ = layui.jquery,
 		form = layui.form,
@@ -31,31 +43,36 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 	    h       弹出层高度（缺省调默认值）
 	*/
 	window.zfAdminShow = function(title, url, w, h) {
-		if(title == null || title == '') {
-			title = false;
-		};
-		if(url == null || url == '') {
-			url = "404.html";
-		};
-		if(w == null || w == '') {
-			w = ($(window).width() * 0.9);
-		};
-		if(h == null || h == '') {
-			h = ($(window).height() - 50);
-		};
-		layer.open({
-			type: 2,
-			area: [w + 'px', h + 'px'],
-			fix: false, //不固定
-			maxmin: true,
-			shadeClose: false,
-			shade: 0.4,
-			title: title,
-			content: url,
-			cancel: function(index, layero){ 
-			}   
-
-		});
+		if(values.tan_type=="newwindow"){
+			//打开新窗口
+			window.open(url);
+		}else{
+			if(title == null || title == '') {
+				title = false;
+			};
+			if(url == null || url == '') {
+				url = "404.html";
+			};
+			if(w == null || w == '') {
+				w = ($(window).width() * 0.9);
+			};
+			if(h == null || h == '') {
+				h = ($(window).height() - 50);
+			};
+			layer.open({
+				type: 2,
+				area: [w + 'px', h + 'px'],
+				fix: false, //不固定
+				maxmin: true,
+				shadeClose: false,
+				shade: 0.4,
+				title: title,
+				content: url,
+				cancel: function(index, layero){ 
+				}   
+			});
+		}
+		
 	}
 	/*弹出层+传递ID参数*/
 	window.zfAdminEdit = function(title, url, id, w, h) {
