@@ -572,7 +572,7 @@ class Config extends Admin
             if(!$this->is_professional_edition){
                 return ZFRetMsg(false,'','Yun.php文件不存在');
             }
-            $this->Yun->_save_site_auth();
+            $this->Yun->_save_license_convert_sc();
             if($this->Yun->_get_site_auth('','',1)){
                 return ZFRetMsg(true,'更新成功','');
             } else{
@@ -582,6 +582,34 @@ class Config extends Admin
         $this->assign("config",config()['zf_auth']);
         return view();
     }
+
+    /**
+     * 登录日志
+     * 230909新增
+     */
+    public function admin_login_log()
+    {
+        admin_role_check($this->z_role_list,$this->mca);
+        $list = ZFTB('admin_login_log')->where(['status'=>1])->order("id desc")->paginate(10);
+        $page = $list->render();
+        $this->assign("list",$list);
+        $this->assign("page",$page);
+        return view();
+    }
+    /**
+     * 异常日志
+     * 230909新增
+     */
+    public function exception_log()
+    {
+        admin_role_check($this->z_role_list,$this->mca);
+        $list = ZFTB('exception_log')->where(['status'=>1])->order("id desc")->paginate(10);
+        $page = $list->render();
+        $this->assign("list",$list);
+        $this->assign("page",$page);
+        return view();
+    }
+
 
 
 

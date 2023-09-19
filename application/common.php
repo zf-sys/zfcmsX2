@@ -21,6 +21,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+use GuzzleHttp\Client;
 /**
  * @Notes: 后台权限  0 get ajax 全部验证  1 只验证ajax
  * @Interface admin_role_check
@@ -1960,7 +1962,161 @@ if(!function_exists('aes_decrypt')){
         }
     }
 }
+/**
+ * 20230919
+ * 增加通知
+ * 
+ * demo
+$send_type='notice_bark';//为空则调用系统内置的
+$content = [
+    'title'=>'你好',
+    'send_content'=>'这里是内容'
+];
+send_notice($content,$send_type);
+ */
+if(!function_exists('send_notice')){
+    function send_notice($data=[],$send_type=''){
+        try {
+            $title = isset_arr_key($data,'title','通知消息');
+            $send_content = isset_arr_key($data,'send_content','');
+            if($send_type==''){
+                $notice_type = ZFC('webconfig.notice_type');
+            }else{
+                $notice_type = $send_type;
+            }
+            if($notice_type==''){
+                return false;
+            }
+            if($notice_type=='notice_bark'){
+                $url = ZFC('webconfig.notice_bark');
+                if($url==''){
+                    save_exception('send_notice','未配置',['type'=>'notice_bark','msg'=>'未配置','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                    return false;
+                }
+                //判断$url最后一个字符是否是/
+                if(substr($url,-1)=='/'){
+                    $url = substr($url,0,-1);
+                }
+                $url = $url.'/'.$send_content;
+                $r = https_get($url);
+                $_json_arr = json_decode($r,true);
+                if(isset($_json_arr['message']) && $_json_arr['message']=='success'){
+                    save_admin_log('send_notice','-1',['content'=>['data'=>$data,'send_type'=>$notice_type]],$notice_type);
+                }else{
+                    save_exception('send_notice','消息发送失败',['type'=>'notice_bark','msg'=>'消息发送失败','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                }
+            }elseif($notice_type=='notice_feishu'){
+                $url = ZFC('webconfig.notice_feishu');
+                if($url==''){
+                    save_exception('send_notice','未配置',['type'=>'notice_feishu','msg'=>'未配置','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                    return false;
+                }
+                // 构建请求数据
+                $data = [
+                    'msg_type' => 'text',
+                    'content' => [
+                        'text' => $send_content
+                    ]
+                ];
+                // 发送 HTTP POST 请求
+                $client = new Client();
+                $response = $client->request('POST', $url, [
+                    'json' => $data,
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ]
+                ]);
+                // 检查响应状态码并输出结果
+                if ($response->getStatusCode() === 200) {
+                    save_admin_log('send_notice','-1',['content'=>['data'=>$data,'send_type'=>$notice_type]],$notice_type);
+                } else {
+                    save_exception('send_notice','消息发送失败',['type'=>'notice_bark','msg'=>'消息发送失败','content'=>['data'=>$data,'send_type'=>$send_type,'err'=>"发送告警消息失败，错误代码：".$response->getStatusCode()]]);
+                }
 
+
+            }elseif($notice_type=='notice_dingding'){
+                $url = ZFC('webconfig.notice_dingding');
+                if($url==''){
+                    save_exception('send_notice','未配置',['type'=>'notice_dingding','msg'=>'未配置','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                    return false;
+                }
+                $msg = [
+                    'msgtype' => 'text',//这是文件发送类型，可以根据需求调整
+                    'text'    => [
+                        'content' => $send_content,
+                    ],
+                ];
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($curl, CURLOPT_POST, 1);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($msg));
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                $r = curl_exec($curl);
+                curl_close($curl);
+                $_json_arr = json_decode($r,true);
+                if(isset($_json_arr['errmsg']) && $_json_arr['errmsg']=='ok'){
+                    save_admin_log('send_notice','-1',['content'=>['data'=>$data,'send_type'=>$notice_type]],$notice_type);
+                }else{
+                    save_exception('send_notice','消息发送失败',['type'=>'notice_bark','msg'=>'消息发送失败','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                }
+            }elseif($notice_type=='notice_qiwei'){
+                $url = ZFC('webconfig.notice_qiwei');
+                if($url==''){
+                    save_exception('send_notice','未配置',['type'=>'notice_qiwei','msg'=>'未配置','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                    return false;
+                }
+                $msg = [
+                    'msgtype' => 'text',//这是文件发送类型，可以根据需求调整
+                    'text'    => [
+                        'content' => $send_content,
+                    ],
+                ];
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($curl, CURLOPT_POST, 1);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($msg));
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                $r = curl_exec($curl);
+                curl_close($curl);
+                $_json_arr = json_decode($r,true);
+                if(isset($_json_arr['errmsg']) && $_json_arr['errmsg']=='ok'){
+                    save_admin_log('send_notice','-1',['content'=>['data'=>$data,'send_type'=>$notice_type]],$notice_type);
+                }else{
+                    save_exception('send_notice','消息发送失败',['type'=>'notice_bark','msg'=>'消息发送失败','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                }
+            }elseif($notice_type=='email'){
+                $email = ZFC('webconfig.notice_email');
+                if($email==''){
+                    save_exception('send_notice','接收邮箱未配置',['type'=>'notice_email','msg'=>'接收邮箱未配置','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                    return false;
+                }
+                $email_content = [
+                    'title'=>$title,
+                    'body'=>$send_content,
+                ];
+                $r = send_email($email,$email_content);
+                if($r=='ok'){
+                    save_admin_log('send_notice','-1',['content'=>['data'=>$data,'send_type'=>$notice_type]],$notice_type);
+                }else{
+                    save_exception('send_notice','消息发送失败',['type'=>'notice_bark','msg'=>'消息发送失败','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+                }
+
+            }else{
+                save_exception('send_notice','发送类型不存在',['type'=>'notice_bark','msg'=>'发送类型不存在','content'=>['data'=>$data,'send_type'=>$notice_type]]);
+            }
+        } catch (\Exception $e) {
+            save_exception('send_notice','异常',['type'=>'notice_bark','msg'=>'发送类型不存在','content'=>['data'=>$data,'send_type'=>$send_type,'exception'=>$e->getMessage()]]);
+        }
+    }
+}
 
 
 

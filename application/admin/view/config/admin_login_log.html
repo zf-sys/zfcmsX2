@@ -15,12 +15,7 @@
 
   <div class="layui-fluid">
     <div class="layui-card">
-      <div class="layui-card-header layuiadmin-card-header-auto">
-        <a class="layui-btn layui-btn-sm" href="{:url('admin/index/db_clear',['t'=>'log'])}">清空日志</a>
-      </div>
       <div class="layui-card-body">
-        <div style="padding-bottom: 10px;">
-        </div>        
         <table class="layui-table">
             <colgroup>
               <col width="30">
@@ -34,10 +29,10 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>操作</th>
+                <th>名称</th>
+                <th>状态</th>
                 <th>时间</th>
                 <th>IP</th>
-                <th>uid</th>
                 <th>参数</th>
               </tr> 
             </thead>
@@ -45,18 +40,14 @@
               <?php foreach($list as $k=>$vo){ ?>
                 <tr>
                   <td>{$vo['id']}</td>
+                  <td>{$vo['name']}</td>
                   <td>
-                    方式:{$vo['method']}<br>
-                    方法:{$vo['action']}
+                    {$vo['err_num']=='0'?'登录成功':$vo['err_num']}
                   </td>
                   <td><?php echo date("Y-m-d H:i:s",$vo['ctime']); ?></td>
                   <td>{$vo['ip']}</td>
-                  <td>
-                    {$vo['uid']=='-1'?'系统':$vo['uid']}
-
-                  </td>
-                  <td class="zf-layui-tips" data-d="{$vo['post']}"  data-t="{$vo['method']}" > 
-                    {$vo['post']|mb_substr=0,15,'utf-8'}
+                  <td  class="zf-layui-tips" data-d="{$vo['post']}"  > 
+                    {$vo['post']|mb_substr=0,20,'utf-8'}
                   </td>
                 </tr>
               <?php } ?>
@@ -77,9 +68,7 @@
     ,table = layui.table;
     $('.zf-layui-tips').on('click', function(){
     var othis = $(this).attr('data-d')
-    var t = $(this).attr('data-t')
     var html = ''
-    html+='方式:'+t+'<br>'
     html+='参数:'+othis+'<br>'
     layer.open({
       type: 1, // page 层类型

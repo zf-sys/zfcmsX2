@@ -38,6 +38,7 @@ class Updatesql extends Controller
             'v0.230902'=>$this->v0_230902(),
             'v0.230907'=>$this->v0_230907(),
             'v0.230910'=>$this->v0_230910(),
+            'v0.230919'=>$this->v0_230919(),
         ]; 
     }
 
@@ -55,6 +56,7 @@ class Updatesql extends Controller
                 $up_arr[$k] = $vo;
             }
         }
+        session('v_upgsql_act',null);
         return $up_arr;
 
     }
@@ -154,7 +156,95 @@ class Updatesql extends Controller
             "show columns from {$this->tb_prefix}admin_log like 'method'",
             "alter table {$this->tb_prefix}admin_log add method varchar(50) not null"
         ];
+        return $ret_data;
+    }
+    public function v0_230919(){
+        $ret_data[0][0] = 'tb_add';
+        $ret_data[0][1] = $this->tb_prefix.'admin_login_log';
+        $ret_data[0][2] = <<<INFO
+        CREATE TABLE `zf_admin_login_log` (
+            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `name` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `ctime` int(11) NOT NULL DEFAULT '0',
+            `ip` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `err_num` int(11) NOT NULL DEFAULT '0',
+            `post` text,
+            `status` tinyint(1) NOT NULL DEFAULT '1',
+            `token` varchar(255) NOT NULL DEFAULT '',
+            `lang` varchar(50) NOT NULL DEFAULT '',
+            `lang_pid` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台登录日志表';
+INFO;
+        $ret_data[0][2] = str_replace('zf_admin_login_log',$this->tb_prefix.'admin_login_log',$ret_data[0][2]);
 
+        $ret_data[1][0] = 'tb_add';
+        $ret_data[1][1] = $this->tb_prefix.'exception_log';
+        $ret_data[1][2] = <<<INFO
+        CREATE TABLE `zf_exception_log` (
+            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `name` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `ctime` int(11) NOT NULL DEFAULT '0',
+            `ip` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `err_msg` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `post` text,
+            `status` tinyint(1) NOT NULL DEFAULT '1',
+            `token` varchar(255) NOT NULL DEFAULT '',
+            `lang` varchar(50) NOT NULL DEFAULT '',
+            `lang_pid` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='异常报错日志表';
+INFO;
+        $ret_data[1][2] = str_replace('zf_exception_log',$this->tb_prefix.'exception_log',$ret_data[1][2]);
+        //修改配置
+        $ret_data[2] = [ 
+            'tb_post_edit',
+            $this->tb_prefix.'admin_role',
+            ['value'=>'admin/Config/version'],
+            ['icon'=>'fa fa-500px','token'=>time()],
+        ];
+        $ret_data[3] = [ 
+            'tb_post_edit',
+            $this->tb_prefix.'admin_role',
+            ['value'=>'admin/Config/zf_auth'],
+            ['icon'=>'fa fa-cloud','token'=>time()],
+        ];
+        if($this->site_version<='v0.230919' || session('v_upgsql_act')==1){
+            //判断日志是否存在
+            $rz_id = db('admin_role')->where(['name'=>'网站日志'])->value('id');
+            if(!$rz_id){
+                $rz_id = db('admin_role')->insertGetId(['name'=>'网站日志','value'=>'admin/0/','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>218,'module'=>'admin','control'=>'0','act'=>'','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-clock-o','lang'=>'','lang_pid'=>0]);
+            }
+            if($rz_id!=''){
+                // 改
+                $ret_data[4] = [ 
+                    'tb_post_edit',
+                    $this->tb_prefix.'admin_role',
+                    ['value'=>'admin/Config/action_log'],
+                    ['pid'=>$rz_id],
+                ];
+                $ret_data[5] = [ 
+                    'tb_post_add',
+                    $this->tb_prefix.'admin_role',
+                    ['name'=>'后台登录','value'=>'admin/Config/admin_login_log','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>$rz_id,'module'=>'admin','control'=>'Config','act'=>'admin_login_log','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-trello','lang'=>'','lang_pid'=>0],
+                    false,  //是否允许重复
+                    ['name'=>'后台登录'], //判断条件
+                ];
+                $ret_data[6] = [ 
+                    'tb_post_add',
+                    $this->tb_prefix.'admin_role',
+                    ['name'=>'异常日志','value'=>'admin/Config/exception_log','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>$rz_id,'module'=>'admin','control'=>'Config','act'=>'exception_log','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-heartbeat','lang'=>'','lang_pid'=>0],
+                    false,  //是否允许重复
+                    ['name'=>'异常日志'], //判断条件
+                ];
+            }
+
+        }
+        
+        
+
+        
+        
         return $ret_data;
     }
 

@@ -460,4 +460,72 @@ if (!function_exists('user_oauth_res')) {
     return $res;
   }
 }
+/**
+ * 230919新增
+ * 保存系统/后台日志
+ */
+if(!function_exists('save_admin_log')){
+  function save_admin_log($action='',$uid='',$post='',$method=''){
+    //保存日志
+    $log['action'] = $action;
+    $log['ctime'] = time() ;
+    $log['ip'] = request()->ip();
+    $log['uid'] = $uid;
+    $log['post'] = json_encode($post);
+    $log['method'] = $method;
+    $is_add = ZFTB('admin_log')->insert($log);
+    if($is_add){
+      return ['code'=>1,'msg'=>'保存成功'];
+    }else{
+      return ['code'=>0,'msg'=>'保存失败'];
+    }
+  }
+}
+/**
+ * 230919新增
+ * 报错异常处理
+ */
+if(!function_exists('save_exception')){
+  function save_exception($type,$err_msg,$data,$code=0){
+    //保存日志
+    $save_data['name'] = $type;
+    $save_data['ctime'] = time();
+    $save_data['ip'] = request()->ip();
+    $save_data['err_msg'] = $err_msg;
+    $save_data['post'] = json_encode($data);
+    $save_data['token'] = time();
+    $is_add = db('exception_log')->insert($save_data);
+    if($is_add){
+      return ['code'=>1,'msg'=>'保存成功'];
+    }else{
+      return ['code'=>0,'msg'=>'保存失败'];
+    }
+    
+  }
+}
 
+/**
+ * 230919新增
+ * 后台登录记录
+ */
+if(!function_exists('save_admin_login')){
+  function save_admin_login($name,$data,$code=0){
+    //保存日志
+    $save_data['name'] = $name;
+    $save_data['ctime'] = time();
+    $save_data['ip'] = request()->ip();
+    if($code==1){
+      $save_data['err_num'] = 0;
+    }else{
+      $save_data['err_num'] = db('admin_login_log')->where([['name','=',$name],['ip','=',request()->ip()],['ctime','<=',time()+5*60]])->count()+1;
+    }
+    $save_data['post'] = json_encode($data);
+    $save_data['token'] = time();
+    $is_add = db('admin_login_log')->insert($save_data);
+    if($is_add){
+      return ['code'=>1,'msg'=>'保存成功'];
+    }else{
+      return ['code'=>0,'msg'=>'保存失败'];
+    }
+  }
+}
