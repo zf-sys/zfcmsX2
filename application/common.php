@@ -1695,8 +1695,8 @@ if(!function_exists('zf_to_site_url')){
  */
 if(!function_exists('plugin_update_check_show')){
     function plugin_update_check_show(){
-        $db_theme_count = db('plugin')->where([['type','=','theme'],['status','<>',9]])->group('plugin_name')->count();
-        $db_plugin_count = db('plugin')->where([['type','=','plugin'],['status','<>',9]])->group('plugin_name')->count();
+        $db_theme_count = db('plugin')->where([['type','=','theme'],['status','in','1,2']])->group('plugin_name')->count();
+        $db_plugin_count = db('plugin')->where([['type','=','plugin'],['status','in','1,2']])->group('plugin_name')->count();
         $theme_count = 0;
         $plugin_count = 0;
 
