@@ -280,7 +280,7 @@ class QiniuAdapter extends AbstractAdapter
      */
     public function read($path)
     {
-        $contents = file_get_contents($this->getUrl($path));
+        $contents = file_get_contents($this->privateDownloadUrl($path));
 
         return compact('contents', 'path');
     }
@@ -295,7 +295,7 @@ class QiniuAdapter extends AbstractAdapter
     public function readStream($path)
     {
         if (ini_get('allow_url_fopen')) {
-            $stream = fopen($this->getUrl($path), 'r');
+            $stream = fopen($this->privateDownloadUrl($path), 'r');
 
             return compact('stream', 'path');
         }
@@ -576,7 +576,7 @@ class QiniuAdapter extends AbstractAdapter
      */
     protected static function parseUrl($url)
     {
-        $result = false;
+        $result = [];
 
         // Build arrays of values we need to decode before parsing
         $entities = ['%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%24', '%2C', '%2F', '%3F', '%23', '%5B', '%5D', '%5C'];

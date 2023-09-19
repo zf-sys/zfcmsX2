@@ -24,7 +24,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * 计算输入流的crc32检验码
      *
-     * @param $data 待计算校验码的字符串
+     * @param $data string 待计算校验码的字符串
      *
      * @return string 输入字符串的crc32校验码
      */
@@ -129,12 +129,12 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param string $key 待操作的文件名
      *
      * @return string  符合七牛API规格的数据格式
-     * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
+     * @link https://developer.qiniu.com/kodo/api/data-format
      */
-    function entry($bucket, $key)
+    function entry($bucket, $key = null)
     {
         $en = $bucket;
-        if (!empty($key)) {
+        if ($key !== null) {
             $en = $bucket . ':' . $key;
         }
         return base64_urlSafeEncode($en);
@@ -277,5 +277,60 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $scopeItems = explode(':', $scope);
         $bucket = $scopeItems[0];
         return array($accessKey, $bucket, null);
+    }
+
+    // polyfill ucwords for `php version < 5.4.32` or `5.5.0 <= php version < 5.5.16`
+    if (version_compare(phpversion(), "5.4.32") < 0 ||
+        (
+            version_compare(phpversion(), "5.5.0") >= 0 &&
+            version_compare(phpversion(), "5.5.16") < 0
+        )
+    ) {
+        function ucwords($str, $delimiters = " \t\r\n\f\v")
+        {
+            $delims = preg_split('//u', $delimiters, -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach ($delims as $delim) {
+                $str = implode($delim, array_map('ucfirst', explode($delim, $str)));
+            }
+
+            return $str;
+        }
+    } else {
+        function ucwords($str, $delimiters)
+        {
+            return \ucwords($str, $delimiters);
+        }
+    }
+
+    /**
+     * 将 parse_url 的结果转换回字符串
+     * TODO: add unit test
+     *
+     * @param $parsed_url - parse_url 的结果
+     * @return string
+     */
+    function unparse_url($parsed_url)
+    {
+
+        $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+
+        $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+
+        $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+
+        $user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+
+        $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
+
+        $pass     = ($user || $pass) ? "$pass@" : '';
+
+        $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+
+        $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+
+        $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+
+        return "$scheme$user$pass$host$port$path$query$fragment";
     }
 }
