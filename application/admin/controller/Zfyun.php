@@ -176,7 +176,8 @@ class Zfyun extends Admin
             $update = new \app\common\controller\Updatesql();
             $update_sql_arr = $update->update('v0');
             $this->handle_sql_version($update_sql_arr,'site');
-            $this->handle_update_db_zdxg();
+            $zfcommon = new \zf\ZfCommon();
+            $zfcommon->handle_update_db_zdxg();
             $this->success('更新Sql成功');
         }
     }
