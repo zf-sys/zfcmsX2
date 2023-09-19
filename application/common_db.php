@@ -486,7 +486,7 @@ if(!function_exists('save_admin_log')){
  * 报错异常处理
  */
 if(!function_exists('save_exception')){
-  function save_exception($type,$err_msg,$data,$code=0){
+  function save_exception($type,$err_msg,$data=[],$code=0){
     //保存日志
     $save_data['name'] = $type;
     $save_data['ctime'] = time();
@@ -509,7 +509,7 @@ if(!function_exists('save_exception')){
  * 后台登录记录
  */
 if(!function_exists('save_admin_login')){
-  function save_admin_login($name,$data,$code=0){
+  function save_admin_login($name,$data=[],$code=0){
     //保存日志
     $save_data['name'] = $name;
     $save_data['ctime'] = time();
