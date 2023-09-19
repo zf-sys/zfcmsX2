@@ -128,6 +128,10 @@ class Category extends Admin
             return jserror('栏目名不能为空');exit;
         }
         $data['utime'] = time();
+        $data['status'] = ZFC('webconfig.category_status');
+        if($data['status']==''){
+            $data['status'] = 0;
+        }
         $data = array_merge($data,$this->common_tag);
         try {
             $res = ZFTB('category')->insert($data);
