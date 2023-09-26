@@ -46,7 +46,7 @@ class Controller extends \think\Controller
             $this->zf_tpl_suffix = '';
         }
         //静态文件路径
-        $this->plug_static = get_domain().$this->site_path."addons/".$this->zf_tpl_suffix."/view/style/";
+        $this->plug_static = $this->site_path."addons/".$this->zf_tpl_suffix."/view/style/";
         $this->assign('plug_static',$this->plug_static);
         $this->tb_prefix = config()['database']['prefix'];
         $this->zfTool = new \app\common\controller\Base(false);
