@@ -1327,11 +1327,24 @@ if (!function_exists('is_ie_browser')) {
 }
 
 // 前台路由
+// 230926重写
 if (!function_exists('route_home')) {
-    function route_home($type,$router,$controller,$menu_type='') {
-        Route::rule($router, 'index/index/hook',$type)
-        ->middleware(app\common\middleware\Check::class)
-        ->append(['controller'=>$controller,'menu_type'=>$menu_type]);
+    // function route_home($type,$router,$controller,$menu_type='',$template='default') {
+    //     Route::rule($router, 'index/index/hook',$type)
+    //     ->middleware(app\common\middleware\Check::class)
+    //     ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
+    // }
+    function route_home($arr=[]) {
+        foreach($arr as $k=>$vo){
+            $type = isset($vo[0])?$vo[0]:'';
+            $router = isset($vo[1])?$vo[1]:'';
+            $controller = isset($vo[2])?$vo[2]:'';
+            $menu_type = isset($vo[3])?$vo[3]:'';
+            $template = isset($vo[4])?$vo[4]:'default';
+            Route::rule($router, 'index/index/hook',$type)
+            ->middleware(app\common\middleware\Check::class)
+            ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
+        }
     }
 }
 

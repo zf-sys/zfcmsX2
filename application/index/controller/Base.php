@@ -75,14 +75,24 @@ class Base extends Zfb
             $this->controller = strtolower(Request::controller());
             $this->action = strtolower(Request::action());
             $this->assign('action',$this->action);
-            $this->tpl =  $this->zf_tpl_suffix.'/'.$this->controller.'/'.$this->action;
+            if(isset(request()->routeInfo()['option']['append']['template']) && request()->routeInfo()['option']['append']['template']!=''){
+                $this->template = request()->routeInfo()['option']['append']['template'];
+                $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.$this->controller.'/'.$this->action;
+            }else{
+                $this->template = '';
+                $this->tpl =  $this->zf_tpl_suffix.'/'.$this->controller.'/'.$this->action;
+            }
             $this->tpl_suffix = ($this->zf_tpl_suffix==''?'':$this->zf_tpl_suffix);
             /*
                 $this->zf_tpl_suffix==''时,index/test
                 $this->zf_tpl_suffix=='a1'时,a1/index/test
             */
             if($this->tpl_suffix!=''){
+                if($this->template!=''){
+                    $tpl_static = $this->site_path."theme/".$this->zf_tpl_suffix.'/'.$this->template.'/style/';
+                }else{
                     $tpl_static = $this->site_path."theme/".$this->zf_tpl_suffix.'/style/';
+                }
             }else{
                     $tpl_static = $this->site_path."theme/style/";
             }
