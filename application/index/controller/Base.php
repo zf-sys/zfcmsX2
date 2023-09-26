@@ -82,9 +82,9 @@ class Base extends Zfb
                 $this->zf_tpl_suffix=='a1'时,a1/index/test
             */
             if($this->tpl_suffix!=''){
-                    $tpl_static = get_domain().$this->site_path."theme/".$this->zf_tpl_suffix.'/style/';
+                    $tpl_static = $this->site_path."theme/".$this->zf_tpl_suffix.'/style/';
             }else{
-                    $tpl_static = get_domain().$this->site_path."theme/style/";
+                    $tpl_static = $this->site_path."theme/style/";
             }
             $this->assign('tpl_static',$tpl_static);
             $this->assign('zf_tpl_suffix',$this->zf_tpl_suffix);
