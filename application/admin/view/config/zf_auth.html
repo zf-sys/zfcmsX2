@@ -34,7 +34,7 @@
             <form class="info_tj" >
               <div class="layui-form-item">
                 <div class="layui-input-block_">
-                  <!-- <a href="javascript:;" class="layui-btn layui-btn-sm  layui-bg-red"  onclick="tijiao_data2('config/zf_auth',0)" >点击更新授权</a> -->
+                  <a href="javascript:;" class="layui-btn layui-btn-sm  layui-bg-red"  onclick="tijiao_data2('/admin/config/zf_auth',0)" >ZFCMS=====>Key/Sc转换</a>
                 </div>
               </div>
               <div class="layui-form" wid100 lay-filter="">
@@ -90,7 +90,7 @@
       var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
           $.ajax({
             type:'post',
-            url:'../'+role,
+            url:role,
             data:data,
             dataType:'json',
             success:function(res){
@@ -99,11 +99,7 @@
                 layer.msg(res.msg, {icon: 1});
                 layer.close(index)
                 setTimeout(function() {
-                  if(type==1){
-                  parent.location.reload();
-                  }else{
-                  // location.reload();
-                  }
+                  location.reload();
                 }, 2000);
               }else{
                 layer.msg(res.msg, {icon: 2});

@@ -572,7 +572,10 @@ class Config extends Admin
             if(!$this->is_professional_edition){
                 return ZFRetMsg(false,'','Yun.php文件不存在');
             }
-            $this->Yun->_save_license_convert_sc();
+            $is_sq = $this->Yun->_save_license_convert_sc();
+            if($is_sq['code']==0){
+                return ZFRetMsg(false,'',$is_sq['msg']);
+            }
             if($this->Yun->_get_site_auth('','',1)){
                 return ZFRetMsg(true,'更新成功','');
             } else{
