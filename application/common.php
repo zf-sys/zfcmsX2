@@ -1717,14 +1717,20 @@ if(!function_exists('plugin_update_check_show')){
         $theme_count = 0;
         foreach ($dir_arr as $k => $vo) {
             if($vo!='.' && $vo!='..' && $vo!='.DS_Store'  && is_dir('./theme/'.$vo) && is_file('./theme/'.$vo.'/plugin_info.php')){
-                $theme_count++;
+                $_plugin_info = require './theme/'.$vo.'/plugin_info.php';
+                if($_plugin_info['plugin_name']==$vo){
+                    $theme_count++;
+                }
             }
         }
         $dir_arr = scandir('./addons');
         $plugin_count = 0;
         foreach ($dir_arr as $k => $vo) {
             if($vo!='.' && $vo!='..' && $vo!='.DS_Store' && is_dir('./addons/'.$vo) && is_dir('./addons/'.$vo.'/config') && is_file('./addons/'.$vo.'/config/plugin_info.php')){
-                $plugin_count++;
+                $_plugin_info = require './addons/'.$vo.'/config/plugin_info.php';
+                if($_plugin_info['plugin_name']==$vo){
+                    $plugin_count++;
+                }
             }
         } 
        
