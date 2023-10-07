@@ -65,6 +65,8 @@ class Common extends Admin
             return jserror($e);
         }
     }
+   
+    
     /**
      * @Notes    是否推荐
      * @Author   子枫
@@ -260,7 +262,26 @@ class Common extends Admin
         }
     }
 
-     
+    /**
+     * 230927新增
+     * 转换当前状态
+     */
+    public function is_switch_actstatus(){
+        admin_role_check($this->z_role_list,$this->mca,1);
+        $dbname = input('dbname');
+        $is_show = input('act_status');
+        $id = input('id');
+        try {
+            if($dbname=='category' || $dbname=='product_cate'){
+                $res = ZFTB($dbname)->where(['cid'=> $id])->update(['act_status' => $is_show]);
+            }else{
+                $res = ZFTB($dbname)->where(['id'=>$id])->update(['act_status' => $is_show]);            
+            }
+            return ZFRetMsg($res,'更新成功','更新失败');
+        }catch (Exception $e) {
+            return jserror($e);
+        }
+    }
 
     
 }

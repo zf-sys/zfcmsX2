@@ -37,7 +37,8 @@
                 <th>版本</th>
                 <th>路径</th>
                 <th>展示图</th>
-                <th>状态</th>
+                <th>系统状态</th>
+                <th>运行状态</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -56,8 +57,15 @@
                       <img src="{$vo['pic']}" style="height: 50px;" />
                     </td>
                     <td> 
+                      {$vo['status']==1?'正常':''}
+                      {$vo['status']==2?'未授权':''}
+                      {$vo['status']==3?'代码缺失':''}
+                      {$vo['status']==9?'已删除':''}
+                      {$vo['status']==0?'已关闭':''}
+                    </td> 
+                    <td> 
                       <div class=" layui-form" lay-filter="component-form-element">        
-                        <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
+                        <input type="checkbox" name="act_status" <?php echo $vo['act_status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="act_status_change" item="{$vo['id']}">
                       </div>
                     </td>     
                     <td>
@@ -112,6 +120,19 @@
       var status = this.checked ? '1' : '0'
       console.log(id)
       $.get("{:url('admin/common/is_switch')}",{id:id,dbname:dbname,status:status},function(res){
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        },"json");
+    });
+    form.on('switch(act_status_change)', function(data){
+      var id = $(this).attr("item")
+      var dbname = 'plugin'
+      var act_status = this.checked ? '1' : '0'
+      console.log(id)
+      $.get("{:url('admin/common/is_switch_actstatus')}",{id:id,dbname:dbname,act_status:act_status},function(res){
           if(res.result==1){
             layer.msg(res.msg, {icon: 1});
           }else{

@@ -39,6 +39,7 @@ class Updatesql extends Controller
             'v0.230907'=>$this->v0_230907(),
             'v0.230910'=>$this->v0_230910(),
             'v0.230919'=>$this->v0_230919(),
+            'v0.231007'=>$this->v0_231007(),
         ]; 
     }
 
@@ -238,13 +239,22 @@ INFO;
                     ['name'=>'异常日志'], //判断条件
                 ];
             }
-
         }
-        
-        
-
-        
-        
+        return $ret_data;
+    }
+    public function v0_231007(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}plugin like 'act_status'",
+            "alter table {$this->tb_prefix}plugin add act_status tinyint(1) not null default 1"
+        ];
+        if($this->site_version<='v0.231007' || session('v_upgsql_act')==1){
+            //判断日志是否存在
+            $is_actstatus = db('admin_role')->where(['value'=>'admin/Common/is_switch_actstatus'])->find();
+            if(!$is_actstatus){
+                $rz_id = db('admin_role')->insertGetId(['name'=>'转换活动的状态','value'=>'admin/Common/is_switch_actstatus','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>249,'module'=>'admin','control'=>'Common','act'=>'is_switch_actstatus','menu'=>0,'parm'=>'','token'=>time(),'icon'=>'fa fa-trello','lang'=>'','lang_pid'=>0]);
+            }
+        }
         return $ret_data;
     }
 
