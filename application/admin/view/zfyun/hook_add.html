@@ -24,7 +24,7 @@
                   {$form_widget->form_input(['title'=>'方法','name'=>'action','data'=>$res['action'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'排序(倒序)','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
                   {$form_widget->form_radio(['title'=>'覆盖','name'=>'overlay','data'=>$res['overlay'],'parm_data'=>['0'=>'否','1'=>'是'],'theme'=>2])|raw}
-                  {$form_widget->form_checkbox(['title'=>'位置','name'=>'position','data'=>$res['position'],'list_arr'=>[['id'=>'index','name'=>'前台'],['id'=>'admin','name'=>'后台'],['id'=>'addons','name'=>'插件Addons']],'theme'=>2])|raw}
+                  {$form_widget->form_checkbox(['title'=>'位置','name'=>'position','data'=>$res['position'],'list_arr'=>[['id'=>'index','name'=>'前台'],['id'=>'admin','name'=>'后台']],'theme'=>2])|raw}
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
 
                   <div class="layui-form-item">
@@ -41,7 +41,7 @@
                   {$form_widget->form_input(['title'=>'方法','name'=>'action','data'=>'','theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'排序(倒序)','name'=>'sort','data'=>0,'theme'=>2])|raw}
                   {$form_widget->form_radio(['title'=>'覆盖','name'=>'overlay','data'=>0,'parm_data'=>['0'=>'否','1'=>'是'],'theme'=>2])|raw}
-                  {$form_widget->form_checkbox(['title'=>'位置','name'=>'position','data'=>'','list_arr'=>[['id'=>'index','name'=>'前台'],['id'=>'admin','name'=>'后台'],['id'=>'plugins','name'=>'插件']],'theme'=>2])|raw}
+                  {$form_widget->form_checkbox(['title'=>'位置','name'=>'position','data'=>'','list_arr'=>[['id'=>'index','name'=>'前台'],['id'=>'admin','name'=>'后台']],'theme'=>2])|raw}
 
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>1,'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
 
