@@ -80,6 +80,13 @@ class Base extends Controller
                     }
                 }
             }
+            if($this->module=='addons'){
+                if($this->is_professional_edition){
+                    $this->addons_init();
+                }else{
+                    echo $this->sqb_error_msg; die;
+                }
+            }
         }
         if($this->module=='common'){
             if($this->is_professional_edition){

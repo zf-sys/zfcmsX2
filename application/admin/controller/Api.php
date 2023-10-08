@@ -58,7 +58,7 @@ class Api extends Zfb
     public function site_file_md5(){
         $path = input('path','');
         $path_str = base64_decode($path);
-        $this->temp_dir_list = explode(',', $path_str);
+        $this->temp_dir_list = explode(PHP_EOL, $path_str);
         $sys_list = $this->_api_get_sys_all_file($this->temp_dir_list);
         return json_encode($sys_list);
     }

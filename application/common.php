@@ -1197,6 +1197,7 @@ if (!function_exists('judgepassword')) {
 //     }
 // }
 
+
 if (!function_exists('zf_wjt_rule')) {
     function zf_wjt_rule($url='',$type=''){
         return $url;
