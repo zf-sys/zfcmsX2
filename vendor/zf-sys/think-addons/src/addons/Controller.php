@@ -6,13 +6,14 @@ use think\facade\Request;
 use think\facade\Config;
 use think\Loader;
 use think\Container;
+use app\common\controller\Base as Zfb;
 
 /**
  * 插件基类控制器
  * Class Controller
  * @package think\addons
  */
-class Controller extends \think\Controller
+class Controller extends Zfb
 {
     protected function __construct(){
         parent::__construct();
@@ -49,7 +50,6 @@ class Controller extends \think\Controller
         $this->plug_static = $this->site_path."addons/".$this->zf_tpl_suffix."/view/style/";
         $this->assign('plug_static',$this->plug_static);
         $this->tb_prefix = config()['database']['prefix'];
-        $this->zfTool = new \app\common\controller\Base(false);
         if(in_array(strtolower($this->controller),['admin','plugin'])){
           if(!session('admin')){
             session('zf_login_tap_url',get_url());
@@ -77,7 +77,7 @@ if (!function_exists('ZFC')) {
           if(!$_key_arr[0] || !$_key_arr[1]){
             return '';
           }
-          $res =ZFTB('config')->cache($_key_arr[0],360000)->where(['key'=>$_key_arr[0]])->value('value');
+          $res =ZFTB('config')->cache($_key_arr[0],60)->where(['key'=>$_key_arr[0]])->value('value');
           $res_arr =json_decode($res,true);
           if($res_arr[$_key_arr[1]]){
             $res = $res_arr[$_key_arr[1]];
@@ -85,7 +85,7 @@ if (!function_exists('ZFC')) {
             $res = '';
           }
         }else{
-          $res =ZFTB('config')->cache($key,360000)->where(['key'=>$key])->value('value');
+          $res =ZFTB('config')->cache($key,60)->where(['key'=>$key])->value('value');
           if($ret_type=='arr'){
             $res =json_decode($res,true);
           }

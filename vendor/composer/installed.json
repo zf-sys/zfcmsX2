@@ -1679,17 +1679,17 @@
         },
         {
             "name": "zf-sys/think-addons",
-            "version": "v2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "v2.0.2",
+            "version_normalized": "2.0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zf-sys/think-addons.git",
-                "reference": "0e343c51615b8316d3f6f2c67d305df7bfc6ea29"
+                "reference": "fb10475748571d8890184348301943b85c566607"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zf-sys/think-addons/zipball/0e343c51615b8316d3f6f2c67d305df7bfc6ea29",
-                "reference": "0e343c51615b8316d3f6f2c67d305df7bfc6ea29",
+                "url": "https://api.github.com/repos/zf-sys/think-addons/zipball/fb10475748571d8890184348301943b85c566607",
+                "reference": "fb10475748571d8890184348301943b85c566607",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1701,7 +1701,7 @@
             "require": {
                 "php": ">=5.6.0"
             },
-            "time": "2023-09-14T12:11:09+00:00",
+            "time": "2023-10-08T11:06:45+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1725,7 +1725,7 @@
             "description": "The ThinkPHP5.1 Addons Package",
             "support": {
                 "issues": "https://github.com/zf-sys/think-addons/issues",
-                "source": "https://github.com/zf-sys/think-addons/tree/v2.0.0"
+                "source": "https://github.com/zf-sys/think-addons/tree/v2.0.2"
             },
             "install-path": "../zf-sys/think-addons"
         }
