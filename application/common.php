@@ -1196,47 +1196,6 @@ if (!function_exists('judgepassword')) {
 //         return $data;
 //     }
 // }
-//获取模板data数据(保存到数据库)
-if (!function_exists('get_plugin_config_db')) {
-    function get_plugin_config_db($plugin_name,$type='',$tag=''){
-        $res = db('plugin_data')->where([['plugin_name','=',$plugin_name],['type','=',$type],['tag','=',$tag],['status','=',1]])->order('id desc')->value('data');
-        if(!$res){
-            $data = [];
-        }else{
-            $data = json_decode($res,true);
-        }
-        foreach($data as $k=>$vo){
-            $data[$k] = base64_decode($vo);
-        }
-        return $data;
-    }
-}
-if (!function_exists('save_plugin_config_db')) {
-    function save_plugin_config_db($arr = [], $plugin_name='',$type='',$tag=''){
-        if (is_array($arr)) {
-            $res = db('plugin_data')->where([['plugin_name','=',$plugin_name],['type','=',$type],['tag','=',$tag],['status','=',1]])->order('id desc')->value('data');
-            if(!$res){
-                $data['plugin_name'] = $plugin_name;
-                $data['status'] = 1;
-                $data['type'] = $type;
-                $data['tag'] = $tag;
-                $data['ctime'] = time();
-                $data['status'] = 1;
-                $data['data'] = json_encode($arr);
-                $is = db('plugin_data')->insert($data);
-            }else{
-                $is = db('plugin_data')->where([['plugin_name','=',$plugin_name],['type','=',$type],['tag','=',$tag],['status','=',1]])->order('id desc')->update(['data'=>json_encode($arr)]);
-            }
-            if($is){
-                return true;
-            }else{
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-}
 
 if (!function_exists('zf_wjt_rule')) {
     function zf_wjt_rule($url='',$type=''){
