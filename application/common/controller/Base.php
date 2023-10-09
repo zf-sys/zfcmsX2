@@ -218,5 +218,19 @@ class Base extends Controller
         }
         $this->temp_plugin = '';
     }
+    public function upgrade_sys_sql(){
+        if(!$this->is_professional_edition){
+            echo $this->sqb_error_msg; die;
+        }else{
+            session('v_upgsql_act',1); //其他的写法的
+            $update = new \app\common\controller\Updatesql();
+            $update_sql_arr = $update->update('v0');
+            $this->handle_sql_version($update_sql_arr,'site');
+            $zfcommon = new \zf\ZfCommon();
+            $zfcommon->handle_update_db_zdxg();
+            $this->success('更新Sql成功');
+        }
+    }
+    
 }
 
