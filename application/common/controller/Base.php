@@ -228,7 +228,8 @@ class Base extends Controller
             $this->handle_sql_version($update_sql_arr,'site');
             $zfcommon = new \zf\ZfCommon();
             $zfcommon->handle_update_db_zdxg();
-            $this->success('更新Sql成功');
+            extraconfig(['init_sql'=>1],'zf_auth');
+            $this->success('更新Sql成功','/admin');
         }
     }
     

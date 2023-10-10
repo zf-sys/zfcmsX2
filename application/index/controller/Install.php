@@ -222,7 +222,7 @@ class Install extends Controller
 return ['email' => '', 'key'=>'', 'sc'=>'' ];
 INFO;
         file_put_contents('./config/zf_auth.php', $hs_auth);
-        extraconfig(['site_admin_token'=>time(),'site_token'=>md5(time())],'zf_auth');
+        extraconfig(['site_admin_token'=>time(),'site_token'=>md5(time()),'init_sql'=>0],'zf_auth');
         // 获取站点根目录
         $root_dir = request()->baseFile();
         $root_dir  = preg_replace(['/index.php$/'], [''], $root_dir);

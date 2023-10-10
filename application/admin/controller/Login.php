@@ -51,6 +51,10 @@ class Login extends Controller
                 die;
             }
         }
+        $init_sql = ZFC("zf_auth.init_sql",'file');
+        if($init_sql!=1){
+            $this->redirect('/common/base/upgrade_sys_sql');
+        }
         return view('login/index3');
     }
     
