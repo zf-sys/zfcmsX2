@@ -97,10 +97,11 @@ class Login extends Controller
                 $login_interval_time = 5;
             }
             try{
-                $err_login_num = db('admin_login_log')->where([['ip','=',request()->ip()],['ctime','between time',[date("Y-m-d H:i:s",time()-$login_interval_time*60), date("Y-m-d H:i:s")]]])->order('id asc')->count();
+                $err_login_num = db('admin_login_log')->where([['ip','=',request()->ip()],['ctime','between time',[date("Y-m-d H:i:s",time()-$login_interval_time*60), date("Y-m-d H:i:s")]],['err_num','<>','0'],['name','=',$data['name']]])->order('id asc')->count();
                 if($err_login_num>=$max_login_err_num){
                     return jserror('登录错误超过'.$max_login_err_num.'次,请'.$login_interval_time.'分钟后重试');
                 }
+                $data['err_login_num'] = $err_login_num;
                 $userInfo = ZFTB('admin')->where('name', $data['name'])->where('pwd', md5('zfcms-'.$data['pwd']))->where('status', 1)->find();
                 if (!$userInfo) {
                     save_admin_login($data['name'],$data,0);

@@ -517,7 +517,7 @@ if(!function_exists('save_admin_login')){
     if($code==1){
       $save_data['err_num'] = 0;
     }else{
-      $save_data['err_num'] = db('admin_login_log')->where([['name','=',$name],['ip','=',request()->ip()],['ctime','<=',time()+5*60]])->count()+1;
+      $save_data['err_num'] = intval($data['err_login_num'])+1;
     }
     $save_data['post'] = json_encode($data);
     $save_data['token'] = time();
