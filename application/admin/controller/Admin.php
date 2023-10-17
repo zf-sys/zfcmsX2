@@ -18,14 +18,17 @@ class Admin extends Zfb
     public function __construct ()
     {
         parent::__construct();
-        $this->assign('admin',session('admin'));
-        $this->assign('web_config',config());
-        if(!session('admin')){
+        $admin = session('admin');
+        if(!$admin){
             if(request()->controller()!='Index' &&  request()->action()=='index'){
                 session('zf_login_tap_url',get_url());
             }
             $this->redirect('/admin/login/index');die; 
         }
+        $this->assign('admin',$admin);
+        $this->assign('web_config',config());
+        //判断是否修改密码
+        $this->check_password_token($admin);
         //判断是否认证
         if(!isset(config()['zf_auth']['key']) || !isset(config()['zf_auth']['sc']) || !isset(config()['zf_auth']['email']) ||  config()['zf_auth']['key']=='' ||  config()['zf_auth']['sc']=='' ||  config()['zf_auth']['email']=='' ){
             $this->assign('is_zf_auth','n');
@@ -54,7 +57,7 @@ class Admin extends Zfb
             $log['action'] = $m.'/'.$c.'/'.$a ;
             $log['ctime'] = time() ;
             $log['ip'] = request()->ip();
-            $log['uid'] = session('admin')['id'] ;
+            $log['uid'] = $admin['id'] ;
             $log['post'] = json_encode(input('param.'));
             $log['method'] = request()->method();
             ZFTB('admin_log')->insert($log);
@@ -89,6 +92,24 @@ class Admin extends Zfb
         // $data = array_merge($data,$this->common_tag);
         // $where = array_merge($where, $this->common_select_tag);
 
+    }
+    /**
+     * 检测是否修改密码,重新登录
+     */
+    private function check_password_token($admin){
+        //每隔10s检测一次
+        $old_time = session('admin_token_time');
+        $new_time = time();
+        if($new_time - $old_time > 100){
+            session('admin_token_time',$new_time);
+            //检测
+            // echo '重新检测';
+            $admin_db = db('admin')->where(['id'=>$admin['id']])->find();
+            if($admin_db['token']!=$admin['token']){
+                session('admin',null);
+                $this->redirect('/admin/login/index');die; 
+            }
+        }
     }
 
 

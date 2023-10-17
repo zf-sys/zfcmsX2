@@ -252,6 +252,7 @@ class User extends Admin
         if(request()->isPost()){
             $data = input('post.');
             $data['pwd'] = md5('zfcms-'.$data['pwd']);
+            $data['token'] = time();
             try {
                 $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
             }catch (Exception $e) {
