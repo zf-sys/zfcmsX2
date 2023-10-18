@@ -60,7 +60,7 @@ class Config extends Admin
     public function admin_index()
     {
         admin_role_check($this->z_role_list,$this->mca);
-        $user_list = ZFTB('admin')->where([['status','<>',9]])->order("id asc")->paginate(6);
+        $user_list = ZFTB('admin')->where([['status','<>',9]])->order("id asc")->paginate(10,false,['query' => request()->param()]);
         $page = $user_list->render();
         $this->assign("user_list",$user_list);
         $this->assign("page",$page);
@@ -98,7 +98,7 @@ class Config extends Admin
             $res =ZFTB('admin')->insert($data); 
             return ZFRetMsg($res,'新增成功','新增失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -145,7 +145,7 @@ class Config extends Admin
                 $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'更新成功','更新失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         } 
     }
@@ -181,7 +181,7 @@ class Config extends Admin
                 $this->error('复制失败',url('config/admin_group'));
             }
         }
-        $group_list = ZFTB('admin_group')->where([['status','<>',9]])->order("id asc")->paginate(10);
+        $group_list = ZFTB('admin_group')->where([['status','<>',9]])->order("id asc")->paginate(10,false,['query' => request()->param()]);
         $page = $group_list->render();
         $this->assign("group_list",$group_list);
         $this->assign("page",$page);
@@ -208,7 +208,7 @@ class Config extends Admin
             $res =ZFTB('admin_group')->insert($data);
             return ZFRetMsg($res,'新增成功','新增失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -239,7 +239,7 @@ class Config extends Admin
                 $res = ZFTB('admin_group')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'更新成功','更新失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         } 
     }
@@ -277,7 +277,7 @@ class Config extends Admin
                 $res = ZFTB('admin_group')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'更新成功','更新失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         } 
     }
@@ -392,7 +392,7 @@ class Config extends Admin
             $res =ZFTB('admin_role')->insert($data); 
             return ZFRetMsg($res,'新增成功','新增失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -433,7 +433,7 @@ class Config extends Admin
                 $res = ZFTB('admin_role')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'更新成功','更新失败');  
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         } 
     }
@@ -452,7 +452,7 @@ class Config extends Admin
     public function action_log()
     {
         admin_role_check($this->z_role_list,$this->mca);
-        $list = ZFTB('admin_log')->where(['status'=>1])->order("id desc")->paginate(10);
+        $list = ZFTB('admin_log')->where(['status'=>1])->order("id desc")->paginate(10,false,['query' => request()->param()]);
         $page = $list->render();
         $this->assign("list",$list);
         $this->assign("page",$page);
@@ -478,7 +478,7 @@ class Config extends Admin
                 $res =ZFTB('config')->insert($data);
                 return ZFRetMsg($res,'新增成功','新增失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         }
 
@@ -496,7 +496,7 @@ class Config extends Admin
                 $res =  ZFTB('config')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'修改成功','修改失败'); 
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         }
         $id = input('id','');
@@ -593,7 +593,7 @@ class Config extends Admin
     public function admin_login_log()
     {
         admin_role_check($this->z_role_list,$this->mca);
-        $list = ZFTB('admin_login_log')->where(['status'=>1])->order("id desc")->paginate(10);
+        $list = ZFTB('admin_login_log')->where(['status'=>1])->order("id desc")->paginate(10,false,['query' => request()->param()]);
         $page = $list->render();
         $this->assign("list",$list);
         $this->assign("page",$page);
@@ -606,11 +606,98 @@ class Config extends Admin
     public function exception_log()
     {
         admin_role_check($this->z_role_list,$this->mca);
-        $list = ZFTB('exception_log')->where(['status'=>1])->order("id desc")->paginate(10);
+        $list = ZFTB('exception_log')->where(['status'=>1])->order("id desc")->paginate(10,false,['query' => request()->param()]);
         $page = $list->render();
         $this->assign("list",$list);
         $this->assign("page",$page);
         return view();
+    }
+    /**
+     * 新增meta字段列表
+     * 20231018新增
+     */
+    public function meta_key_list(){
+        admin_role_check($this->z_role_list,$this->mca);
+        $list = ZFTB('meta_key')->where([['status','<>',9]])->order("id desc")->paginate(10,false,['query' => request()->param()]);
+        $page = $list->render();
+        $this->assign("list",$list);
+        $this->assign("page",$page);
+        return view();
+    }
+    /**
+     * 新增meta_key_add
+     * 20231018新增
+     */
+    public function meta_key_add(){
+        admin_role_check($this->z_role_list,$this->mca,1);
+        if(request()->isPost()){
+            $data = input('post.');
+            $data['ctime'] = time();
+            $data['token'] = time();
+            $data['status'] = 1;
+            if($data['key']==''){
+                return jserror('key不能为空');exit;
+            }
+            if($data['name']==''){
+                return jserror('名称不能为空');exit;
+            }
+            //判断key只能为英文和数字和_,不能数字开头
+            if(!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$data['key'])){
+                return jserror('key只能为英文数字和_,不能数字开头');exit;
+            } 
+            //判断此key和tb是否存在
+            $is = db('meta_key')->where([['key','=',$data['key']],['tb','=',$data['tb']],['status','<>','9']])->find();
+            if($is){
+                return jserror('该表内此key已存在');exit;
+            }
+            $res = ZFTB('meta_key')->insert($data);
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }
+        $tb_list = [
+            ['id'=>'post','name'=>'内容表'],
+            ['id'=>'category','name'=>'栏目表'],
+            // ['id'=>'user','name'=>'用户表'],
+        ];
+        $this->assign("tb_list",$tb_list);        
+        return view();
+    }
+    /**
+     * 编辑meta_key_edit
+     */
+    public function meta_key_edit(){
+        admin_role_check($this->z_role_list,$this->mca,1);
+        if(request()->isPost()){
+            $data = input('post.');
+            $data['token'] = time();
+            $data['utime'] = time();
+            if($data['key']==''){
+                return jserror('key不能为空');exit;
+            }
+            if($data['name']==''){
+                return jserror('名称不能为空');exit;
+            }
+            //判断key只能为英文和数字和_,不能数字开头
+            if(!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$data['key'])){
+                return jserror('key只能为英文数字和_,不能数字开头');exit;
+            } 
+            //判断此key和tb是否存在
+            $is = db('meta_key')->where([['key','=',$data['key']],['tb','=',$data['tb']],['status','<>','9'],['id','<>',$data['id']]])->find();
+            if($is){
+                return jserror('该表内此key已存在');exit;
+            }
+            $res = ZFTB('meta_key')->where(['id'=>$data['id']])->update($data);
+            return ZFRetMsg($res,'更新成功','更新失败');
+        }
+        $id = input('id','');
+        $res = ZFTB('meta_key')->where(['id'=>$id])->find();
+        $this->assign("res",$res);
+        $tb_list = [
+            ['id'=>'post','name'=>'内容表'],
+            ['id'=>'category','name'=>'栏目表'],
+            // ['id'=>'user','name'=>'用户表'],
+        ];
+        $this->assign("tb_list",$tb_list);        
+        return view('config/meta_key_add');
     }
 
 

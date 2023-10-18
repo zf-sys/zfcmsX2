@@ -26,6 +26,7 @@
           {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
           {$form_widget->filesystem_pic(['title'=>'头像','name'=>'pic','data'=>$res['pic'],'theme'=>3])|raw}
           {$form_widget->form_radio(['title'=>'性别','name'=>'sex','data'=>$res['sex'],'parm_data'=>['0'=>'女','1'=>'男',''=>'其他'],'theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'归属地','name'=>'meta[gsd]','data'=>isset_arr_key($res['meta'],'gsd',''),'theme'=>2])|raw}
 
 
           <div class="layui-form-item">
@@ -41,6 +42,7 @@
           {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
           {$form_widget->filesystem_pic(['title'=>'头像','name'=>'pic','data'=>'','theme'=>3])|raw}
           {$form_widget->form_radio(['title'=>'性别','name'=>'sex','data'=>1,'parm_data'=>['0'=>'女','1'=>'男',''=>'其他'],'theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'归属地','name'=>'meta[gsd]','data'=>'','theme'=>2])|raw}
 
           <div class="layui-form-item">
             <div class="layui-input-block">

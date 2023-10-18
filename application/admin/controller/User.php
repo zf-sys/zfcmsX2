@@ -45,7 +45,7 @@ class User extends Admin
                 try {
                     $is_add = ZFTB('user_group')->insert(['status'=>1,'tag'=>$tag,'name'=>$tag,'ctime'=>time()]);
                 }catch (Exception $e) {
-                    return jserror($e);
+                    return jserror($e->getMessage());
                 }
                 if(!$is_add){
                     dd('添加失败');
@@ -103,12 +103,7 @@ class User extends Admin
         if($is_user){
             return jserror('用户名已存在');exit;
         }
-        try {
-            $res = ZFTB('user')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-        }catch (Exception $e) {
-            return jserror($e);
-        }
+        deal_meta_data_add('user',$data);
         
         
     }
@@ -130,6 +125,11 @@ class User extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
     	if(request()->isGet()){
             $res =  ZFTB('user')->where(['id'=>input('id')])->find();
+            if(!$res){
+                $this->error('用户不存在');
+            }
+            $meta_json = ZFTB('meta_data')->where([['tb','=','user'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+            $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             $glist =  ZFTB('user_group')->where(['status'=>1])->select();
             $this->assign("glist",$glist);
@@ -142,21 +142,12 @@ class User extends Admin
             }else{
                 unset($data["pwd"]);
             }
-            $data['ctime'] = time();
-            $is_user =  ZFTB('user')->where(['name'=>$data['name']])->find();
+            $data['utime'] = time();
+            $is_user =  ZFTB('user')->where([['name','=',$data['name']],['id','<>',$data['id']]])->find();
             if($is_user){
-                if($is_user['id']!=$data['id']){
-                    return jserror('用户名已存在');exit;
-                }
+                return jserror('用户名已存在');exit;
             }
-            try {
-                $res = ZFTB('user')->where(['id'=>$data['id']])->update($data);
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
-            
-            
+            deal_meta_data_edit('user',$data);
         } 
     }
 
@@ -197,7 +188,7 @@ class User extends Admin
                 $res =ZFTB('user_group')->insert($data);
                 return ZFRetMsg($res,'新增成功','新增失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
             
             
@@ -228,7 +219,7 @@ class User extends Admin
                 $res = ZFTB('user_group')->where(['id'=>$data['id']])->update($data); 
                 return ZFRetMsg($res,'修改成功','修改失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
                         
         } 
@@ -256,7 +247,7 @@ class User extends Admin
             try {
                 $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
             
             
@@ -294,7 +285,7 @@ class User extends Admin
                 $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'修改成功','修改失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         } 
         $id = session('admin.id');

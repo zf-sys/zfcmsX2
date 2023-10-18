@@ -1,4 +1,4 @@
-<?php  if($act=='add'){ $_temp_val=$vo['value']; }else{ $_temp_val=$data_res[$vo['key']]; }        ?>
+<?php  if($act=='add'){ $_temp_val=$vo['value']; }else{ $_temp_val=change_meta_data($data_res,$vo['key']); }        ?>
 <?php if($vo['type']=='upload_album_title'){ ?>
         <?php 
                 if(!isset($data_res['title_'.$vo['key']])){

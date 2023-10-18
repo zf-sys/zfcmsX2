@@ -83,7 +83,7 @@ class Category extends Admin
                 }
                 return ZFRetMsg(true,'修改成功','修改失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         }
 
@@ -133,12 +133,8 @@ class Category extends Admin
             $data['status'] = 0;
         }
         $data = array_merge($data,$this->common_tag);
-        try {
-            $res = ZFTB('category')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-        }catch (Exception $e) {
-            return jserror($e);
-        }
+        deal_meta_data_add('category',$data);
+        
     }
 
     /**
@@ -211,18 +207,14 @@ class Category extends Admin
                     }
                 }
             }
-            
-
             $data['utime'] = time();
-            try {
-                $res = ZFTB('category')->where(['cid'=>$data['cid']])->update($data);
-                return ZFRetMsg($res,['msg'=>'修改成功'],['msg'=>'修改失败']);
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_edit('category',$data,'cid');
+            
 
         }
         $res =ZFTB('category')->where(['cid'=>input('cid')])->find();
+        $meta_json = ZFTB('meta_data')->where([['tb','=','category'],['post_id','=',$res['cid']],['status','<>',9]])->value('meta_data');
+        $res['meta'] = json_decode($meta_json,true);
         $this->assign("t",0);
         $this->assign("res",$res);
         $type =input('type','');
@@ -391,7 +383,7 @@ class Category extends Admin
                 $res =ZFTB('category_model')->insert($data);
                 return ZFRetMsg($res,'新增成功','新增失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         }  
         return view();   
@@ -418,7 +410,7 @@ class Category extends Admin
                 $res =  ZFTB('category_model')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'修改成功','修改失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         } 
         $res = ZFTB('category_model')->where(['id'=>input('id')])->find();
@@ -477,6 +469,8 @@ class Category extends Admin
             }
             $this->assign("mlist",$mlist);
             $res = ZFTB('category')->where(['cid'=>$cid])->find();
+            $meta_json = ZFTB('meta_data')->where([['tb','=','category'],['post_id','=',$res['cid']],['status','<>',9]])->value('meta_data');
+            $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             #####参数模式
             if(isset($res['form_parm'])){
@@ -639,7 +633,7 @@ class Category extends Admin
                 try {
                     $res = ZFTB('post')->insertAll($arr);
                 }catch (Exception $e) {
-                    return jserror($e);
+                    return jserror($e->getMessage());
                 }
             }
             return ZFRetMsg($res,'新增成功','新增失败'); 
@@ -743,12 +737,9 @@ class Category extends Admin
                 doZfAction('sys_post_edit',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
-                try {
-                    $res =  ZFTB('post')->where(['id'=>$data['id']])->update($data);
-                    return ZFRetMsg($res,'修改成功','修改失败');  
-                }catch (Exception $e) {
-                    return jserror($e);
-                }
+                
+                deal_meta_data_edit('post',$data,'id');
+                
             }else{
                 $data = array_merge($data,$this->common_tag);
                 if(isset($data['ctime']) && $data['ctime']!=''){
@@ -804,12 +795,8 @@ class Category extends Admin
                 doZfAction('sys_post_add',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
-                try {
-                    $res = ZFTB('post')->insertGetId($data);
-                    return ZFRetMsg($res,'新增成功','新增失败'); 
-                }catch (Exception $e) {
-                    return jserror($e);
-                }
+                deal_meta_data_add('post',$data,'id');
+
             }
         } 
         $id = input("id",'');
@@ -829,6 +816,8 @@ class Category extends Admin
                     $this->error('文章不存在');die;
                 }
             }
+            $meta_json = ZFTB('meta_data')->where([['tb','=','post'],['post_id','=',$data_res['id']],['status','<>',9]])->value('meta_data');
+            $data_res['meta'] = json_decode($meta_json,true);
             $this->assign("data_res",$data_res);
             $cid = input("cid",$data_res['cid']);
             $mid = ZFTB('category')->where(['cid'=>$cid])->value('mid');
@@ -948,7 +937,7 @@ class Category extends Admin
                     return jserror("error");
                 }
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
         }
     }
@@ -1004,7 +993,7 @@ class Category extends Admin
     //             }
     //         }
     //     }catch (Exception $e) {
-    //         return jserror($e);
+    //         return jserror($e->getMessage());
     //     }
     //     return jssuccess('已保存');
 
@@ -1024,8 +1013,19 @@ class Category extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca);
         $all_list = Db::query("SHOW FULL COLUMNS FROM zf_".'post');
+        $meta_key_list = db('meta_key')->where([['tb','=','post'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
+        foreach($meta_key_list as $k=>$vo){
+            $all_list[] = [
+                'Field'=>'meta['.$vo['key'].']',
+                'Type'=>'',
+                'Null'=>'YES',
+                'Key'=>'',
+                'Default'=>'',
+                'Extra'=>'',
+                'comment'=>$vo['name'],
+            ];
+        }
         $this->assign("all_list",$all_list);
-        
          //读取
         $mid = input('mid',0);
         $where[] = ['status','<>',9];
@@ -1083,7 +1083,7 @@ class Category extends Admin
                 $res =ZFTB('category_model_parm')->insert($data);
                 return ZFRetMsg($res,'新增成功','新增失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
          }  
          return view();   
@@ -1110,7 +1110,7 @@ class Category extends Admin
                 $res =  ZFTB('category_model_parm')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'修改成功','修改失败');
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
          } 
          $res = ZFTB('category_model_parm')->where(['id'=>input('id')])->find();
@@ -1137,12 +1137,8 @@ class Category extends Admin
             $data = input('post.');
             $data['ctime'] = time();
             $data = array_merge($data,$this->common_tag);
-            try {
-                $res =ZFTB('special')->insert($data);
-                return ZFRetMsg($res,'新增成功','新增失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_add('special',$data,'id');
+
         }  
             return view();   
 
@@ -1171,14 +1167,12 @@ class Category extends Admin
             }else{
                 $data['ctime'] =  time();
             }
-            try {
-                $res = ZFTB('special')->where(['id'=>$data['id']])->update($data); 
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_edit('special',$data,'id');
+
         } 
         $res =  ZFTB('special')->where(['id'=>input('id')])->find();
+        $meta_json = ZFTB('meta_data')->where([['tb','=','special'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+        $res['meta'] = json_decode($meta_json,true);
         $this->assign("res",$res);
         return view('/category/special_add');
     }
@@ -1211,7 +1205,7 @@ class Category extends Admin
                 try {
                     $res = ZFTB('special_post')->insert($data);
                 }catch (Exception $e) {
-                    return jserror($e);
+                    return jserror($e->getMessage());
                 }
             }else{
                 $res = false;
@@ -1265,12 +1259,8 @@ class Category extends Admin
             $data = input('post.');
             $data['ctime'] = time();
             $data = array_merge($data,$this->common_tag);
-            try {
-                $res =ZFTB('tag')->insert($data);
-                return ZFRetMsg($res,'新增成功','新增失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_add('tag',$data,'id');
+
         }  
             return view();   
 
@@ -1299,14 +1289,12 @@ class Category extends Admin
             }else{
                 $data['ctime'] =  time();
             }
-            try {
-                $res = ZFTB('tag')->where(['id'=>$data['id']])->update($data); 
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_edit('tag',$data,'id');
+
         } 
         $res =  ZFTB('tag')->where(['id'=>input('id')])->find();
+        $meta_json = ZFTB('meta_data')->where([['tb','=','tag'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+        $res['meta'] = json_decode($meta_json,true);
         $this->assign("res",$res);
         return view('/category/tag_add');
     }

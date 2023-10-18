@@ -62,7 +62,7 @@ class Common extends Admin
             }
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
    
@@ -83,7 +83,7 @@ class Common extends Admin
             $res = ZFTB($dbname)->where(['id'=>$id])->update(['recommend' => $is_show]);            
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
     public function is_istop(){
@@ -95,7 +95,7 @@ class Common extends Admin
             $res = ZFTB($dbname)->where(['id'=>$id])->update(['istop' => $is_show]);            
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -120,7 +120,7 @@ class Common extends Admin
             }     
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
     /**
@@ -146,7 +146,7 @@ class Common extends Admin
             }
             return ZFRetMsg($res,'删除成功','删除失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -173,7 +173,7 @@ class Common extends Admin
             }
             return jssuccess('更新成功');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -199,7 +199,7 @@ class Common extends Admin
             }
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -258,7 +258,7 @@ class Common extends Admin
             $res = ZFTB('config')->where(['key'=>$key])->update(['value' => $value]);            
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 
@@ -279,7 +279,7 @@ class Common extends Admin
             }
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
     }
 

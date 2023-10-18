@@ -40,6 +40,7 @@ class Updatesql extends Controller
             'v0.230910'=>$this->v0_230910(),
             'v0.230919'=>$this->v0_230919(),
             'v0.231007'=>$this->v0_231007(),
+            'v0.231018'=>$this->v0_231018(),
         ]; 
     }
 
@@ -255,6 +256,58 @@ INFO;
                 $rz_id = db('admin_role')->insertGetId(['name'=>'转换活动的状态','value'=>'admin/Common/is_switch_actstatus','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>249,'module'=>'admin','control'=>'Common','act'=>'is_switch_actstatus','menu'=>0,'parm'=>'','token'=>time(),'icon'=>'fa fa-trello','lang'=>'','lang_pid'=>0]);
             }
         }
+        return $ret_data;
+    }
+    /**
+     * 新增
+     * meta扩展表   zf_meta_data
+     * meta字段表   zf_meta_key
+     * 
+	meta_id   tb  post_id meta_data ctime  utime status token
+	id   tb   key   name  append  ctime utime   token sort status
+     */
+    public function v0_231018(){
+        $ret_data[0][0] = 'tb_add';
+        $ret_data[0][1] = $this->tb_prefix.'meta_data';
+        $ret_data[0][2] = <<<INFO
+        CREATE TABLE `zf_meta_data` (
+            `meta_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `tb` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `post_id` int(11) NOT NULL DEFAULT '0',
+            `meta_data` text,
+            `ctime` int(11) NOT NULL DEFAULT '0',
+            `utime` int(11) NOT NULL DEFAULT '0',
+            `status` tinyint(1) NOT NULL DEFAULT '1',
+            `token` varchar(255) NOT NULL DEFAULT '',
+            PRIMARY KEY (`meta_id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta扩展表';
+INFO;
+        $ret_data[0][2] = str_replace('zf_meta_data',$this->tb_prefix.'meta_data',$ret_data[0][2]);
+        $ret_data[1][0] = 'tb_add';
+        $ret_data[1][1] = $this->tb_prefix.'meta_key';
+        $ret_data[1][2] = <<<INFO
+        CREATE TABLE `zf_meta_key` (
+            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `tb` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `key` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `name` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+            `append` text,
+            `ctime` int(11) NOT NULL DEFAULT '0',
+            `utime` int(11) NOT NULL DEFAULT '0',
+            `token` varchar(255) NOT NULL DEFAULT '',
+            `sort` tinyint(1) NOT NULL DEFAULT '1',
+            `status` tinyint(1) NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta字段表';
+INFO;
+        $ret_data[1][2] = str_replace('zf_meta_key',$this->tb_prefix.'meta_key',$ret_data[1][2]);
+        $ret_data[2] = [ 
+            'tb_post_add',
+            $this->tb_prefix.'admin_role',
+            ['name'=>'Meta字段','value'=>'admin/Config/meta_key_list','check'=>1,'status'=>1,'summary'=>'','sort'=>20,'pid'=>154,'module'=>'admin','control'=>'Config','act'=>'meta_key_list','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-american-sign-language-interpreting','lang'=>'','lang_pid'=>0],
+            false,  //是否允许重复
+            ['name'=>'Meta字段'], //判断条件
+        ];
         return $ret_data;
     }
 

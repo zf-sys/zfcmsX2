@@ -2096,7 +2096,170 @@ if(!function_exists('send_notice')){
         }
     }
 }
+/**
+ * 转换模板的meta key数据
+ * 20231018
+ */
+if(!function_exists('change_meta_data')){
+    function change_meta_data($data=[],$meta_key=''){
+        //判断meta_key是否包含了meta[
+        if(is_str_find($meta_key,'meta[')){
+            $meta_key_arr = explode('meta[',$meta_key);
+            if(!isset($meta_key_arr[1])){
+                return '';
+            }
+            $meta_key_arr = explode(']',$meta_key_arr[1]);
+            if(!isset($meta_key_arr[0])){
+                return '';
+            }
+            $meta_key = $meta_key_arr[0];
+            if(isset($data['meta'][$meta_key])){
+                return $data['meta'][$meta_key];
+            }else{
+                return '';
+            }
+        }else{
+            if(isset($data[$meta_key])){
+                return $data[$meta_key];
+            }else{
+                return '';
+            }
+        }
+    }
+}
+/**
+ * 更新meta_data中的某个数据中的某个字段
+ * 20231018
+ * update_meta_data('category','2','bd_sl','99');
+ * update_meta_data('category','2','aa','1');
 
+ */
+if(!function_exists('update_meta_data')){
+    function update_meta_data($tb,$post_id,$key,$val=''){
+        $is = db('meta_data')->where([['tb','=',$tb],['post_id','=',$post_id]])->find();
+        if(!$is){
+            $meta_data['tb'] = $tb;
+            $meta_data['post_id'] = $post_id;
+            $meta_data['ctime'] = time();
+            $meta_data['utime'] = time();
+            $meta_data['token'] = time();
+            $meta_data['meta_data'] = json_encode([$key=>$val]);
+            $res = ZFTB('meta_data')->insert($meta_data);
+        }else{
+            $meta_data_arr = json_decode($is['meta_data'],true);
+            $meta_data_arr[$key] = $val;
+            $res =ZFTB('meta_data')->where(['meta_id'=>$is['meta_id']])->update(['meta_data'=>json_encode($meta_data_arr),'utime'=>time()]);
+        }
+        if($res){
+            return true;
+        }
+        return false;
+    }
+}
+/**
+ * 读取meta_data中的某个数据中的某个字段
+ * 20231018
+ * $key为空,则返回数组
+ * 
+ * echo get_meta_data('category','1',$key='bd_sl',$def='0');
+ * echo get_meta_data('category2','1',$key='bd_sl',$def='0');
+ * echo get_meta_data('category','1',$key='bd_sl3',$def='0');
+ * echo get_meta_data('category','2',$key='bd_sl',$def='0');
+ * // dd(get_meta_data('category','2','',$def='0'));
+ */
+if(!function_exists('get_meta_data')){
+    function get_meta_data($tb,$post_id,$key='',$def=''){
+        $is = db('meta_data')->where([['tb','=',$tb],['post_id','=',$post_id]])->find();
+        if(!$is){
+           return $def;
+        }else{
+            $meta_data_arr = json_decode($is['meta_data'],true);
+            if($key==''){
+                return $meta_data_arr;
+            }elseif(isset($meta_data_arr[$key])){
+                return $meta_data_arr[$key];
+            }
+            return  $def;
+        }
+    }
+}
+/**
+ * 后台中meta数据处理-新增
+ * 20231018
+ */
+if(!function_exists('deal_meta_data_add')){
+    function deal_meta_data_add($tb,$data=[]){
+        Db::startTrans();
+        try {
+            if(isset($data['meta']) && is_array($data['meta'])){
+                $meta_data['meta_data'] = json_encode($data['meta']);
+                unset($data['meta']);
+                $res = ZFTB($tb)->insertGetId($data);
+                if(!$res){
+                    Db::rollback();
+                    return ZFRetMsg(false,'','新增失败');
+                }
+                $meta_data['tb'] = $tb;
+                $meta_data['post_id'] = $res;
+                $meta_data['ctime'] = time();
+                $meta_data['token'] = time();
+                $res = ZFTB('meta_data')->insert($meta_data);
+                if(!$res){
+                    Db::rollback();
+                    return ZFRetMsg(false,'','新增失败');
+                }
+            }else{
+                $res = ZFTB($tb)->insertGetId($data);
+            }
+            Db::commit();
+            return ZFRetMsg($res,'新增成功','新增失败');
+        }catch (Exception $e) {
+            Db::rollback();
+            return jserror($e->getMessage());
+        }
+    }
+}
+/**
+ * 后台中meta数据处理-修改
+ * 20231018
+ */
+if(!function_exists('deal_meta_data_edit')){
+    function deal_meta_data_edit($tb,$data=[],$field_id='id'){
+        Db::startTrans();
+        try {
+            if(isset($data['meta']) && is_array($data['meta'])){
+                $meta_data['meta_data'] = json_encode($data['meta']);
+                unset($data['meta']);
+                $res = ZFTB($tb)->where([$field_id=>$data[$field_id]])->update($data);
+                if(!$res){
+                    Db::rollback();
+                    return ZFRetMsg(false,'','修改失败');
+                }
+                $meta_data['tb'] = $tb;
+                $meta_data['post_id'] = $data[$field_id];
+                $meta_data['utime'] = time();
+                $meta_data['token'] = time();
+                $is = ZFTB('meta_data')->where([['status','<>',9],['tb','=',$meta_data['tb']],['post_id','=',$meta_data['post_id']]])->find();
+                if($is){
+                    $res = ZFTB('meta_data')->where(['post_id'=>$meta_data['post_id']])->update($meta_data);
+                }else{
+                    $res = ZFTB('meta_data')->insert($meta_data);
+                }
+                if(!$res){
+                    Db::rollback();
+                    return ZFRetMsg(false,'','修改失败');
+                }
+            }else{
+                $res = ZFTB($tb)->where([$field_id=>$data[$field_id]])->update($data);
+            }
+            Db::commit();
+            return ZFRetMsg($res,'修改成功','修改失败');
+        }catch (Exception $e) {
+            Db::rollback();
+            return jserror($e->getMessage());
+        }
+    }
+}
 
 
 

@@ -83,9 +83,19 @@ class Setting extends Admin
                 $form_parm_arr = json_decode($form_parm,true);
             }
             $_list = Db::query("show full columns from ".$tb_name);
-            // dd($_list);
+            $meta_key_list = db('meta_key')->where([['tb','=','category'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
+            foreach($meta_key_list as $k=>$vo){
+                $_list[] = [
+                    'Field'=>'meta['.$vo['key'].']',
+                    'Type'=>'',
+                    'Null'=>'YES',
+                    'Key'=>'',
+                    'Default'=>'',
+                    'Extra'=>'',
+                    'comment'=>$vo['name'],
+                ];
+            }
             $list_left = [];
-
             foreach($_list as $k=>$vo){
                 if(isset($vo['Field'])){
                     $_name = strtolower($vo['Field']);
@@ -162,7 +172,6 @@ class Setting extends Admin
                             'append'=>$_append,
                         ];
                     }
-                    
                 }
             }
             $list = [
@@ -171,8 +180,9 @@ class Setting extends Admin
             ];
             $this->assign("list",$list);
         }elseif($t==2){
-
+            //导入参数
         }elseif($t==3){
+            //当前参数
             if($tb_name=='zf_category'){
                 $form_parm = db('category')->where('cid',$id)->value('form_parm');
             }else{
@@ -182,6 +192,8 @@ class Setting extends Admin
         }
         return view();
     }
+
+    
 
 
     

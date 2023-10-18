@@ -57,7 +57,7 @@ class Rests extends Admin
                 $list = ZFTB('advert')->where('pid',0)->where($where)->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
             }
         }catch (Exception $e) {
-            return jserror($e);
+            return jserror($e->getMessage());
         }
         
         $page = $list->render();
@@ -90,12 +90,7 @@ class Rests extends Admin
             return jserror('名称不能为空');exit;
         }
         $data = array_merge($data,$this->common_tag);
-        try {
-            $res = ZFTB('advert')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-        }catch (Exception $e) {
-            return jserror($e);
-        }
+        deal_meta_data_add('advert',$data,'id');
         
     }
 
@@ -130,10 +125,12 @@ class Rests extends Admin
                     $id = $is['id'];
                 }
             }catch (Exception $e) {
-                return jserror($e);
+                return jserror($e->getMessage());
             }
             
             $res =  ZFTB('advert')->where(['id'=>$id])->find(); 
+            $meta_json = ZFTB('meta_data')->where([['tb','=','advert'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+            $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             if(input('type')=='child'){
                 $tpl="rests/advert_add_child";   
@@ -148,12 +145,8 @@ class Rests extends Admin
             if($data['name']==''){
                 return jserror('名称不能为空');exit;
             }
-            try {
-                $res = ZFTB('advert')->where(['id'=>$data['id']])->update($data);
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_edit('advert',$data,'id');
+
         } 
     }
 
@@ -196,12 +189,9 @@ class Rests extends Admin
         }
         $data['ctime'] = time();
         $data = array_merge($data,$this->common_tag);
-        try {
-            $res = ZFTB('link')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-        }catch (Exception $e) {
-            return jserror($e);
-        }
+        deal_meta_data_add('link',$data,'id');
+            
+
         
     }
 
@@ -222,17 +212,15 @@ class Rests extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isGet()){
             $res =  ZFTB('link')->where(['id'=>input('id')])->find(); 
+            $meta_json = ZFTB('meta_data')->where([['tb','=','link'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+            $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             return view('rests/link_add');
         } 
         if(request()->isPost()){
             $data = input('post.');
-            try {
-                $res = ZFTB('link')->where(['id'=>$data['id']])->update($data);
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_edit('link',$data,'id');
+
         } 
     }
 
@@ -273,12 +261,8 @@ class Rests extends Admin
         }
         $data['ctime'] = time();
         $data = array_merge($data,$this->common_tag);
-        try {
-            $res = ZFTB('guessbook')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-        }catch (Exception $e) {
-            return jserror($e);
-        }
+        deal_meta_data_add('guessbook',$data,'id');
+
         
     }
 
@@ -299,17 +283,15 @@ class Rests extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isGet()){
             $res =  ZFTB('guessbook')->where(['id'=>input('id')])->find(); 
+            $meta_json = ZFTB('meta_data')->where([['tb','=','guessbook'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+            $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             return view('rests/guessbook_add');
         } 
         if(request()->isPost()){
             $data = input('post.');
-            try {
-                $res = ZFTB('guessbook')->where(['id'=>$data['id']])->update($data);
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_edit('guessbook',$data,'id');
+
         } 
     }
 
@@ -332,7 +314,7 @@ class Rests extends Admin
                     }
                     $pid = $is['id'];
                 }catch (Exception $e) {
-                    return jserror($e);
+                    return jserror($e->getMessage());
                 }
                 
             }
@@ -397,12 +379,8 @@ class Rests extends Admin
             return jserror('名称不能为空');exit;
         }
         $data = array_merge($data,$this->common_tag);
-        try {
-            $res = ZFTB('menu')->insert($data);
-            return ZFRetMsg($res,'新增成功','新增失败');
-        }catch (Exception $e) {
-            return jserror($e);
-        }
+        deal_meta_data_add('menu',$data,'id');
+
         
     }
 
@@ -413,6 +391,8 @@ class Rests extends Admin
         $pid = input('pid',0);
     	if(request()->isGet()){
             $res =  ZFTB('menu')->where(['id'=>input('id')])->find(); 
+            $meta_json = ZFTB('meta_data')->where([['tb','=','menu'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+            $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             if(input('type')=='child'){
                 $tpl="rests/menu_add_child";   
@@ -443,12 +423,8 @@ class Rests extends Admin
             if($data['name']==''){
                 return jserror('名称不能为空');exit;
             }
-            try {
-                $res = ZFTB('menu')->where(['id'=>$data['id']])->update($data);
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e);
-            }
+            deal_meta_data_edit('menu',$data,'id');
+
         } 
     }
   
