@@ -59,7 +59,7 @@ Route::group('addons', function () {
     // $request->setController(join('/', $rules));
     $request->setAction($pathinfo[2]);
     $_name = $pathinfo[2];
-    unset($request->$_name);
+    // unset($request->$_name); //231023删除(使用wechat时报错)
     for($iii=0;$iii<count($pathinfo);$iii++){
         if($iii>=3 && isset($pathinfo[$iii+1])){
             $_name = $pathinfo[$iii];
