@@ -11,7 +11,7 @@
   // | 码云:  https://gitee.com/wmc1125/zfAdmin_tpfast
   // | Mc技术论坛: http://bbs.wangmingchang.com/forum.php?mod=forumdisplay&fid=77
   // +----------------------------------------------------------------------
-  // 站点信息最后修改于 2023/10/18 20:54:56  
+  // 站点信息最后修改于 2023/10/24 20:28:40  
   
  return [
 	'version' => 'v0.231024',
@@ -25,5 +25,5 @@
 	'version_temp' => 'v0.0.0.0',
 	'pulg_data_path' => './upgrade',
 	'temp_dir_list' => '/application,/extend,/route,/thinkphp,/vendor,/theme,/public,/runtime',
-	'sql_version' => 'v0.231018',
+	'sql_version' => '',
 ];
