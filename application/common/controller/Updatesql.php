@@ -41,6 +41,8 @@ class Updatesql extends Controller
             'v0.230919'=>$this->v0_230919(),
             'v0.231007'=>$this->v0_231007(),
             'v0.231018'=>$this->v0_231018(),
+            'v0.231024'=>$this->v0_231024(),
+            
         ]; 
     }
 
@@ -258,6 +260,10 @@ INFO;
         }
         return $ret_data;
     }
+    
+
+
+
     /**
      * 新增
      * meta扩展表   zf_meta_data
@@ -311,7 +317,14 @@ INFO;
         return $ret_data;
     }
 
-    
+    public function v0_231024(){
+        $ret_data[1] = [ 
+            'tb_field_edit',
+            "show columns from {$this->tb_prefix}user like 'login_act_code'",
+            "alter table {$this->tb_prefix}user MODIFY  login_act_code  text "
+        ];
+        return $ret_data;
+    }
     
 
 
