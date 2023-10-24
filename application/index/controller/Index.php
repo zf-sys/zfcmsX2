@@ -89,9 +89,17 @@ class Index extends Base
         // doZfAction('home_tdk',['type'=>'index','data'=>'','request'=>request()]);
 
         if(isset($this->theme_config['template_home']) && $this->theme_config['template_home']!=''){
-            $tpl = $this->zf_tpl_suffix.'/index/'.$this->theme_config['template_home'];
+            if($this->template!=''){
+                $tpl = $this->zf_tpl_suffix.'/'.$this->template.'/index/'.$this->theme_config['template_home'];
+            }else{
+                $tpl = $this->zf_tpl_suffix.'/index/'.$this->theme_config['template_home'];
+            }
         }else{
-            $tpl = $this->zf_tpl_suffix.'/index/index';
+            if($this->template!=''){
+                $tpl = $this->zf_tpl_suffix.'/'.$this->template.'/index/index';
+            }else{
+                $tpl = $this->zf_tpl_suffix.'/index/index';
+            }
         }
         if(isset($this->cms_config['site_home_url']) && $this->cms_config['site_home_url']!=''){
            $this->redirect($this->cms_config['site_home_url'],302);

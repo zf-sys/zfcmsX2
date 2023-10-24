@@ -79,7 +79,7 @@ class Base extends Zfb
                 $this->template = request()->routeInfo()['option']['append']['template'];
                 $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.$this->controller.'/'.$this->action;
             }else{
-                $this->template = '';
+                $this->template = 'default';
                 $this->tpl =  $this->zf_tpl_suffix.'/'.$this->controller.'/'.$this->action;
             }
             $this->tpl_suffix = ($this->zf_tpl_suffix==''?'':$this->zf_tpl_suffix);
