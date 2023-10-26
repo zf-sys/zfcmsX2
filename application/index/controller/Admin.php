@@ -30,11 +30,16 @@ class Admin extends Base
     {
         if(request()->isPost()){
             $data = input('post.');
-            // foreach($data as $k=>$vo){
-            //     $data[$k] = base64_encode($vo);
-            // }
-            $res = $this->Yun->save_plugin_config_db($data,$this->zf_tpl_suffix,'theme','');
-            return ZFRetMsg($res,'保存成功','保存失败');
+            try{
+                // foreach($data as $k=>$vo){
+                //     $data[$k] = base64_encode($vo);
+                // }
+                $res = $this->Yun->save_plugin_config_db($data,$this->zf_tpl_suffix,'theme','');
+                return ZFRetMsg($res,'保存成功','保存失败');
+            }catch(\Exception $e){
+                return ZFRetMsg(0,'',$e->getMessage());
+            }
+            
         }
         $data = $this->Yun->get_plugin_config_db($this->zf_tpl_suffix,'theme','');//保存在数据库
         $this->assign("config",$data);
