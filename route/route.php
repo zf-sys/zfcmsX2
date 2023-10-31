@@ -13,13 +13,25 @@ use think\Db;
 try {
 	if (!is_file('./public/install.lock')) {
 		//安装系统
+		//判断伪静态是否设置
+		if ($_SERVER['REQUEST_URI']=='/') {
+			try{
+				$url = get_domain().'/install';
+				$httpCode = http_request_code($url);
+				if($httpCode!=200){
+					echo '请设置伪静态后再安装系统 <a href="http://bbs.zf-sys.com/bbs_detail/170.html" target="_black">点击打开参考</a>';die;
+				}
+			}catch(\Exception $e){
+				echo '请设置伪静态后再安装系统 <a href="http://bbs.zf-sys.com/bbs_detail/170.html" target="_black">点击打开参考</a>';die;
+			}
+		}
 		Route::any('install', 'index/install/index');
 		if(strpos(request()->server()['REQUEST_URI'],'/install') === false){ 
 			header('Location: /install'); exit();
 		}
 	}else{
 		//web前端
-		if($_SERVER['REQUEST_URI']=='/install'){
+		if(is_str_find($_SERVER['REQUEST_URI'],'/install')){
 			header('Location: /'); exit();
 		}
 		$_file = './application/index/route.php';
