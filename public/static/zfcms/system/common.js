@@ -54,14 +54,22 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 				url = "404.html";
 			};
 			if(w == null || w == '') {
-				w = ($(window).width() * 0.9);
+				w = '90%'
 			};
 			if(h == null || h == '') {
-				h = ($(window).height() - 50);
+				h = '90%'
 			};
+			//判断w是否含有%  || 是否是数字
+			if(jQuery.isNumeric(w) || w.indexOf("%")===-1) {
+				w = w + 'px'
+			}
+			//判断h是否含有%
+			if(jQuery.isNumeric(h) || h.indexOf("%")===-1){
+				h = h + 'px'
+			}
 			layer.open({
 				type: 2,
-				area: [w + 'px', h + 'px'],
+				area: [w, h],
 				fix: false, //不固定
 				maxmin: true,
 				shadeClose: false,
@@ -83,14 +91,22 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 			url = "404.html";
 		};
 		if(w == null || w == '') {
-			w = ($(window).width() * 0.9);
+			w = '90%'
 		};
 		if(h == null || h == '') {
-			h = ($(window).height() - 50);
+			h = '90%'
 		};
+		//判断w是否含有%
+		if(jQuery.isNumeric(w) || w.indexOf("%")===-1){
+			w = w + 'px'
+		}
+		//判断h是否含有%
+		if(jQuery.isNumeric(h) || h.indexOf("%")===-1){
+			h = h + 'px'
+		}
 		layer.open({
 			type: 2,
-			area: [w + 'px', h + 'px'],
+			area: [w, h],
 			fix: false, //不固定
 			maxmin: true,
 			shadeClose: true,
