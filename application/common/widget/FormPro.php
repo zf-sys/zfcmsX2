@@ -665,7 +665,7 @@ $zf_html .=<<<INFO
     $('#$tpl_id').on('click',function(){
       layer.open({
         type: 2,
-        area: ['900px', '530px'],
+        area: ['90%', '90%'],
         fixed: true,
         maxmin: true,
         content: "$this->filesystem_upload&cid=0&t=2&name=$name&zf_class=.$tpl_id"
@@ -1056,7 +1056,7 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['900px', '530px'],
+                 area: ['90%', '90%'],
                  fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
@@ -1084,7 +1084,7 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['900px', '530px'],
+                 area: ['90%', '90%'],
                  fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
@@ -1116,7 +1116,7 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['900px', '530px'],
+                 area: ['90%', '90%'],
                  fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
@@ -1144,7 +1144,7 @@ INFO;
              $('#$tpl_id').on('click',function(){
                layer.open({
                  type: 2,
-                 area: ['900px', '530px'],
+                 area: ['90%', '90%'],
                  fixed: true,
                  maxmin: true,
                  content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
@@ -1232,7 +1232,7 @@ INFO;
     $('#$tpl_id').on('click',function(){
       layer.open({
         type: 2,
-        area: ['900px', '530px'],
+        area: ['90%', '90%'],
         fixed: true,
         maxmin: true,
         content: "$this->filesystem_upload&cid=0&t=3&zf_class=.$tpl_id"
