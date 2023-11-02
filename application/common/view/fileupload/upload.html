@@ -59,8 +59,8 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
           <form onclick="return false;" class="info_tj">
 
             <div class="layui-input-black">
-              <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
-              <button class="layui-btn layui-btn-xs layui-btn-sm" onclick="tijiao_data('/admin/Fileupload/cate_add',0)"  >新增分组</button>
+              <input type="text" name="name" placeholder="请输入分组名称" autocomplete="off" class="layui-input">
+              <button class="layui-btn layui-btn-xs layui-btn-sm" onclick="tijiao_data('/common/Fileupload/cate_add',0)"  >新增分组</button>
             </div>
           </form>
           <!-- <div class="layui-col-md12"> -->
@@ -491,12 +491,12 @@ function Progress(value) {
 		//默认参数
 		var defaultOption = {
 				threshold: 0, //灵敏度
-	            failure_limit : 0,
-	            event: "scroll resize", //触发事件
-	            effect: "fadeIn", //显示模式，支持jquery所有显示方式
-	            container: window, //容器
-	            effectTime: 300, //图片显示时间
-	            callback: null //图片显示后执行的回调函数
+        failure_limit : 0,
+        event: "scroll resize", //触发事件
+        effect: "fadeIn", //显示模式，支持jquery所有显示方式
+        container: window, //容器
+        effectTime: 300, //图片显示时间
+        callback: null //图片显示后执行的回调函数
 			};
 
 		//option参数管理器
