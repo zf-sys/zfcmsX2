@@ -42,6 +42,7 @@ class Updatesql extends Controller
             'v0.231007'=>$this->v0_231007(),
             'v0.231018'=>$this->v0_231018(),
             'v0.231024'=>$this->v0_231024(),
+            'v0.231102'=>$this->v0_231102(),
             
         ]; 
     }
@@ -257,6 +258,18 @@ INFO;
             if(!$is_actstatus){
                 $rz_id = db('admin_role')->insertGetId(['name'=>'转换活动的状态','value'=>'admin/Common/is_switch_actstatus','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>249,'module'=>'admin','control'=>'Common','act'=>'is_switch_actstatus','menu'=>0,'parm'=>'','token'=>time(),'icon'=>'fa fa-trello','lang'=>'','lang_pid'=>0]);
             }
+        }
+        return $ret_data;
+    }
+    public function v0_231102(){
+        if($this->site_version<='v0.231102' || session('v_upgsql_act')==1){
+            $ret_data[] = [ 
+                'tb_post_add',
+                $this->tb_prefix.'admin_role',
+                ['name'=>'系统工具','value'=>'admin/Config/tool','check'=>1,'status'=>1,'summary'=>'','sort'=>0,'pid'=>244,'module'=>'admin','control'=>'Config','act'=>'tool','menu'=>0,'parm'=>'','token'=>time(),'icon'=>'fa fa-trello','lang'=>'','lang_pid'=>0],
+                false,  //是否允许重复
+                ['name'=>'系统工具'], //判断条件
+            ];
         }
         return $ret_data;
     }

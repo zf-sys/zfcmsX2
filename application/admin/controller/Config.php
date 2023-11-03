@@ -699,6 +699,38 @@ class Config extends Admin
         $this->assign("tb_list",$tb_list);        
         return view('config/meta_key_add');
     }
+    /**
+     * 工具页面
+     */
+    public function tool(){
+        $t = input('t','');
+        if(in_array($t,['del_temp','del_log','del_backup','del_upgrade'])){
+            if($t=='del_temp'){
+                $dir = './runtime/temp';
+            }elseif($t=='del_log'){
+                $dir = './runtime/log';
+            }elseif($t=='del_backup'){
+                $dir = './backup';
+            }elseif($t=='del_upgrade'){
+                $dir = './upgrade';
+            }
+            $file = new \lib\File();
+            if(!file_exists($dir)){
+                return jserror('文件夹不存在');
+            }
+            $r = $file->del_dir($dir);
+            if($r){
+                mkdir($dir);
+                return jssuccess('操作成功');
+            }else{
+                return jserror('操作失败');
+            }
+        }
+        
+
+
+        return view();
+    }
 
 
 

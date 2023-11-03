@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  {:widget_st('layui','css')}
+  {:widget_st('admin','css')}
+  {:widget_st('bootstrap')}
+  {:widget_st('jq','js')}
+</head>
+<style>
+  .zf_box{
+    background-color: aliceblue;
+    text-align: center;
+    border: 1px solid #e6e6e6;
+    height: 80px;
+    line-height: 80px;
+    font-weight: bold;
+  }
+</style>
+<body>
+  <div class="layui-fluid">
+    <div class="">
+      <div class="layui-row">
+        <div class="layui-col-md3">
+          <div class="layui-card zf_box">
+            <span class="zf_act" data-t="del_temp">删除缓存</span>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card zf_box">
+            <span class="zf_act" data-t="del_log">删除日志</span>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card zf_box">
+            <span class="zf_act" data-t="del_backup">删除备份</span>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card zf_box">
+            <span class="zf_act" data-t="del_upgrade">删除升级文件</span>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  {include file="public/common_tool"}
+  {:widget_st('layui','js')}  
+  {:widget_st('common','js')} 
+
+  <script>
+ layui.use([ 'table'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,table = layui.table;
+    
+    $('.zf_act').click(function(){
+      var t = $(this).data('t');
+      var name = ''
+      switch(t){
+        case 'del_temp':
+          name = '将删除/runtime/temp目录下所有文件,是否确认?';
+          break;
+        case 'del_log':
+          name = '将删除/runtime/log目录下所有文件,是否确认?';
+          break;
+        case 'del_backup':
+          name = '将删除/backup目录下所有文件,是否确认?';
+          break;
+        case 'del_upgrade':
+          name = '将删除/upgrade目录下所有文件,是否确认?';
+          break;
+        default:
+          name = '确定要执行此操作吗？'
+      }
+      var url = "?t="+t;
+      layer.confirm(name, {
+        btn: ['确定','取消'] //按钮
+      }, function(){
+        var index = layer.load(1);
+        $.get(url,function(res){
+          layer.close(index)
+          if(res.result==1){
+            layer.msg(res.msg,{icon:1});
+          }else{
+            layer.msg(res.msg,{icon:2});
+          }
+        },'json')
+      }, function(){
+        
+      });
+    })
+    
+   
+   
+  });
+  </script>
+</body>
+</html>
