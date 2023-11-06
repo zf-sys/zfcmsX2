@@ -20,12 +20,6 @@
         <table class="layui-table">
             <colgroup>
               <col width="30">
-              <col width="60">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-              <col width="50">
               <col>
             </colgroup>
             <thead>
@@ -35,6 +29,7 @@
                 <th>图片</th>
                 <th>链接</th>          
                 <th>选中</th>          
+                <th>排序</th>          
                 <th>状态</th>
                 <th>操作</th>
               </tr> 
@@ -50,6 +45,7 @@
                     方法:{$vo['action']}<br>
                     参数:{$vo['item_id']}
                   </td>
+                  <td>{$vo['sort']}</td>
                   <td> 
                     <div class=" layui-form" lay-filter="component-form-element">        
                        <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">

@@ -28,6 +28,7 @@
                 <th>ID</th>
                 <th>链接名称</th>
                 <th>链接</th>          
+                <th>排序</th>
                 <th>状态</th>
                 <th>操作</th>
               </tr> 
@@ -41,6 +42,7 @@
                     {:doZfAction('sys_ulink_check',['data'=>$vo['url']])}
                   </td>
                   <td>{$vo['url']}</td>
+                  <td>{$vo['sort']}</td>
                   
                   <td> 
                     <div class=" layui-form" lay-filter="component-form-element">        
