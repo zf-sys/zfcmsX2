@@ -19,10 +19,10 @@ try {
 				$url = get_domain().'/install';
 				$httpCode = http_request_code($url);
 				if($httpCode!=200){
-					echo '请设置伪静态后再安装系统 <a href="http://bbs.zf-sys.com/bbs_detail/170.html" target="_black">点击打开参考</a>';die;
+					echo str_show_tpl('友情提示:<br>请设置伪静态后再安装系统 <a href="http://bbs.zf-sys.com/bbs_detail/170.html" target="_black">点击打开参考</a>');die;
 				}
 			}catch(\Exception $e){
-				echo '请设置伪静态后再安装系统 <a href="http://bbs.zf-sys.com/bbs_detail/170.html" target="_black">点击打开参考</a>';die;
+				echo str_show_tpl('友情提示:<br>请设置伪静态后再安装系统 <a href="http://bbs.zf-sys.com/bbs_detail/170.html" target="_black">点击打开参考</a>');die;
 			}
 		}
 		Route::any('install', 'index/install/index');
