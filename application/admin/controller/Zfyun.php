@@ -103,7 +103,7 @@ class Zfyun extends Admin
     public function plugins(){
         admin_role_check($this->z_role_list,$this->mca);
         if(!$this->is_professional_edition){
-            echo $this->sqb_error_msg; die;
+            echo str_show_tpl($this->sqb_error_msg); die;
         }
         $this->zfyun_plugins();
         return view();
@@ -151,7 +151,7 @@ class Zfyun extends Admin
     public function update_sq(){
         admin_role_check($this->z_role_list,$this->mca);
         if(!$this->is_professional_edition){
-            echo $this->sqb_error_msg; die;
+            echo str_show_tpl($this->sqb_error_msg); die;
         }else{
             $_SESSION['_zf_temp_remote'] = '1';
             $this->zfauth = new ZfAuth(2);
@@ -204,7 +204,7 @@ class Zfyun extends Admin
     public function upgrade_sql(){
         admin_role_check($this->z_role_list,$this->mca);
         if(!$this->is_professional_edition){
-            echo $this->sqb_error_msg; die;
+            echo str_show_tpl($this->sqb_error_msg); die;
         }else{
             session('v_upgsql_act',1); //其他的写法的
             $update = new \app\common\controller\Updatesql();

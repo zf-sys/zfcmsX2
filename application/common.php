@@ -2277,6 +2277,58 @@ if(!function_exists('http_request_code')){
         return $httpCode;
     }
 }
+/**
+ * 字段显示模板
+ * 20231106新增
+ */
+if(!function_exists('str_show_tpl')){
+    function str_show_tpl($str,$is_logo = false,$logo_src = ''){
+        $html_str = '';
+        if($is_logo && $logo_src!=''){
+            $html_str .= '<div class="img-box"><img src="'.$logo_src.'" alt=""></div>';
+        }
+        $html_str.='<div class="text-box">'.$str.'</div>';
+        $html = <<<EOL
+        <html>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <head>
+            <title></title>
+        </head>
+        <style type="text/css">
+            .out-box{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .inner-box{
+                width: 500px;
+                border: 1px dashed #ccc;
+                padding:10px;
+            }
+            .img-box{
+                display: flex;
+            }
+            .inner-box img{
+                margin:10px auto;
+                height: 80px;
+                width: 80px;
+            }
+            .text-box{
+                text-align: center;
+                margin-top: 10px;
+            }
+        </style>
+        <body class="out-box">
+            <div class="inner-box">
+                $html_str
+            </div>
+        </body>
+        </html>
+    EOL;
+        return $html;
+    }
+}
 
 
 

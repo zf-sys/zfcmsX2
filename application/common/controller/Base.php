@@ -16,7 +16,7 @@ class Base extends Controller
     public function __construct ($load = true){
         if(is_file('./extend/zf/Yun.php')){
             if(!extension_loaded("IonCube Loader")) {     
-                echo base64_decode('VGhlIGlvbmN1YmUgZXh0ZW5zaW9uIGlzIG5vdCBjdXJyZW50bHkgaW5zdGFsbGVkIGFuZCBjYW5ub3QgYmUgdXNlZCAh')."  <a href='".ZFC('version.api_domain','file')."/question_list.html#ioncube_install' target='_blank'>".base64_decode('PHNwYW4gc3R5bGU9ImNvbG9yOnJlZDsiPklvbmN1YmXmianlsZXmnKrlronoo4Us54K55Ye75p+l55yL5a6J6KOF5pWZ56iLPC9zcGFuPg==')."</a>";die;
+                echo str_show_tpl(base64_decode('VGhlIGlvbmN1YmUgZXh0ZW5zaW9uIGlzIG5vdCBjdXJyZW50bHkgaW5zdGFsbGVkIGFuZCBjYW5ub3QgYmUgdXNlZCAh')."  <a href='".ZFC('version.api_domain','file')."/question_list.html#ioncube_install' target='_blank'>".base64_decode('PHNwYW4gc3R5bGU9ImNvbG9yOnJlZDsiPklvbmN1YmXmianlsZXmnKrlronoo4Us54K55Ye75p+l55yL5a6J6KOF5pWZ56iLPC9zcGFuPg==')."</a>");die;
             }
             if($load){
                 $this->Yun = new \zf\Yun(1); //检测全
@@ -41,7 +41,7 @@ class Base extends Controller
 
         if($this->module=='addons'){
             if(!$this->is_professional_edition){
-                echo $this->sqb_error_msg; die;
+                echo str_show_tpl($this->sqb_error_msg); die;
             }
         }else{
             $this->plugin_name = ''; 
@@ -84,7 +84,7 @@ class Base extends Controller
                 if($this->is_professional_edition){
                     $this->addons_init();
                 }else{
-                    echo $this->sqb_error_msg; die;
+                    echo str_show_tpl($this->sqb_error_msg); die;
                 }
             }
         }
@@ -93,7 +93,7 @@ class Base extends Controller
                 $methodName = $this->action;
                 $this->Yun->$methodName();
             }else{
-                echo $this->sqb_error_msg; die;
+                echo str_show_tpl($this->sqb_error_msg); die;
             }
         }
         
@@ -220,7 +220,7 @@ class Base extends Controller
     }
     public function upgrade_sys_sql(){
         if(!$this->is_professional_edition){
-            echo $this->sqb_error_msg; die;
+            echo str_show_tpl($this->sqb_error_msg); die;
         }else{
             session('v_upgsql_act',1); //其他的写法的
             $update = new \app\common\controller\Updatesql();
