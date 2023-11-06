@@ -18,6 +18,7 @@ class Admin extends Base
         parent::__construct();
         if(!session('admin'))
         {
+            session('zf_login_tap_url',request()->url());
             $this->redirect('/admin/login/index');die; 
         }
         $this->tpl = $this->zf_tpl_suffix.'/admin/'.request()->action();
