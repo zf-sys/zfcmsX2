@@ -13,44 +13,98 @@
 
 </head>
 <body>
-  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
-    <form class="info_tj" onclick="return false">
-      <?php $form_widget = new \app\common\widget\FormPro();  ?>
-      <div style="">
-        <input type="hidden" name="id" value="{$res['id']|default=''}">
-        <?php if(isset($res['id'])){ ?>
-          {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'seo(t)','name'=>'seo_t','data'=>$res['seo_t'],'theme'=>2])|raw}
-          {$form_widget->form_textarea(['title'=>'seo(d)','name'=>'seo_d','data'=>$res['seo_d'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'seo(k)','name'=>'seo_k','data'=>$res['seo_k'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
-          {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}
-        
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/category/special_edit')"  lay-submit lay-filter="formDemo">立即提交</button>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <form class="info_tj" >
+        <?php $form_widget = new \app\common\widget\FormPro();  ?>
+        <div class="layui-tab layui-tab-brief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">基本设置</li>
+            <li>SEO</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div class="layui-col-sm12">
+                <input type="hidden" name="id" value="{$res['id']|default=''}">
+                <?php if(isset($res['id'])){ ?>
+                  {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>1])|raw}
+                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
+                  {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}
+                <?php }else{ ?>
+                  {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>'','theme'=>1])|raw}
+                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'','theme'=>1])|raw}
+                  {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>'','theme'=>2])|raw}
+                <?php }?>
+                <div class="layui-col-sm3">
+                  {include file="public/widget_submit"}
+                </div>
+              </div>
             </div>
-          </div>
-        <?php }else{ ?>
-          {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'seo(t)','name'=>'seo_t','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_textarea(['title'=>'seo(d)','name'=>'seo_d','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'seo(k)','name'=>'seo_k','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>'','theme'=>2])|raw}
-        
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/category/special_add')"  lay-submit lay-filter="formDemo">立即提交</button>
-            </div>
-          </div>
-        <?php }?>
-      </div>
+            <div class="layui-tab-item">
+              <div class="layui-col-sm12">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-sm12">
+                      <div class="layui-card">
+                        <div style="padding-top: 20px;"></div>
+                        <?php if(!isset($res['id'])){ ?>
+                        {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>'','theme'=>1])|raw}
+                      <?php }else{ ?>
+                        {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($res['meta'],'seo_t',''),'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>isset_arr_key($res['meta'],'seo_d',''),'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>isset_arr_key($res['meta'],'seo_k',''),'theme'=>1])|raw}
       
+                       <?php } ?> 
+                     
+                      
+                    </div>
+                  </div>
+                    <div class="layui-col-sm3">
+                      {include file="public/widget_submit"}
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    </form>
+      </form>
+    </div>
   </div>
 
 
 </body>
 </html>
+
+<script>
+  $(".tijiao").on("click",function(){
+        var index = layer.load(2);
+        <?php if(!isset($res['id'])){ ?>
+          var url = '/admin/category/special_add'
+        <?php }else{ ?>
+          var url = '/admin/category/special_edit'
+        <?php } ?>
+        var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();      
+        $.ajax({
+            type:'post',
+            url:url,
+            data:data,
+            dataType:'json',
+            success:function(res){
+              layer.close(index);
+              if(res.result==1){
+                layer.msg(res.msg, {icon: 1});
+                setTimeout(function() {
+                  window.parent.location.reload();
+                }, 2000);
+              }else{
+                layer.msg(res.msg, {icon: 2});
+                
+              }
+              
+            }
+        })
+      });
+
+</script>
