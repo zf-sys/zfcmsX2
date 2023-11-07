@@ -16,73 +16,116 @@
   {:widget_st('ueditor')}
   {:widget_st('input-tag')}
 </head>
+<style>
+  .layui-row{padding-top: 0;}
+  .layui-fluid{padding-top:0;}
+  .layui-tab{margin:0;}
+</style>
 <body> 
   <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
       <?php $form_widget = new \app\common\widget\FormPro();  ?>
       <form class="info_tj" method="post"  >
         <input type="hidden" name="id" value="{$data_res['id']|default=''}">
-        <div class="layui-col-sm12">
-          <div class="layui-row layui-col-space15">
-              <div class="layui-col-sm9">
-                <div class="layui-card">
-                  <div style="padding-top: 20px;"></div>
-                <?php if($act=='add'){ ?>
-                  {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>'','theme'=>1])|raw}
-                  {$form_widget->filesystem_album(['title'=>'图集','name'=>'album','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}                    
-                <?php }else{ ?>
-                  {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>$data_res['title'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$data_res['summary'],'theme'=>1])|raw}
-                  {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>$data_res['tags'],'theme'=>1])|raw}
-                  {$form_widget->filesystem_album(['title'=>'图集','name'=>'album','data'=>$data_res['album'],'theme'=>1])|raw}
-                  {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}                    
-
-                 <?php } ?> 
-               
-                
+        <div class="layui-tab layui-tab-brief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">基本设置</li>
+            <li>SEO</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div class="layui-col-sm12">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-sm9">
+                      <div class="layui-card">
+                        <div style="padding-top: 20px;"></div>
+                      <?php if($act=='add'){ ?>
+                        {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>'','theme'=>1])|raw}
+                        {$form_widget->filesystem_album(['title'=>'图集','name'=>'album','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}                    
+                      <?php }else{ ?>
+                        {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>$data_res['title'],'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$data_res['summary'],'theme'=>1])|raw}
+                        {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>$data_res['tags'],'theme'=>1])|raw}
+                        {$form_widget->filesystem_album(['title'=>'图集','name'=>'album','data'=>$data_res['album'],'theme'=>1])|raw}
+                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}                    
+      
+                       <?php } ?> 
+                     
+                      
+                    </div>
+                  </div>
+                    <div class="layui-col-sm3">
+                      <div class="layui-card">
+                      <?php if($act=='add'){ ?>
+                        {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",time()),'theme'=>1])|raw}
+                        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>0,'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>'','theme'=>1])|raw}
+                        {$form_widget->filesystem_pic(['title'=>'封面图','name'=>'pic','data'=>'','theme'=>1])|raw}
+                        {$form_widget->filesystem_file(['title'=>'文件','name'=>'file','data'=>'','theme'=>1])|raw}
+                        <!-- {$form_widget->form_textarea(['title'=>'内容T(用于页面seo)','name'=>'seo_t','data'=>'','theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'内容D(用于页面seo)','name'=>'seo_d','data'=>'','theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'内容K(用于页面seo)','name'=>'seo_k','data'=>'','theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'核心关键词','name'=>'main_keys_m','data'=>'','theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'次要关键词','name'=>'main_keys_c','data'=>'','theme'=>1])|raw} -->
+                        {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$cid,'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
+                        {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>1,'theme'=>1])|raw}
+                      <?php }else{ ?>
+                        {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>$data_res['author'],'theme'=>1])|raw}
+                        {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$data_res['ctime']),'theme'=>1])|raw}
+                        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$data_res['sort'],'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>$data_res['append'],'theme'=>1])|raw}
+                        {$form_widget->filesystem_pic(['title'=>'封面图','name'=>'pic','data'=>$data_res['pic'],'theme'=>1])|raw}
+                        {$form_widget->filesystem_file(['title'=>'文件','name'=>'file','data'=>$data_res['file'],'theme'=>1])|raw}
+                        <!-- {$form_widget->form_textarea(['title'=>'内容T(用于页面seo)','name'=>'seo_t','data'=>$data_res['seo_t'],'theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'内容D(用于页面seo)','name'=>'seo_d','data'=>$data_res['seo_d'],'theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'内容K(用于页面seo)','name'=>'seo_k','data'=>$data_res['seo_k'],'theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'核心关键词','name'=>'main_keys_m','data'=>$data_res['main_keys_m'],'theme'=>1])|raw} -->
+                        <!-- {$form_widget->form_textarea(['title'=>'次要关键词','name'=>'main_keys_c','data'=>$data_res['main_keys_c'],'theme'=>1])|raw} -->
+                        {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$data_res['cid'],'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
+                        {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$data_res['status'],'theme'=>1])|raw}
+      
+      
+                      <?php } ?>
+                      </div>
+                      {include file="public/widget_submit"}
+                    </div>
+                </div>
               </div>
             </div>
-              <div class="layui-col-sm3">
-                <div class="layui-card">
-                <?php if($act=='add'){ ?>
-                  {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",time()),'theme'=>1])|raw}
-                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>0,'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>'','theme'=>1])|raw}
-                  {$form_widget->filesystem_pic(['title'=>'封面图','name'=>'pic','data'=>'','theme'=>1])|raw}
-                  {$form_widget->filesystem_file(['title'=>'文件','name'=>'file','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'内容T(用于页面seo)','name'=>'seo_t','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'内容D(用于页面seo)','name'=>'seo_d','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'内容K(用于页面seo)','name'=>'seo_k','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'核心关键词','name'=>'main_keys_m','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'次要关键词','name'=>'main_keys_c','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$cid,'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
-                  {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>1,'theme'=>1])|raw}
-                <?php }else{ ?>
-                  {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>$data_res['author'],'theme'=>1])|raw}
-                  {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$data_res['ctime']),'theme'=>1])|raw}
-                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$data_res['sort'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>$data_res['append'],'theme'=>1])|raw}
-                  {$form_widget->filesystem_pic(['title'=>'封面图','name'=>'pic','data'=>$data_res['pic'],'theme'=>1])|raw}
-                  {$form_widget->filesystem_file(['title'=>'文件','name'=>'file','data'=>$data_res['file'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'内容T(用于页面seo)','name'=>'seo_t','data'=>$data_res['seo_t'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'内容D(用于页面seo)','name'=>'seo_d','data'=>$data_res['seo_d'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'内容K(用于页面seo)','name'=>'seo_k','data'=>$data_res['seo_k'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'核心关键词','name'=>'main_keys_m','data'=>$data_res['main_keys_m'],'theme'=>1])|raw}
-                  {$form_widget->form_textarea(['title'=>'次要关键词','name'=>'main_keys_c','data'=>$data_res['main_keys_c'],'theme'=>1])|raw}
-                  {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$data_res['cid'],'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
-                  {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$data_res['status'],'theme'=>1])|raw}
-
-
-                <?php } ?>
+            <div class="layui-tab-item">
+              <div class="layui-col-sm12">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-sm9">
+                      <div class="layui-card">
+                        <div style="padding-top: 20px;"></div>
+                      <?php if($act=='add'){ ?>
+                        {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>'','theme'=>1])|raw}
+                      <?php }else{ ?>
+                        {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($data_res['meta'],'seo_t',''),'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>isset_arr_key($data_res['meta'],'seo_d',''),'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>isset_arr_key($data_res['meta'],'seo_k',''),'theme'=>1])|raw}
+      
+                       <?php } ?> 
+                     
+                      
+                    </div>
+                  </div>
+                    <div class="layui-col-sm3">
+                      {include file="public/widget_submit"}
+                    </div>
                 </div>
-                {include file="public/widget_submit"}
               </div>
+            </div>
           </div>
         </div>
+
+        
       </form>
         
       </div>

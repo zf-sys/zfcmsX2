@@ -18,8 +18,12 @@
   {:widget_st('vditor')}
   {:widget_st('meditor')}
   {:widget_st('input-tag')} 
-
 </head>
+<style>
+  .layui-row{padding-top: 0;}
+  .layui-fluid{padding-top:0;}
+  .layui-tab{margin:0;}
+</style>
 <body> 
   <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
@@ -27,27 +31,63 @@
       <form class="layui-form info_tj" method="post"  >
           <input type="hidden" name="id" value="{$data_res['id']|default=''}">
           <input type="hidden" name="cid" value="{$cid}">
-        <div class="layui-col-sm12">
-          <div class="layui-row layui-col-space15">
-              <div class="layui-col-sm<?php echo $m_res['is_two']==1?'9':'12'; ?>">
-                <div class="layui-card">
-                    <?php foreach($m_list as $k=>$vo){ if($vo['position']=='1'){ ?>
-                  {include file="public/tpl_post"}
-                  <?php }} ?>
+          <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+              <li class="layui-this">基本设置</li>
+              <li>SEO</li>
+            </ul>
+            <div class="layui-tab-content">
+              <div class="layui-tab-item layui-show">
+                <div class="layui-col-sm12">
+                  <div class="layui-row layui-col-space15">
+                      <div class="layui-col-sm<?php echo $m_res['is_two']==1?'9':'12'; ?>">
+                        <div class="layui-card">
+                            <?php foreach($m_list as $k=>$vo){ if($vo['position']=='1'){ ?>
+                          {include file="public/tpl_post"}
+                          <?php }} ?>
+                        </div>
+                      </div>
+                      <div class="layui-col-sm<?php echo $m_res['is_two']==1?'3':'12'; ?>">
+                        <div class="layui-card">
+                            <?php foreach($m_list as $k=>$vo){ if($vo['position']=='2'){ ?>
+                          {include file="public/tpl_post"}
+                          <?php }} ?>
+                        </div> 
+                        {include file="public/widget_submit"}
+
+
+                      </div>
+                  </div>
                 </div>
               </div>
-              <div class="layui-col-sm<?php echo $m_res['is_two']==1?'3':'12'; ?>">
-                <div class="layui-card">
-                    <?php foreach($m_list as $k=>$vo){ if($vo['position']=='2'){ ?>
-                  {include file="public/tpl_post"}
-                  <?php }} ?>
-                </div> 
-                {include file="public/widget_submit"}
-
-
+              <div class="layui-tab-item">
+                <div class="layui-col-sm12">
+                  <div class="layui-row layui-col-space15">
+                      <div class="layui-col-sm9">
+                        <div class="layui-card">
+                          <div style="padding-top: 20px;"></div>
+                        <?php if($act=='add'){ ?>
+                          {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>'','theme'=>1])|raw}
+                          {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>'','theme'=>1])|raw}
+                          {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>'','theme'=>1])|raw}
+                        <?php }else{ ?>
+                          {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($data_res['meta'],'seo_t',''),'theme'=>1])|raw}
+                          {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>isset_arr_key($data_res['meta'],'seo_d',''),'theme'=>1])|raw}
+                          {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>isset_arr_key($data_res['meta'],'seo_k',''),'theme'=>1])|raw}
+        
+                         <?php } ?> 
+                       
+                        
+                      </div>
+                    </div>
+                      <div class="layui-col-sm3">
+                        {include file="public/widget_submit"}
+                      </div>
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
-        </div>
       </form>
       </div>
     </div>

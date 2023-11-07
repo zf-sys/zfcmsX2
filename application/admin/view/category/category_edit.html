@@ -17,6 +17,11 @@
   {:widget_st('input-select')}       
        
 </head>
+<style>
+  .layui-row{padding-top: 0;}
+  .layui-fluid{padding-top:0;}
+  .layui-tab{margin:0;}
+</style>
 <body>
   <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
@@ -24,145 +29,170 @@
       <form method="post" class="info_tj" >
         <input type="hidden" name="cid" value="{$res.cid}">
         <input type="hidden" name="t" value="{$t}">
-        <div class="layui-col-sm12">
-          <div class="layui-row layui-col-space15">
-            <?php if($form_parm_arr){ ?>
-              <?php if($form_parm_arr['left']){ ?>
-                <div class="layui-col-sm<?php echo isset($form_parm_arr['right'])?'9':'12';?>">
-                  <div class="layui-card">
-                    <div class="layui-card-header">栏目参数</div>
-                    <br/>
-                    <?php  foreach($form_parm_arr['left'] as $k=>$vo){ ?>
-                        <?php if($vo['model']=='form_input'){ ?>
-                          {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                        <?php }elseif($vo['model']=='form_textarea'){ ?>
-                          {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                        <?php }elseif($vo['model']=='upload_pic'){ ?>
-                          {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                        <?php }elseif($vo['model']=='form_time'){ ?>
-                          {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
-                        <?php }elseif($vo['model']=='form_select'){ ?>
-                          <?php 
-                            if($vo['name']=='pid'){ 
-                              $id_t = 'cid';
-                              $_plist = $plist;
-                              $theme_select = $vo['theme'];
-                            }elseif($vo['name']=='mid'){
-                              $id_t = 'id';
-                              $_plist = $mlist;
-                              $theme_select = 3;
-                            }elseif(in_array($vo['name'],['tpl_category','tpl_post'] )){
-                              $id_t = 'id';
-                              $_plist = $theme_arr;
-                              $theme_select = $vo['theme'];
-                            }else{
-                              echo 'select模型参数错误';die;
-                            }
-                            $name_t = 'name';
-                            ?>
-                            {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
-                        <?php }elseif($vo['model']=='form_ueditor'){ ?>
-                          {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                          <?php }elseif($vo['model']=='form_radio'){ ?>
-                            {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                        <?php }elseif($vo['model']=='upload_album'){ ?>
-                          {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                        <?php }else{ ?>
-                          模型{$vo['model']}暂未实现
-                        <?php } ?>
+        <div class="layui-tab layui-tab-brief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">基本设置</li>
+            <li>SEO</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div class="layui-col-sm12">
+                <div class="layui-row layui-col-space15">
+                  <?php if($form_parm_arr){ ?>
+                    <?php if($form_parm_arr['left']){ ?>
+                      <div class="layui-col-sm<?php echo isset($form_parm_arr['right'])?'9':'12';?>">
+                        <div class="layui-card">
+                          <?php  foreach($form_parm_arr['left'] as $k=>$vo){ ?>
+                              <?php if($vo['model']=='form_input'){ ?>
+                                {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              <?php }elseif($vo['model']=='form_textarea'){ ?>
+                                {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              <?php }elseif($vo['model']=='upload_pic'){ ?>
+                                {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              <?php }elseif($vo['model']=='form_time'){ ?>
+                                {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
+                              <?php }elseif($vo['model']=='form_select'){ ?>
+                                <?php 
+                                  if($vo['name']=='pid'){ 
+                                    $id_t = 'cid';
+                                    $_plist = $plist;
+                                    $theme_select = $vo['theme'];
+                                  }elseif($vo['name']=='mid'){
+                                    $id_t = 'id';
+                                    $_plist = $mlist;
+                                    $theme_select = 3;
+                                  }elseif(in_array($vo['name'],['tpl_category','tpl_post'] )){
+                                    $id_t = 'id';
+                                    $_plist = $theme_arr;
+                                    $theme_select = $vo['theme'];
+                                  }else{
+                                    echo 'select模型参数错误';die;
+                                  }
+                                  $name_t = 'name';
+                                  ?>
+                                  {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
+                              <?php }elseif($vo['model']=='form_ueditor'){ ?>
+                                {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                                <?php }elseif($vo['model']=='form_radio'){ ?>
+                                  {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              <?php }elseif($vo['model']=='upload_album'){ ?>
+                                {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              <?php }else{ ?>
+                                模型{$vo['model']}暂未实现
+                              <?php } ?>
+                          <?php } ?>
+                        <br>
+                        </div>
+                      </div>
                     <?php } ?>
-                  <br>
-                  </div>
-                </div>
-              <?php } ?>
-              <?php if($form_parm_arr['right']){ ?>
-                <div class="layui-col-sm<?php echo isset($form_parm_arr['right'])?'3':'12';?>">
-                  <div class="layui-card">
-                    <br/>
-                    <?php  foreach($form_parm_arr['right'] as $k=>$vo){ ?>
-                      <?php if($vo['model']=='form_input'){ ?>
-                        {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                      <?php }elseif($vo['model']=='form_textarea'){ ?>
-                        {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                      <?php }elseif($vo['model']=='upload_pic'){ ?>
-                        {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                      <?php }elseif($vo['model']=='form_time'){ ?>
-                        {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
-                      <?php }elseif($vo['model']=='form_select'){ ?>
-                        <?php 
-                          if($vo['name']=='pid'){ 
-                            $id_t = 'cid';
-                            $_plist = $plist;
-                            $theme_select = $vo['theme'];
-                          }elseif($vo['name']=='mid'){
-                            $id_t = 'id';
-                            $_plist = $mlist;
-                            $theme_select = 3;
-                          }elseif(in_array($vo['name'],['tpl_category','tpl_post'] )){
-                            $id_t = 'id';
-                            $_plist = $theme_arr;
-                            $theme_select = 4;
-                          }else{
-                            echo 'select模型参数错误';die;
-                          }
-                          $name_t = 'name';
-                          ?>
-                          {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
-                      <?php }elseif($vo['model']=='form_ueditor'){ ?>
-                        {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                      <?php }elseif($vo['model']=='form_radio'){ ?>
-                        {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                      <?php }elseif($vo['model']=='upload_album'){ ?>
-                        {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
-                      <?php }else{ ?>
-                        模型{$vo['model']}暂未实现
-                      <?php } ?>
+                    <?php if($form_parm_arr['right']){ ?>
+                      <div class="layui-col-sm<?php echo isset($form_parm_arr['right'])?'3':'12';?>">
+                        <div class="layui-card">
+                          <br/>
+                          <?php  foreach($form_parm_arr['right'] as $k=>$vo){ ?>
+                            <?php if($vo['model']=='form_input'){ ?>
+                              {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                            <?php }elseif($vo['model']=='form_textarea'){ ?>
+                              {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                            <?php }elseif($vo['model']=='upload_pic'){ ?>
+                              {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                            <?php }elseif($vo['model']=='form_time'){ ?>
+                              {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
+                            <?php }elseif($vo['model']=='form_select'){ ?>
+                              <?php 
+                                if($vo['name']=='pid'){ 
+                                  $id_t = 'cid';
+                                  $_plist = $plist;
+                                  $theme_select = $vo['theme'];
+                                }elseif($vo['name']=='mid'){
+                                  $id_t = 'id';
+                                  $_plist = $mlist;
+                                  $theme_select = 3;
+                                }elseif(in_array($vo['name'],['tpl_category','tpl_post'] )){
+                                  $id_t = 'id';
+                                  $_plist = $theme_arr;
+                                  $theme_select = 4;
+                                }else{
+                                  echo 'select模型参数错误';die;
+                                }
+                                $name_t = 'name';
+                                ?>
+                                {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
+                            <?php }elseif($vo['model']=='form_ueditor'){ ?>
+                              {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                            <?php }elseif($vo['model']=='form_radio'){ ?>
+                              {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                            <?php }elseif($vo['model']=='upload_album'){ ?>
+                              {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                            <?php }else{ ?>
+                              模型{$vo['model']}暂未实现
+                            <?php } ?>
+                          <?php } ?>
+                        </div>
+                      </div>
                     <?php } ?>
-                  </div>
-                </div>
-              <?php } ?>
-              {include file="public/widget_submit"}
+                    {include file="public/widget_submit"}
 
-            <?php }else{ ?>
-              <!-- 默认表单 -->
-              <div class="layui-col-sm9">
-                <div class="layui-card">
-                  <div class="layui-card-header">栏目参数</div>
-                  <br/>
-                  {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'theme'=>2])|raw}
-                  {$form_widget->form_select(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
-                  {$form_widget->form_select(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
-                  {$form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'theme'=>2])|raw}
-                  <!-- {$form_widget->form_input(['title'=>'链接目标','name'=>'target','data'=>$res['target'],'theme'=>2])|raw} -->
-                  {$form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}
-                <br>
-                </div>
-                
-                <div class="layui-card">
-                  <br>
-                  <div class="layui-card-body">
-                  
-                  {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
-                  </div>
+                  <?php }else{ ?>
+                    <!-- 默认表单 -->
+                    <div class="layui-col-sm9">
+                      <div class="layui-card">
+                        <div class="layui-card-header">栏目参数</div>
+                        <br/>
+                        {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'theme'=>2])|raw}
+                        {$form_widget->form_select(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                        {$form_widget->form_select(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                        {$form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'theme'=>2])|raw}
+                        <!-- {$form_widget->form_input(['title'=>'链接目标','name'=>'target','data'=>$res['target'],'theme'=>2])|raw} -->
+                        {$form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}
+                      <br>
+                      </div>
+                      
+                      <div class="layui-card">
+                        <br>
+                        <div class="layui-card-body">
+                        
+                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-col-sm3">
+                      <div class="layui-card">
+                        {$form_widget->upload_pic(['title'=>'封面图','name'=>'pic','data'=>$res['pic'],'theme'=>1])|raw}
+                        {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$res['ctime']),'theme'=>1,'time_type'=>'datetime'])|raw}
+                        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
+                      </div>
+                      <div class="layui-card">
+                        {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'theme'=>1])|raw}
+                        {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'theme'=>3])|raw}
+                      </div>
+                      
+                      {include file="public/widget_submit"}
+
+                    </div>
+                  <?php } ?>
                 </div>
               </div>
-              <div class="layui-col-sm3">
-                <div class="layui-card">
-                  {$form_widget->upload_pic(['title'=>'封面图','name'=>'pic','data'=>$res['pic'],'theme'=>1])|raw}
-                  {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$res['ctime']),'theme'=>1,'time_type'=>'datetime'])|raw}
-                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
+            </div>
+            <div class="layui-tab-item">
+              <div class="layui-col-sm12">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-sm9">
+                      <div class="layui-card">
+                        <div style="padding-top: 20px;"></div>
+                        {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($res['meta'],'seo_t',''),'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>isset_arr_key($res['meta'],'seo_d',''),'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>isset_arr_key($res['meta'],'seo_k',''),'theme'=>1])|raw}
+                    </div>
+                  </div>
+                    <div class="layui-col-sm3">
+                      {include file="public/widget_submit"}
+                    </div>
                 </div>
-                <div class="layui-card">
-                  {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'theme'=>1])|raw}
-                  {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'theme'=>3])|raw}
-                </div>
-                
-                {include file="public/widget_submit"}
-
               </div>
-            <?php } ?>
+            </div>
           </div>
         </div>
       </form>
