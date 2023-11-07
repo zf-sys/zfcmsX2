@@ -42,7 +42,9 @@
                     {:doZfAction('sys_ulink_check',['data'=>$vo['url']])}
                   </td>
                   <td>{$vo['url']}</td>
-                  <td>{$vo['sort']}</td>
+                  <td>
+                    <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item-id="{$vo['id']}" item-dbname="link" >
+                  </td>
                   
                   <td> 
                     <div class=" layui-form" lay-filter="component-form-element">        
