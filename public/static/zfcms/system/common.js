@@ -40,8 +40,10 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 		var value = $(this).val(); //得到修改后的值
 		$.get("/admin/common/value_edit",{id:id,dbname:dbname,field:field,value:value},function(res){
 			if(res.result==1){
-			window.location.reload();
-		  }
+				window.location.reload();
+			}else{
+				layer.msg(res.msg, {icon: 2});
+			}
 		},"json");
 	})
 
