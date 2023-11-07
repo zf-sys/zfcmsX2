@@ -2329,7 +2329,72 @@ if(!function_exists('str_show_tpl')){
         return $html;
     }
 }
+/**
+ * seo模板
+ * 20231107新增
+ * seo_tpl()); //首页,系统默认
+ * seo_tpl('theme_tpl',['t'=>'标题','k'=>'关键词','d'=>'描述'])); //模板默认
+ * seo_tpl('post',['id'=>9999,'t'=>'标题','k'=>'关键词','d'=>'描述'])); //id不存在,返回默认
+ * seo_tpl('post',[])); //id不存在,返回默认
+ * seo_tpl('post',['id'=>5,'t'=>'标题','k'=>'关键词','d'=>'描述'])); //id存在,返回数据
+ * 
+ * 使用方法
+ * $this->assign('seo', seo_tpl()); //首页
+ * $this->assign('seo', seo_tpl('category',['id'=>$cate_res['cid'],'t'=>$cate_res['name'],'k'=>$cate_res['name'],'d'=>$cate_res['summary']]));  //栏目
+ * $this->assign('seo', seo_tpl('post',['id'=>$content['id'],'t'=>$content['title'],'k'=>$content['title'],'d'=>$content['summary']]));  //文章详情
+ */
+if(!function_exists('seo_tpl')){
+    function seo_tpl($tb='',$content=['id'=>"",'t'=>'','d'=>'','k'=>'']){
+        $title = isset_arr_key($content,'t','');
+        $description = isset_arr_key($content,'d','');
+        $keywords = isset_arr_key($content,'k','');
+        $id = isset_arr_key($content,'id','');
+        
+        //系统默认
+        if($tb==''){
+            $seo['title'] = ZFC('webconfig.site_name');
+            $seo['keywords'] = ZFC('webconfig.site_keywords');
+            $seo['description'] = ZFC('webconfig.site_description');
+            return $seo;
+        }elseif($tb=='theme_tpl'){
+            $seo['title'] = $title;
+            $seo['keywords'] = $keywords;
+            $seo['description'] = $description;
+            return $seo;
+        }else{
+            //自定义的
+            $meta_json = ZFTB('meta_data')->where([['tb','=',$tb],['post_id','=',$id],['status','<>',9]])->value('meta_data');
+            //不存在,返回默认
+            if(!$meta_json){
+                $seo['title'] = ZFC('webconfig.site_name');
+                $seo['keywords'] = ZFC('webconfig.site_keywords');
+                $seo['description'] = ZFC('webconfig.site_description');
+            }else{
+                $meta = json_decode($meta_json,true);
+                $seo['title'] = isset_arr_key($meta,'seo_t',$title);
+                if($seo['title']==''){
+                    $seo['title']  = $title;
+                }
+                $seo['keywords'] = isset_arr_key($meta,'seo_k',$keywords);
+                if($seo['keywords']==''){
+                    $seo['keywords']  = $keywords;
+                }
+                $seo['description'] = isset_arr_key($meta,'seo_d',$description);
+                if($seo['description']==''){
+                    $seo['description']  = $description;
+                }
+            }
+        }
+        $seo_title_type = ZFC('webconfig.seo_title_type');//1 默认  2 尾部加上网站名称
+        if($seo_title_type==1){
+            $seo['title'].= ' - '.ZFC('webconfig.site_name');
+        }
+        return $seo;
+        
+        
+    }
 
+}
 
 
 
