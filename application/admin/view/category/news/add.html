@@ -17,6 +17,9 @@
   {:widget_st('input-tag')}
 </head>
 <style>
+  html{background-color: #fff;}
+  .layui-card {box-shadow:0 0 0 0;}
+  .layui-card-header{border-bottom: 0;}
   .layui-row{padding-top: 0;}
   .layui-fluid{padding-top:0;}
   .layui-tab{margin:0;}
@@ -38,7 +41,6 @@
                 <div class="layui-row layui-col-space15">
                     <div class="layui-col-sm9">
                       <div class="layui-card">
-                        <div style="padding-top: 20px;"></div>
                       <?php if($act=='add'){ ?>
                         {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>1])|raw}
                         {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>1])|raw}
@@ -101,7 +103,6 @@
                 <div class="layui-row layui-col-space15">
                     <div class="layui-col-sm9">
                       <div class="layui-card">
-                        <div style="padding-top: 20px;"></div>
                       <?php if($act=='add'){ ?>
                         {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>'','theme'=>1])|raw}
                         {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>'','theme'=>1])|raw}
