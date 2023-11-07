@@ -58,7 +58,9 @@
                   <td>{$vo['id']}</td>
                   <td>{$vo['title']}</td>
                   <td>{$vo['url']}</td>
-                  <td>{$vo['sort']}</td>
+                  <td>
+                    <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item-id="{$vo['id']}" item-dbname="post" >
+                  </td>
                   <td>{$vo['hits']}</td>
                   <td> 
                     <div class=" layui-form" lay-filter="component-form-element">        

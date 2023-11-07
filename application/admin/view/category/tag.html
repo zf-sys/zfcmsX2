@@ -48,7 +48,9 @@
                 <a href="{$site_path}{$lang!=1?$lang.'/':''}tag/{$vo['name']}.html" target="_blank">{$vo['name']}</a>
               </td>
               <td><?php echo date("Y-m-d H:i:s",$vo['ctime']); ?></td>
-              <td>{$vo['sort']}</td>
+              <td>
+                <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item-id="{$vo['id']}" item-dbname="tag" >
+              </td>
               <td>
                 <div class=" layui-form" lay-filter="component-form-element">        
                    <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">

@@ -99,7 +99,7 @@
                   <td>{$vo['tpl_post']}</td>
                   <td><?php echo m_name($vo['mid'],'category_model'); ?></td>
                   <td> 
-                    <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item1="{$vo['cid']}" >
+                    <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item-id="{$vo['cid']}" item-dbname="category" >
                   </td>
                   <td>
                     <div class=" layui-form" lay-filter="component-form-element">        
@@ -181,19 +181,7 @@
           }
         },"json");
     });
-    $('.edit_sort').on('blur',function(){
-      var id = $(this).attr('item1')
-      var dbname = 'category'
-      var field = 'sort'; //得到字段
-      var value = $(this).val(); //得到修改后的值
-      $.get("{:url('admin/common/value_edit')}",{id:id,dbname:dbname,field:field,value:value},function(res){
-          if(res.result==1){
-          //layer.msg(res.msg, {icon: 1});
-          window.location.reload();
-        }
-      },"json");
-
-    })
+    
     
 
 

@@ -68,7 +68,9 @@
                   <td>{$vo['id']}</td>
                   <td><a href="{$site_path}detail/{$vo['id']}.html" target="_blank">{$vo['title']}</a></td>
                   <td><img src="{$vo['pic']}" style="width:50px;height:50px"/></td>
-                  <td>{$vo['sort']}</td>
+                  <td>
+                    <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item-id="{$vo['id']}" item-dbname="post" >
+                  </td>
                   <td>{$vo['hits']}</td>
                   <td> 
                     <div class=" layui-form" lay-filter="component-form-element">        
