@@ -270,8 +270,8 @@ INFO;
                 false,  //是否允许重复
                 ['name'=>'系统工具'], //判断条件
             ];
+            return $ret_data;
         }
-        return $ret_data;
     }
     
 
