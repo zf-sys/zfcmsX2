@@ -704,7 +704,7 @@ class Config extends Admin
      */
     public function tool(){
         $t = input('t','');
-        if(in_array($t,['del_temp','del_log','del_backup','del_upgrade'])){
+        if(in_array($t,['del_temp','del_log','del_backup','del_upgrade','del_theme_cache','del_zfcms'])){
             if($t=='del_temp'){
                 $dir = './runtime/temp';
             }elseif($t=='del_log'){
@@ -713,12 +713,26 @@ class Config extends Admin
                 $dir = './backup';
             }elseif($t=='del_upgrade'){
                 $dir = './upgrade';
+            }elseif($t=='del_theme_cache'){
+                $dir = './cache';
+            }elseif($t=='del_zfcms'){
+                $dir = './runtime/ZFCMS';
             }
             $file = new \lib\File();
             if(!file_exists($dir)){
                 return jserror('文件夹不存在');
             }
-            $r = $file->del_dir($dir);
+            if($t=='del_zfcms'){
+                if (file_exists($dir)) {
+                    $res = extraconfig(['email'=>'','key'=>'','sc'=>''],'zf_auth');
+                    unlink($dir);
+                    return ZFRetMsg($res,'操作成功','操作失败');
+                } else {
+                    return jserror('文件不存在');
+                }
+            }else{
+                $r = $file->del_dir($dir);
+            }
             if($r){
                 mkdir($dir);
                 return jssuccess('操作成功');
