@@ -10,11 +10,13 @@
   {:widget_st('admin','css')}
   <link rel="stylesheet" href="__STATIC__/system/style/login.css" media="all">
   <link rel="stylesheet" href="__STATIC__/system/style/lrtk.css" media="all">
+    {:widget_st('jq','js')}
+    {:widget_st('layer','js')}  
+    {:widget_st('layui','js')}  
+    {:widget_st('common','js')}
 </head>
 <style>
-  .control-group{
-    margin: 10px;
-  }
+  .control-group{ margin: 10px;}
 </style>
 <?php 
 $api_domain = config('version.api_domain');
@@ -26,58 +28,106 @@ if(isHTTPS()){
 }
 $client_config['token'] = config("zf_auth.site_token");
 ?>
-
+<style>
+  html{background-color: #fff;}
+  .layui-card {box-shadow:0 0 0 0;}
+  .layui-card-header{border-bottom: 0;}
+  .layui-row{padding-top: 0;}
+  .layui-fluid{padding-top:0;}
+  .layui-tab{margin:0;}
+</style>
 <body>
   <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;" style="margin-top:-10px">
     <div class="layui-row layui-col-space15" style="margin:0;margin-top: -50px" >
-      <div class="layui-col-sm3"></div>
-      <div class="layui-col-sm6" style="height:358px; ">
-          <div id="login">
-            <div class="wrapper">
-                <div class="login" style="margin: 0">
-                    <form class="container offset1  info_tj" >
-                        <div class="pad">
-                            <div class="control-group">
-                              <div class="controls">
-                                
-                                  <input id="domain_auth" type="text"  placeholder="当前授权域名" tabindex="1" autofocus="autofocus" class="form-control input-medium" value="<?php echo request()->host() ;?>" readonly="">
-                              </div>
+      <div class="layui-col-sm4"></div>
+      <div class="layui-col-sm4" style="height:358px; ">
+        <div class="layui-tab layui-tab-brief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">在线授权</li>
+            <li>文件授权</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div id="login">
+                <div class="wrapper">
+                    <div class="login" style="margin: 0">
+                        <form class="container offset1  info_tj" >
+                            <div class="pad">
+                                <div class="control-group">
+                                  <div class="controls">
+                                    
+                                      <input id="domain_auth" type="text"  placeholder="当前授权域名" tabindex="1" autofocus="autofocus" class="form-control input-medium" value="<?php echo request()->host() ;?>" readonly="">
+                                  </div>
+                                </div>
                             </div>
-                        </div>
-                        <div style="text-align: center;margin: 50px 0 50px 0;">
-                          <!-- <a href="javascript:;" class="layui-btn" onclick="zfAdminShow('点击免费获取授权','{$api_domain}/addons/zf_store_softclientv2.user/soft_site_client.html?soft_id={$version['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}')"> 点击获取授权</a> -->
-                          <a target="_blank" class="layui-btn"href='{$api_domain}/addons/zf_store_softclientv2.user/soft_site_client.html?soft_id={$version['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}'> 点击获取授权</a>
-                          
-                          <a href="{:url('index/welcome')}" class="layui-btn">授权后点击刷新</a>
-                        </div>
-                        <blockquote>如果授权成功,保存出现问题,请多保存试一下</blockquote>
-                        
+                            <div style="text-align: center;margin: 50px 0 50px 0;">
+                              <a target="_blank" class="layui-btn"href='{$api_domain}/addons/zf_store_softclientv2.user/soft_site_client.html?soft_id={$version['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}'> 点击获取授权</a>
+                              <a href="{:url('index/welcome')}" class="layui-btn">授权后点击刷新</a>
+                            </div>
+                            <blockquote>如果授权成功,保存出现问题,请多保存试一下</blockquote>
+                            
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        {:widget_st('jq','js')}
-            <script>
-            $(function() {
-                $('#login #password').focus(function() {
-                    $('#owl-login').addClass('password');
-                }).blur(function() {
-                    $('#owl-login').removeClass('password');
+                <script>
+                $(function() {
+                    $('#login #password').focus(function() {
+                        $('#owl-login').addClass('password');
+                    }).blur(function() {
+                        $('#owl-login').removeClass('password');
+                    });
                 });
-            });
-            </script>
+                </script>
+              </div>
+            </div>
+            <div class="layui-tab-item">
+              <div id="login_file">
+                <div class="wrapper">
+                    <div class="login" style="margin: 0">
+                      <div class="layui-upload-drag" style="display: block;" id="ID-upload-demo-drag">
+                        <i class="layui-icon layui-icon-upload"></i> 
+                        <div>点击上传，或将文件拖拽到此处</div>
+                        <div class="layui-hide" id="ID-upload-demo-preview">
+                          <hr> <img src="" alt="上传成功后渲染" style="max-width: 100%">
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <script>
+                  layui.use(function(){
+                    var upload = layui.upload;
+                    var $ = layui.$;
+                    upload.render({
+                      elem: '#ID-upload-demo-drag',
+                      url: '/admin/zfyun/authentication_sys?t=upload_authfile', 
+                      accept:'file',
+                      done: function(res){
+                        if(res.result==1){
+                          layer.msg(res.msg,{'icon':1})
+                          setTimeout(function(){
+                            window.location.href="{:url('index/welcome')}"
+                          },2000);
+                        }else{
+                          layer.msg(res.msg,{'icon':2})
+                        }
+                      }
+                    });
+                  });
+                </script>
+              </div>
+            </div>
           </div>
+        </div>
       </div> 
-      <div class="layui-col-sm3"></div>
+      <div class="layui-col-sm4"></div>
     </div>
     <div class="layui-trans layadmin-user-login-footer">
     </div>
   </div>
-    {:widget_st('layer','js')}  
-    {:widget_st('layui','js')}  
-    {:widget_st('common','js')}
+    
   <script>
-    layer.tips('这是当前授权域名', '#domain_auth', {guide: 1, time: 10000});
+    layer.tips('这是当前授权域名', '#domain_auth', {guide: 1, time: 2000});
     $('.scan_btn').on('click',function(){
         var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
         $.ajax({

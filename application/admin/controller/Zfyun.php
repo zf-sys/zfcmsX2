@@ -253,9 +253,30 @@ class Zfyun extends Admin
             }else{
                 return jserror('保存失败,请查看是config文件夹是否有保存权限');die;
             }  
+        }
+        if($t == 'upload_authfile'){
+            $file = request()->file('file');
+            $info = $file->move('./runtime','');
+            if(!file_exists('./runtime/'.$info->getSaveName())){
+                return jserror('上传文件失败,请检查runtime文件夹是否有写入权限');die;
+            }
+            //修改文件名
+            $file_name = './runtime/'.str_replace('.','',$info->getSaveName());
+            rename('./runtime/'.$info->getSaveName(),$file_name);
 
+            $is_sq = $this->Yun->_save_license_convert_sc();
+            if($is_sq['code']==0){
+                return ZFRetMsg(false,'',$is_sq['msg']);
+            }
+            if($this->Yun->_get_site_auth('','',1)){
+                return ZFRetMsg(true,'更新成功','');
+            } else{
+                return ZFRetMsg(false,'','授权文件错误');
+            }
 
         }
+           
+            
         // if($data['key']!='' && $data['sc']!=''){
         //     $this->redirect(url('login/index'));
         // }
