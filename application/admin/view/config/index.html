@@ -273,8 +273,15 @@
                     {$form_widget->form_select(['title'=>'seo标题方式','name'=>'seo_title_type','data'=>isset_arr_key($config,'seo_title_type',''),'list_arr'=>[['id'=>'','name'=>'保持现状'],['id'=>'1','name'=>'尾部加系统站点名']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">seo标题方式,用于前台的seo标题显示</span></div>','theme'=>2])|raw} 
                   </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_radio(['title'=>'前台静态化','name'=>'is_theme_cache','data'=>isset_arr_key($config,'is_theme_cache',''),'parm_data'=>['0'=>'关闭','1'=>'打开'],'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_theme_cache")</span>是否开启前台静态化,缓存路径/cache/模板/</div>','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">静态化过滤路径</a>','name'=>'theme_cache_lth_tsdir','data'=>isset_arr_key($config,'theme_cache_lth_tsdir','search'),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.theme_cache_lth_tsdir") 使用,间隔</span></div>','theme'=>2])|raw}
+                  </div>
                 <?php } ?>
-                
 
 
                 <div class="layui-form-item">
