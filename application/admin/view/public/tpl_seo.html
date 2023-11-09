@@ -21,7 +21,7 @@
         var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();    
         $.ajax({
             type:'post',
-            url:"{:url('admin/zfyun/ai_write')}?t="+t,
+            url:"{:url('admin/zfyun/ai_write')}?ai_w_type="+t,
             data:data,
             dataType:'json',
             success:function(res){
@@ -48,7 +48,11 @@
                             window.open('//bbs.zf-sys.com/bbs_detail/188.html')
                         });
                     }else{
-                        layer.msg(res.msg, {icon: 2});
+                        layer.confirm(res.msg, {
+                            btn: ['关闭'] //按钮
+                        }, function(){
+                            layer.closeAll();
+                        })
                     }
                 }
             }

@@ -529,11 +529,11 @@ class Zfyun extends Admin
      * 20231109新增
      * ai写内容
      */
-    public function ai_write($t=''){
+    public function ai_write(){
         if(!$this->is_professional_edition){
             return ZFRetMsg(false,'','yun.php文件不存在,不支持此功能');
         }
-        $t = input('t','');
+        $t = input('ai_w_type','');
         $data = input('post.');
         if($t=='tdk'){
             $sys_message = '通过下面提供的内容写网页的标题、关键词、描述,让搜索引擎更好的收录你的网站,给出的内容使用@@@间隔,例如: 标题@@@关键词@@@描述';
