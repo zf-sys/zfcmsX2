@@ -1,0 +1,57 @@
+<div class="layui-col-sm12">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm9">
+            <div class="layui-card">
+                {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($res['meta'],'seo_t',''),'theme'=>1])|raw}
+                {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>isset_arr_key($res['meta'],'seo_d',''),'theme'=>1])|raw}
+                {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>isset_arr_key($res['meta'],'seo_k',''),'theme'=>1])|raw}
+            </div>
+        </div>
+        <div class="layui-col-sm3">
+            <a class="layui-btn ai_act" item-t="tdk">AI写TDK</a><br>
+            <!-- <a class="ai_act" item-t="xuxie_content">AI续写文章(根据标题续写)ueditor有问题</a> -->
+        </div>
+        {include file="public/widget_submit"}
+    </div>
+</div>
+<script>
+    $(".ai_act").on("click",function(){
+        var index = layer.load(2);
+        var t = $(this).attr("item-t");
+        var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();    
+        $.ajax({
+            type:'post',
+            url:"{:url('admin/zfyun/ai_write')}?t="+t,
+            data:data,
+            dataType:'json',
+            success:function(res){
+                layer.close(index);
+                if(res.result==1){
+                    layer.msg(res.msg, {icon: 1});
+                    if(t=='tdk'){
+                        $("textarea[name='meta[seo_t]']").val(res.data.title);
+                        $("textarea[name='meta[seo_d]']").val(res.data.desc);
+                        $("textarea[name='meta[seo_k]']").val(res.data.keywords);
+                    }else if(t=='xuxie_content'){
+                        //在content后面续写
+                        $("textarea[name='content']").val($("textarea[name='content']").val()+res.data.content);
+                    }else{
+                        layer.msg("未知操作", {icon: 2});
+                    }
+                }else{
+                    if(res.msg.indexOf("只支持ZFSYS授权的中转")!=-1 || res.msg.indexOf("获取数据错误,请查看提示词是否正")!=-1){
+                        layer.confirm(res.msg, {
+                            btn: ['关闭','查看说明'] //按钮
+                        }, function(){
+                            layer.closeAll();
+                        }, function(){
+                            window.open('//bbs.zf-sys.com/bbs_detail/188.html')
+                        });
+                    }else{
+                        layer.msg(res.msg, {icon: 2});
+                    }
+                }
+            }
+        })
+    });
+</script>

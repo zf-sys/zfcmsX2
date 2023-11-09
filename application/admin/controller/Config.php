@@ -704,7 +704,7 @@ class Config extends Admin
      */
     public function tool(){
         $t = input('t','');
-        if(in_array($t,['del_temp','del_log','del_backup','del_upgrade','del_theme_cache','del_zfcms'])){
+        if(in_array($t,['del_temp','del_log','del_backup','del_upgrade','del_theme_cache','del_zfcms','del_cache_aiauth'])){
             if($t=='del_temp'){
                 $dir = './runtime/temp';
             }elseif($t=='del_log'){
@@ -717,7 +717,11 @@ class Config extends Admin
                 $dir = './cache';
             }elseif($t=='del_zfcms'){
                 $dir = './runtime/ZFCMS';
+            }elseif($t=='del_cache_aiauth'){
+                session('aihost_authhost_token',null);
+                return jssuccess('操作成功');
             }
+                
             $file = new \lib\File();
             if(!file_exists($dir)){
                 return jserror('文件夹不存在');
