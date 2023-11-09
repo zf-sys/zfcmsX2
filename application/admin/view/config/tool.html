@@ -55,6 +55,13 @@
             <span class="zf_act" data-t="del_zfcms">清除系统授权</span>
           </div>
         </div>
+        <div class="layui-col-md12">
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card zf_box">
+            <span class="zf_act" data-t="del_cache_aiauth">清除AI缓存</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -83,6 +90,9 @@
           break;
         case 'del_upgrade':
           name = '将删除/upgrade目录下所有文件,是否确认?';
+          break;
+        case 'del_cache_aiauth':
+          name = '清除AI授权缓存,是否确认?';
           break;
         default:
           name = '确定要执行此操作吗？'
