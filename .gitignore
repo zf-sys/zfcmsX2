@@ -25,4 +25,4 @@ composer.lock
 /upgrade_restore.php
 /upgrade_box/*
 
-/idea
+/.idea
