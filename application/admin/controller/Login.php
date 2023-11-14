@@ -22,9 +22,11 @@ class Login extends Controller
     public function __construct (){
         parent::__construct();
         zf_to_site_url();
-        $this->assign('web_config',config());
-        if(ZFC("webconfig.site_path")!=''){
-            $this->site_path = '/'.ZFC("webconfig.site_path").'/';
+        $web_config = ZFC('webconfig','db','arr');
+        $this->web_config = $web_config;
+        $this->assign('web_config',$web_config);
+        if(isset_arr_key($web_config,'site_path','')!=''){
+            $this->site_path = '/'.isset_arr_key($web_config,'site_path','').'/';
         }else{
             $this->site_path = '/';
         }
@@ -44,7 +46,7 @@ class Login extends Controller
         if(session('admin')){
             $this->error('你已登录,跳转中...','index/index'); 
         }
-        $admin_path = ZFC("webconfig.admin_path");
+        $admin_path = isset_arr_key($this->web_config,'admin_path','');
         if(isset($admin_path) && $admin_path!=''){
             $token = input('token','');
             if($token!=$admin_path){
@@ -71,7 +73,7 @@ class Login extends Controller
      */
     public function login()
     {
-        $admin_path = ZFC("webconfig.admin_path");
+        $admin_path = isset_arr_key($this->web_config,'admin_path','');
         if(isset($admin_path) && $admin_path!=''){
             if(isset($_SERVER['HTTP_REFERER'])){
                 $is_ok = strpos($_SERVER['HTTP_REFERER'], $admin_path);
