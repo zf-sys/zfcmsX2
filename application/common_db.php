@@ -392,7 +392,7 @@ if (!function_exists('ZFC')) {
         return '';
       }
       try{
-        if(!ZFTBExist('config')){ return ''; }
+        // if(!ZFTBExist('config')){ return ''; } //注释掉可节省sql链接数
         //$key 是否含有.
         if(strpos($key,'.')!==false){
           $_key_arr = explode('.',$key);

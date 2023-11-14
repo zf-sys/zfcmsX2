@@ -84,9 +84,9 @@ if(!function_exists('admin_role_check')){
 if(!function_exists('get_admin_role')){
   function get_admin_role($gid){
     $info =ZFTB('admin_group')->where('id',$gid)->find();
-    $role = explode(',',$info['role']);
-    foreach($role as $k=>$vo){
-      $role_list[$k] = get_role_value($vo);
+    $_role_list = ZFTB('admin_role')->field('value')->where([['id' ,'in', $info['role']]])->select();
+    foreach($_role_list as $k=>$vo){
+      $role_list[$k] = $vo['value'];
     }
     return $role_list;
   }
@@ -1308,7 +1308,13 @@ if (!function_exists('route_home')) {
     }
 }
 
-// 20220927新增
+
+/**
+ * // 20220927新增
+ * 获取html内容中指定的字数的内容
+ * @param string $str 内容
+ * @param int $num 字数
+ */
 if (!function_exists('html_out_par')) {
     function html_out_par($str,$num){
         if(function_exists('htmlspecialchars_decode'))
@@ -2308,6 +2314,7 @@ if(!function_exists('str_show_tpl')){
             }
             .img-box{
                 display: flex;
+                margin-bottom: 10px;
             }
             .inner-box img{
                 margin:10px auto;
@@ -2316,7 +2323,6 @@ if(!function_exists('str_show_tpl')){
             }
             .text-box{
                 text-align: center;
-                margin-top: 10px;
             }
         </style>
         <body class="out-box">
@@ -2332,11 +2338,12 @@ if(!function_exists('str_show_tpl')){
 /**
  * seo模板
  * 20231107新增
- * seo_tpl()); //首页,系统默认
- * seo_tpl('theme_tpl',['t'=>'标题','k'=>'关键词','d'=>'描述'])); //模板默认
- * seo_tpl('post',['id'=>9999,'t'=>'标题','k'=>'关键词','d'=>'描述'])); //id不存在,返回默认
- * seo_tpl('post',[])); //id不存在,返回默认
- * seo_tpl('post',['id'=>5,'t'=>'标题','k'=>'关键词','d'=>'描述'])); //id存在,返回数据
+ * seo_tpl(); //首页,系统默认
+ * seo_tpl('theme_tpl',['t'=>'标题','k'=>'关键词','d'=>'描述']); //模板默认
+ * seo_tpl('search',['t'=>'标题','k'=>'关键词','d'=>'描述']); //搜索默认
+ * seo_tpl('post',['id'=>9999,'t'=>'标题','k'=>'关键词','d'=>'描述']); //id不存在,返回默认
+ * seo_tpl('post',[]); //id不存在,返回默认
+ * seo_tpl('post',['id'=>5,'t'=>'标题','k'=>'关键词','d'=>'描述']); //id存在,返回数据
  * 
  * 使用方法
  * $this->assign('seo', seo_tpl()); //首页
@@ -2357,6 +2364,11 @@ if(!function_exists('seo_tpl')){
             $seo['description'] = ZFC('webconfig.site_description');
             return $seo;
         }elseif($tb=='theme_tpl'){
+            $seo['title'] = $title;
+            $seo['keywords'] = $keywords;
+            $seo['description'] = $description;
+            return $seo;
+        }elseif($tb=='search'){
             $seo['title'] = $title;
             $seo['keywords'] = $keywords;
             $seo['description'] = $description;
@@ -2395,7 +2407,94 @@ if(!function_exists('seo_tpl')){
     }
 
 }
+/**
+ * meta自定义DIY路由链接
+ * 20231114新增
+ * meta_url_route(1); //路由
+ * meta_url_route(2); //输出链接
+ * 
+ * //多语言
+ *	meta_url_route(1,['','en']);
+ *	meta_url_route(2,['','en']);
+ * 
+ */
+if(!function_exists('meta_url_route')){
+    function meta_url_route($type=1,$theme_arr=[]){
+        if($type==1){
+            //路由
+            $list = ZFTB('meta_data')->field('tb,post_id,meta_data')->where([['status','<>',9],['meta_data','like','%"diy_url":"%']])->group('meta_data')->select();
+            $arr = [];
+            foreach($list as $k=>$vo){
+                $meta_data = json_decode($vo['meta_data'],true);
+                $diy_url = isset_arr_key($meta_data,'diy_url','');
+                if($vo['tb']=='category'){
+                    $controller = 'cate@list';
+                    $parm_str = 'cid='.$vo['post_id'];
+                }elseif($vo['tb']=='post'){
+                    $controller = 'cate@detail';
+                    $parm_str = 'id='.$vo['post_id'];
+                }elseif($vo['tb']=='special'){
+                    $controller = 'cate@special_list';
+                    $parm_str = 'id='.$vo['post_id'];
+                }elseif($vo['tb']=='tag'){
+                    $controller = 'cate@tag';
+                    $parm_str = 'id='.$vo['post_id'];
+                }else{
+                    continue;
+                }
+                $type = 'get';
+                $menu_type = '';
 
+                if($theme_arr==[]){
+                    $router = $diy_url.'$';
+                    $template = 'default';
+                    Route::rule($router, 'index/index/hook?'.$parm_str,$type)
+                    ->middleware(app\common\middleware\Check::class)
+                    ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
+                }else{
+                    foreach($theme_arr as $k2=>$vo2){
+                        if($vo2==''){
+                            $router = $diy_url.'$';
+                            $template = 'default';
+                        }else{
+                            $router = $vo2.'/'.$diy_url.'$';
+                            $template = $vo2.'_default';
+                            $controller = $vo2.$controller;
+                        }
+                        Route::rule($router, 'index/index/hook?'.$parm_str,$type)
+                        ->middleware(app\common\middleware\Check::class)
+                        ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
+                    }
+                }
+            }  
+        }else{
+            //输出链接
+            $list = ZFTB('meta_data')->field('tb,post_id,meta_data')->where([['status','<>',9],['meta_data','like','%"diy_url":"%']])->group('meta_data')->select();
+            $arr = [];
+            foreach($list as $k=>$vo){
+                $meta_data = json_decode($vo['meta_data'],true);
+                $diy_url = isset_arr_key($meta_data,'diy_url','');
+                if($diy_url==''){
+                    continue;
+                }
+                if($theme_arr==[]){
+                    $url = '/'.$diy_url;
+                    $arr[] = ['tb'=>$vo['tb'],'post_id'=>$vo['post_id'],'url'=>$url];
+                }else{
+                    foreach($theme_arr as $k2=>$vo2){
+                        if($vo2==''){
+                            $url = '/'.$diy_url;
+                        }else{
+                            $url = '/'.$vo2.'/'.$diy_url;
+                        }
+                        $arr[] = ['tb'=>$vo['tb'],'post_id'=>$vo['post_id'],'url'=>$url];
+                    }
+                }
+            }
+            return $arr;
+        }
+    }
+}
 
 
 //列出目录
