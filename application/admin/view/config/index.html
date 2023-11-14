@@ -46,7 +46,7 @@
               <?php } ?>
           </div>
   <?php $form_widget = new \app\common\widget\FormPro();  ?>
-          <div class="layui-card-header">{$type}</div>
+          <!-- <div class="layui-card-header">{$type}</div> -->
           <div class="layui-card-body" pad15>
             <form class="info_tj" >
               <div class="layui-form" wid100 lay-filter="">
@@ -196,6 +196,10 @@
                     {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">最大间隔时间</a></a>','name'=>'login_interval_time','data'=>isset_arr_key($config,'login_interval_time',''),'theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.login_interval_time")<br>这里单位是分钟,直接填数字,默认5</span></div>','theme'=>2])|raw}
                     
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">后台登录提示文字</a>','name'=>'login_html_notice','data'=>isset_arr_key($config,'login_html_notice',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.login_html_notice") 后台登录提示文字</span></div>','theme'=>2])|raw}
                   </div>
 
                 <?php }elseif($type=='备份相关'){ ?>

@@ -26,7 +26,10 @@ class Admin extends Zfb
             $this->redirect('/admin/login/index');die; 
         }
         $this->assign('admin',$admin);
-        $this->assign('web_config',config());
+        $web_config = ZFC('webconfig','db','arr');
+        $this->web_config = $web_config;
+        $this->assign('web_config',$web_config);
+
         //判断是否修改密码
         $this->check_password_token($admin);
         //判断是否认证
@@ -53,7 +56,7 @@ class Admin extends Zfb
         $this->mca =  $m.'/'.ucwords($c) . '/' . $a;
 
         //插入日志
-        if(ZFC("webconfig.is_log")==1){
+        if(isset_arr_key($web_config,'is_log') ==1){
             $log['action'] = $m.'/'.$c.'/'.$a ;
             $log['ctime'] = time() ;
             $log['ip'] = request()->ip();
@@ -62,11 +65,8 @@ class Admin extends Zfb
             $log['method'] = request()->method();
             ZFTB('admin_log')->insert($log);
         }
-        $parm_data = ZFC('webconfig','db','arr');
-        $this->parm_data = $parm_data;
-        $this->assign('parm_data',$parm_data );
-        if(isset($parm_data['site_path']) && $parm_data['site_path']!=''){
-            $this->site_path = '/'.$parm_data['site_path'].'/';
+        if(isset($web_config['site_path']) && $web_config['site_path']!=''){
+            $this->site_path = '/'.$web_config['site_path'].'/';
         }else{
             $this->site_path = '/';
         }
