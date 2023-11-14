@@ -5,6 +5,7 @@
                 {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($res['meta'],'seo_t',''),'theme'=>1])|raw}
                 {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>isset_arr_key($res['meta'],'seo_d',''),'theme'=>1])|raw}
                 {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>isset_arr_key($res['meta'],'seo_k',''),'theme'=>1])|raw}
+                {$form_widget->form_input(['title'=>'自定义URL','name'=>'meta[diy_url]','data'=>isset_arr_key($res['meta'],'diy_url',''),'placeholder'=>'如：welcome','theme'=>1])|raw}
             </div>
         </div>
         <div class="layui-col-sm3">

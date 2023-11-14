@@ -64,6 +64,7 @@ if(isset($_SERVER['REQUEST_URI'])){
 			include $_file;
 		}
 	}
+	
 
 }else{
 	//命令行中不存在$_SERVER['REQUEST_URI']
