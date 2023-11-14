@@ -1,32 +1,29 @@
 <style>
-    .p10{
-        padding: 5px 10px 0 10px;
-    }
+    .zf_tip_notice{padding: 5px 10px 0 10px;margin: 10px 0;padding: 0;padding-bottom: 5px; border: 1px dashed #ccc;text-indent:0.2em;}
+    .zf_tip_notice a:hover,.zf_tip_notice a{color: #fff;background-color: #ccc;}
 </style>
-<div class="" style="margin: 10px 0;padding: 0;padding-bottom: 5px; border: 1px dashed #ccc;;">
-<?php if(ZFC("webconfig.admin_path")==''){ ?>
-    <div class="p10">
+<?php if(isset_arr_key('web_config','admin_path','')==''){ ?>
+    <div class="zf_tip_notice">
         为了你的后台安全，需要设置自定义授权token，<a class="layui-badge" onclick='zfAdminShow("修改","{:url('config/index',['type'=>'系统设置','_t'=>'admin_path'])}")'>点我修改</a><br>
     </div>
 <?php } ?>
 <?php if(config('app.app_debug')){?>
-    <div class="p10">
-        Debug模式未关闭,如果您的项目已上线请关闭debug. <a class="layui-badge_" >修改/config/app.php中的app_debug为false,或.env中的APP_DEBUG为false</a><br>
+    <div class="zf_tip_notice">
+        Debug模式未关闭,如果您的项目已上线请关闭debug. <a class="layui-badge" >修改/config/app.php中的app_debug为false,或.env中的APP_DEBUG为false</a><br>
     </div>
 <?php } ?>
 <?php if(is_file('./theme/install/index.html')){ ?>
-    <div class="p10">
+    <div class="zf_tip_notice">
         安装文件提醒---未删除安装文件夹 路径:./theme/install
     </div>
 <?php } ?>
 <?php if(is_file('./application/index/controller/Install.php')){ ?>
-    <div class="p10">
+    <div class="zf_tip_notice">
         安装文件提醒---未删除安装文件 路径:./application/index/controller/Install.php
     </div>
 <?php } ?>
 <?php $runtime_pow =  posix_getpwuid(fileowner('./runtime'))['name']; if($runtime_pow=='root'){ ?>
-    <div class="p10">
+    <div class="zf_tip_notice">
         ./runtime无文件夹权限
     </div>
 <?php } ?>
-</div>
