@@ -62,7 +62,8 @@
               <td>{:user_group_name($vo['gid'])}</td>
               <td>
                 {$vo['sex']==1?'男':''}
-                {$vo['sex']=='0'?'女':''}
+                {$vo['sex']=='2'?'女':''}
+                {$vo['sex']==''?'其他':''}
               </td>
               <td>{$vo['email']}</td>
               <td>{$vo['ip']}</td>
