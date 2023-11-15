@@ -2294,6 +2294,18 @@ if(!function_exists('str_show_tpl')){
             $html_str .= '<div class="img-box"><img src="'.$logo_src.'" alt=""></div>';
         }
         $html_str.='<div class="text-box">'.$str.'</div>';
+        $str_style = '.inner-box{
+                width: 500px;
+                border: 1px dashed #ccc;
+                padding:10px;
+            }';
+        $str_style = '
+        .inner-box{
+            width: 500px;
+            padding:10px;
+            border: 5px solid transparent;
+            background: linear-gradient(white,white) padding-box,repeating-linear-gradient(-45deg, red 0, red 12.5%, transparent 0, transparent 25%, #58a 0, #58a 37.5%, transparent 0, transparent 50%) 0/5em 5em;
+        }';
         $html = <<<EOL
         <html>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
@@ -2307,11 +2319,7 @@ if(!function_exists('str_show_tpl')){
                 justify-content: center;
                 align-items: center;
             }
-            .inner-box{
-                width: 500px;
-                border: 1px dashed #ccc;
-                padding:10px;
-            }
+            $str_style
             .img-box{
                 display: flex;
                 margin-bottom: 10px;
