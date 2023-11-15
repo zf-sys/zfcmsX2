@@ -806,6 +806,8 @@ class Category extends Admin
             $this->assign("data_res",[]);
             $mid = input("mid",'14');
             $cid = input("cid",'');
+            $data_res['meta'] = false;
+            $this->assign("data_res",$data_res);
         }else{
             //编辑
             if($cj_id==''){
@@ -825,7 +827,12 @@ class Category extends Admin
         }
         $m_res =ZFTB('category_model')->field('model,is_two,is_parm')->where(['id'=>$mid])->find();
         if($m_res['is_parm']==1){
-            $tpl = '/category/zf_tpl/add';
+            if(is_file('./application/admin/view/category/zf_tpl/add_'.$m_res['model'].'.html')){
+                $tpl = 'category/zf_tpl/add_'.$m_res['model'];
+            }else{
+                $tpl = 'category/zf_tpl/add';
+            }
+            // $tpl = '/category/zf_tpl/add';
             $this->assign('cid',$cid);
             $this->assign('mid',$mid);
             $m_list =ZFTB('category_model_parm')->where(['mid'=>$mid,'status'=>1])->order('sort asc,id asc')->select();
@@ -1140,7 +1147,9 @@ class Category extends Admin
             deal_meta_data_add('special',$data,'id');
 
         }  
-            return view();   
+        $res['meta'] = false;
+        $this->assign("res",$res);
+        return view();   
 
          
     }
@@ -1262,7 +1271,9 @@ class Category extends Admin
             deal_meta_data_add('tag',$data,'id');
 
         }  
-            return view();   
+        $res['meta'] = false;
+        $this->assign("res",$res);
+        return view();   
 
          
     }
