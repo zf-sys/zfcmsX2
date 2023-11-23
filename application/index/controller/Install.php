@@ -303,11 +303,14 @@ INFO;
             ['pdo', '支持', 'yes', '类'],
             ['pdo_mysql', '支持', 'yes', '模块'],
             ['zip', '支持', 'yes', '模块'],
-            ['fileinfo', '支持', 'yes', '模块'],
+            // ['fileinfo', '支持', 'yes', '模块'],
             ['curl', '支持', 'yes', '模块'],
             ['xml', '支持', 'yes', '函数'],
             ['file_get_contents', '支持', 'yes', '函数'],
         ];
+        if(file_exists('./extend/zf/Yun.php')){
+            $items[] = ['IonCube Loader', '支持', 'yes', '模块'];
+        }
 
         foreach ($items as &$v) {
             if(('类'==$v[3] && !class_exists($v[0])) || ('模块'==$v[3] && !extension_loaded($v[0])) || ('函数'==$v[3] && !function_exists($v[0])) ) {
