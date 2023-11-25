@@ -2386,9 +2386,21 @@ if(!function_exists('seo_tpl')){
             $meta_json = ZFTB('meta_data')->where([['tb','=',$tb],['post_id','=',$id],['status','<>',9]])->value('meta_data');
             //不存在,返回默认
             if(!$meta_json){
-                $seo['title'] = ZFC('webconfig.site_name');
-                $seo['keywords'] = ZFC('webconfig.site_keywords');
-                $seo['description'] = ZFC('webconfig.site_description');
+                if($title==''){
+                    $seo['title'] = ZFC('webconfig.site_name');
+                }else{
+                    $seo['title'] = $title;
+                }
+                if($keywords==''){
+                    $seo['keywords'] = ZFC('webconfig.site_keywords');
+                }else{
+                    $seo['keywords'] = $keywords;
+                }
+                if($description==''){
+                    $seo['description'] = ZFC('webconfig.site_description');
+                }else{
+                    $seo['description'] = $description;
+                }
             }else{
                 $meta = json_decode($meta_json,true);
                 $seo['title'] = isset_arr_key($meta,'seo_t',$title);
