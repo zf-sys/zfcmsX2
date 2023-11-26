@@ -11,19 +11,37 @@
   {:widget_st('jq','js')}
 </head>
 <body>
-
-
+  <style>
+    @media screen and (min-width:1200px) {
+      .list_item{
+        width: 800px;
+      }
+    }
+    .list_item>.layui-form-item:first-child{
+      margin-bottom:0px;
+    }
+    .zf-layui-tips{
+      border-bottom: 1px dashed #ccc;
+    }
+    .zf-tip-content-hidden{
+      display: none;
+    }
+    .layui-input-block{
+      min-height: 0px;
+    }
+  </style>
+  <?php $form_widget = new \app\common\widget\FormPro();  ?>
   <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md12">
 
         <div class="layui-card">
           <div class="layui-card-header layuiadmin-card-header-auto">
-              <a class="layui-btn layui-btn-sm" href='{:url("admin/config/oss_config")}?type=阿里云'>阿里云</a>
-              <a class="layui-btn layui-btn-sm" href='{:url("admin/config/oss_config")}?type=七牛云'>七牛云</a>
-              <a class="layui-btn layui-btn-sm" href='{:url("admin/config/oss_config")}?type=又拍云'>又拍云</a>
+              <?php $menu_type = ['阿里云','七牛云','又拍云','雨云S3']; ?>
+            <?php foreach($menu_type as $k=>$vo){ ?>
+              <a class="layui-btn layui-btn-sm {$vo!=$type?'layui-btn-primary':''}" href='{:url("config/oss_config")}?type={$vo}'>{$vo}</a>
+            <?php } ?>
           </div>
-          <div class="layui-card-header">{$type}</div>
           <div class="layui-card-body" pad15>
 
             <form class="info_tj" >
@@ -34,42 +52,28 @@
                       使用此功能需先安装扩展 composer require aliyuncs/oss-sdk-php v2.4.1
                     </blockquote>
                   <?php } ?>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">秘钥Ak</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="ali_ak" value="{$config['ali_ak']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_ak']</span>秘钥Ak</div>
+
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">秘钥Ak</a>','name'=>'ali_ak','data'=>isset_arr_key($config,'ali_ak',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.ali_ak") 秘钥Ak</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">秘钥SK</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="ali_sk" value="{$config['ali_sk']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_sk']</span>秘钥SK</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">秘钥SK</a>','name'=>'ali_sk','data'=>isset_arr_key($config,'ali_sk',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.ali_sk") 秘钥SK</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">空间名称</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="ali_bucket" value="{$config['ali_bucket']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_bucket']</span>空间名称 例如: test001</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">空间名称</a>','name'=>'ali_bucket','data'=>isset_arr_key($config,'ali_bucket',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.ali_bucket") 空间名称</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">域名</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="ali_domain" value="{$config['ali_domain']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_domain']</span>域名 例如: oss-cn-shenzhen.aliyuncs.com</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">域名</a>','name'=>'ali_domain','data'=>isset_arr_key($config,'ali_domain',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.ali_domain") 域名  例如: oss-cn-shenzhen.aliyuncs.com </span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">自定义域名</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="ali_domain_diy" value="{$config['ali_domain_diy']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['ali_domain_diy']</span>自定义域名,<span style="color:red">需设置反向代理</span>如不使用请留空 例如: http://oss.aaaa.com </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">自定义域名</a>','name'=>'ali_domain_diy','data'=>isset_arr_key($config,'ali_domain_diy',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.ali_domain_diy") 自定义域名<span style="color:red">需设置反向代理</span>如不使用请留空 例如: http://oss.aaaa.com</span></div>','theme'=>2])|raw}
                   </div>
-                
+
 
                 
                 <?php }elseif($type=='七牛云'){ ?>
@@ -78,35 +82,25 @@
                       使用此功能需先安装扩展 composer require overtrue/flysystem-qiniu v1.0.5
                     </blockquote>
                   <?php } ?>
-                
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">秘钥Ak</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="qny_ak" value="{$config['qny_ak']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_ak']</span>秘钥Ak</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">秘钥Ak</a>','name'=>'qny_ak','data'=>isset_arr_key($config,'qny_ak',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.qny_ak") 秘钥Ak</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">秘钥SK</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="qny_sk" value="{$config['qny_sk']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_sk']</span>秘钥SK</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">秘钥SK</a>','name'=>'qny_sk','data'=>isset_arr_key($config,'qny_sk',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.qny_sk") 秘钥SK</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">空间名称</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="qny_bucket" value="{$config['qny_bucket']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_bucket']</span>空间名称 例如: test001</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">空间名称</a>','name'=>'qny_bucket','data'=>isset_arr_key($config,'qny_bucket',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.qny_bucket") 空间名称</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">域名</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="qny_domain" value="{$config['qny_domain']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['qny_domain']</span>域名 例如: http://qknkajt4c.hn-bkt.clouddn.com</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">域名</a>','name'=>'qny_domain','data'=>isset_arr_key($config,'qny_domain',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.qny_domain") 域名  例如: http://qknkajt4c.hn-bkt.clouddn.com </span></div>','theme'=>2])|raw}
                   </div>
+                  
+
+                  
 
                 <?php }elseif($type=='又拍云'){ ?>
                   <?php if(!is_dir('./vendor/upyun/sdk')){ ?>
@@ -114,38 +108,52 @@
                       使用此功能需先安装扩展 composer require upyun/sdk
                     </blockquote>
                   <?php } ?>
-                
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">服务名</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="upy_name" value="{$config['upy_name']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_name']</span></div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">服务名</a>','name'=>'upy_name','data'=>isset_arr_key($config,'upy_name',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.upy_name") 服务名   </span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">操作员账号</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="upy_user" value="{$config['upy_user']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_user']</span></div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">操作员账号</a>','name'=>'upy_user','data'=>isset_arr_key($config,'upy_user',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.upy_user") 操作员账号   </span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">操作员密码</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="upy_pwd" value="{$config['upy_pwd']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_pwd']</span></div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">操作员密码</a>','name'=>'upy_pwd','data'=>isset_arr_key($config,'upy_pwd',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.upy_pwd") 操作员密码   </span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">域名</label>
-                    <div class="layui-input-inline" style="width: 500px;">
-                      <input type="text" name="upy_domain" value="{$config['upy_domain']}" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"><span class="layui-badge  layui-bg-cyan">config()['oss']['upy_domain']</span>域名 例如: http://zf-test.b0.aicdn.com</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">域名</a>','name'=>'upy_domain','data'=>isset_arr_key($config,'upy_domain',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.upy_domain") 域名  例如: http://zf-test.b0.aicdn.com </span></div>','theme'=>2])|raw}
                   </div>
   
                   
+                <?php }elseif($type=='雨云S3'){ ?>
+                  <?php if(!is_dir('./vendor/async-aws/simple-s3')){ ?>
+                    <blockquote class="layui-elem-quote" style="text-align: center;">
+                      使用此功能需先安装扩展 composer require async-aws/simple-s3
+                    </blockquote>
+                  <?php } ?>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">秘钥Ak</a>','name'=>'rain_ak','data'=>isset_arr_key($config,'rain_ak',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.rain_ak") 秘钥Ak</span></div>','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">秘钥SK</a>','name'=>'rain_sk','data'=>isset_arr_key($config,'rain_sk',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.rain_sk") 秘钥SK</span></div>','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">空间名称</a>','name'=>'rain_bucket','data'=>isset_arr_key($config,'rain_bucket',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.rain_bucket") 空间名称</span></div>','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">API端点</a>','name'=>'rain_domain','data'=>isset_arr_key($config,'rain_domain',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.rain_domain") API端点  例如: https://cn-sy1.rains3.com/zfcms-test </span></div>','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">自定义域名</a>','name'=>'rain_domain_diy','data'=>isset_arr_key($config,'rain_domain_diy',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("oss_config.rain_domain_diy") 自定义域名<span style="color:red"></span>如不使用请留空 例如: http://oss.aaaa.com</span></div>','theme'=>2])|raw}
+                  </div>
                   
+
                 
                 <?php } ?>
                 <div class="layui-form-item">

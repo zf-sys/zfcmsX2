@@ -15,6 +15,8 @@ use OSS\OssClient as AliOssClient;
 use Upyun\Upyun;
 use Upyun\Config as UpyConfig;
 
+// 雨云s3
+use AsyncAws\S3\S3Client;
 
 class Upload extends Controller{
     public function __construct (){
@@ -22,6 +24,8 @@ class Upload extends Controller{
       $this->is_upload_compress = ZFC("webconfig.is_upload_compress");
       $this->upload_pic_max_w = ZFC("webconfig.upload_pic_max_w");
       $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
+      $this->oss_config = ZFC('oss_config','db','arr');
+      // dd($this->upload_type);
 
       if(ZFC("webconfig.site_path")!=''){
         $this->site_path = '/'.ZFC("webconfig.site_path").'/';
@@ -413,13 +417,16 @@ class Upload extends Controller{
             return $this->qiniu_upload($name,$tmp_name);
         }elseif($upload_type=='upy'){
             return $this->upy_upload($name,$tmp_name);
+        }elseif($upload_type=='rain'){
+          return $this->rain_upload($name,$tmp_name);
         }else{
             return false;
         }
     }
     private function upy_upload($name,$tmp_name){
-      $domain = config()['oss']['upy_domain']; 
-      $serviceConfig = new UpyConfig(config()['oss']['upy_name'], config()['oss']['upy_user'], config()['oss']['upy_pwd']);
+      $domain = isset_arr_key($this->oss_config,'upy_domain');
+      $serviceConfig = new UpyConfig(isset_arr_key($this->oss_config,'upy_name'), isset_arr_key($this->oss_config,'upy_user'), isset_arr_key($this->oss_config,'upy_pwd'));
+      
       $client = new Upyun($serviceConfig);
       $file = fopen($tmp_name, 'r');
       $res = $client->write('/'.$name, $file);
@@ -432,10 +439,10 @@ class Upload extends Controller{
    
 
     private function qiniu_upload($name,$tmp_name){
-        $accessKey = config()['oss']['qny_ak'];
-        $secretKey = config()['oss']['qny_sk'];
-        $bucket = config()['oss']['qny_bucket'];
-        $domain = config()['oss']['qny_domain']; 
+        $accessKey = isset_arr_key($this->oss_config,'qny_ak');
+        $secretKey = isset_arr_key($this->oss_config,'qny_sk');
+        $bucket = isset_arr_key($this->oss_config,'qny_bucket');
+        $domain = isset_arr_key($this->oss_config,'qny_domain'); 
         $adapter = new QiniuAdapter($accessKey, $secretKey, $bucket, $domain);
         $flysystem = new \League\Flysystem\Filesystem($adapter);
         $r = $flysystem->writeStream($name, fopen($tmp_name, 'r'));
@@ -447,11 +454,11 @@ class Upload extends Controller{
     }
     private function ali_upload($name,$tmp_name){
         $ossconfig = [
-            'KeyId'      => config()['oss']['ali_ak'],  
-            'KeySecret'  => config()['oss']['ali_sk'],  
-            'Endpoint'   => config()['oss']['ali_domain'], 
-            'Bucket'     => config()['oss']['ali_bucket'],  
-            'ali_domain_diy'     => config()['oss']['ali_domain_diy'],  
+            'KeyId'      => isset_arr_key($this->oss_config,'ali_ak'),  
+            'KeySecret'  => isset_arr_key($this->oss_config,'ali_sk'),  
+            'Endpoint'   => isset_arr_key($this->oss_config,'ali_domain'), 
+            'Bucket'     => isset_arr_key($this->oss_config,'ali_bucket'),  
+            'ali_domain_diy'     => isset_arr_key($this->oss_config,'ali_domain_diy'),  
         ];
         $ossClient = new AliOssClient($ossconfig['KeyId'], $ossconfig['KeySecret'], $ossconfig['Endpoint']);
         try {
@@ -465,6 +472,37 @@ class Upload extends Controller{
             return false;
         }
     }
+    private function rain_upload($name,$tmp_name){
+        $endpoint = isset_arr_key($this->oss_config,'rain_domain');
+        $bucket = isset_arr_key($this->oss_config,'rain_bucket');
+        $s3 = new S3Client([
+            'endpoint' => $endpoint,
+            'pathStyleEndpoint' => true,
+            'accessKeyId' => isset_arr_key($this->oss_config,'rain_ak'),
+            'accessKeySecret' => isset_arr_key($this->oss_config,'rain_sk'),
+        ]);
+        //上传
+        $key = 'uploads/'.md5($_SERVER["SERVER_NAME"]).'/'. $name;
+        try{
+            $r = $s3->putObject([
+                'Bucket' => $bucket,
+                'Key' => $key,
+                'Body' => file_get_contents($tmp_name),
+            ]);
+            $rain_domain_diy = isset_arr_key($this->oss_config,'rain_domain_diy');
+            if($rain_domain_diy!=''){
+                // $url = $rain_domain_diy.'/'.$bucket.'/'.$key;
+                $url = $rain_domain_diy.'/'.$key;
+            }else{
+              $url = $endpoint.'/'.$bucket.'/'.$key;
+            }
+            return $url;
+        }catch (\Exception $e){
+            // dd($e->getMessage());
+            return false;
+        }
+        
+  }
 
 
     

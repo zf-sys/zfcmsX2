@@ -34,6 +34,9 @@ class Config extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         $config = ZFC('webconfig','db','arr');
         if(request()->isPost()){
+            if($config==''){
+                $config = [];
+            }
             $data = input('post.');
             foreach($data as $k=>$vo){
                 $config[$k] = $vo;
@@ -516,14 +519,27 @@ class Config extends Admin
     public function oss_config()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
+        $config = ZFC('oss_config','db','arr');
         if(request()->isPost()){
+            if($config==''){
+                $config = [];
+            }
             $data = input('post.');
-            $res = extraconfig(input('post.'),'oss');
+            foreach($data as $k=>$vo){
+                $config[$k] = $vo;
+            }
+            if(ZFTB('config')->where(['key'=>'oss_config'])->find()){
+                $res = ZFTB('config')->where(['key'=>'oss_config'])->cache('oss_config')->update(['value'=>json_encode($config),'token'=>time()]);
+            }else{
+                $res = ZFTB('config')->cache('oss_config')->insert(['key'=>'oss_config','type'=>'system','value'=>json_encode($config),'token'=>time()]);
+            }
             return ZFRetMsg($res,'保存成功','保存失败');
         }
         $type = input('type','阿里云');
         $this->assign("type",$type);
-        $this->assign("config",config()['oss']);
+        $_t = input('_t','');
+        $this->assign("_t",$_t);
+        $this->assign("config",$config);
         return view();
     }
 
