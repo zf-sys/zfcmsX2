@@ -188,6 +188,14 @@
   ,admin = layui.admin
   ,form = layui.form
   ,upload = layui.upload;
+
+  $('.zf-layui-tips').on('click', function(){
+    var othis = $(this).parent().parent().parent().find('div:eq(2)').find('.layui-input-block .zf-tip-content-hidden').html()
+    layer.tips(othis, this, {
+      tips: 1,
+      time: 8000
+    });
+  });
  
     window.tijiao_data2 = function(role,type=1){
       var index = layer.load(2);
