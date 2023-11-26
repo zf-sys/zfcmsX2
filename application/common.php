@@ -1559,7 +1559,7 @@ if(!function_exists('send_email')){
     function send_email($address,$email_content=[],$debug=0){
         date_default_timezone_set("PRC"); 
         $mail = new PHPMailer(true);
-        $data = config()['email'];
+        $data = ZFC("email_config",'db','arr');
         if(!isset($data['host']) || !isset($data['send_nickname']) || !isset($data['send_email']) || !isset($data['password']) || !isset($data['secure']) || !isset($data['e_number'])  || $data['host']=='' || $data['send_email']==''  || $data['password']=='' || $data['secure']=='' || $data['e_number']==''){
             return jserror('邮件参数设置不完整');
         }

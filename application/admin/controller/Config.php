@@ -546,13 +546,35 @@ class Config extends Admin
     public function email()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
+        // if(request()->isPost()){
+        //     $data = input('post.');
+        //     $res = extraconfig(input('post.'),'email');
+        //     return ZFRetMsg($res,'保存成功','保存失败');
+        // }
+       
+        // $this->assign("config",config()['email']);
+        $config = ZFC('email_config','db','arr');
         if(request()->isPost()){
+            if($config==''){
+                $config = [];
+            }
             $data = input('post.');
-            $res = extraconfig(input('post.'),'email');
+            foreach($data as $k=>$vo){
+                $config[$k] = $vo;
+            }
+            if(ZFTB('config')->where(['key'=>'email_config'])->find()){
+                $res = ZFTB('config')->where(['key'=>'email_config'])->cache('email_config')->update(['value'=>json_encode($config),'token'=>time()]);
+            }else{
+                $res = ZFTB('config')->cache('email_config')->insert(['key'=>'email_config','type'=>'system','value'=>json_encode($config),'token'=>time()]);
+            }
             return ZFRetMsg($res,'保存成功','保存失败');
         }
-       
-        $this->assign("config",config()['email']);
+        $type = input('type','');
+        $this->assign("type",$type);
+        $_t = input('_t','');
+        $this->assign("_t",$_t);
+        $this->assign("config",$config);
+
         return view();
     }
     public function test_email(){

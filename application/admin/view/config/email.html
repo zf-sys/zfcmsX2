@@ -11,7 +11,26 @@
   {:widget_st('jq','js')}
 </head>
 <body>
-
+  <style>
+    @media screen and (min-width:1200px) {
+      .list_item{
+        width: 800px;
+      }
+    }
+    .list_item>.layui-form-item:first-child{
+      margin-bottom:0px;
+    }
+    .zf-layui-tips{
+      border-bottom: 1px dashed #ccc;
+    }
+    .zf-tip-content-hidden{
+      display: none;
+    }
+    .layui-input-block{
+      min-height: 0px;
+    }
+  </style>
+  <?php $form_widget = new \app\common\widget\FormPro();  ?>
   <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md12">
@@ -30,47 +49,41 @@
 	                  </blockquote>
 	                <?php } ?>
                   <div class="layui-form" wid100 lay-filter="">
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">SMTP服务器</label>
-                    <div class="layui-input-inline">
-                      <input type="text" name="host" value="{$config['host']}" class="layui-input">
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">SMTP服务器</a>','name'=>'host','data'=>isset_arr_key($config,'host',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("email_config.host") SMTP服务器  如：smtp.163.com</span></div>','theme'=>2])|raw}
                     </div>
-                    <div class="layui-form-mid layui-word-aux">如：smtp.163.com</div>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">SMTP端口号</a>','name'=>'e_number','data'=>isset_arr_key($config,'e_number',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("email_config.e_number") 一般为 25 或 465</span></div>','theme'=>2])|raw}
+                    </div>
+                   
+                 
+                 
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">加密方式</label>
+                      <div class="layui-input-inline" style="width: 80px;">
+                        <select name="secure">
+                          <option value="tls" <?php if(isset($config['secure'])&& $config['secure']=='tls'){ echo 'selected';} ?>>tls</option>
+                          <option value="ssl" <?php if(isset($config['secure'])&& $config['secure']=='ssl'){ echo 'selected';} ?>>ssl</option>
+                        </select>
+                      </div>
+                      <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                 
+                 
+                
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">发件人邮箱</a>','name'=>'send_email','data'=>isset_arr_key($config,'send_email',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("email_config.send_email") 发件人邮箱</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">SMTP端口号</label>
-                    <div class="layui-input-inline" style="width: 80px;">
-                      <input type="text" name="e_number" lay-verify="number"  class="layui-input" value="{$config['e_number']}">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">一般为 25 或 465</div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">发件人昵称</a>','name'=>'send_nickname','data'=>isset_arr_key($config,'send_nickname',''),'theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("email_config.send_nickname") 发件人昵称</span></div>','theme'=>2])|raw}
                   </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">加密方式</label>
-                    <div class="layui-input-inline" style="width: 80px;">
-                      <select name="secure">
-                        <option value="tls" <?php if(isset($config['secure'])&& $config['secure']=='tls'){ echo 'selected';} ?>>tls</option>
-                        <option value="ssl" <?php if(isset($config['secure'])&& $config['secure']=='ssl'){ echo 'selected';} ?>>ssl</option>
-                      </select>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">发件人邮箱</label>
-                    <div class="layui-input-inline">
-                      <input type="text" name="send_email" value="{$config['send_email']}" lay-verify="email" autocomplete="off" class="layui-input">
-                    </div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">发件人昵称</label>
-                    <div class="layui-input-inline">
-                      <input type="text" name="send_nickname" value="{$config['send_nickname']}" autocomplete="off" class="layui-input">
-                    </div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">邮箱密码/授权码</label>
-                    <div class="layui-input-inline">
-                      <input type="password" name="password" value="{$config['password']}" autocomplete="off" class="layui-input">
-                    </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">邮箱密码/授权码</a>','name'=>'password','data'=>isset_arr_key($config,'password',''),'type'=>'password','theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("email_config.password") 邮箱密码/授权码</span></div>','theme'=>2])|raw}
                   </div>
                   
                   <div class="layui-form-item">
@@ -104,13 +117,22 @@
 <script>
   layui.define(['form', 'upload'], function(exports){
     var $ = layui.$
-            ,layer = layui.layer
-            ,laytpl = layui.laytpl
-            ,setter = layui.setter
-            ,view = layui.view
-            ,admin = layui.admin
-            ,form = layui.form
-            ,upload = layui.upload;
+    ,layer = layui.layer
+    ,laytpl = layui.laytpl
+    ,setter = layui.setter
+    ,view = layui.view
+    ,admin = layui.admin
+    ,form = layui.form
+    ,upload = layui.upload;
+
+
+    $('.zf-layui-tips').on('click', function(){
+      var othis = $(this).parent().parent().parent().find('div:eq(2)').find('.layui-input-block .zf-tip-content-hidden').html()
+      layer.tips(othis, this, {
+        tips: 1,
+        time: 8000
+      });
+    });
 
     $(".send_mail").on("click",function(){
       var ee = $('.ee').val();
