@@ -31,7 +31,8 @@
         "guzzlehttp/guzzle":"^6.5.8",
         "overtrue/wechat": "~5.0",
         "jaeger/querylist": "v4.2",
-        "phpoffice/phpspreadsheet": "v1.8.0"
+        "phpoffice/phpspreadsheet": "v1.8.0",
+        "async-aws/simple-s3": "^2.0"
     },
     "autoload":{
         "psr-4":{

@@ -1,0 +1,33 @@
+{
+    "name": "async-aws/simple-s3",
+    "description": "A simple S3 client that are easy to work with. ",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "aws",
+        "async-aws",
+        "amazon",
+        "sdk",
+        "s3"
+    ],
+    "require": {
+        "php": "^7.2.5 || ^8.0",
+        "ext-json": "*",
+        "async-aws/s3": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AsyncAws\\SimpleS3\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AsyncAws\\SimpleS3\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}

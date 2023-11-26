@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
 {
     public static $files = array (
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -121,11 +121,13 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Contracts\\Service\\' => 26,
+            'Symfony\\Contracts\\HttpClient\\' => 29,
             'Symfony\\Contracts\\EventDispatcher\\' => 34,
             'Symfony\\Contracts\\Cache\\' => 24,
             'Symfony\\Component\\VarExporter\\' => 30,
             'Symfony\\Component\\VarDumper\\' => 28,
             'Symfony\\Component\\HttpFoundation\\' => 33,
+            'Symfony\\Component\\HttpClient\\' => 29,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Cache\\' => 24,
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
@@ -185,6 +187,12 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
             'Cache\\TagInterop\\' => 17,
             'Cache\\Adapter\\Filesystem\\' => 25,
             'Cache\\Adapter\\Common\\' => 21,
+        ),
+        'A' => 
+        array (
+            'AsyncAws\\SimpleS3\\' => 18,
+            'AsyncAws\\S3\\' => 12,
+            'AsyncAws\\Core\\' => 14,
         ),
     );
 
@@ -250,6 +258,10 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         array (
             0 => __DIR__ . '/..' . '/symfony/service-contracts',
         ),
+        'Symfony\\Contracts\\HttpClient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/http-client-contracts',
+        ),
         'Symfony\\Contracts\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher-contracts',
@@ -269,6 +281,10 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         'Symfony\\Component\\HttpFoundation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
+        ),
+        'Symfony\\Component\\HttpClient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/http-client',
         ),
         'Symfony\\Component\\EventDispatcher\\' => 
         array (
@@ -397,6 +413,18 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         'Cache\\Adapter\\Common\\' => 
         array (
             0 => __DIR__ . '/..' . '/cache/adapter-common',
+        ),
+        'AsyncAws\\SimpleS3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/async-aws/simple-s3/src',
+        ),
+        'AsyncAws\\S3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/async-aws/s3/src',
+        ),
+        'AsyncAws\\Core\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/async-aws/core/src',
         ),
     );
 

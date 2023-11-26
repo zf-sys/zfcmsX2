@@ -3,7 +3,7 @@
         'name' => 'topthink/think',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'b9865585c917ed3922290b471be578a210eb3bac',
+        'reference' => '0b04f16faa6d1467b3775e8fd083da2727ae1c8a',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -16,6 +16,33 @@
             'reference' => '492866331b7bafaac09506cf42f351b7e9e63766',
             'type' => 'library',
             'install_path' => __DIR__ . '/../aliyuncs/oss-sdk-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'async-aws/core' => array(
+            'pretty_version' => '1.20.0',
+            'version' => '1.20.0.0',
+            'reference' => 'e7a42c5cd0af44c4f3df0c4d228fe574c8ae4b68',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../async-aws/core',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'async-aws/s3' => array(
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => '1486ae6592a8f870da60dfc29bfc98390c7b9092',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../async-aws/s3',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'async-aws/simple-s3' => array(
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => 'afb512bcdc56ca5c5b33913348e7c83b784355cf',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../async-aws/simple-s3',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -155,9 +182,9 @@
             'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
-            'pretty_version' => '2.9.1',
-            'version' => '2.9.1.0',
-            'reference' => 'f259e2b15fb95494c83f52d3caad003bbf5ffaa1',
+            'pretty_version' => '2.9.2',
+            'version' => '2.9.2.0',
+            'reference' => '437cb3628f4cf6042cc10ae97fc2b8472e48ca1f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
@@ -198,6 +225,18 @@
             'install_path' => __DIR__ . '/../overtrue/wechat',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'php-http/async-client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '*',
+            ),
+        ),
+        'php-http/client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '*',
+            ),
         ),
         'phpmailer/phpmailer' => array(
             'pretty_version' => 'v6.8.1',
@@ -261,6 +300,12 @@
             'dev_requirement' => false,
         ),
         'psr/event-dispatcher-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
+        'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
                 0 => '1.0',
@@ -331,9 +376,9 @@
             'dev_requirement' => false,
         ),
         'symfony/cache' => array(
-            'pretty_version' => 'v5.4.29',
-            'version' => '5.4.29.0',
-            'reference' => 'e29c5a97bc2d81269973c3e1d7ceb9d48b4d5151',
+            'pretty_version' => 'v5.4.31',
+            'version' => '5.4.31.0',
+            'reference' => '9c0a3a5d0718e51ff81e0605be38fe1acbee9eeb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/cache',
             'aliases' => array(),
@@ -387,10 +432,34 @@
                 0 => '2.0',
             ),
         ),
+        'symfony/http-client' => array(
+            'pretty_version' => 'v5.4.31',
+            'version' => '5.4.31.0',
+            'reference' => '6cdf6cdf48101454f014a9ab4e0905f0b902389d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/http-client',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/http-client-contracts' => array(
+            'pretty_version' => 'v2.5.2',
+            'version' => '2.5.2.0',
+            'reference' => 'ba6a9f0e8f3edd190520ee3b9a958596b6ca2e70',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/http-client-contracts',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/http-client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '2.4',
+            ),
+        ),
         'symfony/http-foundation' => array(
-            'pretty_version' => 'v5.4.28',
-            'version' => '5.4.28.0',
-            'reference' => '365992c83a836dfe635f1e903ccca43ee03d3dd2',
+            'pretty_version' => 'v5.4.31',
+            'version' => '5.4.31.0',
+            'reference' => 'f84fd4fd8311a541ceb2ae3f257841d002450a90',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/http-foundation',
             'aliases' => array(),
@@ -507,7 +576,7 @@
         'topthink/think' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'b9865585c917ed3922290b471be578a210eb3bac',
+            'reference' => '0b04f16faa6d1467b3775e8fd083da2727ae1c8a',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -564,7 +633,9 @@
             'reference' => 'b903dce6ce83fc0ba184ec81a53a2dd9f1d6d081',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wmc1125/tpfast-public',
-            'aliases' => array(),
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
             'dev_requirement' => false,
         ),
         'zf-sys/think-addons' => array(
