@@ -54,7 +54,7 @@ class Upload extends Controller{
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
-            return jserror('上传方式不存在');
+            return jserror('上传失败');
           }
         }else{
           $info = $file->validate(['ext'=>ZFC("webconfig.pic_ext")])->move('.'.$this->site_path.'upload/common/image');
@@ -65,6 +65,7 @@ class Upload extends Controller{
         }
         $this->save_upload_info($file,$url);
       }catch (Exception $e) {
+        @save_exception('upload','上传异常',['type'=>'upload_one','content'=>['data'=>$e->getMessage()]]);
         return jserror($e);
       }
     }
@@ -100,6 +101,7 @@ class Upload extends Controller{
           $image->thumb($width, $height)->save($save_name);
           return (isHTTPS()?'https':'http').'://'.request()->host().$save_url;
         }catch (Exception $e) {
+            @save_exception('upload','上传异常',['type'=>'file_upload_thumb','content'=>['data'=>$e->getMessage()]]);
             return 1;
           }
     }
@@ -124,6 +126,7 @@ class Upload extends Controller{
         //保存上传数据
         $this->save_upload_info($file,$url);
       }catch (Exception $e) {
+        @save_exception('upload','上传异常',['type'=>'upload_one_file','content'=>['data'=>$e->getMessage()]]);
         return jserror($e);
       }
     }
@@ -160,6 +163,7 @@ class Upload extends Controller{
             ));
         }
       }catch (Exception $e) {
+        @save_exception('upload','上传异常',['type'=>'meditor_upload_one','content'=>['data'=>$e->getMessage()]]);
         return json_encode(array(
           'success'    => 0, 
           'url'       => '',
@@ -215,6 +219,7 @@ class Upload extends Controller{
         $cid = input('cid',0);
         $this->save_upload_info($file,$url,$cid);
       }catch (Exception $e) {
+        @save_exception('upload','上传异常',['type'=>'upload_one_filesystem','content'=>['data'=>$e->getMessage()]]);
         return jserror($e);
       }
     }
@@ -284,6 +289,7 @@ class Upload extends Controller{
           FpjsonMsg(0,'没有上传文件');
         }
       }catch (Exception $e) {
+        @save_exception('upload','上传异常',['type'=>'fenpian_one_upload','content'=>['data'=>$e->getMessage()]]);
         return jserror($e);
       }
     }
@@ -425,15 +431,19 @@ class Upload extends Controller{
     }
     private function upy_upload($name,$tmp_name){
       $domain = isset_arr_key($this->oss_config,'upy_domain');
-      $serviceConfig = new UpyConfig(isset_arr_key($this->oss_config,'upy_name'), isset_arr_key($this->oss_config,'upy_user'), isset_arr_key($this->oss_config,'upy_pwd'));
-      
-      $client = new Upyun($serviceConfig);
-      $file = fopen($tmp_name, 'r');
-      $res = $client->write('/'.$name, $file);
-      if($res){
-        return $domain.'/'.$name;
-      }else{
-        return null;
+      try {
+        $serviceConfig = new UpyConfig(isset_arr_key($this->oss_config,'upy_name'), isset_arr_key($this->oss_config,'upy_user'), isset_arr_key($this->oss_config,'upy_pwd'));
+        $client = new Upyun($serviceConfig);
+        $file = fopen($tmp_name, 'r');
+        $res = $client->write('/'.$name, $file);
+        if($res){
+          return $domain.'/'.$name;
+        }else{
+          return false;
+        }
+      } catch (\Exception $e) {
+        @save_exception('upload','上传异常',['type'=>'upy_upload','content'=>['data'=>$e->getMessage()]]);
+        return false;
       }
     }
    
@@ -443,13 +453,18 @@ class Upload extends Controller{
         $secretKey = isset_arr_key($this->oss_config,'qny_sk');
         $bucket = isset_arr_key($this->oss_config,'qny_bucket');
         $domain = isset_arr_key($this->oss_config,'qny_domain'); 
-        $adapter = new QiniuAdapter($accessKey, $secretKey, $bucket, $domain);
-        $flysystem = new \League\Flysystem\Filesystem($adapter);
-        $r = $flysystem->writeStream($name, fopen($tmp_name, 'r'));
-        if($r){
-            return $domain.'/'.$name;
-        }else{
-            return null;
+        try {
+          $adapter = new QiniuAdapter($accessKey, $secretKey, $bucket, $domain);
+          $flysystem = new \League\Flysystem\Filesystem($adapter);
+          $r = $flysystem->writeStream($name, fopen($tmp_name, 'r'));
+          if($r){
+              return $domain.'/'.$name;
+          }else{
+              return false;
+          }
+        } catch (\Exception $e) {
+          @save_exception('upload','上传异常',['type'=>'qiniu_upload','content'=>['data'=>$e->getMessage()]]);
+          return false;
         }
     }
     private function ali_upload($name,$tmp_name){
@@ -460,49 +475,51 @@ class Upload extends Controller{
             'Bucket'     => isset_arr_key($this->oss_config,'ali_bucket'),  
             'ali_domain_diy'     => isset_arr_key($this->oss_config,'ali_domain_diy'),  
         ];
-        $ossClient = new AliOssClient($ossconfig['KeyId'], $ossconfig['KeySecret'], $ossconfig['Endpoint']);
         try {
+            $ossClient = new AliOssClient($ossconfig['KeyId'], $ossconfig['KeySecret'], $ossconfig['Endpoint']);
             $result = $ossClient->uploadFile($ossconfig['Bucket'],'uploads/'.md5($_SERVER["SERVER_NAME"]).'/'. $name, $tmp_name);
             $url = $result['info']['url'];
             if($ossconfig['ali_domain_diy']!=''){
                 $url = str_replace('http://'.$ossconfig['Bucket'].'.'.$ossconfig['Endpoint'],$ossconfig['ali_domain_diy'],$url);
             }
             return $url;
-        } catch (OssException $e) {
+        } catch (\Exception $e) {
+            @save_exception('upload','上传异常',['type'=>'ali_upload','content'=>['data'=>$e->getMessage()]]);
             return false;
         }
     }
     private function rain_upload($name,$tmp_name){
-        $endpoint = isset_arr_key($this->oss_config,'rain_domain');
-        $bucket = isset_arr_key($this->oss_config,'rain_bucket');
-        $s3 = new S3Client([
+      $endpoint = isset_arr_key($this->oss_config,'rain_domain');
+      $bucket = isset_arr_key($this->oss_config,'rain_bucket');
+      $content = \fopen($tmp_name, 'r');
+      try{
+          $s3_config = [
             'endpoint' => $endpoint,
             'pathStyleEndpoint' => true,
             'accessKeyId' => isset_arr_key($this->oss_config,'rain_ak'),
             'accessKeySecret' => isset_arr_key($this->oss_config,'rain_sk'),
-        ]);
-        //上传
-        $key = 'uploads/'.md5($_SERVER["SERVER_NAME"]).'/'. $name;
-        try{
-            $r = $s3->putObject([
-                'Bucket' => $bucket,
-                'Key' => $key,
-                'Body' => file_get_contents($tmp_name),
-            ]);
-            $rain_domain_diy = isset_arr_key($this->oss_config,'rain_domain_diy');
-            if($rain_domain_diy!=''){
-                // $url = $rain_domain_diy.'/'.$bucket.'/'.$key;
-                $url = $rain_domain_diy.'/'.$key;
-            }else{
-              $url = $endpoint.'/'.$bucket.'/'.$key;
-            }
-            return $url;
-        }catch (\Exception $e){
-            // dd($e->getMessage());
-            return false;
-        }
-        
-  }
+          ];
+          $s3 = new S3Client($s3_config);
+          //上传
+          $key = 'uploads/'.md5($_SERVER["SERVER_NAME"]).'/'. $name;
+          $r = $s3->putObject([
+              'Bucket' => $bucket,
+              'Key' => $key,
+              'Body' => $content,
+          ]);
+          $rain_domain_diy = isset_arr_key($this->oss_config,'rain_domain_diy');
+          if($rain_domain_diy!=''){
+              // $url = $rain_domain_diy.'/'.$bucket.'/'.$key;
+              $url = $rain_domain_diy.'/'.$key;
+          }else{
+            $url = $endpoint.'/'.$bucket.'/'.$key;
+          }
+          return $url;
+      }catch (\Exception $e){
+          @save_exception('upload','上传异常',['type'=>'rain_upload','content'=>['data'=>$e->getMessage()]]);
+          return false;
+      }
+    }
 
 
     
