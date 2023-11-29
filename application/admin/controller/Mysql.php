@@ -17,6 +17,7 @@ class Mysql extends Admin
 	//列表
 	public function index()
 	{
+        admin_role_check($this->z_role_list,$this->mca);   
         if(file_exists($this->db_dir) == false){
             mkdir($this->db_dir, 0777, true);
         }
@@ -28,6 +29,7 @@ class Mysql extends Admin
 	// 数据库备份
     public function backup()
     {
+        admin_role_check($this->z_role_list,$this->mca,1);   
     	if(request()->isPost()){
     		$data['filename'] = input('post.filename');
     		if (empty($data['filename'])) {
@@ -56,6 +58,7 @@ class Mysql extends Admin
     // 数据库还原
     public function restore()
     {
+        admin_role_check($this->z_role_list,$this->mca);   
         $name = input("name");
         if(!$name){
             $this->error('参数错误');
@@ -79,6 +82,7 @@ class Mysql extends Admin
     }
     public function delete()
     {
+        admin_role_check($this->z_role_list,$this->mca);   
         $name =input("name");
         if($name) {
             $files = new File();
