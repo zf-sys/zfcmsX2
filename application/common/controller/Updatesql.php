@@ -43,6 +43,7 @@ class Updatesql extends Controller
             'v0.231018'=>$this->v0_231018(),
             'v0.231024'=>$this->v0_231024(),
             'v0.231102'=>$this->v0_231102(),
+            'v0.231129'=>$this->v0_231129(),
             
         ]; 
     }
@@ -272,8 +273,48 @@ INFO;
             ];
             return $ret_data;
         }
+        
     }
-    
+    public function v0_231129(){
+        if($this->site_version<='v0.231129' || session('v_upgsql_act')==1){
+            //判断日志是否存在
+            $rz_id = db('admin_role')->where(['value'=>'admin/mysql/'])->value('id');
+            if(!$rz_id){
+                $rz_id = db('admin_role')->insertGetId(['name'=>'数据库管理','value'=>'admin/mysql/','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>218,'module'=>'admin','control'=>'0','act'=>'','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-clock-o','lang'=>'','lang_pid'=>0]);
+            }
+            if($rz_id!=''){
+                $ret_data[1] = [ 
+                    'tb_post_add',
+                    $this->tb_prefix.'admin_role',
+                    ['name'=>'数据库备份','value'=>'admin/Mysql/backup','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>$rz_id,'module'=>'admin','control'=>'Mysql','act'=>'backup','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-trello','lang'=>'','lang_pid'=>0],
+                    false,  //是否允许重复
+                    ['value'=>'admin/Mysql/backup'], //判断条件
+                ];
+                $rz_id2 = db('admin_role')->where(['value'=>'admin/Mysql/index'])->value('id');
+                if(!$rz_id2){
+                    $rz_id2 = db('admin_role')->insertGetId(['name'=>'备份列表','value'=>'admin/Mysql/index','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>$rz_id,'module'=>'admin','control'=>'Mysql','act'=>'index','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-clock-o','lang'=>'','lang_pid'=>0]);
+                }
+                if($rz_id2!=''){
+
+                    $ret_data[2] = [ 
+                        'tb_post_add',
+                        $this->tb_prefix.'admin_role',
+                        ['name'=>'数据库还原','value'=>'admin/Mysql/restore','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>$rz_id2,'module'=>'admin','control'=>'Mysql','act'=>'restore','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-heartbeat','lang'=>'','lang_pid'=>0],
+                        false,  //是否允许重复
+                        ['value'=>'admin/Mysql/restore'], //判断条件
+                    ];
+                    $ret_data[3] = [ 
+                        'tb_post_add',
+                        $this->tb_prefix.'admin_role',
+                        ['name'=>'删除数据库','value'=>'admin/Mysql/delete','check'=>1,'status'=>1,'summary'=>'','sort'=>40,'pid'=>$rz_id2,'module'=>'admin','control'=>'Mysql','act'=>'delete','menu'=>1,'parm'=>'','token'=>time(),'icon'=>'fa fa-heartbeat','lang'=>'','lang_pid'=>0],
+                        false,  //是否允许重复
+                        ['value'=>'admin/Mysql/delete'], //判断条件
+                    ];
+                }
+            }
+        }
+        return $ret_data;
+    }
 
 
 
