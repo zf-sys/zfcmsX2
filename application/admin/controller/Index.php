@@ -152,14 +152,14 @@ class Index extends Admin
         ];
         
         if( ZFC("webconfig.admin_logo_pic") ==''){ 
-            $admin_logo_pic = 'http://oss002.wangmingchang.com/uploads/0bf88d0eaaa69d2bd0cdcd974e190115/20211202_4279820211202091846.png';
+            $admin_logo_pic = '//storage-x1.90ckm.com/zfcms/logo.png';
         }else{ 
             $admin_logo_pic = ZFC("webconfig.admin_logo_pic");
         }
         $arr['logoInfo'] = [
             'title'=>'内容管理系统',
             'image'=>$admin_logo_pic ,
-            'href'=>'http://www.zf-sys.com/',
+            'href'=>'//www.zf-sys.com/',
         ];
         // $menu = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=','0']])->select();
         // foreach($menu as $k=>$vo){
