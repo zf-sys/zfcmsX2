@@ -27,6 +27,12 @@ if(isHTTPS()){
   $client_config['http'] = 'http';
 }
 $client_config['token'] = config("zf_auth.site_token");
+if( isset_arr_key($client_config,'token','') =='' ){
+    $site_token = time().zf_rand_str(5);
+    $client_config['token'] = $site_token;
+    extraconfig(['site_token'=>$site_token],'zf_auth');
+}
+
 ?>
 <style>
   html{background-color: #fff;}
