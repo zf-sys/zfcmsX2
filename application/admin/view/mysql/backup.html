@@ -58,6 +58,7 @@
     ,element = layui.element;
 
     $(".tijiao").on("click",function(){
+      var index = layer.load(1);
       var filename = $(".filename").val();  
       var volumesize = $(".volumesize").val();  
       var method = $("input[name='method']:checked").val();
@@ -70,6 +71,7 @@
           data:{filename:filename,volumesize:volumesize,method:method,charset:charset,hex:hex,zip:zip},
           dataType:'json',
           success:function(res){
+            layer.close(index);
             // console.log(res)
             if(res.result==1){
               layer.msg("备份成功", {icon: 1});

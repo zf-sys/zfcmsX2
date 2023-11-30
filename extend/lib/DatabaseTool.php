@@ -176,6 +176,9 @@ class DatabaseTool
         $str .= "Data:" . date('Y-m-d H:i:s', time()) . "\\r\\n*/\\r\\n";
         $str .= "SET FOREIGN_KEY_CHECKS=0;\\r\\n";
         $i = 0;
+        // dd($data);
+        // $sql = str_replace("'", '"', $sql);
+
         foreach ($tables as $table)
         {
             $str .= "-- ----------------------------\\r\\n";
@@ -186,7 +189,7 @@ class DatabaseTool
             $str .= "-- ----------------------------\\r\\n";
             $str .= "-- Records of {$table}\\r\\n";
             $str .= "-- ----------------------------\\r\\n";
-            $str .= $data[$i] . "\\r\\n";
+            $str .= str_replace("'", '"', $data[$i]) . "\\r\\n";
             $i++;
         }
         // echo file_put_contents($this->config['target'], $str) ? '备份成功!花费时间' . (microtime(true) - $this->begin) . 'ms' : '备份失败!';
@@ -202,7 +205,7 @@ class DatabaseTool
         return $this->error;
     }
 
-    public function restore($path = '')
+    public function restore($path = '',$type='')
     {
         if (!file_exists($path))
         {
@@ -212,17 +215,42 @@ class DatabaseTool
         else
         {
             $sql = $this->parseSQL($path);
+            if($type=='get_sql'){
+                return $sql;
+            }
             try
             {
-                $this->handler->exec($sql);
+                $r = $this->handler->exec($sql);
+                if($r){
+                    return true;
+                }else{
+                    return false;
+                }
                 // echo '还原成功!花费时间', (microtime(true) - $this->begin) . 'ms';
-                return true;
             }
             catch (PDOException $e)
             {
                 $this->error = $e->getMessage();
                 return false;
             }
+        }
+    }
+    public function restore_sql($sql='')
+    {
+        try
+        {
+            $r = $this->handler->exec($sql);
+            if($r || $r==0){
+                return true;
+            }else{
+                return false;
+            }
+            // echo '还原成功!花费时间', (microtime(true) - $this->begin) . 'ms';
+        }
+        catch (PDOException $e)
+        {
+            $this->error = $e->getMessage();
+            return false;
         }
     }
 

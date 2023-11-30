@@ -47,6 +47,7 @@
                   <td>
                     <button class="layui-btn btn_del layui-btn-danger layui-btn-xs  " rel="{$vo['filename']}" href="">删除</button> 
                     <a class="layui-btn layui-btn-xs " href="{:url('Mysql/restore',['name' => $vo['filename']] )}" >还原</a> 
+                    <a class="layui-btn layui-btn-xs " href="{:url('Mysql/restore',['name' => $vo['filename'],'t'=>'get_sql'] )}" >查看SQL</a> 
 
                   </td>
                 </tr>
