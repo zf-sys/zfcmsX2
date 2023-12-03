@@ -386,7 +386,7 @@ if (!function_exists('get_adv_list')) {
  */
 
 if (!function_exists('ZFC')) {
-  function ZFC($key='',$type='db',$ret_type=''){
+  function ZFC($key='',$type='db',$ret_type='',$is_cache=true){
     if($type=='db'){
       if(config('database.database')==''){
         return '';
@@ -399,7 +399,11 @@ if (!function_exists('ZFC')) {
           if(!$_key_arr[0] || !$_key_arr[1]){
             return '';
           }
-          $res =ZFTB('config')->cache($_key_arr[0],6000000)->where(['key'=>$_key_arr[0]])->value('value');
+          if($is_cache){
+            $res =ZFTB('config')->cache($_key_arr[0],6000000)->where(['key'=>$_key_arr[0]])->value('value');
+          }else{
+            $res =ZFTB('config')->where(['key'=>$_key_arr[0]])->value('value');
+          }
           $res_arr =json_decode($res,true);
           if($res_arr[$_key_arr[1]]){
             $res = $res_arr[$_key_arr[1]];
