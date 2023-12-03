@@ -32,7 +32,16 @@ class Config extends Admin
     public function index()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
-        $config = ZFC('webconfig','db','arr');
+        $_config_json = ZFTB('config')->where(['key'=>'webconfig'])->value('value');
+        // 匹配是否有html标签,如果有,查看其中是否有"  如果有修改html标签中的双引号为\"
+        $_config_json = preg_replace_callback('/<[^>]*>/',function($matches){
+            if(strpos($matches[0],'"') && strpos($matches[0],'\"')===false){
+                $matches[0] = str_replace('"','\\"',$matches[0]);
+            }
+            return $matches[0];
+        },$_config_json);
+        $config = json_decode($_config_json,true);
+
         if(request()->isPost()){
             if($config==''){
                 $config = [];

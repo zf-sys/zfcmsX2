@@ -74,8 +74,9 @@ class Mysql extends Admin
                 'password' =>  config('database.password'),
                 'database' =>config('database.database'),
                 'charset' => config('database.charset'),
-              ));
-
+            ));
+            //优化unicode编码
+            $sql = str_replace("\u","\\\u",$sql);
             $is = $db->restore_sql($sql);
             if($is){
                 return jssuccess('执行成功');

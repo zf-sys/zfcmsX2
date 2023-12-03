@@ -149,15 +149,30 @@ class DatabaseTool
         }
         $columns = substr($columns, 0, -1);
         $data = $this->query("SELECT * FROM `{$table}`");
+       
         foreach ($data as $value)
         {
             $dataSql = '';
             foreach ($value as $v)
             {
-                $dataSql .= "'{$v}',";
+                $v = str_replace("'", "@@'@@",  $v);
+                // 如果$v含有"号，则改为\"号
+                $v = str_replace('"', '@@"@@',  $v);
+
+                
+                $v = str_replace('\@@"@@', '\"',  $v);
+                $v = str_replace("\@@'@@", "\'",  $v);
+                $v = str_replace('@@"@@', '\"',  $v);
+                $v = str_replace("@@'@@", "\'",  $v);
+                $dataSql .= "'". $v."',";
             }
+            
             $dataSql = substr($dataSql, 0, -1);
             $query .= "INSERT INTO `{$table}` ({$columns}) VALUES ({$dataSql});\\r\\n";
+        }
+        if($table=='zf_config'){
+            // dd($data);
+            // dd($query);
         }
         return $query;
     }
@@ -221,7 +236,7 @@ class DatabaseTool
             try
             {
                 $r = $this->handler->exec($sql);
-                if($r){
+                if($r || $r==0){
                     return true;
                 }else{
                     return false;
