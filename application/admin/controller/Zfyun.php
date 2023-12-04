@@ -154,21 +154,31 @@ class Zfyun extends Admin
         if(!$this->is_professional_edition){
             echo str_show_tpl($this->sqb_error_msg); die;
         }else{
+            $t = input('t','');
             $_SESSION['_zf_temp_remote'] = '1';
             $this->zfauth = new ZfAuth(2);
-            $this->zfauth->plugin_check('@update_sq@','alert');
-    
-            //更新插件sql
-            $this->zfauth->_update_plugind_db(); 
-            //更新模板
-            $this->zfauth->_update_theme_db();
-            //更新插件/模板钩子
-            $this->zfauth->_update_plugind_hook(); 
-
-            //更新数据库存在,但是文件不存在的插件
-            $this->update_plugind_file();
-            
-            $this->success('更新成功');
+            if($t==1){
+                $this->zfauth->plugin_check('@update_sq@','alert');
+                return jssuccess('更新授权成功');
+            }elseif($t==2){
+                //更新插件sql
+                $this->zfauth->_update_plugind_db();  
+                return jssuccess('更新插件Sql成功');
+            }elseif($t==3){
+                //更新模板
+                $this->zfauth->_update_theme_db();
+                return jssuccess('更新模板Sql成功');
+            }elseif($t==4){
+                //更新插件/模板钩子
+                $this->zfauth->_update_plugind_hook(); 
+                return jssuccess('更新插件/模板钩子成功');
+            }elseif($t==5){
+                //更新数据库存在,但是文件不存在的插件
+                $this->update_plugind_file();
+                return jssuccess('更新数据库/文件统一性成功');
+            }else{
+                return view();
+            }
         }
        
     }
