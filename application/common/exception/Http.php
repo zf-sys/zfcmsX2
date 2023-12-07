@@ -33,7 +33,7 @@ class Http extends Handle
             if ($e instanceof \Exception) {
                 $msg = $e->getMessage();
             }
-            return json(['code' => $code, 'msg' => $msg, 'time' => time(), 'data' => null], $statuscode);
+            return json(['result'=>0,'code' => $code, 'msg' => $msg, 'time' => time(), 'data' => null], $statuscode); 
         }
 
         //其它此交由系统处理
