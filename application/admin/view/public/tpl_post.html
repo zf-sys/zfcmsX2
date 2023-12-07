@@ -53,6 +53,8 @@
         {$form_widget->form_vditor(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>$vo['theme']])|raw} 
 <?php }elseif($vo['type']=='form_ueditor'){ ?>
         {$form_widget->form_ueditor(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>$vo['theme']])|raw} 
+<?php }elseif($vo['type']=='upload_dragpic'){ ?>
+        {$form_widget->upload_dragpic(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>$vo['theme']])|raw} 
 <?php }else{ ?>
         {$form_widget->form_input(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'theme'=>$vo['theme']])|raw} 
 <?php } ?>
