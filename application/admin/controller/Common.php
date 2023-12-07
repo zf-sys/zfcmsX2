@@ -190,7 +190,7 @@ class Common extends Admin
         $dbname = input('dbname');
         $id = input('id');
         $field = input('field');
-        $value = intval(input('value'));
+        $value = input('value');
         try {
             if($dbname=='category' || $dbname=='product_cate'){
                 $res = ZFTB($dbname)->where(['cid'=> $id])->update([$field => $value]);      

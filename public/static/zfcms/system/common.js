@@ -36,7 +36,10 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 	$('.edit_sort').on('blur',function(){
 		var id = $(this).attr('item-id')
 		var  dbname= $(this).attr('item-dbname')
-		var field = 'sort'; //得到字段
+		var field = $(this).attr('item_f')
+		if(field==undefined){
+			field = 'sort'
+		}
 		var value = $(this).val(); //得到修改后的值
 		$.get("/admin/common/value_edit",{id:id,dbname:dbname,field:field,value:value},function(res){
 			if(res.result==1){

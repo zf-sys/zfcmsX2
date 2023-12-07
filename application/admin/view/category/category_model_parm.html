@@ -89,11 +89,11 @@
                 <tr>
                   <td>{$vo['id']}</td>
                   <td>
-                    <input type="text" autocomplete="off" class="layui-input edit_sort" item_f="name"  value="{$vo['name']}" item_id="{$vo['id']}"  >
+                    <input type="text" autocomplete="off" class="layui-input edit_sort" item-dbname="category_model_parm" item_f="name"  value="{$vo['name']}" item-id="{$vo['id']}"  >
                   </td>
                   <td><?php echo \Wmc1125\TpFast\ZfTool::str_in_two_array($vo['key'],$all_list)?$vo['key']:$vo['key'].'不存在,请关闭'; ?></td>
                   <td>
-                    <input type="text" autocomplete="off" class="layui-input edit_sort" item_f="value"  value="{$vo['value']}" item_id="{$vo['id']}"  >                  
+                    <input type="text" autocomplete="off" class="layui-input edit_sort" item-dbname="category_model_parm" item_f="value"  value="{$vo['value']}" item-id="{$vo['id']}"  >                  
                   </td>
                   <td>{$vo['position']==1?'左':'右'}</td>
                   <td>{$vo['type']}</td>
@@ -101,7 +101,7 @@
                   <td>{$vo['hidden']==1?'是':'否'}</td>
                   <td>{$vo['is_multi']==1?'是':'否'}</td>
                   <td>
-                    <input type="text" autocomplete="off" class="layui-input edit_sort" item_f="sort"  value="{$vo['sort']}" item_id="{$vo['id']}"  >                                      
+                    <input type="text" autocomplete="off" class="layui-input edit_sort" item-dbname="category_model_parm" item_f="sort"  value="{$vo['sort']}" item-id="{$vo['id']}"  >                                      
                   </td>
                   <td> 
                     <div class=" layui-form" lay-filter="component-form-element">        
@@ -188,19 +188,7 @@
       });
     });
 
-    $('.edit_sort').on('blur',function(){
-      var id = $(this).attr('item_id')
-      var field = $(this).attr('item_f')
-      var dbname = 'category_model_parm'
-      var value = $(this).val(); //得到修改后的值
-      $.get("{:url('admin/common/value_edit')}",{id:id,dbname:dbname,field:field,value:value},function(res){
-          if(res.result==1){
-          //layer.msg(res.msg, {icon: 1});
-          window.location.reload();
-        }
-      },"json");
-
-    })
+   
 
 
     
