@@ -26,6 +26,7 @@ class Upload extends Controller{
       $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
       $this->oss_config = ZFC('oss_config','db','arr');
       // dd($this->upload_type);
+      $this->water_type = ZFC("webconfig.water_type");
 
       if(ZFC("webconfig.site_path")!=''){
         $this->site_path = '/'.ZFC("webconfig.site_path").'/';
@@ -44,12 +45,63 @@ class Upload extends Controller{
         }
       }
     }
+    private function _water_act($file){
+      if($this->water_type!='' && $this->upload_type==''){
+        try{
+          $ext = file_format_cn($file['name']);
+          if($ext=='图片'){
+            $file_glo = $_FILES['file'];
+            $image = \think\Image::open($file['tmp_name']);
+            $img_config = ZFC("webconfig",'db','arr');
+            // dd($img_config);
+
+            $dir_water = $this->site_path.'upload/common/image'.'/water';
+            $water_name =  $dir_water.'/'.date("YmdHis",time()).'_'.mt_rand(1000,9999).'.png';
+            //判断$water_name的路径是否存在,如果不存在新建
+            if(!file_exists('.'.$dir_water)){
+              mkdir('.'.$dir_water);
+            }
+            // 给原图左上角添加水印并保存water_image.png
+            if($img_config['water_type']==1){
+                //图片水印
+                $img_config['water_position'] = ($img_config['water_position']==''?'1':$img_config['water_position']);
+                $img_config['water_clarity'] = ($img_config['water_clarity']==''?'100':$img_config['water_clarity']);
+                $img_config['water_pic_path'] = ($img_config['water_pic_path']==''?'./public/static/watch.jpg':$img_config['water_pic_path']);
+                $image->water($img_config['water_pic_path'], $img_config['water_position'],$img_config['water_clarity'])->save('.'.$water_name); 
+                $msg = '//'.request()->host().$water_name;
+                return ['code'=>1,'msg'=>$msg];
+            }elseif($img_config['water_type']==2){
+                //文字水印
+                $img_config['water_text'] = ($img_config['water_text']==''?'未设置默认文字水印':$img_config['water_text']);
+                $img_config['water_font_path'] = ($img_config['water_font_path']==''?'./public/static/1.ttf':$img_config['water_font_path']);
+                $img_config['water_text_size'] = ($img_config['water_text_size']==''?'20':$img_config['water_text_size']);
+                $img_config['water_text_color'] = ($img_config['water_text_color']==''?'20':$img_config['water_text_color']);
+                $img_config['water_position'] = ($img_config['water_position']==''?'1':$img_config['water_position']);
+                $image->text($img_config['water_text'],$img_config['water_font_path'],intval($img_config['water_text_size']),$img_config['water_text_color'],$img_config['water_position'])->save('.'.$water_name);
+                $msg = '//'.request()->host().$water_name;
+                return ['code'=>1,'msg'=>$msg];
+            }else{
+                //不加
+            }
+          }
+        }catch (Exception $e) {
+          @save_exception('upload','上传异常',['type'=>'upload_one','content'=>['data'=>$e->getMessage()]]);
+          return jserror($e->getMessage());
+        }
+      }
+      return ['code'=>0,'msg'=>''];
+    }
     public function upload_one(){
       try {
         $file = request()->file('file');
         $this->file = $file;
         $tmp_name = $file->getInfo()['tmp_name'];
         $this->_check_pic_mm($file->getInfo());
+        $water_res = $this->_water_act($file->getInfo());
+        if($water_res['code']==1){
+          $url = $water_res['msg'];
+          $this->save_upload_info($file,$url);die;
+        }
         if($this->upload_type!=''){
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
@@ -66,7 +118,7 @@ class Upload extends Controller{
         $this->save_upload_info($file,$url);
       }catch (Exception $e) {
         @save_exception('upload','上传异常',['type'=>'upload_one','content'=>['data'=>$e->getMessage()]]);
-        return jserror($e);
+        return jserror($e->getMessage());
       }
     }
     /**
@@ -112,6 +164,11 @@ class Upload extends Controller{
         $this->file = $file;
         $tmp_name = $file->getInfo()['tmp_name'];
         $this->_check_pic_mm($file->getInfo());
+        $water_res = $this->_water_act($file->getInfo());
+        if($water_res['code']==1){
+          $url = $water_res['msg'];
+          $this->save_upload_info($file,$url);die;
+        }
         if($this->upload_type!=''){
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
@@ -127,7 +184,7 @@ class Upload extends Controller{
         $this->save_upload_info($file,$url);
       }catch (Exception $e) {
         @save_exception('upload','上传异常',['type'=>'upload_one_file','content'=>['data'=>$e->getMessage()]]);
-        return jserror($e);
+        return jserror($e->getMessage());
       }
     }
 
@@ -137,6 +194,11 @@ class Upload extends Controller{
         $file = request()->file('editormd-image-file');
         $tmp_name = $file->getInfo()['tmp_name'];
         $this->_check_pic_mm($file->getInfo());
+        $water_res = $this->_water_act($file->getInfo());
+        if($water_res['code']==1){
+          $url = $water_res['msg'];
+          $this->save_upload_info($file,$url);die;
+        }
         if($this->upload_type!=''){
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
@@ -205,6 +267,11 @@ class Upload extends Controller{
         $file = request()->file('file');
         $tmp_name = $file->getInfo()['tmp_name'];
         $this->_check_pic_mm($file->getInfo());
+        $water_res = $this->_water_act($file->getInfo());
+        if($water_res['code']==1){
+          $url = $water_res['msg'];
+          $this->save_upload_info($file,$url);die;
+        }
         if($this->upload_type!=''){
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
@@ -220,7 +287,7 @@ class Upload extends Controller{
         $this->save_upload_info($file,$url,$cid);
       }catch (Exception $e) {
         @save_exception('upload','上传异常',['type'=>'upload_one_filesystem','content'=>['data'=>$e->getMessage()]]);
-        return jserror($e);
+        return jserror($e->getMessage());
       }
     }
     public function fenpian_one_upload(){
@@ -290,7 +357,7 @@ class Upload extends Controller{
         }
       }catch (Exception $e) {
         @save_exception('upload','上传异常',['type'=>'fenpian_one_upload','content'=>['data'=>$e->getMessage()]]);
-        return jserror($e);
+        return jserror($e->getMessage());
       }
     }
     public function fenpian_one_check(){

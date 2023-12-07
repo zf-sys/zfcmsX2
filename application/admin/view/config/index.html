@@ -30,6 +30,9 @@
   .layui-input-block{
     min-height: 0px;
   }
+  .water_type_hide{
+    display: none;
+  }
 </style>
 <body>
 
@@ -40,7 +43,7 @@
 
         <div class="layui-card">
           <div class="layui-card-header layuiadmin-card-header-auto">
-            <?php $menu_type = ['网站设置','系统设置','上传设置','后台配置','备份相关','JS设置','默认状态','通知','SEO','AI中转站']; ?>
+            <?php $menu_type = ['网站设置','系统设置','上传设置','水印配置','后台配置','备份相关','JS设置','默认状态','通知','SEO','AI中转站']; ?>
             <?php foreach($menu_type as $k=>$vo){ ?>
               <a class="layui-btn layui-btn-sm {$vo!=$type?'layui-btn-primary':''}" href='{:url("config/index")}?type={$vo}'>{$vo}</a>
               <?php } ?>
@@ -115,7 +118,7 @@
                 
                 <?php }elseif($type=='上传设置'){ ?>
                     <div class="layui-form-item layui-form-text">
-                      <label class="layui-form-label">上传设置</label>
+                      <label class="layui-form-label">上传设置:</label>
                       <div class="layui-input-inline" style="width: 500px;">
                         <select name="upload_type">
                           <option value="" >本地</option>
@@ -166,7 +169,7 @@
                   </div>
 
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'图片跳转显示','name'=>'get_file_out_ptype','data'=>isset_arr_key($config,'get_file_out_ptype',''),'list_arr'=>[['id'=>'','name'=>'原图'],['id'=>'slt','name'=>'缩略图']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    {$form_widget->form_select(['title'=>'图片跳转显示:','name'=>'get_file_out_ptype','data'=>isset_arr_key($config,'get_file_out_ptype',''),'list_arr'=>[['id'=>'','name'=>'原图'],['id'=>'slt','name'=>'缩略图']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
@@ -238,11 +241,11 @@
 
                 <?php }elseif($type=='JS设置'){ ?>
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'JS版本更新','name'=>'js_version_type','data'=>isset_arr_key($config,'js_version_type',''),'list_arr'=>[['id'=>'1','name'=>'固定版本'],['id'=>'time','name'=>'实时更新'],['id'=>'ymd','name'=>'每日更新'],['id'=>'ym','name'=>'每月更新'],['id'=>'y','name'=>'每年更新']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    {$form_widget->form_select(['title'=>'JS版本更新:','name'=>'js_version_type','data'=>isset_arr_key($config,'js_version_type',''),'list_arr'=>[['id'=>'1','name'=>'固定版本'],['id'=>'time','name'=>'实时更新'],['id'=>'ymd','name'=>'每日更新'],['id'=>'ym','name'=>'每月更新'],['id'=>'y','name'=>'每年更新']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">JS版本更新,仅支持使用widget_st方法引用的文件</span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'弹框类型','name'=>'js_tan_type','data'=>isset_arr_key($config,'js_tan_type',''),'list_arr'=>[['id'=>'now','name'=>'当前窗口'],['id'=>'newwindow','name'=>'新窗口打开']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    {$form_widget->form_select(['title'=>'弹框类型:','name'=>'js_tan_type','data'=>isset_arr_key($config,'js_tan_type',''),'list_arr'=>[['id'=>'now','name'=>'当前窗口'],['id'=>'newwindow','name'=>'新窗口打开']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">仅支持使用zfAdminShow方法</span></div>','theme'=>2])|raw} 
                   </div>
 
@@ -253,7 +256,7 @@
                   </div>
                 <?php }elseif($type=='通知'){ ?>
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'选择通知方式','name'=>'notice_type','data'=>isset_arr_key($config,'notice_type',''),'list_arr'=>[['id'=>'','name'=>'未配置'],['id'=>'notice_bark','name'=>'bark'],['id'=>'notice_feishu','name'=>'飞书'],['id'=>'notice_dingding','name'=>'钉钉'],['id'=>'notice_qiwei','name'=>'企业微信'],['id'=>'email','name'=>'邮箱']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    {$form_widget->form_select(['title'=>'选择通知方式:','name'=>'notice_type','data'=>isset_arr_key($config,'notice_type',''),'list_arr'=>[['id'=>'','name'=>'未配置'],['id'=>'notice_bark','name'=>'bark'],['id'=>'notice_feishu','name'=>'飞书'],['id'=>'notice_dingding','name'=>'钉钉'],['id'=>'notice_qiwei','name'=>'企业微信'],['id'=>'email','name'=>'邮箱']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">通知方式</span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
@@ -279,7 +282,7 @@
                   
                 <?php }elseif($type=='SEO'){ ?>
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'seo标题方式','name'=>'seo_title_type','data'=>isset_arr_key($config,'seo_title_type',''),'list_arr'=>[['id'=>'','name'=>'保持现状'],['id'=>'1','name'=>'尾部加系统站点名']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    {$form_widget->form_select(['title'=>'seo标题方式:','name'=>'seo_title_type','data'=>isset_arr_key($config,'seo_title_type',''),'list_arr'=>[['id'=>'','name'=>'保持现状'],['id'=>'1','name'=>'尾部加系统站点名']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">seo标题方式,用于前台的seo标题显示</span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
@@ -297,13 +300,84 @@
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'文字模型','name'=>'ai_gpt_model','data'=>isset_arr_key($config,'ai_gpt_model',''),'list_arr'=>[['id'=>'','name'=>'未选择'],['id'=>'gpt-3.5-turbo','name'=>'Openai  gpt-3.5-turbo'],['id'=>'ERNIE-Bot','name'=>'文心一言 ERNIE-Bot'],['id'=>'chatglm_lite','name'=>'智谱 chatglm_lite'],['id'=>'qwen-turbo','name'=>'通义千问 qwen-turbo']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    {$form_widget->form_select(['title'=>'文字模型:','name'=>'ai_gpt_model','data'=>isset_arr_key($config,'ai_gpt_model',''),'list_arr'=>[['id'=>'','name'=>'未选择'],['id'=>'gpt-3.5-turbo','name'=>'Openai  gpt-3.5-turbo'],['id'=>'ERNIE-Bot','name'=>'文心一言 ERNIE-Bot'],['id'=>'chatglm_lite','name'=>'智谱 chatglm_lite'],['id'=>'qwen-turbo','name'=>'通义千问 qwen-turbo']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
                     {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">KEY</a>','name'=>'ai_gpt_key','data'=>isset_arr_key($config,'ai_gpt_key',''),'theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.ai_gpt_key") </span></div>','theme'=>2])|raw}
                   </div>
+                <?php }elseif($type=='水印配置'){ ?>
+
+                  <?php if(isset($config['upload_type']) && $config['upload_type']!=''){ ?>
+                    <div class="list_item_">
+                        <span class="layui-form-item_" style="margin-left: 50px;margin-bottom: 20px;color: red; border: 1px solid red; ">
+                          水印功能仅支持本地存储方式
+                        </span>
+                    </div>
+                  <?php } ?>
+
+                  <div  class="list_item" >
+                    {$form_widget->form_select(['title'=>'水印类型:','name'=>'water_type','data'=>isset_arr_key($config,'water_type',''),'list_arr'=>[['id'=>'','name'=>'不开启'],['id'=>'1','name'=>'图片水印'],['id'=>'2','name'=>'文字水印']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_select(['title'=>'水印位置:','name'=>'water_position','data'=>isset_arr_key($config,'water_position',''),'list_arr'=>[['id'=>'1','name'=>'位置1'],['id'=>'2','name'=>'位置2'],['id'=>'3','name'=>'位置3'],['id'=>'4','name'=>'位置4'],['id'=>'5','name'=>'位置5'],['id'=>'6','name'=>'位置6'],['id'=>'7','name'=>'位置7'],['id'=>'8','name'=>'位置8'],['id'=>'9','name'=>'位置9']],'id_t'=>'id','name_t'=>'name','theme'=>4])|raw}
+                    <!-- {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw}  -->
+                    <div class="layui-col-lg5">
+                      <pre>
+                  1  2  3
+                  4  5  6
+                  7  8  9
+                      </pre>
+                    </div>
+                  </div>
+
+                  <div class="water_type1 <?php if(isset_arr_key($config,'water_type','')!=1){ echo 'water_type_hide'; } ?>">
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印图片路径</a>','name'=>'water_pic_path','data'=>isset_arr_key($config,'water_pic_path',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_pic_path") </span></div>','theme'=>2])|raw}
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印图片透明度</a>','name'=>'water_clarity','data'=>isset_arr_key($config,'water_clarity','100'),'type'=>'number','theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_clarity") </span> 0~100，默认值是100</div>','theme'=>2])|raw}
+                    </div>
+                  </div>
+                  
+                  <div class="water_type2 <?php if(isset_arr_key($config,'water_type','')!=2){ echo 'water_type_hide'; } ?>">
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印文字内容</a>','name'=>'water_text','data'=>isset_arr_key($config,'water_text',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text") </span></div>','theme'=>2])|raw}
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印文字大小</a>','name'=>'water_text_size','data'=>isset_arr_key($config,'water_text_size','30'),'type'=>'number','theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text_size") </span></div>','theme'=>2])|raw}
+                    </div>
+                    
+                    <div  class="list_item" >
+                      <!-- {$form_widget->form_input_color(['title'=>'<a class="zf-layui-tips">水印文字颜色</a>','name'=>'water_text_color','data'=>isset_arr_key($config,'water_text_color',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text_color") </span></div>','theme'=>2])|raw} -->
+                      <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg5">
+                          <label class="layui-form-label">水印文字颜色:</label>
+                          <div class="layui-input-inline" style="width: 120px;">
+                            <input type="text" name="water_text_color" value="{$config['water_text_color']|default=''}" placeholder="请选择颜色" class="layui-input" id="water_text_color">
+                          </div>
+                          <div class="layui-inline" style="left: -11px;">
+                            <div id="watch_color"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印字体路径</a>','name'=>'water_font_path','data'=>isset_arr_key($config,'water_font_path',''),'theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_font_path") </span></div>','theme'=>2])|raw}
+                    </div>
+                  </div>
+                  
+                  
+
+                  
                 <?php } ?>
 
 
@@ -325,7 +399,7 @@
 
 
   <script>
- layui.define(['form', 'upload'], function(exports){
+ layui.define(['form', 'upload','colorpicker'], function(exports){
   var $ = layui.$
   ,layer = layui.layer
   ,laytpl = layui.laytpl
@@ -333,7 +407,36 @@
   ,view = layui.view
   ,admin = layui.admin
   ,form = layui.form
+  ,colorpicker = layui.colorpicker
   ,upload = layui.upload;
+
+  // water_type
+  // water_type改变时
+  form.on('select(water_type)', function(data){  
+
+    var val=data.value;
+    if(val==1){
+      $('.water_type2').hide()
+      $('.water_type1').show()
+    }else if(val==2){
+      $('.water_type2').show()
+      $('.water_type1').hide()
+    }else{
+      $('.water_type2').hide()
+      $('.water_type1').hide()
+    }
+  })
+
+
+
+  //表单赋值
+  colorpicker.render({
+    elem: '#watch_color'
+    ,color: "{$res.water_text_color|default=''}"
+    ,done: function(color){
+      $('#water_text_color').val(color);
+    }
+  });
 
   $('.zf-layui-tips').on('click', function(){
     var othis = $(this).parent().parent().parent().find('div:eq(2)').find('.layui-input-block .zf-tip-content-hidden').html()
