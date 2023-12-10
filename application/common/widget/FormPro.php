@@ -528,6 +528,11 @@ $zf_html .=<<<INFO
       ,before: function(obj){
         var index = layer.load();
       }
+      ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
+                }
       ,done: function(res){
         layer.closeAll(); 
         if(res.result==1){
@@ -599,6 +604,11 @@ $zf_html .=<<<INFO
       ,before: function(obj){
         var index = layer.load();
       }
+      ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
+                }
       ,done: function(res){
         layer.closeAll();  
         if(res.result==1){
@@ -757,6 +767,11 @@ INFO;
                ,before: function(obj){
                 var index = layer.load();
                 }
+                ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
+                }
                ,done: function(res){
                 layer.closeAll();  
                  if(res.result==1){
@@ -792,6 +807,11 @@ INFO;
                ,url: "$this->upload_one"
                ,before: function(obj){
                 var index = layer.load();
+                }
+                ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
                 }
                ,done: function(res){
                 layer.closeAll();  
@@ -832,6 +852,11 @@ INFO;
                ,url: "$this->upload_one"
                ,before: function(obj){
                 var index = layer.load();
+                }
+                ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
                 }
                ,done: function(res){
                 layer.closeAll();  
@@ -886,6 +911,11 @@ INFO;
                ,before: function(obj){
                 var index = layer.load();
                 }
+                ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
+                }
                ,done: function(res){
                 layer.closeAll();  
                  if(res.result==1){
@@ -925,6 +955,11 @@ INFO;
                ,url: "$this->upload_one"
                ,before: function(obj){
                 var index = layer.load();
+                }
+                ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
                 }
                ,done: function(res){
                 layer.closeAll();  
@@ -966,6 +1001,11 @@ INFO;
                ,before: function(obj){
                 var index = layer.load();
                 }
+                ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
+                }
                ,done: function(res){
                 layer.closeAll();  
                  if(res.result==1){
@@ -1005,6 +1045,11 @@ INFO;
               ,url: "$this->upload_one"
               ,before: function(obj){
                 var index = layer.load();
+                }
+                ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
                 }
               ,done: function(res){
                 layer.closeAll();  
@@ -1187,6 +1232,11 @@ INFO;
       ,before: function(obj){
         var index = layer.load();
       }
+      ,error: function(index, upload){
+                  setTimeout(function(){
+                    layer.closeAll();
+                  }, 2000);
+                }
       ,done: function(res){
         layer.closeAll();  
         if(res.result==1){
@@ -2034,7 +2084,65 @@ INFO;
     }
 
 
-    
+    /**
+     * 多分组复选框
+     * 20231208新增
+     *{$form_widget->form_cate_checkbox(['title'=>'多分组','name'=>'cids','data'=>$data_res['cids'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'theme'=>1])|raw}
+     * 
+     */
+    public function form_cate_checkbox($request_data=array())
+    {
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $title = isset($request_data['title'])?$request_data['title']:'';
+        $name = isset($request_data['name'])?$request_data['name']:'';
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $data_arr = explode(',',$data);
+        $id_t = isset($request_data['id_t'])?$request_data['id_t']:'id';
+        $name_t = isset($request_data['name_t'])?$request_data['name_t']:'name';
+        $list = isset($request_data['list_arr'])?$request_data['list_arr']:[];
+        if(is_string($list)){
+          eval("\$list = ".$request_data['list_arr'].'; ');
+        }
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $zf_html='';
+        if($theme==1){
+          $zf_html = '
+        <div class="layui-card-header">'.$title.'</div>
+                  <div class="layui-card-body layui-row layui-col-space10">
+                    <div style="height: 200px;overflow: auto;">';
+                      foreach($list as $k=>$vo){
+                          $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'" title="'.$vo[$name_t].'" lay-skin="primary" ';
+                           if(in_array($vo[$id_t],$data_arr)){
+                            $zf_html.='checked';
+                           }
+                            $zf_html.=' /> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].' <br>';
+                      }
+                      $zf_html.='
+                      </div>
+                  </div>
+                  ';
+        }elseif($theme==2){
+          $zf_html = '
+          <div class="layui-form-item">
+            <label class="layui-form-label">'.$title.'</label>
+            <div class="layui-input-block">
+              <div style="height: 200px;overflow: auto;">';
+              foreach($list as $k=>$vo){
+                  $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'" title="'.$vo[$name_t].'" lay-skin="primary" ';
+                    if(in_array($vo[$id_t],$data_arr)){
+                    $zf_html.='checked';
+                    }
+                    $zf_html.=' /> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].' <br>';
+              }
+              $zf_html.='
+              </div>
+            </div>
+          </div>
+                  ';
+        }
+        
+        return $zf_html;
+    }
 
 
     
