@@ -40,9 +40,14 @@
               </div>
             </div>
              <div class="layui-inline">
-              <label class="layui-form-label">排序</label>
+              <label class="layui-form-label">类型</label>
               <div class="layui-input-block">
-                <input type="text" name="sort" placeholder="请输入" autocomplete="off" class="layui-input">
+                <!-- <input type="text" name="sort" placeholder="请输入" autocomplete="off" class="layui-input"> -->
+                <select name="type" lay-filter="type">
+                  <?php foreach(formProActionArr() as $k=>$vo){  ?>
+                    <option value="{$vo['id']}" >{$vo['name']}</option>
+                  <?php }?>
+                </select>
               </div>
             </div>
             <div class="layui-inline">
