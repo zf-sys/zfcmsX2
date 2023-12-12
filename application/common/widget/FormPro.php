@@ -746,7 +746,7 @@ INFO;
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
-               <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
@@ -776,7 +776,7 @@ INFO;
                 layer.closeAll();  
                  if(res.result==1){
                      layer.msg("上传成功", {icon: 1});
-                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').val(res.msg);
                      $('.$tpl_id').attr('src', res.msg);
                  }else{
                    layer.msg(res.msg, {icon: 2});
@@ -817,7 +817,7 @@ INFO;
                 layer.closeAll();  
                  if(res.result==1){
                      layer.msg("上传成功", {icon: 1});
-                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').val(res.msg);
                      $('.$tpl_id').attr('src', res.msg);
                  }else{
                    layer.msg(res.msg, {icon: 2});
@@ -862,7 +862,7 @@ INFO;
                 layer.closeAll();  
                  if(res.result==1){
                      layer.msg("上传成功", {icon: 1});
-                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').val(res.msg);
                      $('.$tpl_id').attr('src', res.msg);
                  }else{
                    layer.msg(res.msg, {icon: 2});
@@ -897,7 +897,7 @@ INFO;
                     <hr> <img class="$tpl_id" src="$data"  style="max-width: 100%">
                   </div>
                 </div>
-                <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+                <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
              </div>
          </div>
           <script>
@@ -920,7 +920,7 @@ INFO;
                 layer.closeAll();  
                  if(res.result==1){
                      layer.msg("上传成功", {icon: 1});
-                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').val(res.msg);
                      $('.$tpl_id').attr('src', res.msg);
                  }else{
                    layer.msg(res.msg, {icon: 2});
@@ -965,7 +965,7 @@ INFO;
                 layer.closeAll();  
                  if(res.result==1){
                      layer.msg("上传成功", {icon: 1});
-                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').val(res.msg);
                      $('.$tpl_id').attr('src', res.msg);
                  }else{
                    layer.msg(res.msg, {icon: 2});
@@ -1010,7 +1010,7 @@ INFO;
                 layer.closeAll();  
                  if(res.result==1){
                      layer.msg("上传成功", {icon: 1});
-                     $('input[name="$name"]').val(res.msg);
+                     $('.$tpl_id').val(res.msg);
                      $('.$tpl_id').attr('src', res.msg);
                  }else{
                    layer.msg(res.msg, {icon: 2});
@@ -1055,7 +1055,7 @@ INFO;
                 layer.closeAll();  
                 if(res.result==1){
                     layer.msg("上传成功", {icon: 1});
-                    $('input[name="$name"]').val(res.msg);
+                    $('.$tpl_id').val(res.msg);
                     $('.$tpl_id').attr('src', res.msg);
                 }else{
                   layer.msg(res.msg, {icon: 2});
