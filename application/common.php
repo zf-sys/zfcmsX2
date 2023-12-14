@@ -2516,6 +2516,19 @@ if(!function_exists('meta_url_route')){
     }
 }
 
+/**
+ * 20231214新增
+ * 便携生成tpl路径
+ */
+if(!function_exists('view_tpl_act')){
+    function view_tpl_act($url,$str='',$find_str='hook'){
+        if($str==''){
+            return $url;
+        }
+        $url = str_replace($find_str,$str,$url);
+        return $url;
+    }
+}
 
 //列出目录
 if(!function_exists('listdir')){
