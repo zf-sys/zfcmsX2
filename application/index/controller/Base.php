@@ -78,7 +78,13 @@ class Base extends Zfb
             $this->assign('action',$this->action);
             if(isset(request()->routeInfo()['option']['append']['template']) && request()->routeInfo()['option']['append']['template']!=''){
                 $this->template = request()->routeInfo()['option']['append']['template'];
-                $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.$this->controller.'/'.$this->action;
+                if($this->action=='hook'){
+                    $_parm_controller_arr = explode('@',request()->routeInfo()['option']['append']['controller']);
+                    if($_parm_controller_arr[0]!=''){
+                        $this->controller = $_parm_controller_arr[0];
+                    }
+                }
+                    $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.$this->controller.'/'.$this->action;
             }else{
                 $this->template = '';
                 $this->tpl =  $this->zf_tpl_suffix.'/'.$this->controller.'/'.$this->action;
