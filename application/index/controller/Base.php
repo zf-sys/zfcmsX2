@@ -77,17 +77,17 @@ class Base extends Zfb
             $this->action = strtolower(Request::action());
             $this->assign('action',$this->action);
             if(isset(request()->routeInfo()['option']['append']['template']) && request()->routeInfo()['option']['append']['template']!=''){
-                $this->template = request()->routeInfo()['option']['append']['template'];
+                $this->template = request()->routeInfo()['option']['append']['lang'].request()->routeInfo()['option']['append']['template'];
                 if($this->action=='hook'){
                     $_parm_controller_arr = explode('@',request()->routeInfo()['option']['append']['controller']);
                     if($_parm_controller_arr[0]!=''){
                         $this->controller = $_parm_controller_arr[0];
                     }
                 }
-                    $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.$this->controller.'/'.$this->action;
+                $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.str_replace(request()->routeInfo()['option']['append']['lang'],'',$this->controller) .'/'.$this->action;
             }else{
                 $this->template = '';
-                $this->tpl =  $this->zf_tpl_suffix.'/'.$this->controller.'/'.$this->action;
+                $this->tpl =  $this->zf_tpl_suffix.'/'.str_replace(request()->routeInfo()['option']['append']['lang'],'',$this->controller) .'/'.$this->action;
             }
             $this->tpl_suffix = ($this->zf_tpl_suffix==''?'':$this->zf_tpl_suffix);
             /*
