@@ -1301,9 +1301,10 @@ if (!function_exists('route_home')) {
             $controller = isset($vo[2])?$vo[2]:'';
             $menu_type = isset($vo[3])?$vo[3]:'';
             $template = isset($vo[4])?$vo[4]:'default';
+            $lang = isset($vo[5])?$vo[5]:'';
             Route::rule($router, 'index/index/hook',$type)
             ->middleware(app\common\middleware\Check::class)
-            ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
+            ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template,'lang'=>$lang]);
         }
     }
 }
