@@ -50,14 +50,15 @@ if (!function_exists('get_cate_res')) {
   }
 }
 if (!function_exists('get_cate_list')) {
-  function get_cate_list($cid,$tb='category'){
-      $menu_r =ZFTB($tb)->where(['pid'=>$cid,'status'=>1])->order("sort asc")->select();
+  function get_cate_list($cid,$tb='category',$lang=''){
+      $menu_r =ZFTB($tb)->where(['pid'=>$cid,'status'=>1,'lang'=>$lang])->order("sort asc")->select();
       return $menu_r;
   }
 }
 if (!function_exists('get_cate_list_all')) {
-  function get_cate_list_all($pid=0,$tb='category'){
+  function get_cate_list_all($pid=0,$tb='category',$lang=''){
     $where[] = ['status','=',1];
+    $where[] = ['lang','=',$lang];
     $res = ZFTB('category')->field('cid,pid,name,cname,icon,tpl_category,tpl_post,mid,sort,status,menu,form_parm')->where($where)->order("sort asc,cid asc")->select();
     $cat = new cat(array('cid', 'pid', 'name', 'cname')); 
     $list = $cat->getTree($res,$pid); 
