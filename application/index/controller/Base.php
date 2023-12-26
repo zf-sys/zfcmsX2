@@ -87,7 +87,9 @@ class Base extends Zfb
                 $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.str_replace(request()->routeInfo()['option']['append']['lang'],'',$this->controller) .'/'.$this->action;
             }else{
                 $this->template = '';
-                $this->tpl =  $this->zf_tpl_suffix.'/'.str_replace(request()->routeInfo()['option']['append']['lang'],'',$this->controller) .'/'.$this->action;
+                if(isset(request()->routeInfo()['option']['append']['lang'])){
+                    $this->tpl =  $this->zf_tpl_suffix.'/'.str_replace(request()->routeInfo()['option']['append']['lang'],'',$this->controller) .'/'.$this->action;
+                }
             }
             $this->tpl_suffix = ($this->zf_tpl_suffix==''?'':$this->zf_tpl_suffix);
             /*
