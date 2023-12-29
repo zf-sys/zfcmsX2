@@ -1831,7 +1831,10 @@ if(!function_exists('widget_st')){
                 return "<link rel='stylesheet' type='text/css' href='$_static/style/webuploader/webuploader.css?$v'>\n<script type='text/javascript' src='$_static/style/webuploader/webuploader.js?$v'></script>\n";
             }
             if(in_array($name,['ueditor'])){
-                return "<script type='text/javascript' src='$_static/style/ueditor/ueditor.config.js?$v'></script>\n<script type='text/javascript' src='$_static/style/ueditor/ueditor.all.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/ueditor/themes/default/css/ueditor.css?$v' media='all'>\n";
+                $str = '';
+                $str .= "<script type='text/javascript' src='$_static/style/ueditor/ueditor.config.js?$v'></script>\n<script type='text/javascript' src='$_static/style/ueditor/ueditor.all.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/ueditor/themes/default/css/ueditor.css?$v' media='all'>\n";
+                $str .= "<script type='text/javascript' src='$_static/style/xiumi/xiumi-ue-dialog-v5.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/xiumi/xiumi-ue-v5.css?$v' media='all'>\n";
+                return $str;
             }
             if(in_array($name,['bootstrap','bootstrap334'])){
                return "<script src='$_static/style/bootstrap/bootstrap-3.3.4.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/bootstrap/bootstrap-3.3.4.css?$v'>\n";

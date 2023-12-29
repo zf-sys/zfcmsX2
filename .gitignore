@@ -15,6 +15,7 @@ composer.lock
 /extend/zf/yun_bak/*
 
 
+
 #配置文件不需要更新
 /config/database.php
 /config/version.php
@@ -26,3 +27,5 @@ composer.lock
 /upgrade_box/*
 
 /.idea
+/docker_data
+/docker-compose.yml
