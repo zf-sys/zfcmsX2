@@ -831,7 +831,7 @@ INSERT INTO `zf_upload_cate` VALUES ('1', '分类1', '0', '1', null, null, null,
 DROP TABLE IF EXISTS `zf_user`;
 CREATE TABLE `zf_user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(25) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
   `pwd` varchar(250) NOT NULL,
   `tel` varchar(12) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
@@ -863,7 +863,7 @@ CREATE TABLE `zf_user` (
   `lang` varchar(50) NOT NULL DEFAULT '',
   `lang_pid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of zf_user
