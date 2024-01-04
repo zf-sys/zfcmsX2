@@ -13,12 +13,15 @@ use think\Db;
 try {
 	if (!is_file('./public/install.lock')) {
 		//安装系统
-		//判断伪静态是否设置
+		//判断伪静态是否设置,避免总是访问,放在安装时
 		if ($_SERVER['REQUEST_URI']=='/') {
 			try{
 				$url = get_domain().'/install';
 				$httpCode = http_request_code($url);
-				if($httpCode!=200){
+				if($httpCode==0){
+					echo str_show_tpl('友情提示:<br>请绑定可外网访问的域名 <a href="http://bbs.zf-sys.com/bbs_detail/208.html" target="_black">点击打开参考</a>');die;
+				}
+				if($httpCode==404){
 					echo str_show_tpl('友情提示:<br>请设置伪静态后再安装系统 <a href="http://bbs.zf-sys.com/bbs_detail/170.html" target="_black">点击打开参考</a>');die;
 				}
 			}catch(\Exception $e){
