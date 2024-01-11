@@ -13,6 +13,14 @@ class Fileupload extends Controller
         return view();
     }
     public function upload(){
+        $this->upload_pannel_type = ZFC("webconfig.upload_pannel_type");
+        if($this->upload_pannel_type==1){
+            //后台专享
+            if(!session('admin')){
+                $this->error('请先登录后再操作');
+            }
+        }
+
         $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
         $cid = input('cid','0');
         $t = input('t',1);
