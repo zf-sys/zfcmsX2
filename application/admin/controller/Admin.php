@@ -20,6 +20,9 @@ class Admin extends Zfb
         parent::__construct();
         $admin = session('admin');
         if(!$admin){
+            if(request()->isPost()){
+                return jserror('请先登录后再操作');
+            }
             if(request()->controller()!='Index' &&  request()->action()=='index'){
                 session('zf_login_tap_url',get_url());
             }
