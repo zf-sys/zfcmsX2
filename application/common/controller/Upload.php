@@ -106,7 +106,7 @@ class Upload extends Controller{
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
-            return jserror('上传失败');
+            return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
           $info = $file->validate(['ext'=>ZFC("webconfig.pic_ext")])->move('.'.$this->site_path.'upload/common/image');
@@ -142,13 +142,13 @@ class Upload extends Controller{
           $bl = $max_s/$size[0];
           $width = $max_s;
           $height = $size[1]*$bl;
-        //   if(!file_exists($this->site_path.'upload/common/image/')){
-        //         mkdir($this->site_path.'upload/common/image/',0777,true);
-        //     }
-    
-        //   $save_url = $this->site_path.'upload/common/image/'.sha1($file_url)."_".$width."_".$height.".".$image->type();
-        $file_url = str_replace(basename($file_url),strtolower(basename($file_url)),$file_url);
-        $save_url = str_replace('.'.$image->type(),'_thumb_'.intval($width).'_'.intval($height).'.'.$image->type(),$file_url);
+          //   if(!file_exists($this->site_path.'upload/common/image/')){
+          //         mkdir($this->site_path.'upload/common/image/',0777,true);
+          //     }
+      
+          //   $save_url = $this->site_path.'upload/common/image/'.sha1($file_url)."_".$width."_".$height.".".$image->type();
+          $file_url = str_replace(basename($file_url),strtolower(basename($file_url)),$file_url);
+          $save_url = str_replace('.'.$image->type(),'_thumb_'.intval($width).'_'.intval($height).'.'.$image->type(),$file_url);
           $save_name = ".".$save_url;
           $image->thumb($width, $height)->save($save_name);
           return (isHTTPS()?'https':'http').'://'.request()->host().$save_url;
@@ -173,7 +173,7 @@ class Upload extends Controller{
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
-            return jserror('上传方式不存在');
+            return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
           $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.'upload/common/file');
@@ -203,7 +203,7 @@ class Upload extends Controller{
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
-            return jserror('上传方式不存在');
+            return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
           $info = $file->move( '.'.$this->site_path.'upload/common/file');
@@ -276,7 +276,7 @@ class Upload extends Controller{
           $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
-            return jserror('上传方式不存在');
+            return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
           $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.'upload/common/filesystem/fp');
