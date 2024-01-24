@@ -1892,7 +1892,7 @@ if(!function_exists('widget_st')){
  */
 if(!function_exists('deal_post_message')){
     function deal_post_message($data){
-        if($data!=[]){
+        if(!is_array($data)){
             $str = aes_decrypt($data,'1234567890123456','1234567890123450');
             $data = json_decode($str,true);
             return $data;
