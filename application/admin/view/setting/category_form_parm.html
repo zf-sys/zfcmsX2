@@ -63,6 +63,7 @@
                               <option value="{$vo1['id']}" <?php if($vo['checked']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
+                          
                   
                           <select name="postion[]">
                             <?php foreach([['id'=>'left','name'=>'左边'],['id'=>'right','name'=>'右边']] as $k1=>$vo1){ ?>
@@ -76,9 +77,13 @@
                             <?php } ?>
                           </select>
                         </div>
-                        <div class="layui-col-sm4">
+                        <div class="layui-col-sm2">
                           <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
                           <textarea name="append[]" placeholder="内容">{$vo['append']|default=''}</textarea>
+                        </div>
+                        <div class="layui-col-sm2">
+                          <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
+                          <textarea name="notes[]" placeholder="页面备注内容">{$vo['notes']|default=''}</textarea>
                         </div>
                       </div>
 
@@ -127,6 +132,10 @@
                         <div class="layui-col-sm2">
                           <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
                           <textarea name="append[]" placeholder="内容">{$vo['append']|default=''}</textarea>
+                        </div>
+                        <div class="layui-col-sm2">
+                          <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
+                          <textarea name="notes[]" placeholder="页面备注内容">{$vo['notes']|default=''}</textarea>
                         </div>
                       </div>
 
@@ -228,6 +237,19 @@
               }
           })
       })
+
+      //当select checked[]的值发生改变时，触发事件
+      $('.info_tj').on('change','select[name="checked[]"]',function(){
+        var val = $(this).val();
+        console.log(val)
+        if(val==0){
+          $(this).parent().parent().find('span').addClass('line-through');
+        }else{
+          $(this).parent().parent().find('span').removeClass('line-through');
+        }
+      })
+
+      
 
 
   });

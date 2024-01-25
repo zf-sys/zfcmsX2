@@ -43,6 +43,7 @@ class Setting extends Admin
                         'comment'=>$_data['comment'][$k],
                         'theme'=>$_data['theme'][$k],
                         'append'=>$_data['append'][$k],
+                        'notes'=>$_data['notes'][$k],
                     ];
                 }
                 // dd($parm_data);
@@ -130,6 +131,11 @@ class Setting extends Admin
                         }else{
                             $_append = '';
                         }
+                        if(isset($form_parm_arr[$_name]['notes'])){
+                            $_notes = $form_parm_arr[$_name]['notes'];
+                        }else{
+                            $_notes = '';
+                        }
 
                     }else{
                         $_model = '';
@@ -138,6 +144,7 @@ class Setting extends Admin
                         $_comment = $vo['comment'];
                         $_theme = 1;
                         $_append = '';
+                        $_notes = '';
                     }
                     if($_comment==''){
                         $_checked = '0';
@@ -158,6 +165,7 @@ class Setting extends Admin
                             'type'=>$_type,
                             'theme'=>$_theme,
                             'append'=>$_append,
+                            'notes'=>$_notes,
                         ];
                     }else{
                         $list_left[] = [
@@ -170,6 +178,7 @@ class Setting extends Admin
                             'type'=>$_type,
                             'theme'=>$_theme,
                             'append'=>$_append,
+                            'notes'=>$_notes,
                         ];
                     }
                 }

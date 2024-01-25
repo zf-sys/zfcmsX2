@@ -13,6 +13,12 @@ class FormPro {
     }
 
 
+    private function append_notes($str=''){
+      if($str==''){
+        return '';
+      }
+      return '<div style="font-size: 10px;color: #ccc;">'.$str.'</div>';
+    }
     public function form_input($request_data=array())
     {
         $tpl_id='zf_'.mt_rand().'_'.time();
@@ -20,6 +26,7 @@ class FormPro {
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $type = isset($request_data['type'])?$request_data['type']:'text';
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $readonly = isset($request_data['readonly'])?$request_data['readonly']:'';
@@ -34,7 +41,8 @@ class FormPro {
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                <input  class="layui-input " type="$type" name="$name" $readonly  placeholder="$placeholder" autocomplete="off"  value="$data">
-             </div>
+                $append_notes
+              </div>
           </div>
 INFO;
         }elseif($theme==2){
@@ -42,7 +50,8 @@ INFO;
           <div class="layui-form-item">
           <label class="layui-form-label">$title:</label>
           <div class="layui-input-block">
-          <input type="$type" name="$name" $readonly  placeholder="$placeholder" autocomplete="off" class="layui-input" value="$data">
+            <input type="$type" name="$name" $readonly  placeholder="$placeholder" autocomplete="off" class="layui-input" value="$data">
+            $append_notes
           </div>
         </div>
 INFO;
@@ -57,6 +66,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $type = isset($request_data['type'])?$request_data['type']:'text';
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html = '';
@@ -70,6 +80,7 @@ INFO;
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12 fairy-tag-container">
                 <input type="text" class="fairy-tag-input" id="'.$tpl_id.'"  value="">
+                '.$append_notes.'
              </div>
              <input  class="layui-input '.$tpl_id.'" type="hidden" name="'.$name.'"  placeholder="'.$placeholder.'" autocomplete="off"  value="'.$data.'">
           </div>';
@@ -114,6 +125,7 @@ INFO;
             <label class="layui-form-label">'.$title.':</label>
             <div class="layui-input-block fairy-tag-container">
               <input type="text" class="fairy-tag-input" id="'.$tpl_id.'"  value="">
+              '.$append_notes.'
             </div>
             <input  class="layui-input '.$tpl_id.'" type="hidden" name="'.$name.'"  placeholder="'.$placeholder.'" autocomplete="off"  value="'.$data.'">
           </div>';
@@ -163,6 +175,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html='';
         if($theme==1){
@@ -173,6 +186,7 @@ INFO;
                <input  class="layui-input $tpl_id" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <div  id="$tpl_id"></div>
+                   $append_notes
                  </div> 
              </div>
          </div>
@@ -199,6 +213,7 @@ INFO;
             <input  class="layui-input $tpl_id" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
                  <div class="layui-upload">
                    <div  id="$tpl_id"></div>
+                   $append_notes
                  </div> 
             </div>
           </div>
@@ -265,6 +280,7 @@ ok
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $readonly = isset($request_data['readonly'])?$request_data['readonly']:'';
         if($readonly!=''){
@@ -277,6 +293,7 @@ ok
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
       <textarea name="$name"  $readonly placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
+      $append_notes
     </div>
 </div>
 INFO;
@@ -286,6 +303,7 @@ INFO;
         <label class="layui-form-label">$title:</label>
         <div class="layui-input-block">
           <textarea name="$name"  $readonly placeholder="$placeholder" class="layui-textarea">{$data}</textarea>
+          $append_notes
         </div>
       </div>
 INFO;
@@ -302,6 +320,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $parm_data = isset($request_data['parm_data'])?$request_data['parm_data']:['0'=>'否','1'=>'是'];
         if(is_string($parm_data)){
           eval("\$parm_data = ".$request_data['parm_data'].'; ');
@@ -317,6 +336,7 @@ INFO;
                     $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
                   }
             $zf_html.='</div>
+            '.$append_notes.'
                 </div>
               </div>';
         }elseif($theme==2){
@@ -329,6 +349,7 @@ INFO;
                   }
                 
           $zf_html.='</div>
+          '.$append_notes.'
             </div>';
         }elseif($theme==3){
           $zf_html = '
@@ -340,6 +361,7 @@ INFO;
                   $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
                 }
           $zf_html.='</div>
+          '.$append_notes.'
               </div>
             </div>';
       }elseif($theme==4){
@@ -352,6 +374,7 @@ INFO;
                 }
               
         $zf_html.='</div>
+        '.$append_notes.'
           </div>';
       }else if($theme==5){
         $zf_html = '
@@ -363,6 +386,7 @@ INFO;
                 $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
               }
         $zf_html.='</div>
+        '.$append_notes.'
             </div>
           </div>';
     }elseif($theme==6){
@@ -375,6 +399,7 @@ INFO;
               }
             
       $zf_html.='</div>
+      '.$append_notes.'
         </div>';
     }
        
@@ -386,6 +411,7 @@ INFO;
       $name = isset($request_data['name'])?$request_data['name']:'';
       $data = isset($request_data['data'])?$request_data['data']:'';
       $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+      $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
       $parm_data = isset($request_data['parm_data'])?$request_data['parm_data']:['是','否'];
       $parm_data_arr = implode('|', $parm_data);
       $zf_html='';
@@ -400,6 +426,7 @@ INFO;
               }
               $zf_html .='  lay-filter="'.$name.'_change"   >';
               $zf_html .= '</div>
+              '.$append_notes.'
             </div>
           </div>';
       }elseif($theme==2){
@@ -412,6 +439,7 @@ INFO;
               }
               $zf_html .='  lay-filter="'.$name.'_change"   >';
           $zf_html.='</div>
+          '.$append_notes.'
           </div>';
       }
       $zf_html.='<script>
@@ -437,6 +465,7 @@ INFO;
         $name_t = isset($request_data['name_t'])?$request_data['name_t']:'name';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $list = isset($request_data['list_arr'])?$request_data['list_arr']:'';
         if(is_string($list)){
           eval("\$list = ".$request_data['list_arr'].'; ');
@@ -458,6 +487,7 @@ INFO;
                       $zf_html.= ' />';
                   }
                     $zf_html.='</div>
+              '.$append_notes.'
                 </div>
               </div>';
         }elseif($theme==2){
@@ -473,6 +503,7 @@ INFO;
                 $zf_html.= ' />';
               }
           $zf_html.='</div>
+          '.$append_notes.'
           </div>';
         }
         return $zf_html;
@@ -485,6 +516,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $name = $name.'[]';
 
         if($data!='' && $data!=[]){
@@ -510,6 +542,7 @@ INFO;
                       </div>';
                   }
               $zf_html .='</div>
+              '.$append_notes.'
           </blockquote>
         </div> 
     </div>
@@ -559,6 +592,7 @@ INFO;
         $data = isset($request_data['data'])?$request_data['data']:'';
         $data_title = isset($request_data['data_title'])?$request_data['data_title']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $name = $name.'[]';
         if($data!='' && $data!=[]){
           $pics=explode(',',$data);
@@ -586,6 +620,7 @@ INFO;
                       <span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span></div>';
                   }
               $zf_html .='</div>
+              '.$append_notes.'
           </blockquote>
         </div> 
     </div>
@@ -638,6 +673,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $name = $name.'[]';
         if($data!='' && $data!=[]){
           $pics=explode(',',$data);
@@ -661,6 +697,7 @@ INFO;
                     </div>';
                 }
               $zf_html .='</div>
+              '.$append_notes.'
           </blockquote>
         </div> 
     </div>
@@ -695,6 +732,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $time_type = isset($request_data['time_type'])?$request_data['time_type']:'datetime';
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
 
@@ -704,6 +742,7 @@ INFO;
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
       <input type="text" name="$name" id="$name"  placeholder="$placeholder" autocomplete="off" class="layui-input" lay-key="1" value="{$data}">
+      $append_notes
     </div>
 </div>
  <script>
@@ -719,6 +758,7 @@ INFO;
           <label class="layui-form-label">$title:</label>
           <div class="layui-input-block">
           <input type="text" name="$name" id="$tpl_id"  placeholder="$placeholder" autocomplete="off" class="layui-input" lay-key="1" value="{$data}">
+      $append_notes
           </div>
         </div>
 <script>
@@ -739,6 +779,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html='';
         if($theme==1){
@@ -747,6 +788,7 @@ INFO;
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
@@ -792,6 +834,7 @@ INFO;
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                  </div> 
@@ -833,6 +876,7 @@ INFO;
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
             <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+            $append_notes
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
@@ -883,6 +927,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html='';
         if($theme==1){
@@ -898,6 +943,7 @@ INFO;
                   </div>
                 </div>
                 <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
              </div>
          </div>
           <script>
@@ -943,6 +989,7 @@ INFO;
                   </div>
                 </div>
                 <input  class="layui-input" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
              </div>
          </div>
           <script>
@@ -988,6 +1035,7 @@ INFO;
                   </div>
                 </div>
                 <input  class="layui-input" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
             </div>
           </div>
           <script>
@@ -1033,6 +1081,7 @@ INFO;
                   </div>
                 </div>
                 <input  class="layui-input" type="hidden" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
             </div>
           </div>
           <script>
@@ -1076,6 +1125,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html ='';
         if($theme==1){
@@ -1084,6 +1134,7 @@ INFO;
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
@@ -1116,6 +1167,7 @@ INFO;
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+               $append_notes
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                  </div> 
@@ -1144,6 +1196,7 @@ INFO;
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
               <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+              $append_notes
               <div class="layui-upload">
                 <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                 <div class="layui-upload-list">
@@ -1176,6 +1229,7 @@ INFO;
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
               <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+              $append_notes
               <div class="layui-upload">
                 <button type="button" class="layui-btn" id="$tpl_id">上传</button>
               </div> 
@@ -1210,6 +1264,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
@@ -1217,6 +1272,7 @@ INFO;
     <div class="layui-col-md12">
       <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
     </div>
+    $append_notes
     <span type="button" class="layui-btn layui-btn-sm" id="$tpl_id">上传文件</span>
 </div>
  <script>
@@ -1262,12 +1318,14 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
       <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+    $append_notes
         <div class="layui-upload">
           <button type="button" class="layui-btn" id="$tpl_id">选择文件</button>
         </div> 
@@ -1310,6 +1368,7 @@ INFO;
           eval("\$list = ".$request_data['list_arr'].'; ');
         }
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html='';
         if($theme==1){
           $zf_html = '
@@ -1324,6 +1383,7 @@ INFO;
                             $zf_html.='> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].'</option>';
                       }
                       $zf_html.='</select>
+            '.$append_notes.'
                   </div>
                   ';
 
@@ -1340,6 +1400,7 @@ INFO;
                             $zf_html.='> '.$vo.'</option>';
                       }
                       $zf_html.='</select>
+            '.$append_notes.'
                   </div>
                   ';
         }elseif($theme==3){
@@ -1355,6 +1416,7 @@ INFO;
                             $zf_html.='> '.$vo[$name_t].'</option>';
                       }
                       $zf_html.='</select>
+            '.$append_notes.'
                   </div>
                   ';
         }elseif($theme==4){
@@ -1371,6 +1433,7 @@ INFO;
                   $zf_html.='> '.$vo[$name_t].'</option>';
             }
             $zf_html.='</select>
+            '.$append_notes.'
             </div>
           </div>
                     ';
@@ -1388,6 +1451,7 @@ INFO;
                $zf_html.='> '.$vo.'</option>';
           }
           $zf_html.='</select>
+            '.$append_notes.'
             </div>
           </div>
                   ';
@@ -1405,6 +1469,7 @@ INFO;
                   $zf_html.='> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].'</option>';
             }
             $zf_html.='</select>
+            '.$append_notes.'
             </div>
           </div>
                   ';
@@ -1421,6 +1486,7 @@ INFO;
               $zf_html.='> '.$vo.'</option>';
           }
           $zf_html.='</select>
+            '.$append_notes.'
             </div>
                   ';
         }
@@ -1445,6 +1511,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html ='';
         $zf_html = <<<INFO
             <div class="layui-card-header">
@@ -1454,6 +1521,7 @@ INFO;
             </div>
             <div class="layui-card-body">
                 <script id="$tpl_id" name="$name" type="text/plain" >$data</script>
+                $append_notes
             </div>
 <script type="text/javascript"> 
 var ue = UE.getEditor("$tpl_id",{
@@ -1471,6 +1539,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html ='';
         $zf_html = <<<INFO
             <div class="layui-card-header">
@@ -1482,6 +1551,7 @@ INFO;
                 <textarea name="$name" id="$tpl_id">
                      $data
                 </textarea>
+                $append_notes
             </div>
 <script type="text/javascript"> 
 tinymce.init({
@@ -1582,6 +1652,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html ='';
         $zf_html = <<<INFO
             <div class="layui-card-header">
@@ -1592,6 +1663,7 @@ INFO;
             <div class="layui-card-body">
                 <div  class="fabu_editor " id="$tpl_id">$data</div>
                 <textarea class="$tpl_id" style="width:100%; height:200px;" name="$name" hidden="">$data</textarea>
+                $append_notes
             </div>
 <script>
 $(function (){
@@ -1674,6 +1746,7 @@ INFO;
         $name = isset($request_data['name'])?$request_data['name']:'';
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html ='';
         $zf_html = <<<INFO
             <div class="layui-card-header">
@@ -1686,6 +1759,7 @@ INFO;
                 <div id="$name">
                     <textarea name="$name" style="display: none;">$data</textarea>
                 </div>
+                $append_notes
             </div>
  <script type="text/javascript">
 var $name;
@@ -1779,6 +1853,7 @@ INFO;
       $data = isset($request_data['data'])?$request_data['data']:'';
       $vditor_num = isset($request_data['vditor_num'])?$request_data['vditor_num']:'1';
       $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+      $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
       $zf_html ='';
       $vditor_num = 'vditor_'.$vditor_num;
       $zf_html = <<<INFO
@@ -1790,6 +1865,7 @@ INFO;
           <div class="layui-card-body">
               <div id="$tpl_id"></div>
               <textarea class="$tpl_id" name="$name" hidden >$data</textarea>
+              $append_notes
           </div>
 <script>
 const $vditor_num = new Vditor("$tpl_id", {
@@ -1893,6 +1969,7 @@ INFO;
         $data = isset($request_data['data'])?$request_data['data']:'';
         $_data = isset($request_data['_data'])?$request_data['_data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $list = isset($request_data['list_arr'])?$request_data['list_arr']:[];
         $url = isset($request_data['url'])?$request_data['url']:'';
@@ -1915,6 +1992,7 @@ INFO;
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                  <div class="$tpl_id">
+                $append_notes
              </div>
          </div>
           <script>
@@ -1957,6 +2035,7 @@ INFO;
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
               <div class="$tpl_id">
+              $append_notes
             </div>
           </div>
           <script>
@@ -1999,6 +2078,7 @@ INFO;
              <div class="layui-col-md12">
                  <div class="$tpl_id">
                 <input id="$tpl_id" type="hidden" name="_$name" value="$_data" />
+                $append_notes
              </div>
          </div>
           <script>
@@ -2042,6 +2122,7 @@ INFO;
             <div class="layui-input-block">
               <div class="$tpl_id">
               <input id="$tpl_id" type="hidden" name="_$name" value="$_data" />
+              $append_notes
             </div>
           </div>
           <script>
@@ -2104,6 +2185,7 @@ INFO;
           eval("\$list = ".$request_data['list_arr'].'; ');
         }
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html='';
         if($theme==1){
           $zf_html = '
@@ -2119,6 +2201,7 @@ INFO;
                       }
                       $zf_html.='
                       </div>
+                '.$append_notes.'
                   </div>
                   ';
         }elseif($theme==2){
@@ -2136,6 +2219,7 @@ INFO;
               }
               $zf_html.='
               </div>
+              '.$append_notes.'
             </div>
           </div>
                   ';

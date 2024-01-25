@@ -44,7 +44,8 @@ class Updatesql extends Controller
             'v0.231024'=>$this->v0_231024(),
             'v0.231102'=>$this->v0_231102(),
             'v0.231129'=>$this->v0_231129(),
-            
+            'v0.240125'=>$this->v0_240125(),
+
         ]; 
     }
 
@@ -276,6 +277,7 @@ INFO;
         
     }
     public function v0_231129(){
+        $ret_data = [];
         if($this->site_version<='v0.231129' || session('v_upgsql_act')==1){
             //判断日志是否存在
             $rz_id = db('admin_role')->where(['value'=>'admin/mysql/'])->value('id');
@@ -313,6 +315,15 @@ INFO;
                 }
             }
         }
+        
+        return $ret_data;
+    }
+    public function v0_240125(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}category_model_parm like 'notes'",
+            "alter table {$this->tb_prefix}category_model_parm add notes text(0)"
+        ];
         return $ret_data;
     }
 

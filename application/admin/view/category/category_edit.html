@@ -47,13 +47,13 @@
                         <div class="layui-card">
                           <?php  foreach($form_parm_arr['left'] as $k=>$vo){ ?>
                               <?php if($vo['model']=='form_input'){ ?>
-                                {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                                {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                               <?php }elseif($vo['model']=='form_textarea'){ ?>
-                                {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                                {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                               <?php }elseif($vo['model']=='upload_pic'){ ?>
-                                {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                                {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                               <?php }elseif($vo['model']=='form_time'){ ?>
-                                {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
+                                {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'notes'=>$vo['notes'],'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
                               <?php }elseif($vo['model']=='form_select'){ ?>
                                 <?php 
                                   if($vo['name']=='pid'){ 
@@ -75,11 +75,11 @@
                                   ?>
                                   {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
                               <?php }elseif($vo['model']=='form_ueditor'){ ?>
-                                {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                                {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                                 <?php }elseif($vo['model']=='form_radio'){ ?>
-                                  {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                                  {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                               <?php }elseif($vo['model']=='upload_album'){ ?>
-                                {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                                {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                               <?php }else{ ?>
                                 模型{$vo['model']}暂未实现
                               <?php } ?>
@@ -94,13 +94,13 @@
                           <br/>
                           <?php  foreach($form_parm_arr['right'] as $k=>$vo){ ?>
                             <?php if($vo['model']=='form_input'){ ?>
-                              {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                             <?php }elseif($vo['model']=='form_textarea'){ ?>
-                              {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                             <?php }elseif($vo['model']=='upload_pic'){ ?>
-                              {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                             <?php }elseif($vo['model']=='form_time'){ ?>
-                              {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
+                              {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'])),'notes'=>$vo['notes'],'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
                             <?php }elseif($vo['model']=='form_select'){ ?>
                               <?php 
                                 if($vo['name']=='pid'){ 
@@ -122,11 +122,11 @@
                                 ?>
                                 {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
                             <?php }elseif($vo['model']=='form_ueditor'){ ?>
-                              {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                             <?php }elseif($vo['model']=='form_radio'){ ?>
-                              {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                             <?php }elseif($vo['model']=='upload_album'){ ?>
-                              {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'theme'=>$vo['theme']])|raw}
+                              {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
                             <?php }else{ ?>
                               模型{$vo['model']}暂未实现
                             <?php } ?>
@@ -140,14 +140,14 @@
                     <!-- 默认表单 -->
                     <div class="layui-col-sm9">
                       <div class="layui-card">
-                        {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'theme'=>2])|raw}
-                        <!-- {$form_widget->form_input(['title'=>'链接目标','name'=>'target','data'=>$res['target'],'theme'=>2])|raw} -->
-                        {$form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'notes'=>'','theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'notes'=>'','theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'notes'=>'','theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>2])|raw}
+                        {$form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'notes'=>'','theme'=>2])|raw}
+                        <!-- {$form_widget->form_input(['title'=>'链接目标','name'=>'target','data'=>$res['target'],'notes'=>'','theme'=>2])|raw} -->
+                        {$form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'notes'=>'','theme'=>2])|raw}
                       <br>
                       </div>
                       
@@ -155,19 +155,19 @@
                         <br>
                         <div class="layui-card-body">
                         
-                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'theme'=>1])|raw}
+                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'notes'=>'','theme'=>1])|raw}
                         </div>
                       </div>
                     </div>
                     <div class="layui-col-sm3">
                       <div class="layui-card">
-                        {$form_widget->upload_pic(['title'=>'封面图','name'=>'pic','data'=>$res['pic'],'theme'=>1])|raw}
-                        {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$res['ctime']),'theme'=>1,'time_type'=>'datetime'])|raw}
-                        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
+                        {$form_widget->upload_pic(['title'=>'封面图','name'=>'pic','data'=>$res['pic'],'notes'=>'','theme'=>1])|raw}
+                        {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$res['ctime']),'notes'=>'','theme'=>1,'time_type'=>'datetime'])|raw}
+                        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'notes'=>'','theme'=>1])|raw}
                       </div>
                       <div class="layui-card">
-                        {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'theme'=>1])|raw}
-                        {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'theme'=>3])|raw}
+                        {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'notes'=>'','theme'=>1])|raw}
+                        {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'notes'=>'','theme'=>3])|raw}
                       </div>
                       
                       {include file="public/widget_submit"}
