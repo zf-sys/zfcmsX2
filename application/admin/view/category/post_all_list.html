@@ -71,8 +71,7 @@
   <?php
 $tmpJson = '';
 if(is_array($pro_menu_list)) foreach ($pro_menu_list as $vo) {
-
-  if(if_pid($vo['cid'])){
+  if(if_pid($vo['cid'],1)){
     // 判断手否有父类
     $tmpJson .= '{ id:'.$vo['cid'].', pId:'.$vo['pid'].', name:"'.$vo['name'].'", open:false },';
   }else{

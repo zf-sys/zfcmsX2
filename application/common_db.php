@@ -348,8 +348,12 @@ if (!function_exists('get_admin_group_name')) {
  * @Time: 2019/11/13   11:07 下午
  */
 if (!function_exists('if_pid')) {
-  function  if_pid($cid){
-    $res =ZFTB('category')->where([['pid','=',$cid],['status','<>',9]])->find();
+  function  if_pid($cid,$status=''){
+    if($status==''){
+      $res =ZFTB('category')->where([['pid','=',$cid],['status','<>',9]])->find();
+    }else{
+      $res =ZFTB('category')->where([['pid','=',$cid],['status','=',$status]])->find();
+    }
     if($res){
       return true;
     }else{
