@@ -2539,13 +2539,13 @@ if(!function_exists('view_tpl_act')){
 /**
  * 20240129新增
  * 转化自定义URL
+ * change_diy_url($vo,'id','/cate/');
  */
 if(!function_exists('change_diy_url')){
-    function change_diy_url($vo,$type='category'){
-        if($vo['url']=='' && $type=='category'){
-            return '/cate/'.$vo['cid'].'.html';
-        }elseif($vo['url']=='' && $type=='post'){
-            return '/detail/'.$vo['id'].'.html';
+    function change_diy_url($vo,$id_type='id',$diy='/cate/'){
+        if($vo['url']==''){
+            $url = $diy.$vo[$id_type].'.html';
+            return $url;
         }else{
             return $vo['url'];
         }
