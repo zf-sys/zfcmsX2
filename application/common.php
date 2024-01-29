@@ -1778,7 +1778,9 @@ if(!function_exists('create_uuid')){
   {:widget_st('bootstrap')}
   {:widget_st('input-tag')}
   {:widget_st($tpl_static.'js/jquery-1.11.0.min.js','diy_js')}
-  {:widget_st($tpl_static.'css/media.css','siy_css')}
+  {:widget_st($tpl_static.'css/media.css','diy_css')}
+  {:widget_st('input-select')}
+
   */
 if(!function_exists('widget_st')){
     function widget_st($name='',$type='widget') {

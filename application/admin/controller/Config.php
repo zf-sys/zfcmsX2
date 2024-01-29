@@ -48,8 +48,13 @@ class Config extends Admin
             }
             $data = input('post.');
             foreach($data as $k=>$vo){
+                if(substr($k,0,1)=='_'){
+                    unset($data[$k]);
+                    continue;
+                }
                 $config[$k] = $vo;
             }
+            // dd($config);
             $res = ZFTB('config')->where(['key'=>'webconfig'])->cache('webconfig')->update(['value'=>json_encode($config),'token'=>time()]);
             return ZFRetMsg($res,'保存成功','保存失败');
         }
@@ -58,6 +63,8 @@ class Config extends Admin
         $_t = input('_t','');
         $this->assign("_t",$_t);
         $this->assign("config",$config);
+        $api_domain = config()['version']['api_domain'];
+        $this->assign("api_domain",$api_domain);
         return view();
     }
 

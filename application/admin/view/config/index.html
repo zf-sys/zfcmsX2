@@ -11,6 +11,8 @@
   {:widget_st('jq','js')}
   {:widget_st('layui','js')}  
   {:widget_st('common','js')} 
+  {:widget_st('input-select')}
+
 </head>
 <style>
   @media screen and (min-width:1200px) {
@@ -32,6 +34,10 @@
   }
   .water_type_hide{
     display: none;
+  }
+  .select-input .select-input-content{
+    width: 100%;
+    margin: 0;
   }
 </style>
 <body>
@@ -300,12 +306,14 @@
                   </div>
                 <?php }elseif($type=='AI中转站'){ ?>
                   <div  class="list_item" >
-                    <!-- {$form_widget->form_select(['title'=>'AI中转站','name'=>'ai_gpt_host','data'=>isset_arr_key($config,'ai_gpt_host',''),'list_arr'=>[['id'=>'','name'=>'未选择'],['id'=>'http://api-gpt.zf-sys.com','name'=>'ZFSYS中转站']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw} -->
-                    {$form_widget->form_input(['title'=>'<a href="//api-gpt.zf-sys.com/" target="_blank">AI中转站</a>','name'=>'ai_gpt_host','data'=>isset_arr_key($config,'ai_gpt_host','http://api-gpt.zf-sys.com'),'notes'=>'只支持ZFSYS中转站,<a href="//api-gpt.zf-sys.com/" target="_blank">点击跳转注册</a>','theme'=>2])|raw}
+                    {$form_widget->form_input_select(['title'=>'<a href="//api-gpt.zf-sys.com/" target="_blank">AI中转站</a>','name'=>'ai_gpt_host','data'=>isset_arr_key($config,'ai_gpt_host','http://api-gpt.zf-sys.com'),'notes'=>'只支持ZFSYS中转站,<a href="//api-gpt.zf-sys.com/" target="_blank">点击跳转注册</a>','url'=>$api_domain.'/addons/zf_store_softclientv2.api/zfcms_ai_init/t/domain','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
                   </div>
+
+                  
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'文字模型:','name'=>'ai_gpt_model','data'=>isset_arr_key($config,'ai_gpt_model',''),'list_arr'=>[['id'=>'','name'=>'未选择'],['id'=>'gpt-3.5-turbo','name'=>'Openai  gpt-3.5-turbo'],['id'=>'ERNIE-Bot','name'=>'文心一言 ERNIE-Bot'],['id'=>'chatglm_lite','name'=>'智谱 chatglm_lite'],['id'=>'qwen-turbo','name'=>'通义千问 qwen-turbo']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                    {$form_widget->form_input_select(['title'=>'文字模型:','name'=>'ai_gpt_model','data'=>isset_arr_key($config,'ai_gpt_model',''),'list_arr'=>[],'id_t'=>'id','name_t'=>'name','notes'=>'','url'=>$api_domain.'/addons/zf_store_softclientv2.api/zfcms_ai_init/t/text_ai','theme'=>4])|raw}
+                    
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
@@ -313,11 +321,11 @@
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.ai_gpt_key") </span></div>','theme'=>2])|raw}
                   </div>
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'图片模型:','name'=>'ai_gpt_pic_model','data'=>isset_arr_key($config,'ai_gpt_pic_model',''),'list_arr'=>[['id'=>'','name'=>'未选择'],['id'=>'dall-e-3','name'=>'Openai  dall-e-3']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                    {$form_widget->form_input_select(['title'=>'图片模型:','name'=>'ai_gpt_pic_model','data'=>isset_arr_key($config,'ai_gpt_pic_model',''),'list_arr'=>[],'id_t'=>'id','name_t'=>'name','notes'=>'','url'=>$api_domain.'/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'图片大小:','name'=>'ai_gpt_pic_size','data'=>isset_arr_key($config,'ai_gpt_pic_size',''),'list_arr'=>[['id'=>'','name'=>'未选择'],['id'=>'1024x1024','name'=>'1024x1024']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                    {$form_widget->form_input_select(['title'=>'图片大小:','name'=>'ai_gpt_pic_size','data'=>isset_arr_key($config,'ai_gpt_pic_size',''),'list_arr'=>[],'id_t'=>'id','name_t'=>'name','notes'=>'','url'=>$api_domain.'/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai_size','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
                   </div>
                   

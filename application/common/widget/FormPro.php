@@ -1992,8 +1992,8 @@ INFO;
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                  <div class="$tpl_id">
-                $append_notes
              </div>
+             $append_notes
          </div>
           <script>
            window.selectInput.render({
@@ -2005,7 +2005,7 @@ INFO;
               localSearch:true,
               $data_js
               hasSelectIcon: true,
-              hasInitShow: true,
+              hasInitShow: false,
               paging: true,
               remoteSearch: false,
               pageRemote: false,
@@ -2035,8 +2035,8 @@ INFO;
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
               <div class="$tpl_id">
-              $append_notes
             </div>
+            $append_notes
           </div>
           <script>
           window.selectInput.render({
@@ -2048,7 +2048,7 @@ INFO;
             localSearch:true,
             $data_js
             hasSelectIcon: true,
-            hasInitShow: true,
+            hasInitShow: false,
             paging: true,
             remoteSearch: false,
             pageRemote: false,
@@ -2078,8 +2078,8 @@ INFO;
              <div class="layui-col-md12">
                  <div class="$tpl_id">
                 <input id="$tpl_id" type="hidden" name="_$name" value="$_data" />
-                $append_notes
              </div>
+             $append_notes
          </div>
           <script>
            window.selectInput.render({
@@ -2091,7 +2091,7 @@ INFO;
               localSearch:true,
               $data_js
               hasSelectIcon: true,
-              hasInitShow: true,
+              hasInitShow: false,
               paging: true,
               remoteSearch: false,
               pageRemote: false,
@@ -2122,8 +2122,8 @@ INFO;
             <div class="layui-input-block">
               <div class="$tpl_id">
               <input id="$tpl_id" type="hidden" name="_$name" value="$_data" />
-              $append_notes
             </div>
+            $append_notes
           </div>
           <script>
           window.selectInput.render({
@@ -2135,7 +2135,7 @@ INFO;
             localSearch:true,
             $data_js
             hasSelectIcon: true,
-            hasInitShow: true,
+            hasInitShow: false,
             paging: true,
             remoteSearch: false,
             pageRemote: false,
