@@ -2536,6 +2536,21 @@ if(!function_exists('view_tpl_act')){
     }
 }
 
+/**
+ * 20240129新增
+ * 转化自定义URL
+ */
+if(!function_exists('change_diy_url')){
+    function change_diy_url($vo,$type='category'){
+        if($vo['url']=='' && $type=='category'){
+            return '/cate/'.$vo['cid'].'.html';
+        }elseif($vo['url']=='' && $type=='post'){
+            return '/detail/'.$vo['id'].'.html';
+        }else{
+            return $vo['url'];
+        }
+    }
+}
 //列出目录
 if(!function_exists('listdir')){
     function listdir($start_dir='.') {    
