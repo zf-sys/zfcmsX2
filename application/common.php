@@ -2476,7 +2476,7 @@ if(!function_exists('meta_url_route')){
                     $template = 'default';
                     Route::rule($router, 'index/index/hook?'.$parm_str,$type)
                     ->middleware(app\common\middleware\Check::class)
-                    ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
+                    ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template,'lang'=>'']);
                 }else{
                     foreach($theme_arr as $k2=>$vo2){
                         if($vo2==''){
@@ -2489,7 +2489,7 @@ if(!function_exists('meta_url_route')){
                         }
                         Route::rule($router, 'index/index/hook?'.$parm_str,$type)
                         ->middleware(app\common\middleware\Check::class)
-                        ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
+                        ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template,'lang'=>$vo2]);
                     }
                 }
             }  
