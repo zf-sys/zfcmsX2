@@ -12,6 +12,10 @@
 namespace think;
 // 加载基础文件
 require __DIR__ . '/thinkphp/base.php';
+// header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+// header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'");
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: SAMEORIGIN");
+header("X-XSS-Protection: 1; mode=block");
 // 执行应用并响应
 Container::get('app')->run()->send();
- 
