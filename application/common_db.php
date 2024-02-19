@@ -538,3 +538,32 @@ if(!function_exists('save_admin_login')){
     }
   }
 }
+
+/**
+ * 240218新增
+ * 优化获取内容列表-数组形式
+ */
+if (!function_exists('get_post_list_v2')) {
+  function get_post_list_v2($req_arr = []){
+    $where = isset_arr_key($req_arr,'where',[]);
+    $limit = isset_arr_key($req_arr,'limit',10);
+    $tb = isset_arr_key($req_arr,'tb','post');
+    $order = isset_arr_key($req_arr,'order','p.sort desc,p.id desc');
+    $field = isset_arr_key($req_arr,'field','c.*,p.*');
+    $cate_tb = isset_arr_key($req_arr,'cate_tb','category');
+    $child = isset_arr_key($req_arr,'child','');
+    $cid = isset_arr_key($req_arr,'cid','');
+    if($cate_tb=='') $cate_tb='category';
+    if($child!=''){
+      $where[] = ['p.cid','in',get_child_id($cid,$cate_tb)];
+    }else{
+      $where[] = ['p.cid','=',$cid];
+    }
+    $where[] = ['p.status','=',1];
+    $where[] = ['c.status','=',1];
+    $where[] =['p.ctime','<',time()];
+    $list =ZFTB($tb.' p')
+    ->join($cate_tb.' c','p.cid=c.cid')->field($field)->where($where)->limit($limit)->order($order)->select();
+    return $list;
+  }
+}
