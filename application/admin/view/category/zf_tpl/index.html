@@ -48,6 +48,7 @@
                 <th>链接</th>          
                 <th>排序</th>
                 <th>点击量</th>
+                <th>推荐</th>
                 <th>状态</th>
                 <th>操作</th>
               </tr> 
@@ -62,6 +63,11 @@
                     <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item-id="{$vo['id']}" item-dbname="post" >
                   </td>
                   <td>{$vo['hits']}</td>
+                  <td> 
+                    <div class=" layui-form" lay-filter="component-form-element">        
+                       <input type="checkbox" name="recommend" <?php echo $vo['recommend']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="recommend_change" item="{$vo['id']}">
+                    </div>
+                  </td>  
                   <td> 
                     <div class=" layui-form" lay-filter="component-form-element">        
                        <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
@@ -116,6 +122,19 @@
       var status = this.checked ? '1' : '0'
       console.log(id)
       $.get("{:url('admin/common/is_switch')}",{id:id,dbname:dbname,status:status},function(res){
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        },"json");
+    });
+    form.on('switch(recommend_change)', function(data){
+      var id = $(this).attr("item")
+      var dbname = 'post'
+      var status = this.checked ? '1' : '0'
+      console.log(id)
+      $.get("{:url('admin/common/is_recommend')}",{id:id,dbname:dbname,status:status},function(res){
           if(res.result==1){
             layer.msg(res.msg, {icon: 1});
           }else{
