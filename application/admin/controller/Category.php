@@ -133,6 +133,16 @@ class Category extends Admin
             $data['status'] = 0;
         }
         $data = array_merge($data,$this->common_tag);
+        //父类的部分参数
+        if($data['pid']!='0'){
+            $partent_res = db('category')->where(['cid'=>$data['pid']])->find();
+            if($data['tpl_category']==''){
+                $data['tpl_category'] = $partent_res['tpl_category'];
+            }
+            if($data['tpl_post']==''){
+                $data['tpl_post'] = $partent_res['tpl_post'];
+            }
+        }
         deal_meta_data_add('category',$data);
         
     }
