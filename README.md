@@ -49,7 +49,7 @@ Github: https://github.com/zf-sys/zfcmsX2
 
 Gitee:https://gitee.com/zf-sys/zfcmsX2
 
-反馈地址: https://support.qq.com/products/166743
+反馈地址: https://bbs.zf-sys.com
 
 
 支持子枫CMS的用户请给我们一个star _
