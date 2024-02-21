@@ -47,7 +47,9 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
   .pagination>li{width: 20px; height: 20px; border: 1px solid #e7e7e7; text-align: center; line-height: 20px; margin: 0px 2px;}
   .pagination>.active>:hover{background: #009688;border: 1px solid #009688; color: #fff}
   .pagination>.active{background: #009688;border: 1px solid #009688; color: #fff}
-  
+  .pic_tt{
+    width:100%;display:inline-block;word-wrap:break-word;white-space:normal;line-height: 16px;font-size: 12px; display:none
+  }
 </style>
 <?php $name = input('name',''); ?>
 <body style="background-color: #fff">
@@ -64,7 +66,7 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
             </div>
           </form>
           <!-- <div class="layui-col-md12"> -->
-            <div class="layui-card-body">
+            <div class="layui-card-body" style="height: 500px; overflow-y: auto;overflow-x: hidden; width:auto;">
               <table class="layui-table">
                   <colgroup>
                     <col width="60">
@@ -120,24 +122,30 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                 <div class="layui-col-md2 layui-col-xs6 layui-col-sm3 " >
                   <div class="click_item" url="{$vo['url']}" _id="{$vo['id']}" >
                     <?php if($vo['type']=='文本'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/text.png">
+                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/text.png"  >
                     <?php }elseif($vo['type']=='压缩'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/archive.png">
+                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/archive.png" >
                     <?php }elseif($vo['type']=='图片'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="{$vo['thumb']==''?$vo['url']:$vo['thumb']}">
+                      <img class="zf_item_pic" lazyLoadSrc="{$vo['thumb']==''?$vo['url']:$vo['thumb']}" >
                     <?php }elseif($vo['type']=='视频'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/interactive.png">
+                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/interactive.png" >
                     <?php }elseif($vo['type']=='音频'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/audio.png">
+                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/audio.png" >
                     <?php }elseif($vo['type']=='其他'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/default.png">
+                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/default.png" >
                     <?php } ?>
+                    <tt class="tt pic_tt">{$vo['name']}</tt>
                     <span class="loading" ></span>
                     <input type="hidden" name="files[]" value="">
                     <input type="hidden" name="ids[]" value="">
                     <!-- <input type="hidden" name="checked[]" value="0"> -->
                   </div>
                 </div>             
+                <?php } ?>
+                <?php if(count($pic_list)< 1){ ?>
+                  <div style="text-align: center;height: 500px;line-height: 500px;">
+                    暂无数据
+                  </div>
                 <?php } ?>
               </form>
             </div>
@@ -260,10 +268,10 @@ layui.use([ 'table','element','laypage','upload','form'], function(){
       ,url: "{:siteUrl('common/upload/upload_one_filesystem')}?cid={$cid}"
       ,accept: 'file' 
       ,before:function(res){
-        layui.layer.load();
+        layer.load();
       }
       ,done: function(res){
-        layui.layer.load();
+        layer.closeAll('loading');
         if(res.result==1){
             layer.msg('上传成功', {icon: 1});
             setTimeout(function(){
@@ -731,8 +739,9 @@ function Progress(value) {
     $(function(){
         $("[lazyLoadSrc]").YdxLazyLoad({
             onShow: function () {
-                $(this).next().hide()
-                // $(this).parent().next().hide()
+              // .display = 'inline-block'; //显示图片标题
+                $(this).nextAll('.pic_tt').css('display','inline-block');
+                $(this).nextAll('.loading').hide()
             }
         });
     });
