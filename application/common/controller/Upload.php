@@ -33,7 +33,34 @@ class Upload extends Controller{
       }else{
         $this->site_path = '/';
       }
+      //文件夹/文件名类型
+      $this->savefile_type = ZFC("webconfig.upload_savename_type");
+      if($this->savefile_type==''){
+        $this->savefile_type = 1;
+      }
 
+    }
+    /**
+     * 自动获取文件夹和文件名
+     * 参考
+     * 文件  $request->file('file')
+     * 文件夹 upload/common/filesystem/fp
+     */
+    private function auto_get_filename($file,$dir=''){
+      if($this->savefile_type==2){
+        // 日期文件夹+原文件名(例如: )
+        $dir = $dir.'/'.date("Ymd",time());
+        $file_name = $file->getInfo()['name'];
+      }elseif($this->savefile_type==3){
+        // 固定文件夹+原文件名(例如: )
+        $dir = $dir;
+        $file_name = $file->getInfo()['name'];
+      }else{
+        //日期文件夹+文件名
+        $dir = $dir.'/'.date("Ymd",time());
+        $file_name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
+      }
+      return ['dir_name'=>$dir,'file_name'=>$file_name];
     }
     private function _check_pic_mm($file){
       
@@ -55,7 +82,7 @@ class Upload extends Controller{
             $img_config = ZFC("webconfig",'db','arr');
             // dd($img_config);
 
-            $dir_water = $this->site_path.'upload/common/image'.'/water';
+            $dir_water = $this->site_path.'upload/common/image/water';
             $water_name =  $dir_water.'/'.date("YmdHis",time()).'_'.mt_rand(1000,9999).'.png';
             //判断$water_name的路径是否存在,如果不存在新建
             if(!file_exists('.'.$dir_water)){
@@ -102,17 +129,17 @@ class Upload extends Controller{
           $url = $water_res['msg'];
           $this->save_upload_info($file,$url);die;
         }
+        $name_temp = $this->auto_get_filename($file,$dir='upload/common/image');
         if($this->upload_type!=''){
-          $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
+          $name = $name_temp['file_name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
             return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
-          $info = $file->validate(['ext'=>ZFC("webconfig.pic_ext")])->move('.'.$this->site_path.'upload/common/image');
+          $info = $file->validate(['ext'=>ZFC("webconfig.pic_ext")])->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/image/'.$getSaveName;
-          
+          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
           
         }
         $this->save_upload_info($file,$url);
@@ -128,7 +155,6 @@ class Upload extends Controller{
      */
     public function file_upload_thumb($file_url){
         try {
-          // $file_url = $this->site_path.'upload/common/image/'.$file_path;
           $image = \think\Image::open('.'.$file_url);
           $size = $image->size(); 
           if($this->upload_pic_max_w){
@@ -169,16 +195,17 @@ class Upload extends Controller{
           $url = $water_res['msg'];
           $this->save_upload_info($file,$url);die;
         }
+        $name_temp = $this->auto_get_filename($file,$dir='upload/common/file');
         if($this->upload_type!=''){
-          $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
+          $name = $name_temp['file_name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
             return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
-          $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.'upload/common/file');
+          $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/file/'.$getSaveName;
+          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
         }
         //保存上传数据
         $this->save_upload_info($file,$url);
@@ -199,16 +226,17 @@ class Upload extends Controller{
           $url = $water_res['msg'];
           $this->save_upload_info($file,$url);die;
         }
+        $name_temp = $this->auto_get_filename($file,$dir='upload/common/mfile');
         if($this->upload_type!=''){
-          $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
+          $name = $name_temp['file_name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
             return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
-          $info = $file->move( '.'.$this->site_path.'upload/common/file');
+          $info = $file->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/file/'.$getSaveName;
+          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
         }
         $url = $this->save_upload_info($file,$url,0,true);
         if($url){
@@ -272,16 +300,17 @@ class Upload extends Controller{
           $url = $water_res['msg'];
           $this->save_upload_info($file,$url);die;
         }
+        $name_temp = $this->auto_get_filename($file,$dir='upload/common/filesystem/file');
         if($this->upload_type!=''){
-          $name = date("Ymd",time()).'_'.rand(1,99999).$file->getInfo()['name'];
+          $name = $name_temp['file_name'];
           $url = $this->oss_upload($this->upload_type,$name,$tmp_name);
           if(!$url){ 
             return jserror('上传失败,请在后台查看报错详情,网站日志->异常日志->上传异常');
           }
         }else{
-          $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.'upload/common/filesystem/fp');
+          $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/filesystem/fp/'.$getSaveName;
+          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
         }
         $cid = input('cid',0);
         $this->save_upload_info($file,$url,$cid);
@@ -428,7 +457,6 @@ class Upload extends Controller{
         if($save_data['type']=='图片'){
           //缩略图
           if($this->is_upload_compress==1){
-            //'/upload/common/image/'.
             if(is_str_find($url,request()->host())){
               $_cq_arra = explode(request()->host(),$url);
               if(isset($_cq_arra[1])){
@@ -437,12 +465,9 @@ class Upload extends Controller{
                   $save_data['thumb'] = $thumb_url;
                 }
               }
-              
             }
-            
           }
         }
-        
         $save_data['url'] = $url;
         $save_data['ctime'] = time();
         $save_data['ip'] = request()->ip();
