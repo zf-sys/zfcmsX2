@@ -49,6 +49,11 @@
 
         <div class="layui-card">
           <div class="layui-card-header layuiadmin-card-header-auto">
+            <?php if(ZFC('zf_tpl_suffix')!=''){ ?>
+            <a class="layui-btn layui-btn-sm  layui-btn-primary layui-border-green" onclick='zfAdminShow("模板配置","{:url('/i_admin')}")' >
+              当前模板配置
+            </a>
+            <?php } ?>
             <?php $menu_type = ['网站设置','系统设置','上传设置','水印配置','后台配置','备份相关','JS设置','默认状态','通知','SEO','AI中转站']; ?>
             <?php foreach($menu_type as $k=>$vo){ ?>
               <a class="layui-btn layui-btn-sm {$vo!=$type?'layui-btn-primary':''}" href='{:url("config/index")}?type={$vo}'>{$vo}</a>
@@ -189,6 +194,10 @@
 
                   <div  class="list_item" >
                     {$form_widget->form_select(['title'=>'上传面板使用范围:','name'=>'upload_pannel_type','data'=>isset_arr_key($config,'upload_pannel_type',''),'list_arr'=>[['id'=>'','name'=>'无限制'],['id'=>'1','name'=>'仅限后台后台,需要登录后才能用上传管理面板']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_select(['title'=>'上传文件名规则:','name'=>'upload_savename_type','data'=>isset_arr_key($config,'upload_savename_type','1'),'list_arr'=>[['id'=>'1','name'=>'日期文件夹+文件名随机'],['id'=>'2','name'=>'日期文件夹+原文件名'],['id'=>'3','name'=>'固定文件夹+原文件名']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
                   </div>
 
@@ -398,7 +407,7 @@
                       </div>
                     </div>
                     <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印字体路径</a>','name'=>'water_font_path','data'=>isset_arr_key($config,'water_font_path',''),'notes'=>'','theme'=>2])|raw}
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印字体路径</a>','name'=>'water_font_path','data'=>isset_arr_key($config,'water_font_path',''),'notes'=>'例如:  ./public/static/msyh.ttc','theme'=>2])|raw}
                       {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_font_path") </span></div>','theme'=>2])|raw}
                     </div>
                   </div>
