@@ -29,7 +29,7 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>标题</th>
+                <th>备份路径</th>
                 <th>创建时间</th>
                 <th>大小</th>
                 <th>操作</th>
@@ -43,7 +43,7 @@
                   <td>
                     {$vo['ctime']|date='Y-m-d H:i:s'}
                   </td>
-                  <td><?php echo getRealSize($vo['size']);?></td>
+                  <td>{$vo['size']}</td>
                   <td>
                     <button class="layui-btn btn_del layui-btn-danger layui-btn-xs  " rel="{$vo['filename']}" href="">删除</button> 
                     <a class="layui-btn layui-btn-xs " href="{:url('Mysql/restore',['name' => $vo['filename']] )}" >还原</a> 

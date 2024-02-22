@@ -22,9 +22,9 @@
                       <form class="layui-form info_tj" method="post">
                         <div class="layui-row layui-col-space10 layui-form-item">
                           <div class="layui-col-lg6">
-                            <label class="layui-form-label">备份文件名:</label>
+                            <label class="layui-form-label">备份自定义目录:</label>
                             <div class="layui-input-block">
-                              <input type="text" name="filename" placeholder="" autocomplete="off" class="layui-input filename" value="<?php echo date('Ymd',time()); ?>.sql">
+                              <input type="text" name="filename_dir" placeholder="" autocomplete="off" class="layui-input filename_dir" value="<?php echo date('YmdHis',time()); ?>">
                             </div>
                           </div>
                           <div class="layui-col-lg6">
@@ -59,7 +59,7 @@
 
     $(".tijiao").on("click",function(){
       var index = layer.load(1);
-      var filename = $(".filename").val();  
+      var filename_dir = $(".filename_dir").val();  
       var volumesize = $(".volumesize").val();  
       var method = $("input[name='method']:checked").val();
       var charset = $("input[name='charset']:checked").val();
@@ -68,17 +68,17 @@
       $.ajax({
           type:'post',
           url:"{:url('mysql/backup')}",
-          data:{filename:filename,volumesize:volumesize,method:method,charset:charset,hex:hex,zip:zip},
+          data:{filename_dir:filename_dir,volumesize:volumesize,method:method,charset:charset,hex:hex,zip:zip},
           dataType:'json',
           success:function(res){
             layer.close(index);
             // console.log(res)
             if(res.result==1){
-              layer.msg("备份成功", {icon: 1});
+              layer.msg(res.msg, {icon: 1});
               return
               // http://localhost/zfadmin/public/admin.php/mysql/backup
             }else{
-              layer.msg("备份失败", {icon: 1});
+              layer.msg(res.msg, {icon: 2});
               return
             }
             

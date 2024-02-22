@@ -1,6 +1,5 @@
 <?php
 namespace app\admin\controller;
-use lib\DatabaseTool;
 use lib\File;
 use think\facade\Request;
 use think\Db;
@@ -21,7 +20,14 @@ class Mysql extends Admin
             mkdir($this->db_dir, 0777, true);
         }
         $files = new File();
-        $list = $files->listFile('./backup/db/');
+        $list = $files->listFile($this->db_dir);
+        foreach($list as $k=>$v){
+            if($v['type']=='dir'){
+                $list[$k]['size'] = getRealSize($files->get_size($this->db_dir.$v['filename']));
+            }else{
+                $list[$k]['size'] = getRealSize($v['size']);
+            }
+        }
         $this->assign('list', $list);
 	    return view();
 	}
@@ -30,26 +36,23 @@ class Mysql extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca,1);   
     	if(request()->isPost()){
-    		$data['filename'] = input('post.filename');
-    		if (empty($data['filename'])) {
-    		    $data['filename'] = date('Ymd', time()).'.sql';
+    		$data['filename_dir'] = input('post.filename_dir');
+    		if (empty($data['filename_dir'])) {
+    		    $data['filename_dir'] = date('YmdHis', time());
 			}
-            // $data['filename'] =time();
-			// error_reporting(E_ALL ^ E_DEPRECATED);
-            $db = new DatabaseTool(array(
-                'host' => config('database.hostname'),
-                'port' => 3306,
-                'user' => config('database.username'),
-                'password' =>  config('database.password'),
-                'database' =>config('database.database'),
-                'charset' => config('database.charset'),
-                'target' => $this->db_dir.$data['filename']
-              ));
-            $is_back = $db->backup();
-            if($is_back){
-                return jssuccess('备份完成');die;
-            }else{
+            //判断$data['filename_dir']目录是否规范
+            if(!preg_match('/^[0-9a-zA-Z_]+$/',$data['filename_dir'])){
+                return jserror('目录名不规范,只能是数字字母下划线');
+            }
+            //Dbbak.php
+            $db = new \lib\Dbbak(config('database.hostname'),config('database.username'),config('database.password'),config('database.database'),config('database.charset'),$this->db_dir.$data['filename_dir']);
+            //查找数据库内所有数据表
+            $tableArry = $db->getTables();
+            //备份并生成sql文件
+            if(!$db->exportSql($tableArry)){
                 return jserror('备份失败');die;
+            }else{
+                return jssuccess('备份完成');die;
             }
     	}
 	    return view();
@@ -66,62 +69,30 @@ class Mysql extends Admin
             if(!$sql){
                 return jserror('参数错误');
             }
-            // $is = Db::execute($sql);
-            $db = new DatabaseTool(array(
-                'host' => config('database.hostname'),
-                'port' => 3306,
-                'user' => config('database.username'),
-                'password' =>  config('database.password'),
-                'database' =>config('database.database'),
-                'charset' => config('database.charset'),
-            ));
-            //优化unicode编码
-            $sql = str_replace("\u","\\\u",$sql);
-            $is = $db->restore_sql($sql);
-            if($is){
-                return jssuccess('执行成功');
+            $db = new \lib\Dbbak(config('database.hostname'),config('database.username'),config('database.password'),config('database.database'),config('database.charset'),$this->db_dir.$name);
+            if($db->exec($sql)){
+                return jssuccess('Sql执行成功');
             }else{
-                return jserror('执行失败');
+                return jserror('Sql执行失败');
             }
-            dd($sql);
 
         }
-
-
-
 
         if(!$name){
             $this->error('参数错误');
         }
-    	// error_reporting(E_ALL ^ E_DEPRECATED);
-        $db = new DatabaseTool(array(
-            'host' => config('database.hostname'),
-            'port' => 3306,
-            'user' => config('database.username'),
-            'password' =>  config('database.password'),
-            'database' =>config('database.database'),
-            'charset' => config('database.charset'),
-            'target' => $this->db_dir.'还原备份文件_'.$name
-          ));
+        $db = new \lib\Dbbak(config('database.hostname'),config('database.username'),config('database.password'),config('database.database'),config('database.charset'),$this->db_dir.$name);
         if($t=='get_sql'){
-            $sql = $db->restore($this->db_dir.$name,'get_sql');
-            // $sql_html = "<textarea style='padding:20px;width:100%;height:90%;border:1px solid #ccc;font-size:14px;' readonly='readonly' >";
-            // $sql_html .= $sql;
-            // $sql_html .= "</textarea>";
-            // $sql_html .= "<br><div style='margin-top:20px;text-align:center;'><a href='/admin/Mysql/index'>返回上一级</a></div>";
+            $sql = $db->importSql($this->db_dir.$name,'get_sql');
             $this->assign('sql',$sql);
             return view();
         }
-        $is_back = $db->backup();
-        if(!$is_back){
-            $this->success('备份失败');
-        }
-        $is_restore = $db->restore($this->db_dir.$name);
-        if($is_restore){
+        if($db->importSql($this->db_dir.$name)){
             $this->success('还原成功');
         }else{
             $this->error('还原失败');
         }
+        
     }
     public function delete()
     {
@@ -129,7 +100,9 @@ class Mysql extends Admin
         $name =input("name");
         if($name) {
             $files = new File();
-            $is_del = unlink($this->db_dir.$name);
+            // $is_del = unlink($this->db_dir.$name.'/all.sql.php');
+            //删除文件夹
+            $is_del = $files->del_dir($this->db_dir.$name);
             if($is_del){
                 return jssuccess("数据库备份文件删除成功！");
             }else{
