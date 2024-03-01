@@ -25,44 +25,82 @@
   <div class="layui-fluid">
     <div class="">
       <div class="layui-row">
-        <div class="layui-col-md3">
-          <div class="layui-card zf_box">
-            <span class="zf_act" data-t="del_temp">删除缓存</span>
+        <div class="layui-col-md6">
+          <div class="layui-card ">
+            <p>清除缓存</p>
+            <table class="layui-table">
+              <thead>
+                <tr>
+                  <th>操作</th>
+                  <th>说明</th>
+                </tr> 
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_temp">删除缓存</span></td>
+                  <td>删除/runtime/temp目录下所有文件</td>
+                </tr>
+                <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_log">删除日志</span></td>
+                  <td>删除/runtime/log目录下所有文件</td>
+                </tr>
+                <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_backup">删除备份</span></td>
+                  <td>删除/backup目录下所有文件</td>
+                </tr>
+                <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_upgrade">删除升级文件</span></td>
+                  <td>删除/upgrade目录下所有文件</td>
+                </tr>
+                <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_theme_cache">删除模板缓存</span></td>
+                  <td>删除模板缓存</td>
+                </tr>
+                <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_zfcms">清除系统授权</span></td>
+                  <td>清除系统授权</td>
+                </tr>
+                <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_cache_aiauth">清除AI缓存</span></td>
+                  <td>清除AI缓存</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div class="layui-col-md3">
-          <div class="layui-card zf_box">
-            <span class="zf_act" data-t="del_log">删除日志</span>
+        <div class="layui-col-md6">
+          <div class="layui-card ">
+            <p>下载样式</p>
+            <table class="layui-table">
+              <thead>
+                <tr>
+                  <th>操作</th>
+                  <th>说明</th>
+                </tr> 
+              </thead>
+              <tbody>
+                <?php foreach($ys_list as $k=>$v){ ?>
+                <tr>
+                  <td>
+                    {$v['name']}<br>
+                    <?php if(!is_dir($v['dir']) ){ ?>
+                      <span class="layui-btn layui-btn-xs zf_act_static" data-t="down_static" data-static_name="{$v['static_name']}">下载到本地</span>
+                    <?php }else{ ?>
+                      <span class="layui-btn layui-btn-xs zf_act_static layui-bg-red" data-t="del_static" data-static_name="{$v['static_name']}">删除本地文件</span>
+                    <?php } ?>
+                  </td>
+                  <td>{$v['msg']}</td>
+                </tr>
+                <?php } ?>
+                
+              </tbody>
+            </table>
           </div>
         </div>
-        <div class="layui-col-md3">
-          <div class="layui-card zf_box">
-            <span class="zf_act" data-t="del_backup">删除备份</span>
-          </div>
-        </div>
-        <div class="layui-col-md3">
-          <div class="layui-card zf_box">
-            <span class="zf_act" data-t="del_upgrade">删除升级文件</span>
-          </div>
-        </div>
-        <div class="layui-col-md3">
-          <div class="layui-card zf_box">
-            <span class="zf_act" data-t="del_theme_cache">删除模板缓存</span>
-          </div>
-        </div>
-        <div class="layui-col-md3">
-          <div class="layui-card zf_box">
-            <span class="zf_act" data-t="del_zfcms">清除系统授权</span>
-          </div>
-        </div>
-        <div class="layui-col-md12">
-        </div>
-        <div class="layui-col-md3">
-          <div class="layui-card zf_box">
-            <span class="zf_act" data-t="del_cache_aiauth">清除AI缓存</span>
-          </div>
-        </div>
+      
       </div>
+      
+
     </div>
   </div>
   
@@ -106,6 +144,30 @@
           layer.close(index)
           if(res.result==1){
             layer.msg(res.msg,{icon:1});
+          }else{
+            layer.msg(res.msg,{icon:2});
+          }
+        },'json')
+      }, function(){
+        
+      });
+    })
+    $('.zf_act_static').click(function(){
+      var t = $(this).data('t');
+      var static_name = $(this).data('static_name');
+      var name = '确定要下载到本地吗?';
+      var url = "?t="+t+'&static_name='+static_name;
+      layer.confirm(name, {
+        btn: ['确定','取消'] //按钮
+      }, function(){
+        var index = layer.load(1);
+        $.get(url,function(res){
+          layer.close(index)
+          if(res.result==1){
+            layer.msg(res.msg,{icon:1});
+            setTimeout(function(){
+              window.location.reload();
+            },1000)
           }else{
             layer.msg(res.msg,{icon:2});
           }

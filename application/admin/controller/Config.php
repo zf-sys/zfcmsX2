@@ -14,6 +14,8 @@ use think\facade\Request;
 use think\Db;
 use think\facade\Config as TConfig;
 use Wmc1125\TpFast\Category;
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 class Config extends Admin
 {
     public function __construct (){
@@ -798,7 +800,213 @@ class Config extends Admin
                 return jserror('操作失败');
             }
         }
+
+        $ys_list = [
+            'autosize'=>[
+              'name'=>'自动大小',
+              'dir'=>'./public/static/zfcms/style/autosize',
+              'static_name'=>'autosize',
+              'msg'=>'这个样式可以自动适应屏幕大小 路径:./public/static/zfcms/style/autosize'
+            ],
+            'echarts'=>[
+                'name'=>'echarts插件',
+                'dir'=>'./public/static/zfcms/style/echarts',
+                'static_name'=>'echarts',
+                'msg'=>'图表插件 路径:./public/static/zfcms/style/echarts'
+            ],
+            'bootstrap'=>[
+                'name'=>'bootstrap',
+                'dir'=>'./public/static/zfcms/style/bootstrap',
+                'static_name'=>'bootstrap',
+                'msg'=>'bootstrap样式 路径:./public/static/zfcms/style/bootstrap'
+            ],
+            'wangEditor'=>[
+                'name'=>'wangEditor',
+                'dir'=>'./public/static/zfcms/style/wangEditor',
+                'static_name'=>'wangEditor',
+                'msg'=>'富文本编辑器    路径:./public/static/zfcms/style/wangEditor'
+            ],
+            'ztree'=>[
+                'name'=>'ztree',
+                'dir'=>'./public/static/zfcms/style/ztree',
+                'static_name'=>'ztree',
+                'msg'=>'树形菜单   路径:./public/static/zfcms/style/ztree'
+            ],
+            'tinymce515'=>[
+                'name'=>'tinymce515',
+                'dir'=>'./public/static/zfcms/style/tinymce515',
+                'static_name'=>'tinymce515',
+                'msg'=>'富文本编辑器 路径:./public/static/zfcms/style/tinymce515'
+            ],
+            'webuploader'=>[
+                'name'=>'webuploader',
+                'dir'=>'./public/static/zfcms/style/webuploader',
+                'static_name'=>'webuploader',
+                'msg'=>'文件上传 路径:./public/static/zfcms/style/webuploader'
+            ],
+            'xiumi'=>[
+                'name'=>'xiumi',
+                'dir'=>'./public/static/zfcms/style/xiumi',
+                'static_name'=>'xiumi',
+                'msg'=>'秀米编辑器 路径:./public/static/zfcms/style/xiumi'
+            ],
+            'layui'=>[
+                'name'=>'layui',
+                'dir'=>'./public/static/zfcms/style/layui',
+                'static_name'=>'layui',
+                'msg'=>'layui样式 路径:./public/static/zfcms/style/layui'
+            ],
+            'ueditor'=>[
+                'name'=>'ueditor',
+                'dir'=>'./public/static/zfcms/style/ueditor',
+                'static_name'=>'ueditor',
+                'msg'=>'百度编辑器 路径:./public/static/zfcms/style/ueditor'
+            ],
+            'input-select'=>[
+                'name'=>'input-select',
+                'dir'=>'./public/static/zfcms/style/input-select',
+                'static_name'=>'input-select',
+                'msg'=>'下拉选择 路径:./public/static/zfcms/style/input-select'
+            ],
+            'meditor'=>[
+                'name'=>'meditor',
+                'dir'=>'./public/static/zfcms/style/meditor',
+                'static_name'=>'meditor',
+                'msg'=>'markdown编辑器 路径:./public/static/zfcms/style/meditor'
+            ],
+            'viewer'=>[
+                'name'=>'viewer',
+                'dir'=>'./public/static/zfcms/style/viewer',
+                'static_name'=>'viewer',
+                'msg'=>'图片查看器 路径:./public/static/zfcms/style/viewer'
+            ],
+            'laydate'=>[
+                'name'=>'laydate',
+                'dir'=>'./public/static/zfcms/style/laydate',
+                'static_name'=>'laydate',
+                'msg'=>'日期选择器 路径:./public/static/zfcms/style/laydate'
+            ],
+            'layer'=>[
+                'name'=>'layer',
+                'dir'=>'./public/static/zfcms/style/layer',
+                'static_name'=>'layer',
+                'msg'=>'弹出层 路径:./public/static/zfcms/style/layer'
+            ],
+            'input-tag'=>[
+                'name'=>'input-tag',
+                'dir'=>'./public/static/zfcms/style/input-tag',
+                'static_name'=>'input-tag',
+                'msg'=>'标签输入 路径:./public/static/zfcms/style/input-tag'
+            ],
+            'fcup'=>[
+                'name'=>'fcup',
+                'dir'=>'./public/static/zfcms/style/fcup',
+                'static_name'=>'fcup',
+                'msg'=>'文件上传 路径:./public/static/zfcms/style/fcup'
+            ],
+            'jquery-1.8.3'=>[
+                'name'=>'jquery-1.8.3',
+                'dir'=>'./public/static/zfcms/style/jquery-1.8.3',
+                'static_name'=>'jquery-1.8.3',
+                'msg'=>'jquery-1.8.3 路径:./public/static/zfcms/style/jquery-1.8.3'
+            ],
+            'tailwind'=>[
+                'name'=>'tailwind',
+                'dir'=>'./public/static/zfcms/style/tailwind',
+                'static_name'=>'tailwind',
+                'msg'=>'tailwind 路径:./public/static/zfcms/style/tailwind'
+            ],
+
+            // "autosize","bootstrap","wangEditor","ztree","images","tinymce515","webuploader","xiumi","layui","ueditor","input-select","meditor","viewer","laydate","layer","input-tag",'fcup','jquery-1.8.3'
+            
+        ];
+        if($t=='down_static'){
+            $static_name = input('static_name','');
+            if(!isset($ys_list[$static_name])){
+                return jserror('参数错误');
+            }
+            $static_res = $ys_list[$static_name];
+            $url = config('version.api_domain').'/addons/zf_store_softclientv2.api/down_static?name='.$static_res['static_name'].'&site_version='.config('version.version');
+            $client = new Client([
+                'headers'=>[
+                    'User-Agent' => 'okhttp/3.8.1',
+                    'Host' => 'api.aa.com',
+                    'Connection' => 'Keep-Alive',
+                    'Accept-Encoding' => 'gzip',
+                    "Content-type" => 'application/json',
+                    "Origin" => get_domain(),
+                ]
+            ]);
+            try{
+                $result = $client->get($url);
+                $static_url = $result->getBody()->getContents();
+            } catch (\GuzzleHttp\Exception\ServerException $e) {
+                return jserror('获取下载地址失败1');
+            } catch (\GuzzleHttp\Exception\ClientException $e) {
+                return jserror('获取下载地址失败2');
+            }catch (Exception $e) {
+                return jserror('获取下载地址失败');
+            }
+            // 下载到runtime/static/样式名, 然后解压并覆盖
+            $_name =$static_res['static_name'];
+            // $static_content = file_get_contents($static_url);
+            try{
+                $static_result = $client->get($static_url);
+                $static_content = $static_result->getBody()->getContents();
+            } catch (\GuzzleHttp\Exception\ServerException $e) {
+                return jserror('获取下载内容失败1');
+            } catch (\GuzzleHttp\Exception\ClientException $e) {
+                return jserror('获取下载内容失败2');
+            } catch (Exception $e) {
+                return jserror('获取下载内容失败');
+            } 
+            //清空目录
+            $file = new \lib\File();
+            $file->del_dir('./runtime/statics/'.$static_res['static_name']);
+            if(!is_dir('./runtime/statics/'.$static_res['static_name'])){
+                mkdir('./runtime/statics/'.$static_res['static_name'],0777,true);
+            }
+            if(!file_put_contents('./runtime/statics/'.$static_res['static_name'].'/down_file.zip',$static_content)){
+                return jserror('./runtime/statics/'.$static_res['static_name'].'/down_file.zip 无写入权限');
+            }
+            //解压
+            $zip = new \ZipArchive();
+            if ($zip->open('./runtime/statics/'.$static_res['static_name'].'/down_file.zip') === TRUE) {
+                $zip->extractTo('./runtime/statics/'.$static_res['static_name']);
+                $zip->close();
+            } else {
+                return jserror('解压失败');
+            }
+            //删除zip
+            unlink('./runtime/statics/'.$static_res['static_name'].'/down_file.zip');
+            // 转移
+            $is_copy = $file->copy_dir('./runtime/statics/'.$static_res['static_name'],$static_res['dir']);
+            if($is_copy){
+                $file->del_dir('./runtime/statics/'.$static_res['static_name']);
+                return jssuccess('操作成功');
+            }else{
+                return jserror('操作失败');
+            }
+        }
+        if($t=='del_static'){
+            $static_name = input('static_name','');
+            if(!isset($ys_list[$static_name])){
+                return jserror('参数错误');
+            }
+            $static_res = $ys_list[$static_name];
+            $file = new \lib\File();
+            $r = $file->del_dir($static_res['dir']);
+            if($r){
+                return jssuccess('操作成功');
+            }else{
+                return jserror('操作失败');
+            }
+        }
         
+        
+        
+        $this->assign('ys_list',$ys_list);
+
 
 
         return view();
