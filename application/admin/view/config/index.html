@@ -274,6 +274,15 @@
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">仅支持使用zfAdminShow方法</span></div>','theme'=>2])|raw} 
                   </div>
 
+                  <div  class="list_item" >
+                    {$form_widget->form_radio(['title'=>'开启外部样式','name'=>'is_web_static','data'=>isset_arr_key($config,'is_web_static','0'),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'是否使用外部样式  css/js ','theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_web_static")</span>是否使用外部样式</div>','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input_select(['title'=>'外部样式引用','name'=>'web_static_host','data'=>isset_arr_key($config,'web_static_host',''),'notes'=>'','url'=>$api_domain.'/addons/zf_store_softclientv2.api/zfcms_web_static/t/domain','notes'=>'  仅限于/public/static/zfcms/style下的静态文件  ','theme'=>4])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
+                  </div>
+
                 <?php }elseif($type=='默认状态'){ ?>
                   <div  class="list_item" >
                     {$form_widget->form_radio(['title'=>'栏目新增状态','name'=>'category_status','data'=>isset_arr_key($config,'category_status',''),'parm_data'=>['0'=>'关闭','1'=>'打开'],'notes'=>'','theme'=>2])|raw}
@@ -411,7 +420,6 @@
                       {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_font_path") </span></div>','theme'=>2])|raw}
                     </div>
                   </div>
-                  
                   
 
                   
