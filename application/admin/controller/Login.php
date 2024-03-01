@@ -57,7 +57,7 @@ class Login extends Controller
         if($init_sql!=1){
             $this->redirect('/common/base/upgrade_sys_sql');
         }
-        return view('login/index3');
+        return view('login/index');
     }
     
    
