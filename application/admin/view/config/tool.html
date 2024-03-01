@@ -66,6 +66,32 @@
                 </tr>
               </tbody>
             </table>
+            <p>功能下载</p>
+            <table class="layui-table">
+              <thead>
+              <tr>
+                <th>操作</th>
+                <th>说明</th>
+              </tr>
+              </thead>
+              <tbody>
+
+                <?php foreach($addons_list as $k=>$v){ ?>
+                <tr>
+                  <td>
+                    {$v['name']}<br>
+                    <?php if(!is_dir($v['dir']) ){ ?>
+                    <span class="layui-btn layui-btn-xs zf_act_addons" data-t="down_addons" data-addons_name="{$v['addons_name']}">下载到本地</span>
+                    <?php }else{ ?>
+                    <span class="layui-btn layui-btn-xs zf_act_addons layui-bg-red" data-t="del_addons" data-addons_name="{$v['addons_name']}">删除本地文件</span>
+                    <?php } ?>
+                  </td>
+                  <td>{$v['msg']}</td>
+                </tr>
+                <?php } ?>
+
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="layui-col-md6">
@@ -97,8 +123,7 @@
             </table>
           </div>
         </div>
-      
-      </div>
+
       
 
     </div>
@@ -155,7 +180,11 @@
     $('.zf_act_static').click(function(){
       var t = $(this).data('t');
       var static_name = $(this).data('static_name');
-      var name = '确定要下载到本地吗?';
+      if(t=='down_static'){
+        var name = '确定要下载到本地吗?';
+      }else{
+        var name = '确定要删除本地文件吗?';
+      }
       var url = "?t="+t+'&static_name='+static_name;
       layer.confirm(name, {
         btn: ['确定','取消'] //按钮
@@ -176,6 +205,34 @@
         
       });
     })
+   $('.zf_act_addons').click(function(){
+     var t = $(this).data('t');
+     var addons_name = $(this).data('addons_name');
+     if(t=='down_addons'){
+        var name = '确定要下载到本地吗?';
+      }else{
+        var name = '确定要删除本地文件吗?';
+      }
+     var url = "?t="+t+'&addons_name='+addons_name;
+     layer.confirm(name, {
+       btn: ['确定','取消'] //按钮
+     }, function(){
+       var index = layer.load(1);
+       $.get(url,function(res){
+         layer.close(index)
+         if(res.result==1){
+           layer.msg(res.msg,{icon:1});
+           setTimeout(function(){
+             window.location.reload();
+           },1000)
+         }else{
+           layer.msg(res.msg,{icon:2});
+         }
+       },'json')
+     }, function(){
+
+     });
+   })
     
    
    

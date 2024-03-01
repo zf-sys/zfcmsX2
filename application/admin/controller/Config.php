@@ -1002,10 +1002,110 @@ class Config extends Admin
                 return jserror('操作失败');
             }
         }
-        
-        
-        
         $this->assign('ys_list',$ys_list);
+
+
+
+        $addons_list = [
+            'zfcms_ai'=>[
+                'name'=>'AI插件',
+                'dir'=>'./addons/zfcms_ai',
+                'addons_name'=>'zfcms_ai',
+                'msg'=>'超强AI插件'
+            ],
+            'zfcms_plugin_store'=>[
+                'name'=>'插件商城',
+                'dir'=>'./addons/zfcms_plugin_store',
+                'addons_name'=>'zfcms_plugin_store',
+                'msg'=>'插件商城中心'
+            ],
+        ];
+        $this->assign('addons_list',$addons_list);
+        if($t=='down_addons'){
+            $addons_name = input('addons_name','');
+            if(!isset($addons_list[$addons_name])){
+                return jserror('参数错误');
+            }
+            $addons_res = $addons_list[$addons_name];
+            $url = config('version.api_domain').'/addons/zf_store_softclientv2.api/down_addons?name='.$addons_res['addons_name'].'&site_version='.config('version.version');
+            $client = new Client([
+                'headers'=>[
+                    'User-Agent' => 'okhttp/3.8.1',
+                    'Host' => 'api.aa.com',
+                    'Connection' => 'Keep-Alive',
+                    'Accept-Encoding' => 'gzip',
+                    "Content-type" => 'application/json',
+                    "Origin" => get_domain(),
+                ]
+            ]);
+            try{
+                $result = $client->get($url);
+                $addons_url = $result->getBody()->getContents();
+            } catch (\GuzzleHttp\Exception\ServerException $e) {
+                return jserror('获取下载地址失败1');
+            } catch (\GuzzleHttp\Exception\ClientException $e) {
+                return jserror('获取下载地址失败2');
+            }catch (Exception $e) {
+                return jserror('获取下载地址失败');
+            }
+            // 下载到runtime/addons/样式名, 然后解压并覆盖
+            $_name =$addons_res['addons_name'];
+            // $addons_content = file_get_contents($addons_url);
+            try{
+                $addons_result = $client->get($addons_url);
+                $addons_content = $addons_result->getBody()->getContents();
+            } catch (\GuzzleHttp\Exception\ServerException $e) {
+                return jserror('获取下载内容失败1');
+            } catch (\GuzzleHttp\Exception\ClientException $e) {
+                return jserror('获取下载内容失败2');
+            } catch (Exception $e) {
+                return jserror('获取下载内容失败');
+            }
+            //清空目录
+            $file = new \lib\File();
+            $file->del_dir('./runtime/addons/'.$addons_res['addons_name']);
+            if(!is_dir('./runtime/addons/'.$addons_res['addons_name'])){
+                mkdir('./runtime/addons/'.$addons_res['addons_name'],0777,true);
+            }
+            if(!file_put_contents('./runtime/addons/'.$addons_res['addons_name'].'/down_file.zip',$addons_content)){
+                return jserror('./runtime/addons/'.$addons_res['addons_name'].'/down_file.zip 无写入权限');
+            }
+            //解压
+            $zip = new \ZipArchive();
+            if ($zip->open('./runtime/addons/'.$addons_res['addons_name'].'/down_file.zip') === TRUE) {
+                $zip->extractTo('./runtime/addons/'.$addons_res['addons_name']);
+                $zip->close();
+            } else {
+                return jserror('解压失败');
+            }
+            //删除zip
+            unlink('./runtime/addons/'.$addons_res['addons_name'].'/down_file.zip');
+            // 转移
+            $is_copy = $file->copy_dir('./runtime/addons/'.$addons_res['addons_name'],$addons_res['dir']);
+            if($is_copy){
+                $file->del_dir('./runtime/addons/'.$addons_res['addons_name']);
+                return jssuccess('操作成功');
+            }else{
+                return jserror('操作失败');
+            }
+        }
+        if($t=='del_addons'){
+            $addons_name = input('addons_name','');
+            if(!isset($addons_list[$addons_name])){
+                return jserror('参数错误');
+            }
+            $static_res = $addons_list[$addons_name];
+            $file = new \lib\File();
+            $r = $file->del_dir($static_res['dir']);
+            if($r){
+                return jssuccess('操作成功');
+            }else{
+                return jserror('操作失败');
+            }
+        }
+        
+        
+        
 
 
 
