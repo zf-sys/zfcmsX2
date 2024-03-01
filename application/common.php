@@ -1302,13 +1302,13 @@ if (!function_exists('route_home')) {
             $menu_type = isset($vo[3])?$vo[3]:'';
             $template = isset($vo[4])?$vo[4]:'default';
             $lang = isset($vo[5])?$vo[5]:'';
-            Route::rule($router, 'index/index/hook',$type)
+            $parm_str = isset($vo[6])?$vo[6]:'zz=1';
+            Route::rule($router, 'index/index/hook?'. $parm_str,$type)
             ->middleware(app\common\middleware\Check::class)
             ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template,'lang'=>$lang]);
         }
     }
 }
-
 
 /**
  * // 20220927新增
@@ -1786,6 +1786,7 @@ if(!function_exists('widget_st')){
     function widget_st($name='',$type='widget') {
         $_static = config('template.tpl_replace_string.__STATIC__');
         $_v = ZFC('webconfig.js_version_type');
+        // $_host_api = ZFC('version.api_domain','file');
         if($_v=='time'){
             $v = 'v='.time();
         }elseif($_v=='ymd'){
@@ -1797,82 +1798,99 @@ if(!function_exists('widget_st')){
         }else{
             $v = 'v=1';
         }
+        $_is_web = ZFC('webconfig.is_web_static');
+        $_web_host = ZFC('webconfig.web_static_host');
+        
+
+
+
+        if(in_array($name,['admin','common'])){
+            $_static = $_static.'/system';
+        }else{
+            $_static = $_static.'/style';
+            if($_is_web==1 && $_web_host!=''){
+                $_static = $_web_host.'/zfcms/style';
+            }
+        }
+        
 
         if($type=='css'){
             if(in_array($name,['layui'])){
-                return "<link rel='stylesheet' href='$_static/style/layui/css/layui.css?$v' media='all'>\n";
+                return "<link rel='stylesheet' href='$_static/layui/css/layui.css?$v' media='all'>\n";
             }
             if(in_array($name,['admin'])){
-                return "<link rel='stylesheet' href='$_static/system/style/admin.css?$v' media='all'>\n";
+                return "<link rel='stylesheet' href='$_static/style/admin.css?$v' media='all'>\n";
             }
-
+            if(in_array($name,['tailwind'])){
+                return "<link rel='stylesheet' href='$_static/tailwind/tailwind.min.css?$v' media='all'>\n";
+            }
         }
         if($type=='js'){
             if(in_array($name,['jq183','jq'])){
-                return "<script type='text/javascript' src='$_static/style/jquery-1.8.3.min.js?$v'></script>\n";
+                return "<script type='text/javascript' src='$_static/jquery-1.8.3/jquery-1.8.3.min.js?$v'></script>\n";
             }
             if(in_array($name,['layui'])){
-                return "<script type='text/javascript' src='$_static/style/layui/layui.js?$v'></script>\n";
+                return "<script type='text/javascript' src='$_static/layui/layui.js?$v'></script>\n";
             }
             if(in_array($name,['laydate'])){
-                return "<script type='text/javascript' src='$_static/style/laydate/laydate.js?$v'></script>\n";
+                return "<script type='text/javascript' src='$_static/laydate/laydate.js?$v'></script>\n";
             }
             if(in_array($name,['layer'])){
-                return "<script type='text/javascript' src='$_static/style/layer/layer.js?$v'></script>\n";
+                return "<script type='text/javascript' src='$_static/layer/layer.js?$v'></script>\n";
             }
             if(in_array($name,['common'])){
                 $tan_type = ZFC('webconfig.js_tan_type');
                 if($tan_type!='newwindow'){
                     $tan_type = '';
                 }
-                return "<script type='text/javascript' src='$_static/system/common.js?$v&tan_type=$tan_type'></script>\n";
+                return "<script type='text/javascript' src='$_static/common.js?$v&tan_type=$tan_type'></script>\n";
             }
         }
         if($type=='widget'){
             if(in_array($name,['webuploader'])){
-                return "<link rel='stylesheet' type='text/css' href='$_static/style/webuploader/webuploader.css?$v'>\n<script type='text/javascript' src='$_static/style/webuploader/webuploader.js?$v'></script>\n";
+                return "<link rel='stylesheet' type='text/css' href='$_static/webuploader/webuploader.css?$v'>\n<script type='text/javascript' src='$_static/webuploader/webuploader.js?$v'></script>\n";
             }
             if(in_array($name,['ueditor'])){
                 $str = '';
-                $str .= "<script type='text/javascript' src='$_static/style/ueditor/ueditor.config.js?$v'></script>\n<script type='text/javascript' src='$_static/style/ueditor/ueditor.all.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/ueditor/themes/default/css/ueditor.css?$v' media='all'>\n";
-                $str .= "<script type='text/javascript' src='$_static/style/xiumi/xiumi-ue-dialog-v5.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/xiumi/xiumi-ue-v5.css?$v' media='all'>\n";
+                $str .= "<script type='text/javascript' src='$_static/ueditor/ueditor.config.js?$v'></script>\n<script type='text/javascript' src='$_static/ueditor/ueditor.all.js?$v'></script>\n<link rel='stylesheet' href='$_static/ueditor/themes/default/css/ueditor.css?$v' media='all'>\n";
+                $str .= "<script type='text/javascript' src='$_static/xiumi/xiumi-ue-dialog-v5.js?$v'></script>\n<link rel='stylesheet' href='$_static/xiumi/xiumi-ue-v5.css?$v' media='all'>\n";
                 return $str;
             }
             if(in_array($name,['bootstrap','bootstrap334'])){
-               return "<script src='$_static/style/bootstrap/bootstrap-3.3.4.js?$v'></script>\n<link rel='stylesheet' href='$_static/style/bootstrap/bootstrap-3.3.4.css?$v'>\n";
+               return "<script src='$_static/bootstrap/bootstrap-3.3.4.js?$v'></script>\n<link rel='stylesheet' href='$_static/bootstrap/bootstrap-3.3.4.css?$v'>\n";
             }
             if(in_array($name,['input-tag'])){
-                return "<link rel='stylesheet' href='$_static/style/input-tag/inputTag.css?$v' media='all'>\n";
+                return "<link rel='stylesheet' href='$_static/input-tag/inputTag.css?$v' media='all'>\n";
             }
             if(in_array($name,['viewer'])){
-                return "<link rel='stylesheet' type='text/css' href='$_static/style/viewer/viewer.mini.css?$v'>\n<script type='text/javascript' src='$_static/style/viewer/viewer.mini.js?$v'></script>\n";
+                return "<link rel='stylesheet' type='text/css' href='$_static/viewer/viewer.mini.css?$v'>\n<script type='text/javascript' src='$_static/viewer/viewer.mini.js?$v'></script>\n";
             }
             if(in_array($name,['tinymce'])){
-                return "<script src='$_static/style/tinymce515/tinymce.min.js?$v'></script>\n";
+                return "<script src='$_static/tinymce515/tinymce.min.js?$v'></script>\n";
                 //<script src='https://cdn.bootcdn.net/ajax/libs/tinymce/5.7.1/jquery.tinymce.min.js?$v'></script>\n
             }
             if(in_array($name,['meditor'])){
-                return "<link rel='stylesheet' type='text/css' href='$_static/style/meditor/css/editormd.css?$v'>\n<script src='$_static/style/meditor/editormd.js?$v'></script>\n";
+                return "<link rel='stylesheet' type='text/css' href='$_static/meditor/css/editormd.css?$v'>\n<script src='$_static/meditor/editormd.js?$v'></script>\n";
             }
             if(in_array($name,['wangEditor'])){
-                return "<script src='$_static/style/wangEditor/wangEditor.min.js?$v'></script>\n";
+                return "<script src='$_static/wangEditor/wangEditor.min.js?$v'></script>\n";
             }
             if(in_array($name,['vditor'])){
-                // return "<link rel='stylesheet' href='$_static/style/vditor/dist/index.css?$v' />\n<script src='$_static/style/vditor/dist/index.min.js?$v'></script>\n";
+                // return "<link rel='stylesheet' href='$_static/vditor/dist/index.css?$v' />\n<script src='$_static/vditor/dist/index.min.js?$v'></script>\n";
                 // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
                 // <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
             }
             if(in_array($name,['autosize'])){
-                return "<script src='$_static/style/autosize/dist/autosize.js?$v'></script>\n";
+                return "<script src='$_static/autosize/dist/autosize.js?$v'></script>\n";
             }
             if(in_array($name,['echarts'])){
-                return "<script src='$_static/style/echarts.min.js?$v'></script>\n";
+                return "<script src='$_static/echarts/echarts.min.js?$v'></script>\n";
             }
             if(in_array($name,['input-select'])){
-                return "<script src='$_static/style/input-select/selectInput.js?$v'></script>\n";
+                return "<script src='$_static/input-select/selectInput.js?$v'></script>\n";
             }
             if(in_array($name,['fcup'])){
-                return "<script src='$_static/style/fcup.min.js?$v'></script>\n";
+                return "<script src='$_static/fcup/fcup.min.js?$v'></script>\n";
             }
 
         }
@@ -2448,11 +2466,15 @@ if(!function_exists('meta_url_route')){
     function meta_url_route($type=1,$theme_arr=[]){
         if($type==1){
             //路由
-            $list = ZFTB('meta_data')->field('tb,post_id,meta_data')->where([['status','<>',9],['meta_data','like','%"diy_url":"%']])->group('meta_data')->select();
+            $list = ZFTB('meta_data')->field('tb,post_id,meta_data')->where([['status','<>',9],['meta_data','like','%"diy_url":"%'],])->group('meta_data')->select();
+            // dd($list);
             $arr = [];
             foreach($list as $k=>$vo){
                 $meta_data = json_decode($vo['meta_data'],true);
                 $diy_url = isset_arr_key($meta_data,'diy_url','');
+                if($diy_url==''){
+                    continue;
+                }
                 if($vo['tb']=='category'){
                     $controller = 'cate@list';
                     $parm_str = 'cid='.$vo['post_id'];
@@ -2470,29 +2492,36 @@ if(!function_exists('meta_url_route')){
                 }
                 $type = 'get';
                 $menu_type = '';
-
                 if($theme_arr==[]){
                     $router = $diy_url.'$';
                     $template = 'default';
                     Route::rule($router, 'index/index/hook?'.$parm_str,$type)
                     ->middleware(app\common\middleware\Check::class)
-                    ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template,'lang'=>'']);
+                    ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template]);
                 }else{
                     foreach($theme_arr as $k2=>$vo2){
-                        if($vo2==''){
+                        $_explode = explode('/',$diy_url);
+                        if($_explode[0]==$vo2){
                             $router = $diy_url.'$';
-                            $template = 'default';
-                        }else{
-                            $router = $vo2.'/'.$diy_url.'$';
-                            $template = $vo2.'_default';
+                            $template = $vo2.'default';
                             $controller = $vo2.$controller;
+                            // 判断是否存在
+                            $arr[] =    [$type,$router,$controller,'',$template,$vo2,$parm_str];
+                        }else{
+                            if($vo2=='' && !in_array($_explode[0],$theme_arr)){
+                                $router = $diy_url.'$';
+                                $template = 'default';
+                                $arr[] =    [$type,$router,$controller,'',$template,$vo2,$parm_str];
+                            }
+                           
                         }
-                        Route::rule($router, 'index/index/hook?'.$parm_str,$type)
-                        ->middleware(app\common\middleware\Check::class)
-                        ->append(['controller'=>$controller,'menu_type'=>$menu_type,'template'=>$template,'lang'=>$vo2]);
+                        continue;
                     }
+
                 }
             }  
+            route_home($arr);
+
         }else{
             //输出链接
             $list = ZFTB('meta_data')->field('tb,post_id,meta_data')->where([['status','<>',9],['meta_data','like','%"diy_url":"%']])->group('meta_data')->select();
