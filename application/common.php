@@ -1892,6 +1892,9 @@ if(!function_exists('widget_st')){
             if(in_array($name,['fcup'])){
                 return "<script src='$_static/fcup/fcup.min.js?$v'></script>\n";
             }
+            if(in_array($name,['ztree'])){
+                return "<link rel='stylesheet' href='$_static/ztree/css/zTreeStyle/zTreeStyle.css?$v' type='text/css'>\n<script type='text/javascript' src='$_static/ztree/js/jquery.ztree.core.min.js?$v'></script>\n";
+            }
 
         }
         // <!-- 拖动排序 -->
