@@ -8,15 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
   {:widget_st('layui','css')}
   {:widget_st('admin','css')}
-  <link rel="stylesheet" href="__STATIC__/system/style/login.css" media="all">
-  <link rel="stylesheet" href="__STATIC__/system/style/lrtk.css" media="all">
     {:widget_st('jq','js')}
     {:widget_st('layer','js')}  
     {:widget_st('layui','js')}  
     {:widget_st('common','js')}
 </head>
 <style>
-  .control-group{ margin: 10px;}
+  /* .control-group{ margin: 10px;} */
 </style>
 <?php 
 $api_domain = config('version.api_domain');
@@ -43,8 +41,8 @@ if( isset_arr_key($client_config,'token','') =='' ){
   .layui-tab{margin:0;}
 </style>
 <body>
-  <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;" style="margin-top:-10px">
-    <div class="layui-row layui-col-space15" style="margin:0;margin-top: -50px" >
+  <div class="" style="margin-top:50px ;"  >
+    <div class="layui-row layui-col-space15" >
       <div class="layui-col-sm4"></div>
       <div class="layui-col-sm4" style="height:358px; ">
         <div class="layui-tab layui-tab-brief">
@@ -62,11 +60,11 @@ if( isset_arr_key($client_config,'token','') =='' ){
                                 <div class="control-group">
                                   <div class="controls">
                                     
-                                      <input id="domain_auth" type="text"  placeholder="当前授权域名" tabindex="1" autofocus="autofocus" class="form-control input-medium" value="<?php echo request()->host() ;?>" readonly="">
+                                      <input id="domain_auth" type="text"  placeholder="当前授权域名" tabindex="1" autofocus="autofocus" class="form-control input-medium layui-input" value="<?php echo request()->host() ;?>" readonly="">
                                   </div>
                                 </div>
                             </div>
-                            <div style="text-align: center;margin: 50px 0 50px 0;">
+                            <div style="text-align: center;margin: 10px 0 20px 0;">
                               <a target="_blank" class="layui-btn"href='{$api_domain}/addons/zf_store_softclientv2.user/soft_site_client.html?soft_id={$version['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}'> 点击获取授权</a>
                               <a href="{:url('index/welcome')}" class="layui-btn">授权后点击刷新</a>
                             </div>
@@ -128,10 +126,14 @@ if( isset_arr_key($client_config,'token','') =='' ){
       </div> 
       <div class="layui-col-sm4"></div>
     </div>
-    <div class="layui-trans layadmin-user-login-footer">
-    </div>
   </div>
-    
+  <script>
+    layui.use(function(){
+      var element = layui.element;
+      var $ = layui.$;
+      // 动态插入 tab 元素
+    });
+    </script>
   <script>
     layer.tips('这是当前授权域名', '#domain_auth', {guide: 1, time: 2000});
     $('.scan_btn').on('click',function(){
