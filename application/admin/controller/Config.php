@@ -1019,6 +1019,12 @@ class Config extends Admin
                 'addons_name'=>'zfcms_plugin_store',
                 'msg'=>'插件商城中心'
             ],
+            'zf_developer2'=>[
+                'name'=>'开发者工具',
+                'dir'=>'./addons/zf_developer2',
+                'addons_name'=>'zf_developer2',
+                'msg'=>'开发者工具'
+            ]
         ];
         $this->assign('addons_list',$addons_list);
         if($t=='down_addons'){
