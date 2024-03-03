@@ -36,6 +36,28 @@ class Category extends Admin
      */
     public function index()
     {
+        $t = input('t','');
+        if($t=='get_theme_cate_file'){
+            $theme_name = ZFC('zf_tpl_suffix');
+            $theme_path = './theme/'.$theme_name.'/default/cate/';
+            $theme_arr = [];
+            if(is_dir($theme_path)){
+                //获取$theme_path的所有文件
+                $theme_arr = [];
+                $_theme_arr = scandir($theme_path);
+                foreach($_theme_arr as $k=>$vo){
+                    if(!is_dir($theme_path.$vo)){
+                        if($vo=='.' || $vo=='..'){
+                            unset($_theme_arr[$k]);
+                        }else{
+                            $theme_arr[] = ['value'=>str_replace('.html','',$vo),'name'=>str_replace('.html','',$vo)];
+                        }
+                    }
+                }
+            }
+            return json_encode(['code'=>1,'message'=>'OK','data'=>$theme_arr,'timestamp'=>time()]);
+            // {$form_widget->form_input_select(['title'=>'内容模板名','name'=>'tpl_post','data'=>isset_arr_key($res,'tpl_post',''),'list_arr'=>[],'id_t'=>'id','name_t'=>'name','notes'=>'','url'=>get_domain().'/admin/category/index/t/get_theme_cate_file','theme'=>4])|raw}
+        }
         admin_role_check($this->z_role_list,$this->mca);
         $pid =input('pid','0');
         $where[] = ['status','<>',9];
