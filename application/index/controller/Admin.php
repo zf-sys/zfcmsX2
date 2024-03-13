@@ -35,14 +35,14 @@ class Admin extends Base
                 // foreach($data as $k=>$vo){
                 //     $data[$k] = base64_encode($vo);
                 // }
-                $res = $this->Yun->save_plugin_config_db($data,$this->zf_tpl_suffix,'theme','');
+                $res = $this->Yun->save_plugin_config_db($data,'theme','',$this->zf_tpl_suffix);
                 return ZFRetMsg($res,'保存成功','保存失败');
             }catch(\Exception $e){
                 return ZFRetMsg(0,'',$e->getMessage());
             }
             
         }
-        $data = $this->Yun->get_plugin_config_db($this->zf_tpl_suffix,'theme','');//保存在数据库
+        $data = $this->Yun->get_plugin_config_db('theme','',$this->zf_tpl_suffix);//保存在数据库
         $this->assign("config",$data);
         $this->assign("type",'基本设置');
         return view($this->tpl);

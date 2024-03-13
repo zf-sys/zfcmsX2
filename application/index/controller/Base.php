@@ -113,7 +113,7 @@ class Base extends Zfb
             // dd(request());
             $this->assign('menu_type',request()->action());
             if($this->is_professional_edition){
-               $this->theme_config = $this->Yun->get_plugin_config_db($this->zf_tpl_suffix,'theme',''); 
+               $this->theme_config = $this->Yun->get_plugin_config_db('theme','',$this->zf_tpl_suffix);
             }else{
                 $this->theme_config = false;
             }
