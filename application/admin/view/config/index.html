@@ -237,33 +237,17 @@
 
                 <?php }elseif($type=='备份相关'){ ?>
                   <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'插件升级备份','name'=>'is_back_addons','data'=>isset_arr_key($config,'is_back_addons',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                    {$form_widget->form_radio(['title'=>'插件升级备份','name'=>'is_back_addons','data'=>isset_arr_key($config,'is_back_addons','1'),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_back_addons")</span>插件升级备份,该功能仅用于升级时使用</div>','theme'=>2])|raw}
                   </div>
                   <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">插件备份文件夹</a>','name'=>'back_addons_dir','data'=>isset_arr_key($config,'back_addons_dir',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.back_addons_dir")</span>选择当前插件中需要备份的文件夹,留空为全部备份,该功能仅用于升级时使用</div>','theme'=>2])|raw}
-                  </div>
-
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'模板升级备份','name'=>'is_back_theme','data'=>isset_arr_key($config,'is_back_theme',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                    {$form_widget->form_radio(['title'=>'模板升级备份','name'=>'is_back_theme','data'=>isset_arr_key($config,'is_back_theme','1'),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_back_theme")</span>模板升级备份,该功能仅用于升级时使用</div>','theme'=>2])|raw}
                   </div>
                   <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">模板备份文件夹</a>','name'=>'back_theme_dir','data'=>isset_arr_key($config,'back_theme_dir',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.back_theme_dir")</span>选择当前模板中需要备份的文件夹,留空为全部备份,该功能仅用于升级时使用</div>','theme'=>2])|raw}
-                  </div>
-
-
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'系统升级备份','name'=>'is_back_system','data'=>isset_arr_key($config,'is_back_system',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                    {$form_widget->form_radio(['title'=>'系统升级备份','name'=>'is_back_system','data'=>isset_arr_key($config,'is_back_system','1'),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_back_system")</span>系统升级备份,该功能仅用于升级时使用</div>','theme'=>2])|raw}
                   </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">系统备份文件夹</a>','name'=>'back_system_dir','data'=>isset_arr_key($config,'back_system_dir',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.back_system_dir")</span>选择当前系统中需要备份的文件夹,留空为全部备份,该功能仅用于升级时使用</div>','theme'=>2])|raw}
-                  </div>
-
                 <?php }elseif($type=='JS设置'){ ?>
                   <div  class="list_item" >
                     {$form_widget->form_select(['title'=>'JS版本更新:','name'=>'js_version_type','data'=>isset_arr_key($config,'js_version_type',''),'list_arr'=>[['id'=>'1','name'=>'固定版本'],['id'=>'time','name'=>'实时更新'],['id'=>'ymd','name'=>'每日更新'],['id'=>'ym','name'=>'每月更新'],['id'=>'y','name'=>'每年更新']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
