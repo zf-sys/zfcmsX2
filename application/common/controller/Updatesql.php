@@ -45,6 +45,7 @@ class Updatesql extends Controller
             'v0.231102'=>$this->v0_231102(),
             'v0.231129'=>$this->v0_231129(),
             'v0.240125'=>$this->v0_240125(),
+            'v0.240315'=>$this->v0_240315(),
 
         ]; 
     }
@@ -323,6 +324,29 @@ INFO;
             'tb_field_add',
             "show columns from {$this->tb_prefix}category_model_parm like 'notes'",
             "alter table {$this->tb_prefix}category_model_parm add notes text(0)"
+        ];
+        return $ret_data;
+    }
+    public function v0_240315(){
+        $ret_data[1] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}advert like 'form_parm'",
+            "alter table {$this->tb_prefix}advert add form_parm text(0)"
+        ];
+        $ret_data[2] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}advert like 'utime'",
+            "alter table {$this->tb_prefix}advert add utime int(11)"
+        ];
+        $ret_data[3] = [ 
+            'tb_field_edit',
+            "show columns from {$this->tb_prefix}advert like 'content'",
+            "alter table {$this->tb_prefix}advert MODIFY  content  text(0) "
+        ];
+        $ret_data[4] = [ 
+            'tb_field_edit',
+            "show columns from {$this->tb_prefix}category like 'summary'",
+            "alter table {$this->tb_prefix}category MODIFY  summary  text(0) "
         ];
         return $ret_data;
     }
