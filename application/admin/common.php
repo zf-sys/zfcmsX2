@@ -128,3 +128,49 @@ if (!function_exists( 'formProActionArrCate')) {
         return $arr;
     } 
 }
+
+/**
+ * 20240316
+ * 提炼参数公共方法
+ */
+if(!function_exists('getFormParams')){
+    function getFormParams($res){
+        if(isset($res['form_parm'])){
+            $form_parm = $res['form_parm'];
+            if($form_parm==''){
+                $form_parm_arr = false;
+            }else{
+                $_form_parm_arr = json_decode($form_parm,true);
+                if(!is_array($_form_parm_arr )){
+                    $form_parm_arr = false;
+                }else{
+                    $left = false;
+                    $right = false;
+                    foreach($_form_parm_arr as $k=>$vo){
+                        if($vo['checked']==1){
+                            if($vo['postion']=='left'){
+                                $left[] = $vo;
+                            }else{
+                                $right[] = $vo;
+                            }
+                        }
+                    }
+                    if($left){
+                        $sort_left = array_column($left,'sort');
+                        array_multisort($sort_left,SORT_ASC,$left);
+                    }
+                    if($right){
+                        $sort_right = array_column($right,'sort');
+                        array_multisort($sort_right,SORT_ASC,$right);
+                    }
+                    $form_parm_arr['left'] = $left;
+                    $form_parm_arr['right'] = $right;
+                }
+            }
+        }else{
+            $form_parm_arr = false;
+        }
+        return $form_parm_arr;
+    }
+}
+

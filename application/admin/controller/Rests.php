@@ -84,41 +84,8 @@ class Rests extends Admin
                 $this->assign('partent_res',$partent_res);
                 $this->assign('res',false);
                 #####参数模式
-                if(isset($partent_res['form_parm'])){
-                    $form_parm = $partent_res['form_parm'];
-                    if($form_parm==''){
-                        $form_parm_arr = false;
-                    }else{
-                        $_form_parm_arr = json_decode($form_parm,true);
-                        if(!is_array($_form_parm_arr )){
-                            $form_parm_arr = false;
-                        }else{
-                            $left = false;
-                            $right = false;
-                            foreach($_form_parm_arr as $k=>$vo){
-                                if($vo['checked']==1){
-                                    if($vo['postion']=='left'){
-                                        $left[] = $vo;
-                                    }else{
-                                        $right[] = $vo;
-                                    }
-                                }
-                            }
-                            if($left){
-                                $sort_left = array_column($left,'sort');
-                                array_multisort($sort_left,SORT_ASC,$left);
-                            }
-                            if($right){
-                                $sort_right = array_column($right,'sort');
-                                array_multisort($sort_right,SORT_ASC,$right);
-                            }
-                            $form_parm_arr['left'] = $left;
-                            $form_parm_arr['right'] = $right;
-                        }
-                    }
-                }else{
-                    $form_parm_arr = false;
-                }
+                $form_parm_arr = getFormParams($partent_res);
+
 
             }else{
                 $tpl='';
@@ -183,79 +150,13 @@ class Rests extends Admin
                 $this->assign("pid",input("pid"));
                 $partent_res = ZFTB('advert')->where(['id'=>input('pid')])->find();
                 #####参数模式
-                if(isset($partent_res['form_parm'])){
-                    $form_parm = $partent_res['form_parm'];
-                    if($form_parm==''){
-                        $form_parm_arr = false;
-                    }else{
-                        $_form_parm_arr = json_decode($form_parm,true);
-                        if(!is_array($_form_parm_arr )){
-                            $form_parm_arr = false;
-                        }else{
-                            $left = false;
-                            $right = false;
-                            foreach($_form_parm_arr as $k=>$vo){
-                                if($vo['checked']==1){
-                                    if($vo['postion']=='left'){
-                                        $left[] = $vo;
-                                    }else{
-                                        $right[] = $vo;
-                                    }
-                                }
-                            }
-                            if($left){
-                                $sort_left = array_column($left,'sort');
-                                array_multisort($sort_left,SORT_ASC,$left);
-                            }
-                            if($right){
-                                $sort_right = array_column($right,'sort');
-                                array_multisort($sort_right,SORT_ASC,$right);
-                            }
-                            $form_parm_arr['left'] = $left;
-                            $form_parm_arr['right'] = $right;
-                        }
-                    }
-                }else{
-                    $form_parm_arr = false;
-                }
+                $form_parm_arr = getFormParams($partent_res);
+
             }else{
                 $tpl='rests/advert_add';
                 #####参数模式
-                if(isset($res['form_parm'])){
-                    $form_parm = $res['form_parm'];
-                    if($form_parm==''){
-                        $form_parm_arr = false;
-                    }else{
-                        $_form_parm_arr = json_decode($form_parm,true);
-                        if(!is_array($_form_parm_arr )){
-                            $form_parm_arr = false;
-                        }else{
-                            $left = false;
-                            $right = false;
-                            foreach($_form_parm_arr as $k=>$vo){
-                                if($vo['checked']==1){
-                                    if($vo['postion']=='left'){
-                                        $left[] = $vo;
-                                    }else{
-                                        $right[] = $vo;
-                                    }
-                                }
-                            }
-                            if($left){
-                                $sort_left = array_column($left,'sort');
-                                array_multisort($sort_left,SORT_ASC,$left);
-                            }
-                            if($right){
-                                $sort_right = array_column($right,'sort');
-                                array_multisort($sort_right,SORT_ASC,$right);
-                            }
-                            $form_parm_arr['left'] = $left;
-                            $form_parm_arr['right'] = $right;
-                        }
-                    }
-                }else{
-                    $form_parm_arr = false;
-                }
+                $form_parm_arr = getFormParams($res);
+                
             }
             $this->assign('form_parm_arr',$form_parm_arr);
             return view($tpl);
