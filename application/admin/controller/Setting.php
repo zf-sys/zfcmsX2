@@ -57,6 +57,8 @@ class Setting extends Admin
             $id = input('id','');
             if($tb_name=='zf_category'){
                 $res = db('category')->where('cid',$id)->update($save_data);
+            }elseif($tb_name=='zf_advert'){
+                $res = db('advert')->where('id',$id)->update($save_data);
             }else{
                 return ZFRetMsg(false,'','暂不支持数据表');
             }
@@ -75,6 +77,10 @@ class Setting extends Admin
             ###############################
             if($tb_name=='zf_category'){
                 $form_parm = db('category')->where('cid',$id)->value('form_parm');
+                $meta_key_list = db('meta_key')->where([['tb','=','category'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
+            }elseif($tb_name=='zf_advert'){
+                $form_parm = db('advert')->where('id',$id)->value('form_parm');
+                $meta_key_list = db('meta_key')->where([['tb','=','advert'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
             }else{
                 $this->error('暂不支持');
             }
@@ -84,7 +90,6 @@ class Setting extends Admin
                 $form_parm_arr = json_decode($form_parm,true);
             }
             $_list = Db::query("show full columns from ".$tb_name);
-            $meta_key_list = db('meta_key')->where([['tb','=','category'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
             foreach($meta_key_list as $k=>$vo){
                 $_list[] = [
                     'Field'=>'meta['.$vo['key'].']',
@@ -194,6 +199,8 @@ class Setting extends Admin
             //当前参数
             if($tb_name=='zf_category'){
                 $form_parm = db('category')->where('cid',$id)->value('form_parm');
+            }elseif($tb_name=='zf_advert'){
+                $form_parm = db('advert')->where('id',$id)->value('form_parm');
             }else{
                 $this->error('暂不支持');
             }

@@ -712,7 +712,7 @@ class Config extends Admin
         $tb_list = [
             ['id'=>'post','name'=>'内容表'],
             ['id'=>'category','name'=>'栏目表'],
-            // ['id'=>'user','name'=>'用户表'],
+            ['id'=>'advert','name'=>'广告表'],
         ];
         $this->assign("tb_list",$tb_list);        
         return view();
@@ -750,7 +750,7 @@ class Config extends Admin
         $tb_list = [
             ['id'=>'post','name'=>'内容表'],
             ['id'=>'category','name'=>'栏目表'],
-            // ['id'=>'user','name'=>'用户表'],
+            ['id'=>'advert','name'=>'广告表'],
         ];
         $this->assign("tb_list",$tb_list);        
         return view('config/meta_key_add');

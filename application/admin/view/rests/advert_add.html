@@ -9,28 +9,40 @@
   {:widget_st('layui','css')}
   {:widget_st('jq','js')}
   {:widget_st('layui','js')}  
-  {:widget_st('common','js')} 
+  {:widget_st('admin','css')}
+  {:widget_st('laydate','js')}
+  {:widget_st('webuploader')}
+  {:widget_st('common','js')}
+  {:widget_st('ueditor')}       
+  {:widget_st('input-select')}    
+
+
 
 </head>
 <body>
+  <?php $form_widget = new \app\common\widget\FormPro();  ?>
   <div class="layui-fluid">
+    <form class="layui-form info_tj" >
       <div class="layui-row layui-col-space15">
-        <div class="layui-col-md8">
+        <input type="hidden" name="id" value="{$res['id']|default=''}">
+        <?php if($form_parm_arr){ ?>
+                    
+          {include file="public/form_parm_show"}
+          {include file="public/widget_submit"}
+
+        <?php }else{ ?>
+          <!-- //默认表单 -->
           <div class="layui-card">
             <div class="layui-card-body">
-              <form class="layui-form info_tj" >
-                <?php $form_widget = new \app\common\widget\FormPro();  ?>
-
                 <?php if(isset($res['id'])){ ?>
-                  <input type="hidden" name="id" value="{$res.id}">
                   <input type="hidden" name="pid" value="0">
                   {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'标识','name'=>'tag','data'=>$res['tag'],'theme'=>2])|raw}
                   {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'链接','name'=>'url','data'=>$res['url'],'theme'=>2])|raw}
-                  {$form_widget->filesystem_pic(['title'=>'图片(pc)','name'=>'pic','data'=>$res['pic'],'theme'=>3])|raw}
+                  <!-- {$form_widget->filesystem_pic(['title'=>'图片(pc)','name'=>'pic','data'=>$res['pic'],'theme'=>3])|raw}
                   {$form_widget->filesystem_pic(['title'=>'图片(wap)','name'=>'pic_wap','data'=>$res['pic_wap'],'theme'=>3])|raw}
-                  {$form_widget->form_input(['title'=>'图片alt','name'=>'alt_pic','data'=>$res['alt_pic'],'theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'图片alt','name'=>'alt_pic','data'=>$res['alt_pic'],'theme'=>2])|raw} -->
                   {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
                   <div class="layui-form-item">
@@ -44,9 +56,9 @@
                   {$form_widget->form_input(['title'=>'标识','name'=>'tag','data'=>'','theme'=>2])|raw}
                   {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>2])|raw}
                   {$form_widget->form_input(['title'=>'链接','name'=>'url','data'=>'','theme'=>2])|raw}
-                  {$form_widget->filesystem_pic(['title'=>'图片(pc)','name'=>'pic','data'=>'','theme'=>3])|raw}
+                  <!-- {$form_widget->filesystem_pic(['title'=>'图片(pc)','name'=>'pic','data'=>'','theme'=>3])|raw}
                   {$form_widget->filesystem_pic(['title'=>'图片(wap)','name'=>'pic_wap','data'=>'','theme'=>3])|raw}
-                  {$form_widget->form_input(['title'=>'图片alt','name'=>'alt_pic','data'=>'','theme'=>2])|raw}
+                  {$form_widget->form_input(['title'=>'图片alt','name'=>'alt_pic','data'=>'','theme'=>2])|raw} -->
                   {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'','theme'=>2])|raw}
                   {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>'0','parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
                   <div class="layui-form-item">
@@ -55,15 +67,13 @@
                     </div>
                   </div>
                 <?php } ?>
-              </form>
             </div>
           </div>
+        <?php } ?>
         
-          
-          
-        </div>
         
       </div>
+    </form>
     </div>
 
 
@@ -74,6 +84,30 @@
     ,upload = layui.upload ;
 
     
+    $('.tijiao').on("click",function(){
+          var index = layer.load(2);
+          var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
+          $.ajax({
+              type:'post',
+              data:data,
+              dataType:'json',
+              success:function(res){
+                if(res.result==1){
+                  layer.msg(res.msg, {icon: 1});
+                  setTimeout(function() {
+                      if(res.msg.code==1){
+                        window.location.reload();
+                      }else{
+                        window.parent.location.reload();
+                      }
+                  }, 2000);
+                }else{
+                  layer.close(index);
+                  layer.msg(res.msg, {icon: 2});
+                }   
+              }
+          })
+      })
     
   })
   </script>
