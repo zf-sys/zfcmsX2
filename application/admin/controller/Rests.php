@@ -80,16 +80,62 @@ class Rests extends Admin
             if(input('type')=='child'){
                 $tpl="rests/advert_add_child";   
                 $this->assign("pid",input("pid"));
+                $partent_res = ZFTB('advert')->where(['id'=>input('pid')])->find();
+                $this->assign('partent_res',$partent_res);
+                $this->assign('res',false);
+                #####参数模式
+                if(isset($partent_res['form_parm'])){
+                    $form_parm = $partent_res['form_parm'];
+                    if($form_parm==''){
+                        $form_parm_arr = false;
+                    }else{
+                        $_form_parm_arr = json_decode($form_parm,true);
+                        if(!is_array($_form_parm_arr )){
+                            $form_parm_arr = false;
+                        }else{
+                            $left = false;
+                            $right = false;
+                            foreach($_form_parm_arr as $k=>$vo){
+                                if($vo['checked']==1){
+                                    if($vo['postion']=='left'){
+                                        $left[] = $vo;
+                                    }else{
+                                        $right[] = $vo;
+                                    }
+                                }
+                            }
+                            if($left){
+                                $sort_left = array_column($left,'sort');
+                                array_multisort($sort_left,SORT_ASC,$left);
+                            }
+                            if($right){
+                                $sort_right = array_column($right,'sort');
+                                array_multisort($sort_right,SORT_ASC,$right);
+                            }
+                            $form_parm_arr['left'] = $left;
+                            $form_parm_arr['right'] = $right;
+                        }
+                    }
+                }else{
+                    $form_parm_arr = false;
+                }
+
             }else{
                 $tpl='';
+                $form_parm_arr = false;
             }
+            $this->assign('form_parm_arr',$form_parm_arr);
             return view($tpl);
         }  
         $data = input("post.");
         if($data['name']==''){
             return jserror('名称不能为空');exit;
         }
+        $data['utime'] = time();
         $data = array_merge($data,$this->common_tag);
+        if(!isset($data['status'])){
+            $data['status'] = 1;
+        }
         deal_meta_data_add('advert',$data,'id');
         
     }
@@ -135,9 +181,83 @@ class Rests extends Admin
             if(input('type')=='child'){
                 $tpl="rests/advert_add_child";   
                 $this->assign("pid",input("pid"));
+                $partent_res = ZFTB('advert')->where(['id'=>input('pid')])->find();
+                #####参数模式
+                if(isset($partent_res['form_parm'])){
+                    $form_parm = $partent_res['form_parm'];
+                    if($form_parm==''){
+                        $form_parm_arr = false;
+                    }else{
+                        $_form_parm_arr = json_decode($form_parm,true);
+                        if(!is_array($_form_parm_arr )){
+                            $form_parm_arr = false;
+                        }else{
+                            $left = false;
+                            $right = false;
+                            foreach($_form_parm_arr as $k=>$vo){
+                                if($vo['checked']==1){
+                                    if($vo['postion']=='left'){
+                                        $left[] = $vo;
+                                    }else{
+                                        $right[] = $vo;
+                                    }
+                                }
+                            }
+                            if($left){
+                                $sort_left = array_column($left,'sort');
+                                array_multisort($sort_left,SORT_ASC,$left);
+                            }
+                            if($right){
+                                $sort_right = array_column($right,'sort');
+                                array_multisort($sort_right,SORT_ASC,$right);
+                            }
+                            $form_parm_arr['left'] = $left;
+                            $form_parm_arr['right'] = $right;
+                        }
+                    }
+                }else{
+                    $form_parm_arr = false;
+                }
             }else{
                 $tpl='rests/advert_add';
+                #####参数模式
+                if(isset($res['form_parm'])){
+                    $form_parm = $res['form_parm'];
+                    if($form_parm==''){
+                        $form_parm_arr = false;
+                    }else{
+                        $_form_parm_arr = json_decode($form_parm,true);
+                        if(!is_array($_form_parm_arr )){
+                            $form_parm_arr = false;
+                        }else{
+                            $left = false;
+                            $right = false;
+                            foreach($_form_parm_arr as $k=>$vo){
+                                if($vo['checked']==1){
+                                    if($vo['postion']=='left'){
+                                        $left[] = $vo;
+                                    }else{
+                                        $right[] = $vo;
+                                    }
+                                }
+                            }
+                            if($left){
+                                $sort_left = array_column($left,'sort');
+                                array_multisort($sort_left,SORT_ASC,$left);
+                            }
+                            if($right){
+                                $sort_right = array_column($right,'sort');
+                                array_multisort($sort_right,SORT_ASC,$right);
+                            }
+                            $form_parm_arr['left'] = $left;
+                            $form_parm_arr['right'] = $right;
+                        }
+                    }
+                }else{
+                    $form_parm_arr = false;
+                }
             }
+            $this->assign('form_parm_arr',$form_parm_arr);
             return view($tpl);
         } 
         if(request()->isPost()){
@@ -145,6 +265,7 @@ class Rests extends Admin
             if($data['name']==''){
                 return jserror('名称不能为空');exit;
             }
+            $data['utime'] = time();
             deal_meta_data_edit('advert',$data,'id');
 
         } 
