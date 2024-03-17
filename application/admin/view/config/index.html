@@ -193,7 +193,7 @@
                   </div>
 
                   <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'上传面板使用范围:','name'=>'upload_pannel_type','data'=>isset_arr_key($config,'upload_pannel_type',''),'list_arr'=>[['id'=>'','name'=>'无限制'],['id'=>'1','name'=>'仅限后台后台,需要登录后才能用上传管理面板']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                    {$form_widget->form_select(['title'=>'上传面板使用范围:','name'=>'upload_pannel_type','data'=>isset_arr_key($config,'upload_pannel_type',''),'list_arr'=>[['id'=>'','name'=>'禁止使用'],['id'=>'1','name'=>'仅限后台后台,需要登录后才能用上传管理面板']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
                   </div>
                   <div  class="list_item" >

@@ -14,11 +14,15 @@ class Fileupload extends Controller
     }
     public function upload(){
         $this->upload_pannel_type = ZFC("webconfig.upload_pannel_type");
-        if($this->upload_pannel_type==1){
+        if($this->upload_pannel_type==''){
+            echo str_show_tpl('禁止使用,请在后台开启');die;
+        }elseif($this->upload_pannel_type==1 ){
             //后台专享
             if(!session('admin')){
                 $this->error('请先登录后再操作');
             }
+        }else{
+            echo str_show_tpl('未知参数');die;
         }
 
         $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
