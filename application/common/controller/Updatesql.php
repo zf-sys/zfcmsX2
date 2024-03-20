@@ -46,6 +46,7 @@ class Updatesql extends Controller
             'v0.231129'=>$this->v0_231129(),
             'v0.240125'=>$this->v0_240125(),
             'v0.240315'=>$this->v0_240315(),
+            'v0.240319'=>$this->v0_240319(),
 
         ]; 
     }
@@ -347,6 +348,60 @@ INFO;
             'tb_field_edit',
             "show columns from {$this->tb_prefix}category like 'summary'",
             "alter table {$this->tb_prefix}category MODIFY  summary  text(0) "
+        ];
+        return $ret_data;
+    }
+    public function v0_240319(){
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}advert like 'form_parm_static'",
+            "alter table {$this->tb_prefix}advert add form_parm_static text(0)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}category like 'form_parm_static'",
+            "alter table {$this->tb_prefix}category add form_parm_static text(0)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}category_model like 'form_parm_static'",
+            "alter table {$this->tb_prefix}category_model add form_parm_static text(0)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}category_model like 'utime'",
+            "alter table {$this->tb_prefix}category_model add utime int(11)"
+        ];
+
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}special like 'form_parm'",
+            "alter table {$this->tb_prefix}special add form_parm text(0)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}tag like 'form_parm'",
+            "alter table {$this->tb_prefix}tag add form_parm text(0)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}special like 'utime'",
+            "alter table {$this->tb_prefix}special add utime int(11)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}tag like 'utime'",
+            "alter table {$this->tb_prefix}tag add utime int(11)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}special like 'form_parm_static'",
+            "alter table {$this->tb_prefix}special add form_parm_static text(0)"
+        ];
+        $ret_data[] = [
+            'tb_field_add',
+            "show columns from {$this->tb_prefix}tag like 'form_parm_static'",
+            "alter table {$this->tb_prefix}tag add form_parm_static text(0)"
         ];
         return $ret_data;
     }

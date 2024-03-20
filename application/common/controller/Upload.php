@@ -16,7 +16,9 @@ use Upyun\Upyun;
 use Upyun\Config as UpyConfig;
 
 // 雨云s3
-use AsyncAws\S3\S3Client;
+use Aws\S3\S3Client;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
+
 
 class Upload extends Controller{
     public function __construct (){
@@ -583,44 +585,46 @@ class Upload extends Controller{
     private function rain_upload($name,$tmp_name){
       $endpoint = isset_arr_key($this->oss_config,'rain_domain');
       $bucket = isset_arr_key($this->oss_config,'rain_bucket');
-      $content = \fopen($tmp_name, 'r');
       try{
-          $s3_config = [
-            'endpoint' => $endpoint,
-            'pathStyleEndpoint' => true,
-            'accessKeyId' => isset_arr_key($this->oss_config,'rain_ak'),
-            'accessKeySecret' => isset_arr_key($this->oss_config,'rain_sk'),
-          ];
-          $s3 = new S3Client($s3_config);
-          //上传
-          $key = 'uploads/'.md5($_SERVER["SERVER_NAME"]).'/'. $name;
-          $r = $s3->putObject([
-              'Bucket' => $bucket,
-              'Key' => $key,
-              'Body' => $content,
-          ]);
-          $rain_domain_diy = isset_arr_key($this->oss_config,'rain_domain_diy');
-          if($rain_domain_diy!=''){
-              // $url = $rain_domain_diy.'/'.$bucket.'/'.$key;
-              $url = $rain_domain_diy.'/'.$key;
-          }else{
-            $url = $endpoint.'/'.$bucket.'/'.$key;
-          }
-          return $url;
+        //s3新
+        // 配置 AWS S3 客户端
+        $s3Client = new S3Client([
+          'credentials' => [
+              'key'    =>  isset_arr_key($this->oss_config,'rain_ak'),
+              'secret' => isset_arr_key($this->oss_config,'rain_sk'),
+          ],
+          'region' => 'us-east-1',
+          'version' => 'latest',
+          'endpoint' => $endpoint,
+          'use_path_style_endpoint' => true,
+        ]);
+        // 创建 Flysystem 适配器
+        $adapter = new AwsS3Adapter($s3Client, $bucket);
+        // 创建文件系统
+        $filesystem = new Filesystem($adapter);
+        // dd($fil)
+        // 上传文件到 S3 的指定目录
+        $localFilePath = $tmp_name; // 本地文件路径
+        $remoteFilePath = 'uploads/'.md5($_SERVER["SERVER_NAME"]).'/'. $name; // S3 上的目标路径，包括目录
+        // 使用文件内容上传
+        $content = file_get_contents($localFilePath);
+        // 无条件地删除目标路径上可能存在的文件
+        if ($filesystem->has($remoteFilePath)) {
+          $filesystem->delete($remoteFilePath);
+        }
+        $filesystem->write($remoteFilePath, $content);
+        $rain_domain_diy = isset_arr_key($this->oss_config,'rain_domain_diy');
+        if($rain_domain_diy!=''){
+          $url = $rain_domain_diy.'/'.$remoteFilePath;
+        }else{
+          $url = $endpoint.'/'.$bucket.'/'.$remoteFilePath;
+        }
+        return $url;
       }catch (\Exception $e){
           @save_exception('upload','上传异常',['type'=>'rain_upload','content'=>['data'=>$e->getMessage()]]);
           return false;
       }
     }
-
-
-    
-
-
-
-
-
-   
 }
 
 // 输出json信息

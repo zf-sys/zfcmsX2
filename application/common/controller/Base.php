@@ -213,7 +213,7 @@ class Base extends Controller
         if( $this->site_token==''){
             return jserror('token无权限,请在网站后台打开商店');
         } 
-        if($this->site_token!=config()['web']['site_token']){
+        if($this->site_token!=config()['zf_auth']['site_token']){
             return jserror('站点token错误,请在网站后台打开商店');
         }
         $this->temp_plugin = '';
@@ -229,7 +229,7 @@ class Base extends Controller
             $zfcommon = new \zf\ZfCommon();
             $zfcommon->handle_update_db_zdxg();
             extraconfig(['init_sql'=>1],'zf_auth');
-            $this->success('更新Sql成功','/admin');
+            $this->success('更新Sql成功');
         }
     }
     
