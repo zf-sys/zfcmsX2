@@ -67,7 +67,11 @@
               <?php foreach($list as $k=>$vo){ ?>
                 <tr>
                   <td>{$vo['id']}</td>
-                  <td>{$vo['name']}</td>
+                  <td>
+                    <a  onclick='zfAdminShow("设置静态文件","{:url('admin/setting/category_form_parm',['id' => $vo['id'],'tb_name'=>'zf_category_model'] )}?t=4")' >
+                    {$vo['name']}
+                      </a>
+                  </td>
                   <td>{$vo['model']}</td>
                   <td>{$vo['sort']}</td>
                   <td> 

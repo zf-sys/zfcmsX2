@@ -37,7 +37,11 @@
               <?php foreach($list as $k=>$vo){ ?>
                 <tr>
                   <td>{$vo['id']}</td>
-                  <td>{$vo['name']}</td>
+                  <td>
+                    <a  onclick='zfAdminShow("编辑参数","{:url('admin/setting/category_form_parm',['id' => $vo['id'],'tb_name'=>'zf_advert'] )}")' >
+                      {$vo['name']}
+                    </a>
+                  </td>
                   <td><img src="{$vo['pic']}" /></td>
                   <td>{$vo['url']}</td>
                   <td>

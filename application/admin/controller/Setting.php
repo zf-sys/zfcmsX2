@@ -44,12 +44,38 @@ class Setting extends Admin
                         'theme'=>$_data['theme'][$k],
                         'append'=>$_data['append'][$k],
                         'notes'=>$_data['notes'][$k],
+                        'append1'=>$_data['append1'][$k],
+                        'append2'=>$_data['append2'][$k],
+                        'append3'=>$_data['append3'][$k],
+                        'readonly'=>$_data['readonly'][$k],
                     ];
                 }
                 // dd($parm_data);
+                //是否双栏目
+                $parm_data['zf_two_column'] = isset_arr_key($_data,'zf_two_column',1);
+                //是否开启
+                $parm_data['zf_form_status'] = isset_arr_key($_data,'zf_form_status',0);
+                // dd($parm_data);
                 $save_data['form_parm'] = json_encode($parm_data);
             }elseif($t==2){
-                $save_data['form_parm'] = $_data['form_parm'];
+                $_form_parm = $_data['form_parm'];
+                $_form_parm_arr = explode('----------',$_form_parm);
+                if(!in_array($tb_name,['zf_category_model'])){
+                    if(isset($_form_parm_arr[0])){
+                        $save_data['form_parm'] = trim($_form_parm_arr[0]);
+                    }
+                    if(isset($_form_parm_arr[1])){
+                        $save_data['form_parm_static'] = trim($_form_parm_arr[1]);
+                    }
+                }else{
+                    $save_data['form_parm_static'] = trim($_form_parm_arr[0]);
+                }
+                
+            }elseif($t==4){
+                if(!isset($_data['zf_list_form_parm_static'])){
+                    $_data['zf_list_form_parm_static'] = [];
+                }
+                $save_data['form_parm_static'] = implode(',',$_data['zf_list_form_parm_static']);
             }else{
                 return ZFRetMsg(false,'','参数不支持'); 
             }
@@ -57,8 +83,8 @@ class Setting extends Admin
             $id = input('id','');
             if($tb_name=='zf_category'){
                 $res = db('category')->where('cid',$id)->update($save_data);
-            }elseif($tb_name=='zf_advert'){
-                $res = db('advert')->where('id',$id)->update($save_data);
+            }elseif(in_array($tb_name,['zf_advert','zf_category_model','zf_special','zf_tag'])){
+                $res =  Db::table($tb_name)->where('id',$id)->update($save_data);
             }else{
                 return ZFRetMsg(false,'','暂不支持数据表');
             }
@@ -78,9 +104,9 @@ class Setting extends Admin
             if($tb_name=='zf_category'){
                 $form_parm = db('category')->where('cid',$id)->value('form_parm');
                 $meta_key_list = db('meta_key')->where([['tb','=','category'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
-            }elseif($tb_name=='zf_advert'){
-                $form_parm = db('advert')->where('id',$id)->value('form_parm');
-                $meta_key_list = db('meta_key')->where([['tb','=','advert'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
+            }elseif(in_array($tb_name,['zf_advert','zf_category_model','zf_special','zf_tag'])){
+                $form_parm = Db::table($tb_name)->where('id',$id)->value('form_parm');
+                $meta_key_list = db('meta_key')->where([['tb','=',substr($tb_name,3)],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
             }else{
                 $this->error('暂不支持');
             }
@@ -89,6 +115,10 @@ class Setting extends Admin
             }else{
                 $form_parm_arr = json_decode($form_parm,true);
             }
+            $zf_two_column = isset_arr_key($form_parm_arr,'zf_two_column',1);
+            $zf_form_status = isset_arr_key($form_parm_arr,'zf_form_status',0);
+            $this->assign('zf_two_column',$zf_two_column);
+            $this->assign('zf_form_status',$zf_form_status);
             $_list = Db::query("show full columns from ".$tb_name);
             foreach($meta_key_list as $k=>$vo){
                 $_list[] = [
@@ -141,7 +171,26 @@ class Setting extends Admin
                         }else{
                             $_notes = '';
                         }
-
+                        if(isset($form_parm_arr[$_name]['append1'])){
+                            $_append1 = $form_parm_arr[$_name]['append1'];
+                        }else{
+                            $_append1 = '';
+                        }
+                        if(isset($form_parm_arr[$_name]['append2'])){
+                            $_append2 = $form_parm_arr[$_name]['append2'];
+                        }else{
+                            $_append2 = '';
+                        }
+                        if(isset($form_parm_arr[$_name]['append3'])){
+                            $_append3 = $form_parm_arr[$_name]['append3'];
+                        }else{
+                            $_append3 = '';
+                        }
+                        if(isset($form_parm_arr[$_name]['readonly'])){
+                            $_readonly = $form_parm_arr[$_name]['readonly'];
+                        }else{
+                            $_readonly = '';
+                        }
                     }else{
                         $_model = '';
                         $_checked = '0';
@@ -150,6 +199,10 @@ class Setting extends Admin
                         $_theme = 1;
                         $_append = '';
                         $_notes = '';
+                        $_append1 = '';
+                        $_append2 = '';
+                        $_append3 = '';
+                        $_readonly = '';
                     }
                     if($_comment==''){
                         $_checked = '0';
@@ -171,6 +224,10 @@ class Setting extends Admin
                             'theme'=>$_theme,
                             'append'=>$_append,
                             'notes'=>$_notes,
+                            'append1'=>$_append1,
+                            'append2'=>$_append2,
+                            'append3'=>$_append3,
+                            'readonly'=>$_readonly,
                         ];
                     }else{
                         $list_left[] = [
@@ -184,10 +241,19 @@ class Setting extends Admin
                             'theme'=>$_theme,
                             'append'=>$_append,
                             'notes'=>$_notes,
+                            'append1'=>$_append1,
+                            'append2'=>$_append2,
+                            'append3'=>$_append3,
+                            'readonly'=>$_readonly,
                         ];
                     }
                 }
             }
+            // 'append1'=>$_data['append1'][$k],
+            // 'append2'=>$_data['append2'][$k],
+            // 'append3'=>$_data['append3'][$k],
+            // 'readonly'=>$_data['readonly'][$k],
+
             $list = [
                 'left'=>(isset($list_left)?$list_left:false),
                 'right'=>(isset($list_right)?$list_right:false)
@@ -198,14 +264,32 @@ class Setting extends Admin
         }elseif($t==3){
             //当前参数
             if($tb_name=='zf_category'){
-                $form_parm = db('category')->where('cid',$id)->value('form_parm');
-            }elseif($tb_name=='zf_advert'){
-                $form_parm = db('advert')->where('id',$id)->value('form_parm');
+                $res = db('category')->where('cid',$id)->find();
+            }elseif(in_array($tb_name,['zf_advert','zf_category_model','zf_special','zf_tag'])){
+                $res = Db::table($tb_name)->where('id',$id)->find();
             }else{
                 $this->error('暂不支持');
             }
+            if(!in_array($tb_name,['zf_category_model'])){
+                $form_parm = $res['form_parm'];
+                $form_parm .= PHP_EOL.'----------'.PHP_EOL;
+            }else{
+                $form_parm = '';
+            }
+            $form_parm .= $res['form_parm_static'];
             $this->assign('form_parm',$form_parm);
+        }elseif($t==4){
+            //当前参数
+            if($tb_name=='zf_category'){
+                $form_parm_static = db('category')->where('cid',$id)->value('form_parm_static');
+            }elseif(in_array($tb_name,['zf_advert','zf_category_model','zf_special','zf_tag'])){
+                $form_parm_static = Db::table($tb_name)->where('id',$id)->value('form_parm_static');
+            }else{
+                $this->error('暂不支持');
+            }
+            $this->assign('form_parm_static',$form_parm_static);
         }
+        $this->assign('tb_name',$tb_name);
         return view();
     }
 

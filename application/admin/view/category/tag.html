@@ -45,7 +45,9 @@
             <tr>
               <td>{$vo['id']}</td>
               <td>
-                <a href="{$site_path}{$lang!=1?$lang.'/':''}tag/{$vo['name']}.html" target="_blank">{$vo['name']}</a>
+                <a  onclick='zfAdminShow("编辑参数","{:url('admin/setting/category_form_parm',['id' => $vo['id'],'tb_name'=>'zf_tag'] )}")' >
+                  {$vo['name']} 
+                </a>
               </td>
               <td><?php echo date("Y-m-d H:i:s",$vo['ctime']); ?></td>
               <td>

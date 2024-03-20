@@ -6,11 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  {:widget_st('layui','css')}
-  {:widget_st('layui','js')}  
-  {:widget_st('common','js')} 
-  {:widget_st('ueditor')}  
-  {:widget_st('jq','js')}
+  <?php if($form_parm_arr['static_html']){ ?>
+    {$form_parm_arr['static_html']|raw}
+  <?php }else{ ?>
+    {:widget_st('layui','css')}
+    {:widget_st('layui','js')}  
+    {:widget_st('common','js')} 
+    {:widget_st('ueditor')}  
+    {:widget_st('jq','js')}
+  <?php } ?> 
 
 </head>
 <style>
@@ -33,21 +37,27 @@
           </ul>
           <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-              <div class="layui-col-sm12">
-                <input type="hidden" name="id" value="{$res['id']|default=''}">
-                <?php if(isset($res['id'])){ ?>
-                  {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>1])|raw}
-                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
-                  {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}
-                <?php }else{ ?>
-                  {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'','theme'=>1])|raw}
-                  {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>'','theme'=>2])|raw}
-                <?php }?>
-                <div class="layui-col-sm3">
-                  {include file="public/widget_submit"}
+              <input type="hidden" name="id" value="{$res['id']|default=''}">
+              <?php if($form_parm_arr['form_parm'] && isset($form_parm_arr['form_parm']['ini']) && $form_parm_arr['form_parm']['ini']['zf_form_status']==1 ){ ?>
+                {include file="public/form_parm_show"}
+                {include file="public/widget_submit"}
+              <?php }else{ ?>
+                <!-- 默认表单 -->
+                <div class="layui-col-sm12">
+                  <?php if(isset($res['id'])){ ?>
+                    {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>1])|raw}
+                    {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
+                    {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}
+                  <?php }else{ ?>
+                    {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>'','theme'=>1])|raw}
+                    {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'','theme'=>1])|raw}
+                    {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>'','theme'=>2])|raw}
+                  <?php }?>
+                  <div class="layui-col-sm3">
+                    {include file="public/widget_submit"}
+                  </div>
                 </div>
-              </div>
+              <?php } ?>
             </div>
             <div class="layui-tab-item">
               {include file="public/tpl_seo"}

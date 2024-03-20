@@ -26,116 +26,157 @@
   <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
       <?php $form_widget = new \app\common\widget\FormPro();  ?>
-      <a href="?t=1" class="layui-btn">自定义参数</a>
+      <?php if(!in_array($tb_name,['zf_category_model'])){ ?>
+        <a href="?t=1" class="layui-btn">自定义参数</a>
+      <?php } ?>
+      <a href="?t=4" class="layui-btn">设置需引用的静态文件</a>
       <a href="?t=2" class="layui-btn">导入参数</a>
       <a href="?t=3" class="layui-btn">当前参数</a>
       <?php if($t==1){ ?>
+        <style>
+          .layui-select{
+            height: 23px;
+          }
+        </style>
         <form method="post" class="info_tj" >
           <div class="layui-col-sm12">
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-sm12">
                   <div class="layui-card" style="padding-left: 10px;">
                     <div class="layui-card-header">自定义参数</div>
+                    {$form_widget->form_radio(['title'=>'是否双栏','name'=>'zf_two_column','data'=>$zf_two_column,'parm_data'=>['0'=>'单栏','1'=>'双栏'],'theme'=>2])|raw}
+                    {$form_widget->form_radio(['title'=>'是否开启','name'=>'zf_form_status','data'=>$zf_form_status,'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
+                    
+                    
                     <br/>
                     <h1>左边栏目</h1>
                     <?php foreach($list['left'] as $k=>$vo){ ?>
                       <div class="layui-row">
-                        <div class="layui-col-sm1">
-                          <input name="name[]" type="hidden" value="{$vo['name']}" />
-                          <span class="{$vo['checked']==0?'line-through':''}" >{$vo['name']}<br>({$vo['type']})</span>
+                        <div class="layui-col-sm2">
+                          <div>
+                            <input name="name[]" type="hidden" value="{$vo['name']}" />
+                            <span class="{$vo['checked']==0?'line-through':''}" style="font-size: 16px;" >{$vo['name']}<br>({$vo['type']})</span>
+                          </div>
+                          <div class="" >
+                            <input class="layui-input" name="sort[]" value="{$vo['sort']|default=''}" placeholder="排序" />
+                          </div>
                         </div>
                         <div class="layui-col-sm2">
-                          <input name="comment[]" value="{$vo['comment']|default=''}" placeholder="标题" />
-                        </div>
-                        
-                        <div class="layui-col-sm1">
-                          <input name="sort[]" value="{$vo['sort']|default=''}" placeholder="排序" style="width: 40px;" />
-                        </div>
-                        <div class="layui-col-sm3">
-                          <select name="model[]">
+                          <select class="layui-input layui-select" name="model[]">
                             <?php foreach(formProActionArrCate() as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['model']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
-                      
-                          <select name="checked[]">
+                          <select class="layui-input layui-select" name="checked[]">
                             <?php foreach([['id'=>'1','name'=>'显示'],['id'=>'0','name'=>'隐藏']] as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['checked']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
-                          
-                  
-                          <select name="postion[]">
+                          <select class="layui-input layui-select" name="postion[]">
                             <?php foreach([['id'=>'left','name'=>'左边'],['id'=>'right','name'=>'右边']] as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['postion']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
-                        
-                          <select name="theme[]">
+                          <select class="layui-input layui-select" name="theme[]">
                             <?php foreach([['id'=>'1','name'=>'模板1'],['id'=>'2','name'=>'模板2'],['id'=>'3','name'=>'模板3'],['id'=>'4','name'=>'模板4'],['id'=>'5','name'=>'模板5'],['id'=>'6','name'=>'模板6'],['id'=>'7','name'=>'模板7']] as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['theme']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
+                          <select class="layui-input layui-select" name="readonly[]">
+                            <?php foreach([['id'=>'0','name'=>'是否只读:否'],['id'=>'1','name'=>'是否只读:是']] as $k1=>$vo1){ ?>
+                              <option value="{$vo1['id']}" <?php if(isset($vo['readonly']) && $vo['readonly']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                            <?php } ?>
+                          </select>
                         </div>
-                        <div class="layui-col-sm2">
-                          <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
-                          <textarea name="append[]" placeholder="内容">{$vo['append']|default=''}</textarea>
+                        <div class="layui-col-sm3">
+                          <!-- 标题 -->
+                          <div class="">
+                            <input class="layui-input" name="comment[]" value="{$vo['comment']|default=''}" placeholder="标题" />
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="append[]" placeholder="默认值">{$vo['append']|default=''}</textarea>
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="notes[]" placeholder="页面备注内容">{$vo['notes']|default=''}</textarea>
+                          </div>
                         </div>
-                        <div class="layui-col-sm2">
-                          <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
-                          <textarea name="notes[]" placeholder="页面备注内容">{$vo['notes']|default=''}</textarea>
+                        <div class="layui-col-sm5">
+                          <div class="">
+                            <textarea class="layui-input" name="append1[]" placeholder="扩展参数1  form_time(time_type),form_radio(parm_data),form_checkbox(id_t),form_select(id_t)">{$vo['append1']|default=''}</textarea>
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="append2[]" placeholder="扩展参数2  form_checkbox(name_t),form_select(name_t)">{$vo['append2']|default=''}</textarea>
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="append3[]" placeholder="扩展参数3  form_checkbox(list_arr),form_select(list_arr)">{$vo['append3']|default=''}</textarea>
+                          </div>
                         </div>
                       </div>
 
-                      <br>
+                      <hr>
                     <?php } ?>
                     
                     <h1>右边栏目</h1>
                     <?php if(isset($list['right'][0]['name'])){  foreach($list['right'] as $k=>$vo){ ?>
                       <div class="layui-row">
-                        <div class="layui-col-sm1">
-                          <input name="name[]" type="hidden" value="{$vo['name']}" />
-                          <span class="{$vo['checked']==0?'line-through':''}" >{$vo['name']}<br>({$vo['type']})</span>
+                        <div class="layui-col-sm2">
+                          <div>
+                            <input name="name[]" type="hidden" value="{$vo['name']}" />
+                            <span class="{$vo['checked']==0?'line-through':''}" style="font-size: 16px;" >{$vo['name']}<br>({$vo['type']})</span>
+                          </div>
+                          <div class="" >
+                            <input class="layui-input" name="sort[]" value="{$vo['sort']|default=''}" placeholder="排序" />
+                          </div>
                         </div>
                         <div class="layui-col-sm2">
-                          <input name="comment[]" value="{$vo['comment']|default=''}" placeholder="标题" />
-                        </div>
-                        
-                        <div class="layui-col-sm1">
-                          <input name="sort[]" value="{$vo['sort']|default=''}" placeholder="排序" style="width: 40px;" />
-                        </div>
-                        <div class="layui-col-sm3">
-                          <select name="model[]">
+                          <select class="layui-input layui-select" name="model[]">
                             <?php foreach(formProActionArrCate() as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['model']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
-                      
-                          <select name="checked[]">
+                          <select class="layui-input layui-select" name="checked[]">
                             <?php foreach([['id'=>'1','name'=>'显示'],['id'=>'0','name'=>'隐藏']] as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['checked']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
-                  
-                          <select name="postion[]">
+                          <select class="layui-input layui-select" name="postion[]">
                             <?php foreach([['id'=>'left','name'=>'左边'],['id'=>'right','name'=>'右边']] as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['postion']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
-                        
-                          <select name="theme[]">
+                          <select class="layui-input layui-select" name="theme[]">
                             <?php foreach([['id'=>'1','name'=>'模板1'],['id'=>'2','name'=>'模板2'],['id'=>'3','name'=>'模板3'],['id'=>'4','name'=>'模板4'],['id'=>'5','name'=>'模板5'],['id'=>'6','name'=>'模板6'],['id'=>'7','name'=>'模板7']] as $k1=>$vo1){ ?>
                               <option value="{$vo1['id']}" <?php if($vo['theme']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
                             <?php } ?>
                           </select>
+                          <select class="layui-input layui-select" name="readonly[]">
+                            <?php foreach([['id'=>'0','name'=>'是否只读:否'],['id'=>'1','name'=>'是否只读:是']] as $k1=>$vo1){ ?>
+                              <option value="{$vo1['id']}" <?php if(isset($vo['readonly']) && $vo['readonly']==$vo1['id']){ ?>selected<?php } ?>>{$vo1['name']}</option>
+                            <?php } ?>
+                          </select>
                         </div>
-                        <div class="layui-col-sm2">
-                          <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
-                          <textarea name="append[]" placeholder="内容">{$vo['append']|default=''}</textarea>
+                        <div class="layui-col-sm3">
+                          <!-- 标题 -->
+                          <div class="">
+                            <input class="layui-input" name="comment[]" value="{$vo['comment']|default=''}" placeholder="标题" />
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="append[]" placeholder="默认值">{$vo['append']|default=''}</textarea>
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="notes[]" placeholder="页面备注内容">{$vo['notes']|default=''}</textarea>
+                          </div>
                         </div>
-                        <div class="layui-col-sm2">
-                          <!-- <input name="append[]" value="{$vo['append']|default=''}" /> -->
-                          <textarea name="notes[]" placeholder="页面备注内容">{$vo['notes']|default=''}</textarea>
+                        <div class="layui-col-sm5">
+                          <div class="">
+                            <textarea class="layui-input" name="append1[]" placeholder="扩展参数1  form_time(time_type),form_radio(parm_data),form_checkbox(id_t),form_select(id_t)">{$vo['append1']|default=''}</textarea>
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="append2[]" placeholder="扩展参数2  form_checkbox(name_t),form_select(name_t)">{$vo['append2']|default=''}</textarea>
+                          </div>
+                          <div class="">
+                            <textarea class="layui-input" name="append3[]" placeholder="扩展参数3  form_checkbox(list_arr),form_select(list_arr)">{$vo['append3']|default=''}</textarea>
+                          </div>
                         </div>
                       </div>
 
@@ -163,7 +204,7 @@
                 <div class="layui-col-sm12">
                   <div class="layui-card">
                     <style>
-                      .layui-textarea{
+                      .layui-input{
                         height: 400px;
                       }
                     </style>
@@ -183,7 +224,7 @@
                 <div class="layui-col-sm12">
                   <div class="layui-card">
                     <style>
-                      .layui-textarea{
+                      .layui-input{
                         height: 500px;
                       }
                     </style>
@@ -195,6 +236,32 @@
                   
             </div>
           </div>
+      <?php }elseif($t==4){ ?>
+        <form method="post" class="info_tj layui-form" >
+          <div class="layui-col-sm12">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-sm12">
+                  <div class="layui-card">
+                    <style>
+                      .layui-input{
+                        height: 400px;
+                      }
+                    </style>
+                    <div class="layui-card-header">
+                      <input type="checkbox" lay-skin="primary"  id="c_all" lay-filter="c_all" title="全部">
+                    </div> 
+                    {$form_widget->form_checkbox(['title'=>'静态文件','name'=>'form_parm_static','data'=>$form_parm_static,'list_arr'=>formWidgetStatic(),'theme'=>2])|raw}
+                    <br> 
+                  </div>
+                  <script>
+                    
+                  </script>
+                </div>
+                  
+                {include file="public/widget_submit"}
+            </div>
+          </div>
+        </form>
       <?php } ?>
         
       </div>
@@ -212,7 +279,19 @@
     ,form = layui.form
     ,upload = layui.upload;
 
+      form.on('checkbox(c_all)', function (data) {
+        var a = data.elem.checked;
+        if (a == true) {
+          $('input[name="zf_list_form_parm_static[]"]').prop("checked", true);
+          form.render('checkbox');
+        } else {
+          $('input[name="zf_list_form_parm_static[]"]').prop("checked", false);
+          form.render('checkbox');
+        }
 
+      });
+
+    
       $('.tijiao').on("click",function(){
           // var index = layer.load(2);
           var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
@@ -224,11 +303,7 @@
                 if(res.result==1){
                   layer.msg(res.msg, {icon: 1});
                   setTimeout(function() {
-                      if(res.msg.code==1){
                         window.location.reload();
-                      }else{
-                        window.parent.location.reload();
-                      }
                   }, 2000);
                 }else{
                   // layer.close(index);

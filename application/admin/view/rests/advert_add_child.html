@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  {:widget_st('layui','css')}
-  {:widget_st('jq','js')}
-  {:widget_st('layui','js')}  
-  {:widget_st('admin','css')}
-  {:widget_st('laydate','js')}
-  {:widget_st('webuploader')}
-  {:widget_st('common','js')}
-  {:widget_st('ueditor')}       
-  {:widget_st('input-select')}  
+  <?php if($form_parm_arr['static_html']){ ?>
+    {$form_parm_arr['static_html']|raw}
+  <?php }else{ ?>
+    {:widget_st('layui','css')}
+    {:widget_st('jq','js')}
+    {:widget_st('layui','js')}  
+    {:widget_st('admin','css')}
+    {:widget_st('laydate','js')}
+    {:widget_st('webuploader')}
+    {:widget_st('common','js')}
+    {:widget_st('ueditor')}       
+    {:widget_st('input-select')}    
+  <?php } ?>
 
 </head>
 <body>
@@ -28,7 +32,8 @@
           <?php }else{ ?>
             <input type="hidden" name="pid" value="{$pid}">
           <?php }?>
-          <?php if($form_parm_arr){ ?>
+          <?php if($form_parm_arr['form_parm'] && isset($form_parm_arr['form_parm']['ini']) && $form_parm_arr['form_parm']['ini']['zf_form_status']==1 ){ ?>
+
             {include file="public/form_parm_show"}
             {include file="public/widget_submit"}
           <?php }else{ ?>

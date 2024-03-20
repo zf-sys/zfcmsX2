@@ -1,0 +1,41 @@
+<?php if($vo['model']=='form_input'){ ?>
+  {$form_widget->form_input(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+<?php }elseif($vo['model']=='form_textarea'){ ?>
+  {$form_widget->form_textarea(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+<?php }elseif($vo['model']=='upload_pic'){ ?>
+  {$form_widget->upload_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+<?php }elseif($vo['model']=='form_time'){ ?>
+  {$form_widget->form_time(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>date("Y-m-d H:i:s",change_meta_data($res,$vo['name'],$vo['append'])),'notes'=>$vo['notes'],'theme'=>$vo['theme'],'time_type'=>'datetime'])|raw}
+<?php }elseif($vo['model']=='form_select'){ ?>
+  <?php 
+    if($vo['name']=='pid'){ 
+      $id_t = 'cid';
+      $_plist = $plist;
+      $theme_select = $vo['theme'];
+    }elseif($vo['name']=='mid'){
+      $id_t = 'id';
+      $_plist = $mlist;
+      $theme_select = 3;
+    }elseif(in_array($vo['name'],['tpl_category','tpl_post'] )){
+      $id_t = 'id';
+      $_plist = $theme_arr;
+      $theme_select = $vo['theme']; #4
+    }else{
+      echo 'select模型参数错误';die;
+    }
+    $name_t = 'name';
+    ?>
+    {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'id_t'=>$id_t, 'name_t'=>$name_t,'list_arr'=>$_plist,'theme'=>$theme_select])|raw}
+<?php }elseif($vo['model']=='form_ueditor'){ ?>
+  {$form_widget->form_ueditor(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+  <?php }elseif($vo['model']=='form_radio'){ ?>
+    {$form_widget->form_radio(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+<?php }elseif($vo['model']=='upload_album'){ ?>
+  {$form_widget->upload_album(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+<?php }elseif($vo['model']=='filesystem_pic'){ ?>
+  {$form_widget->filesystem_pic(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+<?php }elseif($vo['model']=='filesystem_file'){ ?>
+    {$form_widget->filesystem_file(['title'=>$vo['comment'],'name'=>$vo['name'],'data'=>change_meta_data($res,$vo['name'],$vo['append']),'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
+<?php }else{ ?>
+  模型{$vo['model']}暂未实现
+<?php } ?>

@@ -147,12 +147,16 @@ if(!function_exists('getFormParams')){
                     $left = false;
                     $right = false;
                     foreach($_form_parm_arr as $k=>$vo){
-                        if($vo['checked']==1){
-                            if($vo['postion']=='left'){
-                                $left[] = $vo;
-                            }else{
-                                $right[] = $vo;
+                        if(is_array($vo)){
+                            if($vo['checked']==1){
+                                if($vo['postion']=='left'){
+                                    $left[] = $vo;
+                                }else{
+                                    $right[] = $vo;
+                                }
                             }
+                        }else{
+                            $form_parm_arr['ini'][$k] = $vo;
                         }
                     }
                     if($left){
@@ -170,7 +174,54 @@ if(!function_exists('getFormParams')){
         }else{
             $form_parm_arr = false;
         }
-        return $form_parm_arr;
+        //样式的
+        $static_html = '';
+        if(isset($res['form_parm_static'])){
+            $form_parm_static = $res['form_parm_static'];
+            if($form_parm_static==''){
+                $static_html = false;
+            }else{
+                $_form_parm_static_arr = explode(',',$form_parm_static);
+                foreach($_form_parm_static_arr as $k=>$vo){
+                    $_vo_arr = explode('-&-',$vo);
+                    if(isset($_vo_arr[1]) && $_vo_arr[1]!=''){
+                        $static_html .= widget_st($_vo_arr[1],$_vo_arr[0]);
+                    }
+                }
+            }
+        }else{
+            $static_html = false;
+        }
+        return ['form_parm'=>$form_parm_arr,'static_html'=>$static_html];
     }
 }
 
+if (!function_exists( 'formWidgetStatic')) {
+    function formWidgetStatic(){ 
+        $arr = [
+            ['id'=>'css-&-layui','name'=>'layui.css'],
+            ['id'=>'css-&-admin','name'=>'admin.css'],
+            ['id'=>'css-&-tailwind','name'=>'tailwind.css'],
+            ['id'=>'js-&-jq183','name'=>'jq1.8.3.js'],
+            ['id'=>'js-&-laydate','name'=>'laydate.js'],
+            ['id'=>'js-&-layer','name'=>'layer.js'],
+            ['id'=>'js-&-layui','name'=>'layui.js'],
+            ['id'=>'js-&-common','name'=>'common.js'],
+            ['id'=>'widget-&-webuploader','name'=>'webuploader'],
+            ['id'=>'widget-&-ueditor','name'=>'ueditor'],
+            ['id'=>'widget-&-bootstrap','name'=>'bootstrap'],
+            ['id'=>'widget-&-input-tag','name'=>'input-tag'],
+            ['id'=>'widget-&-viewer','name'=>'viewer'],
+            ['id'=>'widget-&-tinymce','name'=>'tinymce'],
+            ['id'=>'widget-&-meditor','name'=>'meditor'],
+            ['id'=>'widget-&-wangEditor','name'=>'wangEditor'],
+            ['id'=>'widget-&-vditor','name'=>'vditor'],
+            ['id'=>'widget-&-autosize','name'=>'autosize'],
+            ['id'=>'widget-&-echarts','name'=>'echarts'],
+            ['id'=>'widget-&-input-select','name'=>'input-select'],
+            ['id'=>'widget-&-fcup','name'=>'fcup'],
+            ['id'=>'widget-&-ztree','name'=>'ztree'],
+        ];
+        return $arr;
+    } 
+}

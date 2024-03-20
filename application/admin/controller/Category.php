@@ -787,7 +787,7 @@ class Category extends Admin
             $mid = ZFTB('category')->where(['cid'=>$cid])->value('mid');
             $this->assign("act",'edit');
         }
-        $m_res =ZFTB('category_model')->field('model,is_two,is_parm')->where(['id'=>$mid])->find();
+        $m_res =ZFTB('category_model')->field('model,is_two,is_parm,id,form_parm_static')->where(['id'=>$mid])->find();
         if($m_res['is_parm']==1){
             if(is_file('./application/admin/view/category/zf_tpl/add_'.$m_res['model'].'.html')){
                 $tpl = 'category/zf_tpl/add_'.$m_res['model'];
@@ -816,6 +816,11 @@ class Category extends Admin
             $plist = [];
         }
         $this->assign("plist",$plist);
+
+
+        #####参数模式
+        $form_parm_arr = getFormParams($m_res);
+        $this->assign('form_parm_arr',$form_parm_arr);
         return view($tpl);
     }
 
@@ -1111,6 +1116,9 @@ class Category extends Admin
         }  
         $res['meta'] = false;
         $this->assign("res",$res);
+        #####参数模式
+        $form_parm_arr = getFormParams($res);
+        $this->assign('form_parm_arr',$form_parm_arr);
         return view();   
 
          
@@ -1145,6 +1153,9 @@ class Category extends Admin
         $meta_json = ZFTB('meta_data')->where([['tb','=','special'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
         $res['meta'] = json_decode($meta_json,true);
         $this->assign("res",$res);
+        #####参数模式
+        $form_parm_arr = getFormParams($res);
+        $this->assign('form_parm_arr',$form_parm_arr);
         return view('/category/special_add');
     }
     public function special_post_edit()
@@ -1235,6 +1246,9 @@ class Category extends Admin
         }  
         $res['meta'] = false;
         $this->assign("res",$res);
+        #####参数模式
+        $form_parm_arr = getFormParams($res);
+        $this->assign('form_parm_arr',$form_parm_arr);
         return view();   
 
          
@@ -1269,6 +1283,9 @@ class Category extends Admin
         $meta_json = ZFTB('meta_data')->where([['tb','=','tag'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
         $res['meta'] = json_decode($meta_json,true);
         $this->assign("res",$res);
+        #####参数模式
+        $form_parm_arr = getFormParams($res);
+        $this->assign('form_parm_arr',$form_parm_arr);
         return view('/category/tag_add');
     }
 

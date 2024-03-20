@@ -83,14 +83,12 @@ class Rests extends Admin
                 $partent_res = ZFTB('advert')->where(['id'=>input('pid')])->find();
                 $this->assign('partent_res',$partent_res);
                 $this->assign('res',false);
-                #####参数模式
-                $form_parm_arr = getFormParams($partent_res);
-
-
             }else{
                 $tpl='';
-                $form_parm_arr = false;
+                $partent_res = false;
             }
+            #####参数模式
+            $form_parm_arr = getFormParams($partent_res);
             $this->assign('form_parm_arr',$form_parm_arr);
             return view($tpl);
         }  
@@ -148,10 +146,14 @@ class Rests extends Admin
             if(input('type')=='child'){
                 $tpl="rests/advert_add_child";   
                 $this->assign("pid",input("pid"));
-                $partent_res = ZFTB('advert')->where(['id'=>input('pid')])->find();
+                //判断是否子类自定义
                 #####参数模式
-                $form_parm_arr = getFormParams($partent_res);
-
+                if($res['form_parm']){
+                    $form_parm_arr = getFormParams($res);
+                }else{
+                    $partent_res = ZFTB('advert')->where(['id'=>input('pid')])->find();
+                    $form_parm_arr = getFormParams($partent_res);
+                }
             }else{
                 $tpl='rests/advert_add';
                 #####参数模式
