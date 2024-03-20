@@ -1320,37 +1320,69 @@ INFO;
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
-        $zf_html = <<<INFO
- <div class="layui-card-header">$title</div>
-<div class="layui-card-body layui-row layui-col-space8">
-    <div class="layui-col-md12">
-      <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
-    $append_notes
-        <div class="layui-upload">
-          <button type="button" class="layui-btn" id="$tpl_id">选择文件</button>
-        </div> 
-    </div>
-</div>
- <script>
- layui.use(['upload'], function(){
-    var $ = layui.$
-    ,element = layui.element
-    ,upload = layui.upload;
-    
-    $('#$tpl_id').on('click',function(){
-      layer.open({
-        type: 2,
-        area: ['90%', '90%'],
-        fixed: true,
-        maxmin: true,
-        content: "$this->filesystem_upload&cid=0&t=3&zf_class=.$tpl_id"
-      });
-    })
+        if($theme==1){
+          $zf_html = <<<INFO
+  <div class="layui-card-header">$title</div>
+  <div class="layui-card-body layui-row layui-col-space8">
+      <div class="layui-col-md12">
+        <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+      $append_notes
+          <div class="layui-upload">
+            <button type="button" class="layui-btn" id="$tpl_id">选择文件</button>
+          </div> 
+      </div>
+  </div>
+  <script>
+  layui.use(['upload'], function(){
+      var $ = layui.$
+      ,element = layui.element
+      ,upload = layui.upload;
+      
+      $('#$tpl_id').on('click',function(){
+        layer.open({
+          type: 2,
+          area: ['90%', '90%'],
+          fixed: true,
+          maxmin: true,
+          content: "$this->filesystem_upload&cid=0&t=3&zf_class=.$tpl_id"
+        });
+      })
 
 
-  });
-</script>
+    });
+  </script>
 INFO;
+        }elseif($theme==2){
+          $zf_html = <<<INFO
+          <div class="layui-form-item">
+            <label class="layui-form-label">$title:</label>
+            <div class="layui-input-block">
+              <input  class="layui-input $tpl_id" type="text" name="$name"  placeholder="$placeholder" autocomplete="off"  value="$data">
+              $append_notes
+              <div class="layui-upload">
+                <button type="button" class="layui-btn" id="$tpl_id">上传</button>
+              </div> 
+            </div>
+          </div>
+          <script>
+          layui.use(['upload'], function(){
+             var $ = layui.$
+             ,element = layui.element
+             ,upload = layui.upload;
+             $('#$tpl_id').on('click',function(){
+               layer.open({
+                 type: 2,
+                 area: ['90%', '90%'],
+                 fixed: true,
+                 maxmin: true,
+                 content: "$this->filesystem_upload&cid=0&t=1&zf_class=.$tpl_id"
+               });
+             })
+           });
+         </script>
+INFO;
+      }
+
         return $zf_html;
     }
 
