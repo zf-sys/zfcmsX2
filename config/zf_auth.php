@@ -11,7 +11,7 @@
   // | 码云:  https://gitee.com/wmc1125/zfAdmin_tpfast
   // | Mc技术论坛: http://bbs.wangmingchang.com/forum.php?mod=forumdisplay&fid=77
   // +----------------------------------------------------------------------
-  // 站点信息最后修改于 2023/11/08 20:13:48  
+  // 站点信息最后修改于 2024/03/02 11:42:26  
   
  return [
 	'email' => '',
@@ -19,4 +19,5 @@
 	'sc' => '',
 	'site_admin_token' => '',
 	'site_token' => '',
+	'init_sql' => '',
 ];
