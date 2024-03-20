@@ -600,8 +600,8 @@ class Config extends Admin
          if(request()->isPost()){
             $email = input('ee');
             $code = '测试邮件内容';
-            $title = '测试邮件';
-            $res = send_email($email,$title,$code);
+            $title = '测试发件邮件';
+            $res = send_email($email,['title'=>$title,'body'=>$code]);
             if($res=='ok'){
                 return jssuccess('发送成功');
             }else{
