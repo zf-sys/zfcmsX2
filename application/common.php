@@ -2134,28 +2134,28 @@ if(!function_exists('send_notice')){
  * 20231018
  */
 if(!function_exists('change_meta_data')){
-    function change_meta_data($data=[],$meta_key=''){
+    function change_meta_data($data=[],$meta_key='',$default=''){
         //判断meta_key是否包含了meta[
         if(is_str_find($meta_key,'meta[')){
             $meta_key_arr = explode('meta[',$meta_key);
             if(!isset($meta_key_arr[1])){
-                return '';
+                return $default;
             }
             $meta_key_arr = explode(']',$meta_key_arr[1]);
             if(!isset($meta_key_arr[0])){
-                return '';
+                return $default;
             }
             $meta_key = $meta_key_arr[0];
             if(isset($data['meta'][$meta_key])){
                 return $data['meta'][$meta_key];
             }else{
-                return '';
+                return $default;
             }
         }else{
             if(isset($data[$meta_key])){
                 return $data[$meta_key];
             }else{
-                return '';
+                return $default;
             }
         }
     }
