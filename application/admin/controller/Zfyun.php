@@ -547,7 +547,7 @@ class Zfyun extends Admin
         $data = input('post.');
         if($t=='tdk'){
             $sys_message = '通过下面提供的内容写网页的标题、关键词、描述,让搜索引擎更好的收录你的网站,给出的内容使用@@@间隔,例如: 标题@@@关键词@@@描述';
-            $old_content = html_out_par($data['content'],100);
+            $old_content = html_out_par($data['content'],1000);
             $_data = $this->zfyun_openai($old_content,$sys_message);
             if($_data['code']==0){
                 return ZFRetMsg(false,'',$_data['msg']);
@@ -564,9 +564,9 @@ class Zfyun extends Admin
         }elseif($t=='xuxie_content'){
             $sys_message = '通过下面提供的标题续写一段内容,让搜索引擎更好的收录你的网站,并对文章进行润色';
             if(isset($data['title'])){
-                $old_content = html_out_par($data['title'],100);
+                $old_content = html_out_par($data['title'],1000);
             }elseif(isset($data['name'])){
-                $old_content = html_out_par($data['name'],100);
+                $old_content = html_out_par($data['name'],1000);
             }else{
                 return ZFRetMsg(false,'','页面input不存在name或title');
             }
