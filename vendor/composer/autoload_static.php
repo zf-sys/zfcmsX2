@@ -7,18 +7,20 @@ namespace Composer\Autoload;
 class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
 {
     public static $files = array (
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -121,13 +123,11 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Contracts\\Service\\' => 26,
-            'Symfony\\Contracts\\HttpClient\\' => 29,
             'Symfony\\Contracts\\EventDispatcher\\' => 34,
             'Symfony\\Contracts\\Cache\\' => 24,
             'Symfony\\Component\\VarExporter\\' => 30,
             'Symfony\\Component\\VarDumper\\' => 28,
             'Symfony\\Component\\HttpFoundation\\' => 33,
-            'Symfony\\Component\\HttpClient\\' => 29,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Cache\\' => 24,
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
@@ -163,10 +163,12 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
+            'League\\Flysystem\\AwsS3v3\\' => 25,
             'League\\Flysystem\\' => 17,
         ),
         'J' => 
         array (
+            'JmesPath\\' => 9,
             'Jaeger\\' => 7,
         ),
         'G' => 
@@ -190,9 +192,7 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         ),
         'A' => 
         array (
-            'AsyncAws\\SimpleS3\\' => 18,
-            'AsyncAws\\S3\\' => 12,
-            'AsyncAws\\Core\\' => 14,
+            'Aws\\' => 4,
         ),
     );
 
@@ -258,10 +258,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         array (
             0 => __DIR__ . '/..' . '/symfony/service-contracts',
         ),
-        'Symfony\\Contracts\\HttpClient\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/http-client-contracts',
-        ),
         'Symfony\\Contracts\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher-contracts',
@@ -281,10 +277,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         'Symfony\\Component\\HttpFoundation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
-        ),
-        'Symfony\\Component\\HttpClient\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/http-client',
         ),
         'Symfony\\Component\\EventDispatcher\\' => 
         array (
@@ -366,9 +358,17 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
+        'League\\Flysystem\\AwsS3v3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-aws-s3-v3/src',
+        ),
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'JmesPath\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
         ),
         'Jaeger\\' => 
         array (
@@ -414,17 +414,9 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         array (
             0 => __DIR__ . '/..' . '/cache/adapter-common',
         ),
-        'AsyncAws\\SimpleS3\\' => 
+        'Aws\\' => 
         array (
-            0 => __DIR__ . '/..' . '/async-aws/simple-s3/src',
-        ),
-        'AsyncAws\\S3\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/async-aws/s3/src',
-        ),
-        'AsyncAws\\Core\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/async-aws/core/src',
+            0 => __DIR__ . '/..' . '/aws/aws-sdk-php/src',
         ),
     );
 
@@ -439,6 +431,29 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
     );
 
     public static $classMap = array (
+        'AWS\\CRT\\Auth\\AwsCredentials' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/AwsCredentials.php',
+        'AWS\\CRT\\Auth\\CredentialsProvider' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/CredentialsProvider.php',
+        'AWS\\CRT\\Auth\\Signable' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/Signable.php',
+        'AWS\\CRT\\Auth\\SignatureType' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SignatureType.php',
+        'AWS\\CRT\\Auth\\SignedBodyHeaderType' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SignedBodyHeaderType.php',
+        'AWS\\CRT\\Auth\\Signing' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/Signing.php',
+        'AWS\\CRT\\Auth\\SigningAlgorithm' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SigningAlgorithm.php',
+        'AWS\\CRT\\Auth\\SigningConfigAWS' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SigningConfigAWS.php',
+        'AWS\\CRT\\Auth\\SigningResult' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SigningResult.php',
+        'AWS\\CRT\\Auth\\StaticCredentialsProvider' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/StaticCredentialsProvider.php',
+        'AWS\\CRT\\CRT' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/CRT.php',
+        'AWS\\CRT\\HTTP\\Headers' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Headers.php',
+        'AWS\\CRT\\HTTP\\Message' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Message.php',
+        'AWS\\CRT\\HTTP\\Request' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Request.php',
+        'AWS\\CRT\\HTTP\\Response' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Response.php',
+        'AWS\\CRT\\IO\\EventLoopGroup' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/IO/EventLoopGroup.php',
+        'AWS\\CRT\\IO\\InputStream' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/IO/InputStream.php',
+        'AWS\\CRT\\Internal\\Encoding' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Internal/Encoding.php',
+        'AWS\\CRT\\Internal\\Extension' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Internal/Extension.php',
+        'AWS\\CRT\\Log' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Log.php',
+        'AWS\\CRT\\NativeResource' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/NativeResource.php',
+        'AWS\\CRT\\OptionValue' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
+        'AWS\\CRT\\Options' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Callback' => __DIR__ . '/..' . '/jaeger/phpquery-single/phpQuery.php',
         'CallbackBody' => __DIR__ . '/..' . '/jaeger/phpquery-single/phpQuery.php',

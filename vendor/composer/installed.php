@@ -3,7 +3,7 @@
         'name' => 'topthink/think',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '0b04f16faa6d1467b3775e8fd083da2727ae1c8a',
+        'reference' => 'b9865585c917ed3922290b471be578a210eb3bac',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -19,30 +19,21 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'async-aws/core' => array(
-            'pretty_version' => '1.20.0',
-            'version' => '1.20.0.0',
-            'reference' => 'e7a42c5cd0af44c4f3df0c4d228fe574c8ae4b68',
+        'aws/aws-crt-php' => array(
+            'pretty_version' => 'v1.2.4',
+            'version' => '1.2.4.0',
+            'reference' => 'eb0c6e4e142224a10b08f49ebf87f32611d162b2',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../async-aws/core',
+            'install_path' => __DIR__ . '/../aws/aws-crt-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'async-aws/s3' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
-            'reference' => '1486ae6592a8f870da60dfc29bfc98390c7b9092',
+        'aws/aws-sdk-php' => array(
+            'pretty_version' => '3.301.1',
+            'version' => '3.301.1.0',
+            'reference' => '0a910d2b35e7087337cdf3569dc9b6ce232aafba',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../async-aws/s3',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'async-aws/simple-s3' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
-            'reference' => 'afb512bcdc56ca5c5b33913348e7c83b784355cf',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../async-aws/simple-s3',
+            'install_path' => __DIR__ . '/../aws/aws-sdk-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -154,6 +145,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'league/flysystem-aws-s3-v3' => array(
+            'pretty_version' => '1.0.30',
+            'version' => '1.0.30.0',
+            'reference' => 'af286f291ebab6877bac0c359c6c2cb017eb061d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../league/flysystem-aws-s3-v3',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'league/mime-type-detection' => array(
             'pretty_version' => '1.13.0',
             'version' => '1.13.0.0',
@@ -187,6 +187,15 @@
             'reference' => '437cb3628f4cf6042cc10ae97fc2b8472e48ca1f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'mtdowling/jmespath.php' => array(
+            'pretty_version' => '2.7.0',
+            'version' => '2.7.0.0',
+            'reference' => 'bbb69a935c2cbb0c03d7f481a238027430f6440b',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mtdowling/jmespath.php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -225,18 +234,6 @@
             'install_path' => __DIR__ . '/../overtrue/wechat',
             'aliases' => array(),
             'dev_requirement' => false,
-        ),
-        'php-http/async-client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '*',
-            ),
-        ),
-        'php-http/client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '*',
-            ),
         ),
         'phpmailer/phpmailer' => array(
             'pretty_version' => 'v6.8.1',
@@ -300,12 +297,6 @@
             'dev_requirement' => false,
         ),
         'psr/event-dispatcher-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0',
-            ),
-        ),
-        'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
                 0 => '1.0',
@@ -432,30 +423,6 @@
                 0 => '2.0',
             ),
         ),
-        'symfony/http-client' => array(
-            'pretty_version' => 'v5.4.31',
-            'version' => '5.4.31.0',
-            'reference' => '6cdf6cdf48101454f014a9ab4e0905f0b902389d',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/http-client',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'symfony/http-client-contracts' => array(
-            'pretty_version' => 'v2.5.2',
-            'version' => '2.5.2.0',
-            'reference' => 'ba6a9f0e8f3edd190520ee3b9a958596b6ca2e70',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/http-client-contracts',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'symfony/http-client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '2.4',
-            ),
-        ),
         'symfony/http-foundation' => array(
             'pretty_version' => 'v5.4.31',
             'version' => '5.4.31.0',
@@ -576,7 +543,7 @@
         'topthink/think' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '0b04f16faa6d1467b3775e8fd083da2727ae1c8a',
+            'reference' => 'b9865585c917ed3922290b471be578a210eb3bac',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -639,9 +606,9 @@
             'dev_requirement' => false,
         ),
         'zf-sys/think-addons' => array(
-            'pretty_version' => 'v2.0.2',
-            'version' => '2.0.2.0',
-            'reference' => 'fb10475748571d8890184348301943b85c566607',
+            'pretty_version' => 'v2.0.3',
+            'version' => '2.0.3.0',
+            'reference' => '4de601d39d9e249bb44f3bc68b1385418defa5ef',
             'type' => 'library',
             'install_path' => __DIR__ . '/../zf-sys/think-addons',
             'aliases' => array(),
