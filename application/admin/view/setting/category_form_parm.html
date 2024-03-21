@@ -253,6 +253,9 @@
                     {$form_widget->form_checkbox(['title'=>'静态文件','name'=>'form_parm_static','data'=>$form_parm_static,'list_arr'=>formWidgetStatic(),'theme'=>2])|raw}
                     <br> 
                   </div>
+                  <span>如果选项为❌则表示未下载,请===> <a  onclick='zfAdminShow("系统工具","{:url('admin/config/tool',['site_t' => 'style'] )}")' >点击此处下载</a>,下载后刷新本页面</span>
+                  <br>
+                  <span>如果你使用的样式是远程文件,则可忽略</span>
                   <script>
                     
                   </script>
