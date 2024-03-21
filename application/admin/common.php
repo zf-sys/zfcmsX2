@@ -199,29 +199,39 @@ if(!function_exists('getFormParams')){
 if (!function_exists( 'formWidgetStatic')) {
     function formWidgetStatic(){ 
         $arr = [
-            ['id'=>'css-&-layui','name'=>'layui.css'],
+            ['id'=>'css-&-layui','name'=>'layui.css'.static_dir_exit('layui')],
             ['id'=>'css-&-admin','name'=>'admin.css'],
-            ['id'=>'css-&-tailwind','name'=>'tailwind.css'],
-            ['id'=>'js-&-jq183','name'=>'jq1.8.3.js'],
-            ['id'=>'js-&-laydate','name'=>'laydate.js'],
-            ['id'=>'js-&-layer','name'=>'layer.js'],
-            ['id'=>'js-&-layui','name'=>'layui.js'],
+            ['id'=>'css-&-tailwind','name'=>'tailwind.css'.static_dir_exit('tailwind')],
+            ['id'=>'js-&-jq183','name'=>'jq1.8.3.js'.static_dir_exit('jquery-1.8.3')],
+            ['id'=>'js-&-laydate','name'=>'laydate.js'.static_dir_exit('laydate')],
+            ['id'=>'js-&-layer','name'=>'layer.js'.static_dir_exit('layer')],
+            ['id'=>'js-&-layui','name'=>'layui.js'.static_dir_exit('layui')],
             ['id'=>'js-&-common','name'=>'common.js'],
-            ['id'=>'widget-&-webuploader','name'=>'webuploader'],
-            ['id'=>'widget-&-ueditor','name'=>'ueditor'],
-            ['id'=>'widget-&-bootstrap','name'=>'bootstrap'],
-            ['id'=>'widget-&-input-tag','name'=>'input-tag'],
-            ['id'=>'widget-&-viewer','name'=>'viewer'],
-            ['id'=>'widget-&-tinymce','name'=>'tinymce'],
-            ['id'=>'widget-&-meditor','name'=>'meditor'],
-            ['id'=>'widget-&-wangEditor','name'=>'wangEditor'],
-            ['id'=>'widget-&-vditor','name'=>'vditor'],
-            ['id'=>'widget-&-autosize','name'=>'autosize'],
-            ['id'=>'widget-&-echarts','name'=>'echarts'],
-            ['id'=>'widget-&-input-select','name'=>'input-select'],
-            ['id'=>'widget-&-fcup','name'=>'fcup'],
-            ['id'=>'widget-&-ztree','name'=>'ztree'],
+            ['id'=>'widget-&-webuploader','name'=>'webuploader'.static_dir_exit('webuploader')],
+            ['id'=>'widget-&-ueditor','name'=>'ueditor'.static_dir_exit('ueditor')],
+            ['id'=>'widget-&-bootstrap','name'=>'bootstrap'.static_dir_exit('bootstrap')],
+            ['id'=>'widget-&-input-tag','name'=>'input-tag'.static_dir_exit('input-tag')],
+            ['id'=>'widget-&-viewer','name'=>'viewer'.static_dir_exit('viewer')],
+            ['id'=>'widget-&-tinymce','name'=>'tinymce'.static_dir_exit('tinymce515')],
+            ['id'=>'widget-&-meditor','name'=>'meditor'.static_dir_exit('meditor')],
+            ['id'=>'widget-&-wangEditor','name'=>'wangEditor'.static_dir_exit('wangEditor')],
+            ['id'=>'widget-&-vditor','name'=>'vditor'.static_dir_exit('vditor')],
+            ['id'=>'widget-&-autosize','name'=>'autosize'.static_dir_exit('autosize')],
+            ['id'=>'widget-&-echarts','name'=>'echarts'.static_dir_exit('echarts')],
+            ['id'=>'widget-&-input-select','name'=>'input-select'.static_dir_exit('input-select')],
+            ['id'=>'widget-&-fcup','name'=>'fcup'.static_dir_exit('fcup')],
+            ['id'=>'widget-&-ztree','name'=>'ztree'.static_dir_exit('ztree')],
         ];
         return $arr;
     } 
+}
+if (!function_exists( 'static_dir_exit')) {
+    function static_dir_exit($dir){
+        $dir = './public/static/zfcms/style/'.$dir;
+        //判断目录是否存在
+        if(!is_dir($dir)){
+            return '❌';
+        }
+        return '';
+    }
 }
