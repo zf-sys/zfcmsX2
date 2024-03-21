@@ -2583,6 +2583,23 @@ if(!function_exists('change_diy_url')){
         }
     }
 }
+/**
+ * 20240321新增
+ * 回车符\r\n统一转换为\n（针对Windows与Unix/Linux的差异），并移除文件开头和结尾的空白字符
+ */
+if(!function_exists('preprocessAndCalculateMd5')){
+    function preprocessAndCalculateMd5($filePath) {
+        // 读取文件内容
+        $content = file_get_contents($filePath);
+        // 将回车符\r\n统一转换为\n（针对Windows与Unix/Linux的差异），并移除文件开头和结尾的空白字符
+        $content = str_replace("\r\n", "\n", $content);
+        $content = trim($content);
+        
+        // 计算处理后内容的MD5
+        $md5Hash = md5($content);
+        return $md5Hash;
+    }
+}
 //列出目录
 if(!function_exists('listdir')){
     function listdir($start_dir='.') {    
