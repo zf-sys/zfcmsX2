@@ -64,19 +64,19 @@ class Index extends Admin
             $this->redirect(url('zfyun/authentication_sys'));
         }
         if($this->is_professional_edition){
-        	//授权查询
-	        $ZfAuth = new \zf\ZfAuth();
-	        $upg_msg = $ZfAuth->get_location_auth_info();
-	        $site_info = $ZfAuth->get_siteplugin_info();
+            //授权查询
+            $ZfAuth = new \zf\ZfAuth();
+            $upg_msg = $ZfAuth->get_location_auth_info();
+            $site_info = $ZfAuth->get_siteplugin_info();
             $this->assign('upg_msg',$upg_msg);
             if(isset($site_info['msg'])){
                 $this->assign('site_info',$site_info['msg']);
             }else{
-    	        $this->assign('site_info',null);
+                $this->assign('site_info',null);
             }
         }else{
-        	$this->assign('upg_msg',['code'=>2,'msg'=>'<span style="color:red">社区版</span>']);
-	        $this->assign('site_info',null);
+            $this->assign('upg_msg',['code'=>2,'msg'=>'<span style="color:red">社区版</span>']);
+            $this->assign('site_info',null);
         }
        
         $post_list = ZFTB('post')
@@ -150,7 +150,10 @@ class Index extends Admin
             'title'=>'首页',
             'href'=>url('index/welcome')
         ];
-        $admin_logo_pic = ZFC("webconfig.admin_logo_pic");
+        $admin_logo_pic = ZFC("webconfig.admin_logo_pic",'//storage-x1.90ckm.com/zfcms/logo_white.png');
+        if($admin_logo_pic==''){
+            $admin_logo_pic = '//storage-x1.90ckm.com/zfcms/logo_white.png';
+        }
         $arr['logoInfo'] = [
             'title'=>'内容管理系统',
             'image'=>$admin_logo_pic ,
