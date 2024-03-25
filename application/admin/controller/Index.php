@@ -150,7 +150,7 @@ class Index extends Admin
             'title'=>'首页',
             'href'=>url('index/welcome')
         ];
-        $admin_logo_pic = ZFC("webconfig.admin_logo_pic",'//storage-x1.90ckm.com/zfcms/logo_white.png');
+        $admin_logo_pic = ZFC("webconfig.admin_logo_pic");
         if($admin_logo_pic==''){
             $admin_logo_pic = '//storage-x1.90ckm.com/zfcms/logo_white.png';
         }
