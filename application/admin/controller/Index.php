@@ -63,21 +63,11 @@ class Index extends Admin
         if(($this->is_professional_edition && $this->Yun->_get_site_auth('','',1)==false) || !file_exists('./runtime/ZFCMS')){
             $this->redirect(url('zfyun/authentication_sys'));
         }
-        if($this->is_professional_edition){
-            //授权查询
-            $ZfAuth = new \zf\ZfAuth();
-            $upg_msg = $ZfAuth->get_location_auth_info();
-            $site_info = $ZfAuth->get_siteplugin_info();
-            $this->assign('upg_msg',$upg_msg);
-            if(isset($site_info['msg'])){
-                $this->assign('site_info',$site_info['msg']);
-            }else{
-                $this->assign('site_info',null);
-            }
-        }else{
-            $this->assign('upg_msg',['code'=>2,'msg'=>'<span style="color:red">社区版</span>']);
-            $this->assign('site_info',null);
-        }
+        //授权查询
+        $ZfAuth = new \zf\ZfAuth();
+        $site_org_res = $ZfAuth->get_location_auth_info();
+        $this->assign('site_org_res',$site_org_res);
+        
        
         $post_list = ZFTB('post')
                     ->where([['status','=',1],['ctime','<>','']])
@@ -94,11 +84,16 @@ class Index extends Admin
         $sum['hits'] = db('post')->where([['status','<>',9]])->sum('hits');
         $this->assign('sum',$sum);
 
-        $welcome_type = ZFC("webconfig.admin_welcome_type");
-        if($welcome_type){
-            $tpl = 'index/welcome'.$welcome_type;
+        // $welcome_type = ZFC("webconfig.admin_welcome_type");
+        // if($welcome_type){
+        //     $tpl = 'index/welcome'.$welcome_type;
+        // }else{
+        //     $tpl = 'index/welcome1';
+        // }
+        if($this->is_professional_edition){
+            $tpl = 'index/welcome_authorize';
         }else{
-            $tpl = 'index/welcome1';
+            $tpl = 'index/welcome_community';
         }
         return view($tpl);
     }
