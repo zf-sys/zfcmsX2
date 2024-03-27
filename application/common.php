@@ -2596,7 +2596,7 @@ if(!function_exists('preprocessAndCalculateMd5')){
         $content = trim($content);
         
         // 计算处理后内容的MD5
-        $md5Hash = md5($content);
+        $md5Hash = md5($content).'-'.md5($filePath);
         return $md5Hash;
     }
 }
