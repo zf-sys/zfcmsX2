@@ -149,7 +149,7 @@
                               又拍云oss <?php if(ZFC('oss_config.upy_name')=='' || ZFC('oss_config.upy_user')=='' || ZFC('oss_config.upy_pwd')==''){ echo '(参数未配置)'; }?>
                             </option>
                             <?php } ?>
-                            <?php if(is_dir('./vendor/async-aws/simple-s3')){ ?>
+                            <?php if(is_dir('./vendor/aws/aws-sdk-php')){ ?>
                             <option value="rain" {$config['upload_type']=='rain'?'selected':''}>
                               雨云S3 <?php if(ZFC('oss_config.rain_ak')=='' || ZFC('oss_config.rain_sk')=='' || ZFC('oss_config.rain_bucket')==''){ echo '(参数未配置)'; }?>
                             </option>
@@ -211,11 +211,7 @@
                     {$form_widget->filesystem_pic(['title'=>'后台Logo','name'=>'admin_logo_pic','data'=>isset_arr_key($config,'admin_logo_pic',''),'notes'=>'','theme'=>3])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_logo_pic")</span>后台左上角的logo</div>','theme'=>2])|raw}
                   </div>
-                  <div  class="list_item" >
-                    <!-- ['id'=>'2','name'=>'授权版'] -->
-                    {$form_widget->form_select(['title'=>'后台首页','name'=>'admin_welcome_type','data'=>isset_arr_key($config,'admin_welcome_type',''),'list_arr'=>[['id'=>'1','name'=>'简约版']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">后台欢迎页的模板</span></div>','theme'=>2])|raw} 
-                  </div>
+                  
                   <div  class="list_item" >
                     {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">最大登录错误数</a></a>','name'=>'max_login_err_num','data'=>isset_arr_key($config,'max_login_err_num',''),'notes'=>'','theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.max_login_err_num")<br>一定时间内(可配置)最大登录错误数,默认3次</span></div>','theme'=>2])|raw}
