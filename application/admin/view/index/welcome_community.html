@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>welcome</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  {:widget_st('layui','css')}
+  {:widget_st('admin','css')}
+  {:widget_st('jq','js')}
+</head> 
+<body>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-sm12 layui-col-md12">
+        {include file='public/show_safety_tips'}
+        <div class="layui-card">
+          <div class="layui-card-header">服务器信息</div>
+          <div class="layui-card-body layui-text">
+            <table class="layui-table">
+              <colgroup>
+                <col width="400">
+                <col width="300">
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>站点信息:</td>
+                  <td>
+                      <?php echo $_SERVER["SERVER_NAME"];?>(IP:<?php echo $_SERVER["SERVER_ADDR"];?>)
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td>服务器：</td>
+                  <td>
+                    <?php echo php_uname('s').' '.php_uname('r');?>
+                  </td>
+                </tr>
+                <tr>
+                  <td>站点物理路径：</td>
+                  <td>
+                    <?php echo $_SERVER['DOCUMENT_ROOT'];?>
+                  </td>
+                </tr>
+                <tr>
+                  <td>POST大小：</td>
+                  <td>
+                    <?php echo ini_get('max_execution_time').'M';?>
+                  </td>
+                </tr>
+                  <tr>
+                  <td>上传大小：</td>
+                  <td>
+                    <?php echo ini_get('upload_max_filesize');?>
+                  </td>
+                </tr>
+                  <tr>
+                  <td>服务器时间：</td>
+                  <td>
+                    <?php echo date('Y-m-d H:i:s');?>
+                  </td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  {:widget_st('layui','js')} 
+  {:widget_st('common','js')} 
+
+  <script>
+   layui.use(['layer'],function(){
+      var $ = layui.$
+
+    });
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>welcome</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  {:widget_st('layui','css')}
+  {:widget_st('admin','css')}
+  {:widget_st('jq','js')}
+</head> 
+<style>
+.layui-carousel-ind {
+    /* display: none; */
+}
+</style>
+<body>
+   <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md8">
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-header">快捷方式</div>
+              <div class="layui-card-body">
+                
+                <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                  <div >
+                    <ul class="layui-row layui-col-space10">
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('Config/index')}" data-title="基本设置">
+                          <i class="layui-icon layui-icon-set"></i>
+                          <cite>基本设置</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('Config/admin_role')}" data-title="权限管理">
+                          <i class="layui-icon layui-icon-chart"></i>
+                          <cite>权限管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('Category/post_all_list')}" data-title="内容列表">
+                          <i class="layui-icon layui-icon-template-1"></i>
+                          <cite>内容列表</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('Rests/advert')}" data-title="广告管理">
+                          <i class="layui-icon layui-icon-chat"></i>
+                          <cite>广告管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('Rests/guessbook')}" data-title="留言管理">
+                          <i class="layui-icon layui-icon-find-fill"></i>
+                          <cite>留言管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('User/index')}" data-title="会员管理">
+                          <i class="layui-icon layui-icon-user"></i>
+                          <cite>会员管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('Category/special')}" data-title="专题管理">
+                          <i class="layui-icon layui-icon-survey"></i>
+                          <cite>专题管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="javascript:;" layuimini-content-href="{:url('Category/tag')}" data-title="标签管理">
+                          <i class="layui-icon layui-icon-note"></i>
+                          <cite>标签管理</cite>
+                        </a>
+                      </li>
+                    </ul>
+                    
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-header">服务器环境</div>
+              <div class="layui-card-body">
+                
+                <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
+                  <table class="layui-table">
+                    <colgroup>
+                      <col width="400">
+                      <col width="300">
+                      <col>
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <td>站点信息:</td>
+                        <td>
+                            <?php echo $_SERVER["SERVER_NAME"];?>(IP:<?php echo $_SERVER["SERVER_ADDR"];?>)
+                        </td>
+                      </tr>
+                      
+                      <tr>
+                        <td>服务器：</td>
+                        <td>
+                          <?php echo php_uname('s').' '.php_uname('r');?>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>站点物理路径：</td>
+                        <td>
+                          <?php echo $_SERVER['DOCUMENT_ROOT'];?>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>POST大小：</td>
+                        <td>
+                          <?php echo ini_get('max_execution_time').'M';?>
+                        </td>
+                      </tr>
+                        <tr>
+                        <td>上传大小：</td>
+                        <td>
+                          <?php echo ini_get('upload_max_filesize');?>
+                        </td>
+                      </tr>
+                        <tr>
+                        <td>服务器时间：</td>
+                        <td>
+                          <?php echo date('Y-m-d H:i:s');?>
+                        </td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+                
+              </div>
+            </div>
+            <!-- <div class="layui-card">
+              <div class="layui-tab layui-tab-brief layadmin-latestData">
+                <ul class="layui-tab-title">
+                  <li class="layui-this">今日热搜</li>
+                  <li>今日热帖</li>
+                </ul>
+                <div class="layui-tab-content">
+                  <div class="layui-tab-item layui-show">
+                    <table id="LAY-index-topSearch"></table>
+                  </div>
+                  <div class="layui-tab-item">
+                    <table id="LAY-index-topCard"></table>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-header">安全提醒</div>
+              <div class="layui-card-body">
+                {include file='public/show_safety_tips'}
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      
+      <div class="layui-col-md4">
+        <div class="layui-card">
+          <div class="layui-card-header">系统信息</div>
+          <div class="layui-card-body layui-text layadmin-version">
+            <table class="layui-table">
+              <colgroup>
+                <col width="100">
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>系统</td>
+                  <td> 
+                    <a target="_blank" href="{$site_org_res['data']['sitelog_init']['soft_domain_url']|default=''}">
+                      {$site_org_res['data']['sitelog_init']['sys_name']|default=''}
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>当前版本</td>
+                  <td>
+                     {:config('version.version')}
+                  </td>
+                </tr>
+                <tr>
+                  <td>最新版本</td>
+                  <td>
+                     {$site_org_res['data']['sitelog_init']['version_list'][0]['version']|default=''}
+                  </td>
+                </tr>
+                <tr>
+                  <td>当前状态</td>
+                  <td>
+                     {$site_org_res['msg']|default=''}<br>
+                  </td>
+                </tr>
+               
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+       
+        
+       
+        
+        
+        <div class="layui-card">
+          <div class="layui-card-header">热推Adv</div>
+          <div class="layui-card-body">
+            <div class="layui-carousel" id="zfcms_adv">
+              <div carousel-item>
+                <?php if(isset($site_org_res['data']['sitelog_init']['advert_list'])){ foreach($site_org_res['data']['sitelog_init']['advert_list'] as $k=>$vo){ ?>
+                  <a href="{$vo['url']}"  style="width: 100%;text-align: center;">
+                    <img src="{$vo['pic']}" alt="{$vo['title']}" style="width: inherit;">
+                  </a>
+                <?php }} ?>
+              </div>
+            </div> 
+          </div>
+        </div>
+
+        <div class="layui-card">
+          <div class="layui-card-header">
+            官方公告
+          </div>
+          <div class="layui-card-body layui-text layadmin-text">
+            <blockquote class="layui-elem-quote">
+              <p>{$site_org_res['data']['sitelog_init']['soft_author_notes']|default=''}</p>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  {:widget_st('layui','js')} 
+  {:widget_st('common','js')} 
+  <script src="__STATIC__/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+
+  <script>
+   layui.use(['layer','miniTab'],function(){
+      var $ = layui.$
+      ,carousel = layui.carousel
+      ,miniTab = layui.miniTab;
+      miniTab.listen();
+      
+      carousel.render({
+        elem: '#zfcms_adv',
+        interval: 3000,
+        anim: 'fade',
+        width: 'auto',
+        height: '120px',
+        arrow:'none'
+      });
+    });
+    
+  </script>
+</body>
+</html>
+
