@@ -221,7 +221,7 @@
         
         
         <div class="layui-card">
-          <div class="layui-card-header">热推Adv</div>
+          <div class="layui-card-header">赞助商</div>
           <div class="layui-card-body">
             <div class="layui-carousel" id="zfcms_adv">
               <div carousel-item>
@@ -241,7 +241,7 @@
           </div>
           <div class="layui-card-body layui-text layadmin-text">
             <blockquote class="layui-elem-quote">
-              <p>{$site_org_res['data']['sitelog_init']['soft_author_notes']|default=''}</p>
+              {$site_org_res['data']['sitelog_init']['soft_author_notes']|default=''|raw}
             </blockquote>
           </div>
         </div>
