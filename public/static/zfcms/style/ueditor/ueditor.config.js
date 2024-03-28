@@ -41,14 +41,16 @@
             'directionalityltr', 'directionalityrtl', 'indent', '|',
             'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
             'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
-            'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'template', '|',
-            'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|', 
+             'emotion', 'scrawl', 'insertvideo', 'attachment', 'map', 'insertframe', 'insertcode', 'template', '|',
+            'horizontal', 'date', 'time', 'spechars', 'wordimage', '|', 
             'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
-            'print', 'preview', 'searchreplace', 'drafts', 'zfblog','zfpics'
+            'print', 'preview', 'searchreplace', 'drafts',
+            //  'zfblog',
+             'zfpics'
         ]]
         //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
         ,labelMap:{
-           'zfblog':'王明昌博客',
+        //    'zfblog':'王明昌博客',
            'zfpics':'选择图片'
         }
 
