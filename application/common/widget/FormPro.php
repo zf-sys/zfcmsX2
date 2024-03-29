@@ -489,6 +489,7 @@ INFO;
                     $zf_html.='</div>
               '.$append_notes.'
                 </div>
+                <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
               </div>';
         }elseif($theme==2){
           $zf_html = '
@@ -504,7 +505,9 @@ INFO;
               }
           $zf_html.='</div>
           '.$append_notes.'
-          </div>';
+          </div>
+          <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
+          ';
         }
         return $zf_html;
     }
@@ -517,6 +520,7 @@ INFO;
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
+        $_name = $name;
         $name = $name.'[]';
 
         if($data!='' && $data!=[]){
@@ -537,14 +541,15 @@ INFO;
               <div class="layui-row '.$tpl_id.'">';
 
                   for($i=0;$i<$count;$i++){
-                    $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:200px;"><div> <img src="'.$pics[$i].'" class="layui-upload-img"  style="width:100%;height:-webkit-fill-available;" > </div>
+                    $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:200px;"><div style="display: grid;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" > </div>
                       <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span>
                       </div>';
                   }
               $zf_html .='</div>
               '.$append_notes.'
           </blockquote>
-        </div> 
+          <input name="_temp_arr_key[]"  type="hidden" value="'.$_name.'" />
+          </div> 
     </div>
 </div>';
 $zf_html .=<<<INFO
@@ -571,7 +576,7 @@ $zf_html .=<<<INFO
         if(res.result==1){
             layer.msg('上传成功', {icon: 1});
             console.log('---start---')
-            $('.$tpl_id').append('<div class="layui-col-sm3" style="padding:10px;height:200px;"><div class> <img src="'+ res.msg +'" class="layui-upload-img"  style="width:100%;height:-webkit-fill-available;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span></div> ')
+            $('.$tpl_id').append('<div class="layui-col-sm3" style="padding:10px;height:200px;"><div style="display: grid;"> <img src="'+ res.msg +'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span></div> ')
             console.log('---end---')
         }else{
           layer.msg(res.msg, {icon: 2});
@@ -593,6 +598,7 @@ INFO;
         $data_title = isset($request_data['data_title'])?$request_data['data_title']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
+        $_name = $name;
         $name = $name.'[]';
         if($data!='' && $data!=[]){
           $pics=explode(',',$data);
@@ -614,7 +620,7 @@ INFO;
               <div class="layui-row '.$tpl_id.'">';
 
                   for($i=0;$i<$count;$i++){ 
-                    $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:auto;display: inline-table;"><div> <img src="'.$pics[$i].'" class="layui-upload-img"  style="width:100%;height:-webkit-fill-available;" /></div>
+                    $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:auto;display: inline-table;"><div> <img src="'.$pics[$i].'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" /></div>
                       <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" />
                       <input type="text" class="layui-input" name="zf_list_title_'.$name.'" value="'.(isset($titles[$i])?$titles[$i]:'').'" />
                       <span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span></div>';
@@ -622,6 +628,7 @@ INFO;
               $zf_html .='</div>
               '.$append_notes.'
           </blockquote>
+          <input name="_temp_arr_key[]"  type="hidden" value="'.$_name.'" />
         </div> 
     </div>
 </div>';
@@ -649,7 +656,7 @@ $zf_html .=<<<INFO
         if(res.result==1){
             layer.msg('上传成功', {icon: 1});
             console.log('---start---')
-            $('.$tpl_id').append('<div class="layui-col-sm3" style="padding:10px;height:auto;display: inline-table;"><div> <img src="'+ res.msg +'" class="layui-upload-img"  style="width:100%;height:-webkit-fill-available;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><input type="text"  class="layui-input" name="zf_list_title_$name" value="" /><span style="text-align:center;display:block; cursor:pointer;" onclick="deleteFile(this)">删除</span></div> </div>')
+            $('.$tpl_id').append('<div class="layui-col-sm3" style="padding:10px;height:auto;display: inline-table;"><div> <img src="'+ res.msg +'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><input type="text"  class="layui-input" name="zf_list_title_$name" value="" /><span style="text-align:center;display:block; cursor:pointer;" onclick="deleteFile(this)">删除</span></div> </div>')
             console.log('---end---')
         }else{
           layer.msg(res.msg, {icon: 2});
@@ -674,6 +681,7 @@ INFO;
         $data = isset($request_data['data'])?$request_data['data']:'';
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
+        $_name = $name;
         $name = $name.'[]';
         if($data!='' && $data!=[]){
           $pics=explode(',',$data);
@@ -692,13 +700,14 @@ INFO;
               预览图：
               <div class="layui-row '.$tpl_id.'">';
                 for($i=0;$i<$count;$i++){
-                  $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:200px;"><div> <img src="'.$pics[$i].'" class="layui-upload-img"  style="width:100%;height:-webkit-fill-available;" > </div>
+                  $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:200px;"><div style="display: grid;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" > </div>
                     <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span>
                     </div>';
                 }
               $zf_html .='</div>
               '.$append_notes.'
           </blockquote>
+          <input name="_temp_arr_key[]"  type="hidden" value="'.$_name.'" />
         </div> 
     </div>
 </div>';
@@ -2235,6 +2244,7 @@ INFO;
                       </div>
                 '.$append_notes.'
                   </div>
+                  <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
                   ';
         }elseif($theme==2){
           $zf_html = '
@@ -2254,6 +2264,7 @@ INFO;
               '.$append_notes.'
             </div>
           </div>
+          <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
                   ';
         }
         
