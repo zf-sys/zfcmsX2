@@ -2222,6 +2222,15 @@ if(!function_exists('get_meta_data')){
  */
 if(!function_exists('deal_meta_data_add')){
     function deal_meta_data_add($tb,$data=[]){
+        if(isset($data['_temp_arr_key'])){
+            $_temp_arr_key =array_unique($data['_temp_arr_key']);
+            foreach ($_temp_arr_key as $k => $vo) {
+                if(!isset($data[$vo])){
+                    $data[$vo] = '';
+                }
+            }
+            unset($data['_temp_arr_key']);
+        }
         Db::startTrans();
         try {
             if(isset($data['meta']) && is_array($data['meta'])){
@@ -2258,6 +2267,15 @@ if(!function_exists('deal_meta_data_add')){
  */
 if(!function_exists('deal_meta_data_edit')){
     function deal_meta_data_edit($tb,$data=[],$field_id='id'){
+        if(isset($data['_temp_arr_key'])){
+            $_temp_arr_key =array_unique($data['_temp_arr_key']);
+            foreach ($_temp_arr_key as $k => $vo) {
+                if(!isset($data[$vo])){
+                    $data[$vo] = '';
+                }
+            }
+            unset($data['_temp_arr_key']);
+        }
         Db::startTrans();
         try {
             if(isset($data['meta']) && is_array($data['meta'])){
