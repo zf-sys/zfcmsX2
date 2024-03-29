@@ -29,26 +29,32 @@ class Updatesql extends Controller
                     "alter table {$this->tb_prefix}user_group add tag varchar(50) not null"
                 ],
             ],
-            'v0.0.3'=>$this->v0_0_3(),
-            'v0.0.4'=>$this->v0_0_4(),
-            'v0.0.6'=>$this->v0_0_6(),
-            'v0.0.8'=>$this->v0_0_8(),
-            'v0.0.9'=>$this->v0_0_9(),
-            'v0.230809'=>$this->v0_230809(),
-            'v0.230902'=>$this->v0_230902(),
-            'v0.230907'=>$this->v0_230907(),
-            'v0.230910'=>$this->v0_230910(),
-            'v0.230919'=>$this->v0_230919(),
-            'v0.231007'=>$this->v0_231007(),
-            'v0.231018'=>$this->v0_231018(),
-            'v0.231024'=>$this->v0_231024(),
-            'v0.231102'=>$this->v0_231102(),
-            'v0.231129'=>$this->v0_231129(),
-            'v0.240125'=>$this->v0_240125(),
-            'v0.240315'=>$this->v0_240315(),
-            'v0.240319'=>$this->v0_240319(),
-
+            'v0.0.3'=>['type'=>'function','name'=>'v0_0_3'],
+            'v0.0.4'=>['type'=>'function','name'=>'v0_0_4'],
+            'v0.0.6'=>['type'=>'function','name'=>'v0_0_6'],
+            'v0.0.8'=>['type'=>'function','name'=>'v0_0_8'],
+            'v0.0.9'=>['type'=>'function','name'=>'v0_0_9'],
+            'v0.230809'=>['type'=>'function','name'=>'v0_230809'],
+            'v0.230902'=>['type'=>'function','name'=>'v0_230902'],
+            'v0.230907'=>['type'=>'function','name'=>'v0_230907'],
+            'v0.230910'=>['type'=>'function','name'=>'v0_230910'],
+            'v0.230919'=>['type'=>'function','name'=>'v0_230919'],
+            'v0.231007'=>['type'=>'function','name'=>'v0_231007'],
+            'v0.231018'=>['type'=>'function','name'=>'v0_231018'],
+            'v0.231024'=>['type'=>'function','name'=>'v0_231024'],
+            'v0.231102'=>['type'=>'function','name'=>'v0_231102'],
+            'v0.231129'=>['type'=>'function','name'=>'v0_231129'],
+            'v0.240125'=>['type'=>'function','name'=>'v0_240125'],
+            'v0.240315'=>['type'=>'function','name'=>'v0_240315'], 
+            'v0.240319'=>['type'=>'function','name'=>'v0_240319'], 
         ]; 
+        $file = new \lib\File();
+        $files = $file->listFile('./application/common/updateSql/');
+        foreach($files as $k=>$vo){
+            $file_name = str_replace('.php','',$vo['filename']);
+            $this->version_arr[$file_name] = ['type'=>'file','name'=>'./application/common/updateSql/'.$vo['filename']];
+        }
+        // dd($this->version_arr);
     }
 
    
@@ -62,7 +68,16 @@ class Updatesql extends Controller
                 break;
             }
             if($sql_version<$k){
-                $up_arr[$k] = $vo;
+                if(isset($vo['type'])){
+                    if($vo['type']=='file'){
+                        $up_arr[$k] = include $vo['name'];
+                    }elseif($vo['type']=='function'){
+                        $name = $vo['name'];
+                        $up_arr[$k] = $this->$name();
+                    }
+                }else{
+                    $up_arr[$k] = $vo;
+                }
             }
         }
         session('v_upgsql_act',null);
@@ -413,8 +428,8 @@ INFO;
      * meta扩展表   zf_meta_data
      * meta字段表   zf_meta_key
      * 
-	meta_id   tb  post_id meta_data ctime  utime status token
-	id   tb   key   name  append  ctime utime   token sort status
+    meta_id   tb  post_id meta_data ctime  utime status token
+    id   tb   key   name  append  ctime utime   token sort status
      */
     public function v0_231018(){
         $ret_data[0][0] = 'tb_add';
