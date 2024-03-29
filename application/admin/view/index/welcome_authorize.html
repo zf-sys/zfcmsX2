@@ -226,7 +226,7 @@
             <div class="layui-carousel" id="zfcms_adv">
               <div carousel-item>
                 <?php if(isset($site_org_res['data']['sitelog_init']['advert_list'])){ foreach($site_org_res['data']['sitelog_init']['advert_list'] as $k=>$vo){ ?>
-                  <a href="{$vo['url']}"  style="width: 100%;text-align: center;">
+                  <a href="{$vo['url']}" target="_blank"  style="width: 100%;text-align: center;">
                     <img src="{$vo['pic']}" alt="{$vo['title']}" style="width: inherit;">
                   </a>
                 <?php }} ?>
