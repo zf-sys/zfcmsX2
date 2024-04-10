@@ -2363,6 +2363,7 @@ if(!function_exists('str_show_tpl')){
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                margin-top: -100px;
             }
             $str_style
             .img-box{
