@@ -541,8 +541,8 @@ INFO;
               <div class="layui-row '.$tpl_id.'">';
 
                   for($i=0;$i<$count;$i++){
-                    $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:200px;"><div style="display: grid;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" > </div>
-                      <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span>
+                    $zf_html .='<div class="layui-col-sm2" style="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
+                      <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span>
                       </div>';
                   }
               $zf_html .='</div>
@@ -576,7 +576,7 @@ $zf_html .=<<<INFO
         if(res.result==1){
             layer.msg('上传成功', {icon: 1});
             console.log('---start---')
-            $('.$tpl_id').append('<div class="layui-col-sm3" style="padding:10px;height:200px;"><div style="display: grid;"> <img src="'+ res.msg +'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span></div> ')
+            $('.$tpl_id').append('<div class="layui-col-sm2" style="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'+ res.msg +'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span></div> ')
             console.log('---end---')
         }else{
           layer.msg(res.msg, {icon: 2});
@@ -620,10 +620,10 @@ INFO;
               <div class="layui-row '.$tpl_id.'">';
 
                   for($i=0;$i<$count;$i++){ 
-                    $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:auto;display: inline-table;"><div> <img src="'.$pics[$i].'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" /></div>
+                    $zf_html .='<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 70%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" /></div>
                       <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" />
                       <input type="text" class="layui-input" name="zf_list_title_'.$name.'" value="'.(isset($titles[$i])?$titles[$i]:'').'" />
-                      <span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span></div>';
+                      <span style="cursor: pointer;" onclick="deleteFile(this)">删除</span></div>';
                   }
               $zf_html .='</div>
               '.$append_notes.'
@@ -656,7 +656,7 @@ $zf_html .=<<<INFO
         if(res.result==1){
             layer.msg('上传成功', {icon: 1});
             console.log('---start---')
-            $('.$tpl_id').append('<div class="layui-col-sm3" style="padding:10px;height:auto;display: inline-table;"><div> <img src="'+ res.msg +'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><input type="text"  class="layui-input" name="zf_list_title_$name" value="" /><span style="text-align:center;display:block; cursor:pointer;" onclick="deleteFile(this)">删除</span></div> </div>')
+            $('.$tpl_id').append('<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'+ res.msg +'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" ></div><input type="hidden" name="zf_list_$name" value="'+ res.msg +'" /><input type="text"  class="layui-input" name="zf_list_title_$name" value="" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span></div> </div>')
             console.log('---end---')
         }else{
           layer.msg(res.msg, {icon: 2});
@@ -700,8 +700,8 @@ INFO;
               预览图：
               <div class="layui-row '.$tpl_id.'">';
                 for($i=0;$i<$count;$i++){
-                  $zf_html .='<div class="layui-col-sm3" style="padding:10px;height:200px;"><div style="display: grid;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="height:-webkit-fill-available;margin:0 auto; max-width:100%;" > </div>
-                    <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="text-align:center;display:block;cursor:pointer;" onclick="deleteFile(this)">删除</span>
+                  $zf_html .='<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
+                    <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span>
                     </div>';
                 }
               $zf_html .='</div>
