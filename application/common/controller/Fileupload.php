@@ -5,14 +5,8 @@ use think\Db;
 
 class Fileupload extends Controller
 {
-    public function index(){
-        echo 'Fileupload';
-    }
-    
-    public function test(){
-        return view();
-    }
-    public function upload(){
+    public function __construct(){
+        parent::__construct();
         $this->upload_pannel_type = ZFC("webconfig.upload_pannel_type");
         if($this->upload_pannel_type==''){
             echo str_show_tpl('禁止使用,请在后台开启');die;
@@ -24,6 +18,16 @@ class Fileupload extends Controller
         }else{
             echo str_show_tpl('未知参数');die;
         }
+    }
+    public function index(){
+        echo 'Fileupload';
+    }
+    
+    public function test(){
+        return view();
+    }
+    public function upload(){
+       
 
         $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
         $cid = input('cid','0');
