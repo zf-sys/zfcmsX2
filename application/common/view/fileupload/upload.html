@@ -81,7 +81,7 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                     <tr>
                       <th>名称</th>
                       <th>操作
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid=0&zf_class={$zf_class}">查看全部</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid=0&zf_class={$zf_class}&name={$name}">查看全部</a>
                       </th>
                     </tr>
                   </thead>
@@ -93,7 +93,7 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                       </th>
                       <th>
                         <a class="ajax_cate_del" item="{$vo['id']}">删除</a> 
-                        <a href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid={$vo['id']}&zf_class={$zf_class}" >查看</a>
+                        <a href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid={$vo['id']}&zf_class={$zf_class}&name={$name}" >查看</a>
                       </th>
                     </tr>
                     <?php } ?>
