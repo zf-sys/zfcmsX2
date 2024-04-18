@@ -939,7 +939,13 @@ class Config extends Admin
             ]);
             try{
                 $result = $client->get($url);
-                $static_url = $result->getBody()->getContents();
+                $static_json = $result->getBody()->getContents();
+                $static_arr = json_decode($static_json,true);
+                if($static_arr['result']==0){
+                    return jserror($static_arr['msg']);
+                }
+                $static_url = $static_arr['msg'];
+
             } catch (\GuzzleHttp\Exception\ServerException $e) {
                 return jserror('获取下载地址失败1');
             } catch (\GuzzleHttp\Exception\ClientException $e) {
@@ -1008,22 +1014,28 @@ class Config extends Admin
 
         $addons_list = [
             'zfcms_ai'=>[
-                'name'=>'AI插件',
+                'name'=>'[Addons]AI插件',
                 'dir'=>'./addons/zfcms_ai',
                 'addons_name'=>'zfcms_ai',
                 'msg'=>'超强AI插件'
             ],
             'zfcms_plugin_store'=>[
-                'name'=>'插件商城',
+                'name'=>'[Addons]插件商城',
                 'dir'=>'./addons/zfcms_plugin_store',
                 'addons_name'=>'zfcms_plugin_store',
                 'msg'=>'插件商城中心'
             ],
             'zf_developer2'=>[
-                'name'=>'开发者工具',
+                'name'=>'[Addons]开发者工具',
                 'dir'=>'./addons/zf_developer2',
                 'addons_name'=>'zf_developer2',
                 'msg'=>'开发者工具'
+            ],
+            'epay_extend'=>[
+                'name'=>'[Extend]易支付类库',
+                'dir'=>'./extend/epay',
+                'addons_name'=>'epay_extend',
+                'msg'=>'易支付类库'
             ]
         ];
         $this->assign('addons_list',$addons_list);
@@ -1046,7 +1058,12 @@ class Config extends Admin
             ]);
             try{
                 $result = $client->get($url);
-                $addons_url = $result->getBody()->getContents();
+                $addons_json = $result->getBody()->getContents();
+                $addons_arr = json_decode($addons_json,true);
+                if($addons_arr['result']==0){
+                    return jserror($addons_arr['msg']);
+                }
+                $addons_url = $addons_arr['msg'];
             } catch (\GuzzleHttp\Exception\ServerException $e) {
                 return jserror('获取下载地址失败1');
             } catch (\GuzzleHttp\Exception\ClientException $e) {
@@ -1115,6 +1132,36 @@ class Config extends Admin
 
 
 
+        return view();
+    }
+
+    /**
+     * pay配置
+     */
+    public function pay_config()
+    {
+        admin_role_check($this->z_role_list,$this->mca,1);
+        $config = ZFC('pay_config','db','arr');
+        if(request()->isPost()){
+            if($config==''){
+                $config = [];
+            }
+            $data = input('post.');
+            foreach($data as $k=>$vo){
+                $config[$k] = $vo;
+            }
+            if(ZFTB('config')->where(['key'=>'pay_config'])->find()){
+                $res = ZFTB('config')->where(['key'=>'pay_config'])->cache('pay_config')->update(['value'=>json_encode($config),'token'=>time()]);
+            }else{
+                $res = ZFTB('config')->cache('pay_config')->insert(['key'=>'pay_config','type'=>'system','value'=>json_encode($config),'token'=>time()]);
+            }
+            return ZFRetMsg($res,'保存成功','保存失败');
+        }
+        $type = input('type','易支付');
+        $this->assign("type",$type);
+        $_t = input('_t','');
+        $this->assign("_t",$_t);
+        $this->assign("config",$config);
         return view();
     }
 

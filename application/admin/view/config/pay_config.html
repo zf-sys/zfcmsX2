@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  {:widget_st('layui','css')}
+  {:widget_st('admin','css')}
+  {:widget_st('jq','js')}
+</head>
+<body>
+  <style>
+    @media screen and (min-width:1200px) {
+      .list_item{
+        width: 800px;
+      }
+    }
+    .list_item>.layui-form-item:first-child{
+      margin-bottom:0px;
+    }
+    .zf-layui-tips{
+      border-bottom: 1px dashed #ccc;
+    }
+    .zf-tip-content-hidden{
+      display: none;
+    }
+    .layui-input-block{
+      min-height: 0px;
+    }
+  </style>
+  <?php $form_widget = new \app\common\widget\FormPro();  ?>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+
+        <div class="layui-card">
+          <div class="layui-card-header layuiadmin-card-header-auto">
+              <?php $menu_type = ['易支付']; ?>
+            <?php foreach($menu_type as $k=>$vo){ ?>
+              <a class="layui-btn layui-btn-sm {$vo!=$type?'layui-btn-primary':''}" href='{:url("config/pay_config")}?type={$vo}'>{$vo}</a>
+            <?php } ?>
+          </div>
+          <div class="layui-card-body" pad15>
+
+            <form class="info_tj" >
+              <div class="layui-form" wid100 lay-filter="">
+                <?php if($type=='易支付'){ ?>
+                  <?php if(!is_dir('./extend/epay')){ ?> 
+                    <blockquote class="layui-elem-quote" style="text-align: center;">
+                      使用此功能需先安装扩展 
+                      <a class="layui-btn layui-btn-sm" onclick='zfAdminShow("下载","{:url('/admin/config/tool')}")'>点击下载(功能下载==>易支付类库)</a> 
+
+                    </blockquote>
+                  <?php } ?>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips_">API地址</a>','name'=>'epay_apiurl','data'=>isset_arr_key($config,'epay_apiurl',''),'notes'=>'例如: http://pay.jianshe2.com/     使用:','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips_">商户号</a>','name'=>'epay_partner','data'=>isset_arr_key($config,'epay_partner',''),'notes'=>'例如: 123456','theme'=>2])|raw}
+                  </div>
+                  <div  class="list_item" >
+                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips_">Key</a>','name'=>'epay_key','data'=>isset_arr_key($config,'epay_key',''),'notes'=>'例如: saaaaaaa','theme'=>2])|raw}
+                  </div>
+                  
+
+                
+                <?php } ?>
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <a href="javascript:;" class="layui-btn layui-btn-sm"  onclick="tijiao_data2('config/pay_config',0)" >确认保存</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" href="//bbs.zf-sys.com/bbs_detail/248.html" target="_blank" >查看帮助</a>
+                  </div>
+                </div>
+
+
+                
+
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {:widget_st('layui','js')}  
+  {:widget_st('common','js')} 
+
+  <script>
+ layui.define(['form', 'upload'], function(exports){
+  var $ = layui.$
+  ,layer = layui.layer
+  ,laytpl = layui.laytpl
+  ,setter = layui.setter
+  ,view = layui.view
+  ,admin = layui.admin
+  ,form = layui.form
+  ,upload = layui.upload;
+
+  $('.zf-layui-tips').on('click', function(){
+    var othis = $(this).parent().parent().parent().find('div:eq(2)').find('.layui-input-block .zf-tip-content-hidden').html()
+    layer.tips(othis, this, {
+      tips: 1,
+      time: 8000
+    });
+  });
+ 
+    window.tijiao_data2 = function(role,type=1){
+      var index = layer.load(2);
+      var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
+          $.ajax({
+            type:'post',
+            url:'../'+role,
+            data:data,
+            dataType:'json',
+            success:function(res){
+              console.log(res)
+              if(res.result==1){
+                layer.msg(res.msg, {icon: 1});
+                layer.close(index)
+                setTimeout(function() {
+                  if(type==1){
+                  parent.location.reload();
+                  }else{
+                  // location.reload();
+                  }
+                }, 2000);
+              }else{
+                layer.msg(res.msg, {icon: 2});
+                layer.close(index)
+              }   
+            }
+          })
+    }
+   
+
+ })
+  </script>
+</body>
+</html>
