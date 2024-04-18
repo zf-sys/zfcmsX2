@@ -127,9 +127,9 @@
   
                   
                 <?php }elseif($type=='雨云S3'){ ?>
-                  <?php if(!is_dir('./vendor/async-aws/simple-s3')){ ?>
+                  <?php if(!is_dir('./vendor/league/flysystem-aws-s3-v3')){ ?>
                     <blockquote class="layui-elem-quote" style="text-align: center;">
-                      使用此功能需先安装扩展 composer require async-aws/simple-s3
+                      使用此功能需先安装扩展 composer require league/flysystem-aws-s3-v3
                     </blockquote>
                   <?php } ?>
                   <div  class="list_item" >
