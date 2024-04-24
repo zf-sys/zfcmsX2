@@ -226,77 +226,7 @@ class Zfyun extends Admin
             $this->success('更新Sql成功');
         }
     }
-    public function authentication_sys(){
-        admin_role_check($this->z_role_list,$this->mca);
-        //是否存在某个文件
-        $yun_file = './extend/zf/Yun.php';
-        if(!file_exists($yun_file)) {
-            $this->redirect(url('index/welcome'));
-        }
-        $t = input('t','');
-        if($t=='status'){
-            // 判断是否正确
-            $auth_info['sc'] = config()['zf_auth']['sc'];
-            $auth_info['key'] = config()['zf_auth']['key'];
-            $auth_info['soft_id'] = config()['version']['soft_id'];
-            $this->zfauth = new ZfAuth();
-            // $this->zfauth->vfast_check($auth_info,'alert');
-            $this->zfauth->plugin_check($auth_info,'alert');
-            if(config()['zf_auth']['key']!='' &&  config()['zf_auth']['sc']!='' &&  config()['zf_auth']['email']!='' ){
-                return jssuccess('授权成功');
-            }
-        }
-        if($t=='save'){
-            $data = input('post.');
-            $res = extraconfig($data,'zf_auth');
-            if($res){
-                $auth_info['email'] = $data['email'];
-                $auth_info['sc'] = $data['sc'];
-                $auth_info['key'] = $data['key'];
-                $auth_info['soft_id'] = config()['version']['soft_id'];
-                $this->zfauth = new ZfAuth();
-                // $this->zfauth->vfast_check($auth_info);
-                if($data['key']!='' &&  $data['sc']!='' &&  $data['email']!='' ){
-                    return jssuccess('授权成功');
-                }else{
-                    return jserror('授权失败,请查看填写内容是否正确');die;
-                }
-            }else{
-                return jserror('保存失败,请查看是config文件夹是否有保存权限');die;
-            }  
-        }
-        if($t == 'upload_authfile'){
-            $file = request()->file('file');
-            $info = $file->move('./runtime','');
-            if(!file_exists('./runtime/'.$info->getSaveName())){
-                return jserror('上传文件失败,请检查runtime文件夹是否有写入权限');die;
-            }
-            //修改文件名
-            $file_name = './runtime/'.str_replace('.','',$info->getSaveName());
-            rename('./runtime/'.$info->getSaveName(),$file_name);
-
-            $is_sq = $this->Yun->_save_license_convert_sc();
-            if($is_sq['code']==0){
-                return ZFRetMsg(false,'',$is_sq['msg']);
-            }
-            if($this->Yun->_get_site_auth('','',1)){
-                return ZFRetMsg(true,'更新成功','');
-            } else{
-                return ZFRetMsg(false,'','授权文件错误');
-            }
-
-        }
-           
-            
-        // if($data['key']!='' && $data['sc']!=''){
-        //     $this->redirect(url('login/index'));
-        // }
-        $data =  config()['zf_auth'];
-        $version =  config()['version'];
-        $this->assign('data',$data);
-        $this->assign('version',$version);
-        return view();
-    }
+    
     
     //hook
     public function hook()

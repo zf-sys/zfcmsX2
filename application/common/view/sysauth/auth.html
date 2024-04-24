@@ -66,7 +66,7 @@ if( isset_arr_key($client_config,'token','') =='' ){
                             </div>
                             <div style="text-align: center;margin: 10px 0 20px 0;">
                               <a target="_blank" class="layui-btn"href='{$api_domain}/addons/zf_store_softclientv2.user/soft_site_client.html?soft_id={$version['soft_id']}&site={$client_config["site"]}&token={$client_config["token"]}&hp={$client_config["http"]}'> 点击获取授权</a>
-                              <a href="{:url('index/welcome')}" class="layui-btn">授权后点击刷新</a>
+                              <a href="/" class="layui-btn">授权后点击刷新</a>
                             </div>
                             <blockquote>如果授权成功,保存出现问题,请多保存试一下</blockquote>
                             
@@ -104,13 +104,13 @@ if( isset_arr_key($client_config,'token','') =='' ){
                     var $ = layui.$;
                     upload.render({
                       elem: '#ID-upload-demo-drag',
-                      url: '/admin/zfyun/authentication_sys?t=upload_authfile', 
+                      url: '?t=upload_authfile', 
                       accept:'file',
                       done: function(res){
                         if(res.result==1){
                           layer.msg(res.msg,{'icon':1})
                           setTimeout(function(){
-                            window.location.href="{:url('index/welcome')}"
+                            window.location.href="/"
                           },2000);
                         }else{
                           layer.msg(res.msg,{'icon':2})
@@ -149,7 +149,7 @@ if( isset_arr_key($client_config,'token','') =='' ){
               // layer.msg(res.msg)
               setTimeout(function(){
                 // history.back(-1)
-                window.location.href="{:url('index/welcome')}"
+                window.location.href="/"
               },2000);
             }else{
               layer.msg(res.msg,{'icon':2})
