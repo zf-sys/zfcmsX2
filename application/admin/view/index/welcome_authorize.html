@@ -220,8 +220,38 @@
        
         
         
+        <?php if(isset($site_org_res['data']['sitelog_init']['soft_author_notes'])){?> 
+          <div class="layui-card">
+            <div class="layui-card-header">
+              公告
+            </div>
+            <div class="layui-card-body layui-text layadmin-text">
+              <blockquote class="layui-elem-quote">
+                {$site_org_res['data']['sitelog_init']['soft_author_notes']|default=''|raw}
+              </blockquote>
+            </div>
+          </div>
+        <?php } ?>
+        <?php if(isset($site_org_res['data']['sitelog_init']['sponsor_list'][0]['id'])){?> 
         <div class="layui-card">
           <div class="layui-card-header">赞助商</div>
+          <div class="layui-card-body">
+            <div class="layui-carousel" id="zfcms_adv2">
+              <div carousel-item>
+                <?php if(isset($site_org_res['data']['sitelog_init']['sponsor_list'])){ foreach($site_org_res['data']['sitelog_init']['sponsor_list'] as $k=>$vo){ ?>
+                  <a href="{$vo['url']}" target="_blank"  style="width: 100%;text-align: center;">
+                    <img src="{$vo['pic']}" alt="{$vo['title']}" style="width: inherit;">
+                  </a>
+                <?php }} ?>
+              </div>
+            </div> 
+          </div>
+        </div>
+        <?php } ?>
+        
+        <?php if(isset($site_org_res['data']['sitelog_init']['advert_list'][0]['id'])){?> 
+        <div class="layui-card">
+          <div class="layui-card-header">广告</div>
           <div class="layui-card-body">
             <div class="layui-carousel" id="zfcms_adv">
               <div carousel-item>
@@ -234,17 +264,7 @@
             </div> 
           </div>
         </div>
-
-        <div class="layui-card">
-          <div class="layui-card-header">
-            官方公告
-          </div>
-          <div class="layui-card-body layui-text layadmin-text">
-            <blockquote class="layui-elem-quote">
-              {$site_org_res['data']['sitelog_init']['soft_author_notes']|default=''|raw}
-            </blockquote>
-          </div>
-        </div>
+        <?php } ?>
       </div>
       
     </div>
@@ -263,6 +283,14 @@
       
       carousel.render({
         elem: '#zfcms_adv',
+        interval: 3000,
+        anim: 'fade',
+        width: 'auto',
+        height: '120px',
+        arrow:'none'
+      });
+      carousel.render({
+        elem: '#zfcms_adv2',
         interval: 3000,
         anim: 'fade',
         width: 'auto',
