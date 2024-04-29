@@ -12,6 +12,7 @@ composer.lock
 !/application/common/controller/Fileupload.php
 !/application/common/controller/Updatesql.php
 !/application/common/controller/Upload.php
+!/application/common/controller/Sysauth.php
 /extend/zf/yun_bak/*
 
 
