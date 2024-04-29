@@ -162,7 +162,14 @@ class Common extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         $dbname = input('dbname');
         $ids = input('ids');
-        $ids_list = explode(',',$ids);
+        if(!isset($ids) || empty($ids)){
+            return jserror('请选择要删除的内容');
+        }
+        if(!is_array($ids)){
+            $ids_list = explode(',',$ids);
+        }else{
+            $ids_list = $ids;
+        }
         try {
             foreach($ids_list as $k=>$vo){
                 if($dbname=='category' || $dbname=='product_cate'){

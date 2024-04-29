@@ -41,6 +41,8 @@
           </div>
         </div>
       <div class="layui-card-body">
+        <a class="zf_all_check">全选</a>
+        <span class="pl_del" style="color: red;">批量删除</span>
         <table class="layui-table">
             <colgroup>
               <col width="30">
@@ -70,7 +72,10 @@
             <tbody>
               <?php foreach($list as $k=>$vo){ ?>
                 <tr>
-                  <td>{$vo['id']}</td>
+                  <td>
+                    <input type="checkbox" name="ids[]" value="{$vo['id']}" >
+                    {$vo['id']}
+                  </td>
                   <td><a href="{$site_path}{$lang!=1?$lang.'/':''}detail/{$vo['id']}.html" target="_blank">{$vo['title']}</a></td>
                   <td><img src="{$vo['pic']}" style="width:50px;height:50px"/></td>
                   <!-- <td>
@@ -170,7 +175,47 @@
           }
         },"json");
     });
+    
+    //选中
+    $('.zf_all_check').on('click',function(){
+      var check = $(this).text();
+      if(check=='全选'){
+        $('input[name="ids[]"]').prop('checked',true);
+        $(this).text('取消');
+      }else{
+        $('input[name="ids[]"]').prop('checked',false);
+        $(this).text('全选');
+      }
+    })
+    //批量删除
+    $('.pl_del').on('click',function(){
+      var ids = [];
+      $('input[name="ids[]"]:checked').each(function(){
+        ids.push($(this).val());
+      });
+      if(ids.length==0){
+        layer.msg('请选择要删除的数据', {icon: 2});
+        return false;
+      }
+      layer.confirm('确认删除？', {
+        btn: ['删除','取消']
+      }, function(){
+        $.get("{:url('admin/common/more_del')}",{ids:ids,dbname:'post'},function(res){
+          if(res.result==1){
+            layer.msg("删除成功", {icon: 1});
+            setTimeout(function() {
+              location.reload(true);
+            }, 1000);
+          }else{
+            layer.msg(res.msg, {icon: 2});
+            
+          }
+        },"json");
 
+      }, function(){
+          //取消的操作
+      });
+    })
     // 删除
     $(".btn_del").on("click",function(){
       var id = $(this).attr("rel");
