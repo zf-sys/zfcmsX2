@@ -78,9 +78,22 @@
                   {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">META描述</a>','name'=>'site_description','data'=>isset_arr_key($config,'site_description',''),'notes'=>'','theme'=>2])|raw}
                   {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_description") META描述</span></div>','theme'=>2])|raw}
                 </div>
+                
+                <div  class="list_item" >
+                  {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">ICP备案</a>','name'=>'site_icp','data'=>isset_arr_key($config,'site_icp',''),'notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_icp") ICP</span></div>','theme'=>2])|raw}
+                </div>
+                <div  class="list_item" >
+                  {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">公安备案</a>','name'=>'site_ga','data'=>isset_arr_key($config,'site_ga',''),'notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_ga") 公安备案</span></div>','theme'=>2])|raw}
+                </div>
                 <div  class="list_item" >
                   {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">版权信息</a>','name'=>'site_copyright','data'=>isset_arr_key($config,'site_copyright',''),'notes'=>'','theme'=>2])|raw}
                   {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_copyright") 版权信息</span></div>','theme'=>2])|raw}
+                </div> 
+                <div  class="list_item" >
+                  {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">统计代码/JS</a>','name'=>'site_js','data'=>isset_arr_key($config,'site_js',''),'notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_js") 统计代码/JS</span></div>','theme'=>2])|raw}
                 </div>
                 <?php }elseif($type=='系统设置'){ ?>
                   <?php if($_t==''){ ?>
