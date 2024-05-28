@@ -1289,6 +1289,163 @@ class Category extends Admin
         return view('/category/tag_add');
     }
 
+    /**
+     * 导入/导出/列表
+     */
+    protected function get_child_id($pid = 0, $condition = '1=1') {
+        //查询分类信息
+        $data = Db::name('category')->field('cid,pid,name')->where($condition)->order("sort asc,cid asc")->select();
+        $cat = new cat(array('cid', 'pid', 'name', 'cname')); //初始化无限分类
+        $child_array = $cat->getTree($data, $pid);//获取分类数据树结构
+        if(is_array($child_array) && !empty($child_array)){
+            $child_cid[] = $pid;
+            foreach($child_array as $vo){
+                $child_cid[] = $vo['cid'];
+            }
+        }else{
+            return $pid;
+        }
+        return implode(',', $child_cid);//获取所有子分类cid字符串
+    }
+    public function pro_post_list()
+    {
+        admin_role_check($this->z_role_list,$this->mca);
+        // 栏目id
+        $cid = input('cid',0);
+        $t = input('t',0);
+        $this->assign('t',$t);
+        $this->assign("cid",$cid);
+        //如果是内容页,加载列表页
+        $where_type = input('where_type','');
+        $where[] = ['status','<>',9];
+        $where[] = ['cid','in',$this->get_child_id($cid)];
+        $keyword = input("get.keyword".'');
+        if($keyword!=''){
+            $where[] = ['title|content|summary','like','%'.$keyword.'%'];
+        }
+        $list = ZFTB('post')->where($where)->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
+        if(!$list){ 
+            $list = [];
+        }
+        $page = $list->render();
+        $this->assign("list",$list);
+        $this->assign("page",$page);
+        $res =  ZFTB('category')->where(['cid'=>$cid])->find();
+        $this->assign("res",$res);
+        $this->assign("keyword",$keyword);
+        return view();
+    }
+
+    //pro文章的导入(开发者自行修改)
+    public function import_pro(){
+        return jserror('自定义部分,开发者修改开发...');
+        // 设置PHP默认字符集为UTF-8
+        ini_set('default_charset', 'UTF-8');
+        // $upload_file = $_FILES['file']['tmp_name'];
+        //文件类型
+        //$ext = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+        $upload_file = $_FILES['file']['tmp_name'];
+        //自动获取文件类型 (xlsx,xls,csv)
+            $spreadsheet = IOFactory::load($upload_file);
+        //直接转为数组,避免上一种方法取值会出现表格内数据格式错误的问题
+        $data = $spreadsheet->getSheet(0)->toArray();  
+        $num_all= 0;
+        $num_success= 0;
+        $save_data = [];
+        foreach($data as $k=>$vo){
+            // dd()
+            if($k>0){
+                $num_all++;
+                $save_data[$k] = [
+                    'cid'=>$vo[0],
+                    'title'=>mb_convert_encoding(isset_arr_key($vo,1,''), 'UTF-8', 'auto'),
+                    'ctime'=>time()
+                ];
+                //移除首字母C-
+                $save_data[$k]['cid'] =  str_replace('C-','',$save_data[$k]['cid']);
+                // if(isset_arr_key($vo,2,'')!=''){
+                //     // $save_data[$k]['file'] = '/upload/pdf/'.isset_arr_key($vo,2,'');
+                //     $save_data[$k]['file'] = isset_arr_key($vo,2,'');
+                // }else{
+                //     $save_data[$k]['file'] = '';
+                // }
+               
+            }
+        }
+        $is = db('post')->insertAll($save_data);
+        if(!$is){
+            return jserror('导入失败');
+        }else{
+            return jssuccess('导入成功');
+        }
+
+    }
+    //导出产品(开发者自行修改)
+    public function export_pro(){
+        if (!is_dir('./vendor/phpoffice/phpspreadsheet')) {
+            $this->error('PhpSpreadsheet扩展(phpoffice/phpspreadsheet)未安装,请先安装后使用');
+        }
+        ini_set('memory_limit', '256M');
+        $where[] = ['status','<>',9];
+        $where[] = ['cid','in',$this->get_child_id(1)];
+        $keyword = input("get.keyword".'');
+        if($keyword!=''){
+            $where[] = ['title|content|summary','like','%'.$keyword.'%'];
+        }
+        $list = ZFTB('post')->where($where)->order("sort desc,id desc")->select();
+        
+        $name='导出'.date("Y-m-d H-i-s",time());
+        //设置表头：
+        $head = [ 'CID','标题','ID'];
+        //数据中对应的字段，用于读取相应数据：
+        $keys = ['cid','title','id'];    
+        zf_excel_export($head,$keys,$list,$name) ;
+        die;
+    }
+    //编辑导入(开发者自行修改)
+    public function import_pro_edit(){
+        return jserror('自定义部分,开发者修改开发...');
+
+        $upload_file = $_FILES['file']['tmp_name'];
+        //文件类型
+        //$ext = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+        $upload_file = $_FILES['file']['tmp_name'];
+        //自动获取文件类型 (xlsx,xls,csv)
+        $spreadsheet = IOFactory::load($upload_file);
+        //直接转为数组,避免上一种方法取值会出现表格内数据格式错误的问题
+        $data = $spreadsheet->getSheet(0)->toArray();  
+        $num_all= 0;
+        $num_success= 0;
+        $save_data = [];
+        // dd($data);
+        foreach($data as $k=>$vo){
+            // dd()
+            if($k>0){
+                $num_all++;
+                $save_data[$k] = [
+                    'cid'=>intval($vo[0]),
+                    'title'=>isset_arr_key($vo,1,''),
+                    'id'=>isset_arr_key($vo,25,''),
+                    // 'ctime'=>time()
+                ];
+                // dd($save_data[$k]);
+                if(isset_arr_key($vo,2,'')!=''){
+                    // $save_data[$k]['file'] = '/upload/pdf/'.isset_arr_key($vo,2,'');
+                    $save_data[$k]['file'] = isset_arr_key($vo,2,'');
+                }
+                if($save_data[$k]['id']!=''){
+                    $is_update = db('post')->where(['id'=>$save_data[$k]['id']])->update($save_data[$k]);
+                    if($is_update){
+                        $num_success++;
+                    }
+                }
+               
+            }
+        }
+            return jssuccess('导入成功,修改数量:'.$num_success);
+
+    }
+
 
 
    
