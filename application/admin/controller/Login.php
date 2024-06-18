@@ -137,6 +137,7 @@ class Login extends Controller
      */
     public function loginout(){
         session('admin',null);
+        session('admin_two_pwd',null);
         $url_tmp = url('admin/login/loginout');
         $url_login = url('/');
         if(session('admin')){

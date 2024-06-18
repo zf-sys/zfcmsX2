@@ -163,6 +163,7 @@ class Config extends Admin
                 }
             }
             try {
+                $data['token'] = time();
                 $res = ZFTB('admin')->where(['id'=>$data['id']])->update($data);
                 return ZFRetMsg($res,'更新成功','更新失败');
             }catch (Exception $e) {

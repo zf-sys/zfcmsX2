@@ -95,6 +95,24 @@ class Admin extends Zfb
         // $data = array_merge($data,$this->common_tag);
         // $where = array_merge($where, $this->common_select_tag);
 
+        if(($c=='index' && ($a=='index' || $a=='welcome' || $a=='get_menu' || $a=='two_password'))  || $c=='zfyun' || $c=='api'){
+        }else{
+            // 判断是否输入二级秘密
+            if(!isset($admin['two_pwd']) || $admin['two_pwd']=='' ){
+                session('admin_two_pwd','11');
+            }else{
+                $_two_pwd = session('admin_two_pwd');
+                if(!$_two_pwd){
+                    session('zadmin_two_tap_url',get_url());
+                    $this->redirect('/admin/index/two_password');die; 
+                }else{
+                }
+            }
+            
+            
+            
+        }
+
     }
     /**
      * 检测是否修改密码,重新登录

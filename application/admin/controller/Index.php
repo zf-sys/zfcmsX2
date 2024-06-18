@@ -261,6 +261,39 @@ class Index extends Admin
         $arr['menuInfo'] = $ret_menu;
         return $arr;
     }
+    /**
+     * 设置二级密码
+     */
+    public function two_password(){
+        if(request()->isPost()){
+            $admin = session('admin');
+            $two_pwd = input('two_pwd','');
+            if($two_pwd==''){
+                return jserror('请输入二级密码');
+            }
+            $admin = db('admin')->where(['id'=>$admin['id']])->find();
+            if(!$admin){
+                return jserror('请先登录');
+            }
+            if($admin['two_pwd']!=$two_pwd){
+                return jserror('二级密码错误');
+            }
+            session('admin_two_pwd','11');
+            $_two_pwd = session('admin_two_pwd');
+            if(!$_two_pwd){
+                return jserror('session未开启');
+            }else{
+                $url = session('zadmin_two_tap_url');
+                return jssuccess('二级验证通过',$url);
+            }
+
+
+            dd(1);
+            // session('admin',$admin);
+            // $this->success('设置成功');
+        }
+        return view();
+    }
 
 
 }

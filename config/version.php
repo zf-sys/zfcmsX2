@@ -11,10 +11,10 @@
   // | 码云:  https://gitee.com/wmc1125/zfAdmin_tpfast
   // | Mc技术论坛: http://bbs.wangmingchang.com/forum.php?mod=forumdisplay&fid=77
   // +----------------------------------------------------------------------
-  // 站点信息最后修改于 2024/05/28 21:33:21  
+  // 站点信息最后修改于 2024/06/18 21:03:59  
   
  return [
-	'version' => 'v0.240528',
+	'version' => 'v0.240618',
 	'soft_id' => '0230873d1167beba153d1a29f88924f4',
 	'ver_name' => '子枫内容管理系统X2',
 	'ver_date' => '20220801',

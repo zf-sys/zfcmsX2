@@ -18,6 +18,7 @@
           <input type="hidden" name="id" value="{$res['id']|default=''}">
           {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'二级操作密码','name'=>'two_pwd','data'=>$res['two_pwd'],'theme'=>2])|raw}
           {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>$res['gid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$group_list,'theme'=>4])|raw}
           {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
           <div class="layui-form-item">
@@ -28,6 +29,7 @@
         <?php }else{ ?>
           {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>'','theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
+          {$form_widget->form_input(['title'=>'二级操作密码','name'=>'two_pwd','data'=>'','theme'=>2])|raw}
           {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>'','id_t'=>'id', 'name_t'=>'name','list_arr'=>$group_list,'theme'=>4])|raw}
           {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>'1','parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
           <div class="layui-form-item">
