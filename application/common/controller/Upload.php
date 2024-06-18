@@ -29,6 +29,7 @@ class Upload extends Controller{
       $this->oss_config = ZFC('oss_config','db','arr');
       // dd($this->upload_type);
       $this->water_type = ZFC("webconfig.water_type");
+      $this->is_upload_add_domain = ZFC("webconfig.is_upload_add_domain");
 
       if(ZFC("webconfig.site_path")!=''){
         $this->site_path = '/'.ZFC("webconfig.site_path").'/';
@@ -74,6 +75,12 @@ class Upload extends Controller{
         }
       }
     }
+    private function _add_domain_prefix($url){
+      if($this->is_upload_add_domain==1){
+        $url = (isHTTPS()?'https':'http').'://'.request()->host().$url;
+      }
+      return $url;
+    }
     private function _water_act($file){
       if($this->water_type!='' && $this->upload_type==''){
         try{
@@ -97,7 +104,7 @@ class Upload extends Controller{
                 $img_config['water_clarity'] = ($img_config['water_clarity']==''?'100':$img_config['water_clarity']);
                 $img_config['water_pic_path'] = ($img_config['water_pic_path']==''?'./public/static/watch.jpg':$img_config['water_pic_path']);
                 $image->water($img_config['water_pic_path'], $img_config['water_position'],$img_config['water_clarity'])->save('.'.$water_name); 
-                $msg = '//'.request()->host().$water_name;
+                $msg = $this->_add_domain_prefix($water_name);
                 return ['code'=>1,'msg'=>$msg];
             }elseif($img_config['water_type']==2){
                 //文字水印
@@ -107,7 +114,7 @@ class Upload extends Controller{
                 $img_config['water_text_color'] = ($img_config['water_text_color']==''?'20':$img_config['water_text_color']);
                 $img_config['water_position'] = ($img_config['water_position']==''?'1':$img_config['water_position']);
                 $image->text($img_config['water_text'],$img_config['water_font_path'],intval($img_config['water_text_size']),$img_config['water_text_color'],$img_config['water_position'])->save('.'.$water_name);
-                $msg = '//'.request()->host().$water_name;
+                $msg = $this->_add_domain_prefix($water_name);
                 return ['code'=>1,'msg'=>$msg];
             }else{
                 //不加
@@ -141,7 +148,7 @@ class Upload extends Controller{
         }else{
           $info = $file->validate(['ext'=>ZFC("webconfig.pic_ext")])->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
+          $url = $this->_add_domain_prefix($this->site_path.$name_temp['dir_name'].'/'.$getSaveName);
           
         }
         $this->save_upload_info($file,$url);
@@ -179,7 +186,7 @@ class Upload extends Controller{
           $save_url = str_replace('.'.$image->type(),'_thumb_'.intval($width).'_'.intval($height).'.'.$image->type(),$file_url);
           $save_name = ".".$save_url;
           $image->thumb($width, $height)->save($save_name);
-          return (isHTTPS()?'https':'http').'://'.request()->host().$save_url;
+          return $this->_add_domain_prefix($save_url);
         }catch (Exception $e) {
             @save_exception('upload','上传异常',['type'=>'file_upload_thumb','content'=>['data'=>$e->getMessage()]]);
             return 1;
@@ -207,7 +214,7 @@ class Upload extends Controller{
         }else{
           $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
+          $url = $this->_add_domain_prefix($this->site_path.$name_temp['dir_name'].'/'.$getSaveName);
         }
         //保存上传数据
         $this->save_upload_info($file,$url);
@@ -238,7 +245,7 @@ class Upload extends Controller{
         }else{
           $info = $file->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
+          $url = $this->_add_domain_prefix($this->site_path.$name_temp['dir_name'].'/'.$getSaveName);
         }
         $url = $this->save_upload_info($file,$url,0,true);
         if($url){
@@ -312,7 +319,7 @@ class Upload extends Controller{
         }else{
           $info = $file->validate(['ext'=>ZFC("webconfig.file_ext")])->move('.'.$this->site_path.$name_temp['dir_name'],$name_temp['file_name']);
           $getSaveName = str_replace('\\', '/', $info->getSaveName());
-          $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.$name_temp['dir_name'].'/'.$getSaveName;
+          $url = $this->_add_domain_prefix($this->site_path.$name_temp['dir_name'].'/'.$getSaveName);
         }
         $cid = input('cid',0);
         $this->save_upload_info($file,$url,$cid);
@@ -350,7 +357,7 @@ class Upload extends Controller{
         $newfile = '.'.$this->site_path.'upload/common/filesystem/fp/'.$file_name;
         $log_file = '.'.$this->site_path.'upload/common/filesystem/fp/'.$md5.'.txt';
         // 文件可访问的地址
-        $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/filesystem/fp/'.$file_name;
+        $url = $this->_add_domain_prefix($this->site_path.'upload/common/filesystem/fp/'.$file_name);
         // 这里判断有没有上传的文件流
         if ($file['error'] == 0) {
           file_put_contents($log_file,$index);	
@@ -375,7 +382,7 @@ class Upload extends Controller{
             }
             // 片数相等，等于完成了
             if($index == $total ){  
-              // $url = (isHTTPS()?'https':'http').'://'.request()->host().$this->site_path.'upload/common/filesystem/fp/'.$getSaveName;
+              // $url = $this->_add_domain_prefix($this->site_path.'upload/common/filesystem/fp/'.$getSaveName;
               $cid = input('cid',0);
               // dd($url);
               $this->save_upload_info($_file,$url,$cid,false,true);

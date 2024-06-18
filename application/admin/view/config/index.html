@@ -214,6 +214,10 @@
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
                   </div>
 
+                  <div  class="list_item" >
+                    {$form_widget->form_radio(['title'=>'上传增加域名前缀','name'=>'is_upload_add_domain','data'=>isset_arr_key($config,'is_upload_add_domain',''),'parm_data'=>['0'=>'否','1'=>'是'],'notes'=>'','theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_upload_add_domain")</span>上传文件的是否是否增加域名前缀</div>','theme'=>2])|raw}
+                  </div>
 
                 <?php }elseif($type=='后台配置'){ ?>
                   <div  class="list_item" >
