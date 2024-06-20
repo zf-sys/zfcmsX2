@@ -66,11 +66,12 @@ class Index extends Admin
         $this->assign('site_org_res',$site_org_res);
         
        
+       
         $post_list = ZFTB('post')
                     ->where([['status','=',1],['ctime','<>','']])
-                    ->field("DATE_FORMAT(FROM_UNIXTIME(ctime),'%Y-%m-%d') as date,count(*) as total")
-                    ->group("DATE_FORMAT(FROM_UNIXTIME(ctime),'%Y-%m-%d')")    
-                    ->order('ctime asc')
+                    ->field("DATE_FORMAT(FROM_UNIXTIME(ctime),'%Y-%m-%d') as formatted_date, count(*) as total")
+                    ->group("formatted_date")
+                    ->order('formatted_date asc')
                     ->select();
         $this->assign('post_list',$post_list);
         $site_version = config()['version'];
