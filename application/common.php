@@ -2235,6 +2235,7 @@ if(!function_exists('deal_meta_data_add')){
         try {
             if(isset($data['meta']) && is_array($data['meta'])){
                 $meta_data['meta_data'] = json_encode($data['meta']);
+                $_meta = $data['meta']; 
                 unset($data['meta']);
                 $res = ZFTB($tb)->insertGetId($data);
                 if(!$res){
@@ -2245,6 +2246,7 @@ if(!function_exists('deal_meta_data_add')){
                 $meta_data['post_id'] = $res;
                 $meta_data['ctime'] = time();
                 $meta_data['token'] = time();
+                $meta_data['diy_url'] = isset_arr_key($_meta,'diy_url','');
                 $res = ZFTB('meta_data')->insert($meta_data);
                 if(!$res){
                     Db::rollback();
@@ -2280,6 +2282,7 @@ if(!function_exists('deal_meta_data_edit')){
         try {
             if(isset($data['meta']) && is_array($data['meta'])){
                 $meta_data['meta_data'] = json_encode($data['meta']);
+                $_meta = $data['meta']; 
                 unset($data['meta']);
                 $res = ZFTB($tb)->where([$field_id=>$data[$field_id]])->update($data);
                 if(!$res){
@@ -2290,6 +2293,7 @@ if(!function_exists('deal_meta_data_edit')){
                 $meta_data['post_id'] = $data[$field_id];
                 $meta_data['utime'] = time();
                 $meta_data['token'] = time();
+                $meta_data['diy_url'] = isset_arr_key($_meta,'diy_url','');
                 $is = ZFTB('meta_data')->where([['status','<>',9],['tb','=',$meta_data['tb']],['post_id','=',$meta_data['post_id']]])->find();
                 if($is){
                     $res = ZFTB('meta_data')->where(['post_id'=>$meta_data['post_id']])->update($meta_data);
@@ -2488,8 +2492,7 @@ if(!function_exists('meta_url_route')){
     function meta_url_route($type=1,$theme_arr=[]){
         if($type==1){
             //路由
-            $list = ZFTB('meta_data')->field('tb,post_id,meta_data')->where([['status','<>',9],['meta_data','like','%"diy_url":"%'],])->group('meta_data')->select();
-            // dd($list);
+            $list = ZFTB('meta_data')->field('tb,post_id,meta_data,diy_url')->where([['status','<>',9],['diy_url','<>','']])->group('meta_data')->select();
             $arr = [];
             foreach($list as $k=>$vo){
                 $meta_data = json_decode($vo['meta_data'],true);
