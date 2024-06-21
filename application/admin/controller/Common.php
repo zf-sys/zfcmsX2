@@ -16,6 +16,7 @@ use think\Db;
 use think\facade\Image;
 use OSS\OssClient as AliOssClient;
 use think\captcha\Captcha;
+use lib\Pinyin;
 
 class Common extends Admin
 {
@@ -288,6 +289,25 @@ class Common extends Admin
         }catch (Exception $e) {
             return jserror($e->getMessage());
         }
+    }
+
+    /**
+     * 汉字转拼音
+     */
+    public function generate_to_title(){
+        $title = input('title','');
+        $Pinyin = new Pinyin();
+        $str = $Pinyin->getAllPY($title,'-');
+        $str = str_replace('+','-',$str);
+        $str = str_replace('/','-',$str);
+        $str = str_replace('?','-',$str);
+        $str = str_replace('%','-',$str);
+        $str = str_replace('#','-',$str);
+        $str = str_replace('&','-',$str);
+        $str = str_replace('=','-',$str);
+        $str = str_replace('--','-',$str);
+        $str = str_replace('--','-',$str);
+        return $str;
     }
 
     
