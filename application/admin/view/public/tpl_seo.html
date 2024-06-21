@@ -5,7 +5,7 @@
                 {$form_widget->form_textarea(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($res['meta'],'seo_t',''),'theme'=>1])|raw}
                 {$form_widget->form_textarea(['title'=>'SEO(描述)','name'=>'meta[seo_d]','data'=>isset_arr_key($res['meta'],'seo_d',''),'theme'=>1])|raw}
                 {$form_widget->form_textarea(['title'=>'SEO(关键词)','name'=>'meta[seo_k]','data'=>isset_arr_key($res['meta'],'seo_k',''),'theme'=>1])|raw}
-                {$form_widget->form_input(['title'=>'自定义URL','name'=>'diy_url','data'=>isset_arr_key($res,'diy_url',''),'placeholder'=>'如：welcome','theme'=>1])|raw}
+                
             </div>
         </div>
         <div class="layui-col-sm3">
@@ -59,4 +59,46 @@
             }
         })
     });
+</script>
+<!-- 自动生成url -->
+<script>
+    var auto_active_url = $(".auto_active_url").prop("checked");
+    diy_url_show(auto_active_url)
+
+    $('input[name="title"],input[name="name"]').on('input',function(){
+        var auto_active_url = $(".auto_active_url").prop("checked");
+        if(auto_active_url){
+          var title = $(this).val();
+          $.post("{:url('admin/common/generate_to_title')}",{title:title},function(res){
+            $('.diy_url').text(res);
+            $('input[name="meta[diy_url]"]').val(res)
+            $('.diy_url_a').attr('href','/'+res+'.html')
+          },"json")
+        }
+    })
+    $('.auto_active_url').on('change',function(){
+        var auto_active_url = $(this).prop("checked");
+        diy_url_show(auto_active_url)
+    })
+    function diy_url_show(auto_active_url){
+        console.log(auto_active_url)
+        if(auto_active_url){
+            // 隐藏
+            $('input[name="meta[diy_url]"]').parent().parent().parent().hide();
+        }else{
+            $('input[name="meta[diy_url]"]').parent().parent().parent().show();
+        }
+    }
+    $('input[name="meta[diy_url]"]').on('input',function(){
+        $('.diy_url').text($(this).val())
+        $('.diy_url_a').attr('href','/'+$(this).val()+'.html')
+    })
+    layui.use(['form'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+        form.on('checkbox(auto_active_url)', function(data){
+            var auto_active_url = data.elem.checked;
+            diy_url_show(auto_active_url)
+        });
+    })
 </script>

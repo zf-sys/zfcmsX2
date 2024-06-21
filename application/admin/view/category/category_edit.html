@@ -46,7 +46,8 @@
               <div class="layui-col-sm12">
                 <div class="layui-row layui-col-space15">
                   <?php if($form_parm_arr['form_parm'] && isset($form_parm_arr['form_parm']['ini']) && $form_parm_arr['form_parm']['ini']['zf_form_status']==1 ){ ?>
-                    
+                    {include file="public/tpl_diy_url"}
+
                     {include file="public/form_parm_show"}
                     {include file="public/widget_submit"}
 
@@ -54,6 +55,8 @@
                     <!-- 默认表单 -->
                     <div class="layui-col-sm9">
                       <div class="layui-card">
+                        {include file="public/tpl_diy_url"}
+
                         {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'notes'=>'','theme'=>2])|raw}
                         {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'notes'=>'','theme'=>2])|raw}
                         {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'notes'=>'','theme'=>2])|raw}

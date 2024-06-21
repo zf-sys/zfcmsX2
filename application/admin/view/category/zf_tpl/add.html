@@ -50,6 +50,7 @@
                   <div class="layui-row layui-col-space15">
                       <div class="layui-col-sm<?php echo $m_res['is_two']==1?'9':'12'; ?>">
                         <div class="layui-card">
+                        {include file="public/tpl_diy_url"}
                             <?php foreach($m_list as $k=>$vo){ if($vo['position']=='1'){ ?>
                           {include file="public/tpl_post"}
                           <?php }} ?>

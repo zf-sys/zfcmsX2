@@ -39,12 +39,14 @@
             <div class="layui-tab-item layui-show">
               <input type="hidden" name="id" value="{$res['id']|default=''}">
               <?php if($form_parm_arr['form_parm'] && isset($form_parm_arr['form_parm']['ini']) && $form_parm_arr['form_parm']['ini']['zf_form_status']==1 ){ ?>
+                {include file="public/tpl_diy_url"}
                 {include file="public/form_parm_show"}
                 {include file="public/widget_submit"}
               <?php }else{ ?>
                 <!-- 默认表单 -->
                 <div class="layui-col-sm12">
-                  <?php if(isset($res['id'])){ ?>
+                {include file="public/tpl_diy_url"}
+                <?php if(isset($res['id'])){ ?>
                     {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>1])|raw}
                     {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>1])|raw}
                     {$form_widget->form_ueditor(['title'=>'详情','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}

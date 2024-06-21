@@ -46,6 +46,8 @@
                 <div class="layui-row layui-col-space15">
                     <div class="layui-col-sm9">
                       <div class="layui-card">
+                      {include file="public/tpl_diy_url"}
+
                       <?php if($act=='add'){ ?>
                         {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>1])|raw}
                         {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>1])|raw}
@@ -84,7 +86,8 @@
                         {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>$data_res['author'],'theme'=>1])|raw}
                         {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$data_res['ctime']),'theme'=>1])|raw}
                         {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$data_res['sort'],'theme'=>1])|raw}
-                        {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>$data_res['append'],'theme'=>1])|raw}
+                        <!-- {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>$data_res['append'],'theme'=>1])|raw} -->
+                        {$form_widget->form_checkbox(['title'=>'扩展参数','name'=>'append','data'=>$data_res['append'],'list_arr'=>[['id'=>1,'name'=>'aa'],['id'=>2,'name'=>'bb']],'theme'=>1])|raw}
                         {$form_widget->filesystem_pic(['title'=>'封面图','name'=>'pic','data'=>$data_res['pic'],'theme'=>1])|raw}
                         {$form_widget->filesystem_file(['title'=>'文件','name'=>'file','data'=>$data_res['file'],'theme'=>1])|raw}
                         <!-- {$form_widget->form_textarea(['title'=>'内容T(用于页面seo)','name'=>'seo_t','data'=>$data_res['seo_t'],'theme'=>1])|raw} -->
