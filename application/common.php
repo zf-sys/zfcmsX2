@@ -2231,6 +2231,10 @@ if(!function_exists('deal_meta_data_add')){
             }
             unset($data['_temp_arr_key']);
         }
+        //判断diy_url是否存在
+        if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1]])->find()){
+            return ZFRetMsg(false,'','自定义URL已存在,请换个链接');
+        }
         Db::startTrans();
         try {
             if(isset($data['meta']) && is_array($data['meta'])){
@@ -2277,6 +2281,10 @@ if(!function_exists('deal_meta_data_edit')){
                 }
             }
             unset($data['_temp_arr_key']);
+        }
+        //判断diy_url是否存在
+        if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1],['post_id','<>',$data[$field_id]]])->find()){
+            return ZFRetMsg(false,'','自定义URL已存在,请换个链接');
         }
         Db::startTrans();
         try {
