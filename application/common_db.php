@@ -121,7 +121,7 @@ if (!function_exists('get_post_list')) {
     if($like!=''){
       $where[] = ['p.title|p.content|p.summary','like','%'.$like.'%'];
     }
-    $where[] = ['p.lang','=',$lang];
+    // $where[] = ['p.lang','=',$lang];
     $where[] = ['p.status','=',1];
     $where[] = ['c.status','=',1];
     $where[] =['p.ctime','<',time()];
