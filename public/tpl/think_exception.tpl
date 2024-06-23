@@ -156,7 +156,7 @@
             font-size:16px;
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
-            font-family: Consolas,"Liberation Mono",Courier,Verdana,"微软雅黑";
+            font-family: Consolas,"Liberation Mono",Courier,Verdana;
         }
 
         .exception .code{
@@ -200,7 +200,7 @@
             display: inline-block;
             border-left: 1px solid #fff;
         font-size:14px;
-            font-family: Consolas,"Liberation Mono",Courier,Verdana,"微软雅黑";
+            font-family: Consolas,"Liberation Mono",Courier,Verdana;
         }
         .exception .trace{
             padding: 6px;
@@ -208,7 +208,7 @@
             border-top: 0 none;
             line-height: 16px;
         font-size:14px;
-            font-family: Consolas,"Liberation Mono",Courier,Verdana,"微软雅黑";
+            font-family: Consolas,"Liberation Mono",Courier,Verdana;
         }
         .exception .trace ol{
             margin: 12px;
@@ -243,7 +243,7 @@
         }
         .exception-var table tbody{
             font-size: 13px;
-            font-family: Consolas,"Liberation Mono",Courier,"微软雅黑";
+            font-family: Consolas,"Liberation Mono",Courier;
         }
         .exception-var table td{
             padding: 0 6px;
@@ -281,6 +281,222 @@
         pre.prettyprint .dec, pre.prettyprint .var { color: #606 }  /* a declaration; a variable name */
         pre.prettyprint .fun { color: red }  /* a function name */
     </style>
+
+    <style>
+@charset "utf-8";
+* {
+	word-wrap:break-word
+}
+html,body,h1,h2,h3,h4,h5,h6,hr,p,iframe,dl,dt,dd,ul,ol,li,pre,form,button,input,textarea,th,td,fieldset {
+	color:#666;
+	margin:0;
+	padding:0;
+	font-weight: normal;
+}
+ul,ol,dl {
+	list-style-type:none
+}
+html,body {
+	*position:static
+}
+html {
+	font-family:sans-serif;
+	-webkit-text-size-adjust:100%;
+	-ms-text-size-adjust:100%
+}
+address,caption,cite,code,dfn,em,th,var {
+	font-style:normal;
+	font-weight:400
+}
+input,button,textarea,select,optgroup,option {
+	font-family:inherit;
+	font-size:inherit;
+	font-style:inherit;
+	font-weight:inherit
+}
+input,button {
+	overflow:visible;
+	vertical-align:middle;
+	outline:none
+}
+body,th,td,button,input,select,textarea {
+	font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,Verdana,sans-serif,"WenQuanYi Micro Hei","\5B8B\4F53";
+	font-size:12px;
+	color:#333;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale
+}
+body {
+	line-height:1.6;
+	background: #7395ff;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size:100%
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+a,area {
+	outline:none;
+	blr:expression(this.onFocus=this.blur())
+}
+a {
+	text-decoration:none;
+	cursor:pointer
+}
+a:hover {
+	text-decoration:none;
+	outline:none
+}
+a.ie6:hover {
+	zoom:1
+}
+a:focus {
+	outline:none
+}
+a:hover,a:active {
+	outline:none
+}
+:focus {
+	outline:none
+}
+sub,sup {
+	vertical-align:baseline
+}
+button,input[type="button"],input[type="submit"] {
+	line-height:normal !important;
+}
+/*img*/
+img {
+	border:0;
+	vertical-align:middle
+}
+a img,img {
+	-ms-interpolation-mode:bicubic
+}
+.img-responsive {
+	max-width:100%;
+	height:auto
+}
+.clears{ 
+	clear:both;
+}
+/*IE下a:hover 背景闪烁*/
+*html {
+	overflow:-moz-scrollbars-vertical;
+	zoom:expression(function(ele) {
+	ele.style.zoom = "1";
+	document.execCommand("BackgroundImageCache",false,true)
+}
+(this))}/*HTML5 reset*/
+header,footer,section,aside,details,menu,article,section,nav,address,hgroup,figure,figcaption,legend {
+	display:block;
+	margin:0;
+	padding:0
+}
+time {
+	display:inline
+}
+audio,canvas,video {
+	display:inline-block;
+	*display:inline;
+	*zoom:1
+}
+audio:not([controls]) {
+	display:none
+}
+legend {
+	width:100%;
+	margin-bottom:20px;
+	font-size:21px;
+	line-height:40px;
+	border:0;
+	border-bottom:1px solid #e5e5e5
+}
+legend small {
+	font-size:15px;
+	color:#999
+}
+svg:not(:root) {
+	overflow:hidden
+}
+fieldset {
+	border-width:0;
+	padding:0.35em 0.625em 0.75em;
+	margin:0 2px;
+	border:1px solid #c0c0c0
+}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button {
+	height:auto
+}
+input[type="search"] {
+	-webkit-appearance:textfield;
+	/* 1 */-moz-box-sizing:content-box;
+	-webkit-box-sizing:content-box;
+	/* 2 */box-sizing:content-box
+}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration {
+	-webkit-appearance:none
+}
+/*
+	Name:style_clearfix
+	Example:class="clearfix|cl"
+	Explain:Clearfix（简写cl）避免因子元素浮动而导致的父元素高度缺失能问题
+*/
+.cl:after,.clearfix:after {
+	content:".";
+	display:block;
+	height:0;
+	clear:both;
+	visibility:hidden
+}
+.cl,.clearfix {
+	zoom:1
+}
+.fl{
+	float: left;
+}
+.fr{
+	float: right;
+}
+/*a {
+    transition: all 0.6s ease;
+    -webkit-transition: all 0.6s ease;
+    -moz-transition: all 0.6s ease;
+    -ms-transition: all 0.6s ease;
+}*/
+@charset "utf-8";
+.system{
+	    width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 140px;
+}
+.system img{
+	text-align: center;
+	    width: 500px;
+}
+.title{
+	
+}
+.title h2{
+	color: #fff;
+    font-size: 36px;
+    letter-spacing: 4px;
+    text-align: center;
+    line-height: 120px;
+}
+.title h4
+{
+	    color: #fff;
+    font-size: 18px;
+    /* font-weight: bold; */
+    line-height: 38px;
+    text-align: center;
+}
+
+</style>
 </head>
 <body>
     <div class="echo">
@@ -332,10 +548,11 @@
         </div>
     </div>
     <?php } else { ?>
-    <div class="exception">
-        
-            <div class="info"><h1><?php echo htmlentities($message); ?></h1></div>
-        
+    <div class="system">
+        <!-- <img src="/public/tpl/500.gif"/> -->
+        <div class="title">
+            <h2><?php echo htmlentities($message); ?></h2>
+        </div>	
     </div>
     <?php } ?>
     
@@ -409,11 +626,7 @@
     </div>
     <?php } ?>
 
-    <div class="copyright">
-        <a title="Mc技术论坛" href="http://bbs.wangmingchang.com"></a> 
-        <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span> 
-        
-    </div>
+    
     <?php if(\think\facade\App::isDebug()) { ?>
     <script>
         var LINE = <?php echo $line; ?>;
