@@ -2652,6 +2652,54 @@ if(!function_exists('listdir')){
     }
 }
 
+
+/**
+ * 20240622新增
+ * 语言包函数
+ * @param string $func 函数名
+ * @param string $lang 语言包
+ * @param array $params 参数
+ * @return string
+ */
+function ZfLangFunc($func,$lang='', ...$params) {
+    // 使用反射机制获取函数信息
+    $reflectionFunction = new \ReflectionFunction($func);
+    $args = [];
+
+    // 遍历参数，找出lang并修改其值为'en'
+    foreach ($reflectionFunction->getParameters() as $index => $param) {
+        $paramName = $param->getName();
+        if ($paramName == 'lang') {
+            $args[] = $lang;
+        } else {
+            // 检查参数是否在提供的参数数组中
+            $args[] = array_key_exists($index, $params) ? $params[$index] : $param->getDefaultValue();
+        }
+    }
+    // 调用原始函数并获取结果
+    $result = $reflectionFunction->invokeArgs($args);
+    // 返回原始函数的结果
+    return $result;
+}
+
+/**
+ * 20240622新增
+ * 测试效率函数
+ * $original_time = test_performance(function() { return t121212a(0); });
+ */
+function test_performance($func, ...$params) {
+    $start_time = microtime(true);
+    for ($i = 0; $i < 1000; $i++) { // 进行大量调用以测量性能
+        $func(...$params);
+    }
+    $end_time = microtime(true);
+    return $end_time - $start_time;
+}
+
+
+
+
+
 if(is_dir('./application/function')){
     $func_list = listdir("./application/function");
     if($func_list){
