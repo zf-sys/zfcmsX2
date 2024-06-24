@@ -14,12 +14,15 @@ use think\captcha\Captcha;
 class Base extends Controller
 {
     public function __construct ($load = true){
+        $this->module = strtolower(request()->module());
+        $this->controller = strtolower(request()->controller());
+        $this->action = strtolower(request()->action());
         if(is_file('./extend/zf/Yun.php')){
             if(!extension_loaded("IonCube Loader")) {     
                 echo str_show_tpl(base64_decode('VGhlIGlvbmN1YmUgZXh0ZW5zaW9uIGlzIG5vdCBjdXJyZW50bHkgaW5zdGFsbGVkIGFuZCBjYW5ub3QgYmUgdXNlZCAh')."  <a href='".ZFC('version.api_domain','file')."/question_list.html#ioncube_install' target='_blank'>".base64_decode('PHNwYW4gc3R5bGU9ImNvbG9yOnJlZDsiPklvbmN1YmXmianlsZXmnKrlronoo4Us54K55Ye75p+l55yL5a6J6KOF5pWZ56iLPC9zcGFuPg==')."</a>");die;
             }
-            if($load){
-                $this->Yun = new \zf\Yun(1); //检测全
+            if($load && $this->module!='index'){
+                $this->Yun = new \zf\Yun(1); //检测全 (前台有些问题,会造成大数据502,前台建议使用直接查询授权)
             }else{
                 $this->Yun = new \zf\Yun(2);//yun工具
             }
@@ -27,14 +30,13 @@ class Base extends Controller
         }else{
             $this->is_professional_edition = false;
         }
+
         if(extension_loaded("IonCube Loader")) {     
             $this->sqb_error_msg = base64_decode(base64_encode("<div>".base64_decode('VGhlIGNvbW11bml0eSB2ZXJzaW9uIGRvZXMgbm90IHN1cHBvcnQgdGhpcyBmZWF0dXJlLiBDbGljayB0byB1cGdyYWRlIHRvIHRoZSBwcm9mZXNzaW9uYWwgdmVyc2lvbiA=')."<a href='".ZFC('version.api_domain','file').'/yun_down_list?v='.ZFC('version.version','file')."' target='_blank'>".base64_decode('PHNwYW4gc3R5bGU9ImNvbG9yOnJlZDsiPueCueWHu+S4i+i9vVl1bi5waHA8L3NwYW4+')."</a></div>"));
         }else{
             $this->sqb_error_msg = base64_decode(base64_encode("<div>".base64_decode('VGhlIGNvbW11bml0eSB2ZXJzaW9uIGRvZXMgbm90IHN1cHBvcnQgdGhpcyBmZWF0dXJlLiBDbGljayB0byB1cGdyYWRlIHRvIHRoZSBwcm9mZXNzaW9uYWwgdmVyc2lvbiA=')."<a href='".ZFC('version.api_domain','file').'/yun_down_list?v='.ZFC('version.version','file')."' target='_blank'>".base64_decode('PHNwYW4gc3R5bGU9ImNvbG9yOnJlZDsiPueCueWHu+S4i+i9vVl1bi5waHA8L3NwYW4+')."</a>|<a href='".ZFC('version.api_domain','file')."/question_list.html#ioncube_install' target='_blank'>".base64_decode('PHNwYW4gc3R5bGU9ImNvbG9yOnJlZDsiPklvbmN1YmXmianlsZXmnKrlronoo4Us54K55Ye75p+l55yL5a6J6KOF5pWZ56iLPC9zcGFuPg==')."</a></div>"));
         }
-        $this->module = strtolower(request()->module());
-        $this->controller = strtolower(request()->controller());
-        $this->action = strtolower(request()->action());
+        
         $this->u_key = config()['zf_auth']['key'];
         $this->s_ver = config()['version']['version'];
         $this->s_soft_id = config()['version']['soft_id'];
