@@ -2417,17 +2417,19 @@ if(!function_exists('str_show_tpl')){
  * $this->assign('seo', seo_tpl('post',['id'=>$content['id'],'t'=>$content['title'],'k'=>$content['title'],'d'=>$content['summary']]));  //文章详情
  */
 if(!function_exists('seo_tpl')){
-    function seo_tpl($tb='',$content=['id'=>"",'t'=>'','d'=>'','k'=>'']){
+    function seo_tpl($tb='',$content=['id'=>"",'t'=>'','d'=>'','k'=>''],$lang=''){
         $title = isset_arr_key($content,'t','');
         $description = isset_arr_key($content,'d','');
         $keywords = isset_arr_key($content,'k','');
         $id = isset_arr_key($content,'id','');
-        
+        if($lang!=''){
+            $lang = '_'.$lang;
+        }
         //系统默认
         if($tb==''){
-            $seo['title'] = ZFC('webconfig.site_name');
-            $seo['keywords'] = ZFC('webconfig.site_keywords');
-            $seo['description'] = ZFC('webconfig.site_description');
+            $seo['title'] = ZFC('webconfig.site_name'.$lang);
+            $seo['keywords'] = ZFC('webconfig.site_keywords'.$lang);
+            $seo['description'] = ZFC('webconfig.site_description'.$lang);
             return $seo;
         }elseif($tb=='theme_tpl'){
             $seo['title'] = $title;
@@ -2445,17 +2447,17 @@ if(!function_exists('seo_tpl')){
             //不存在,返回默认
             if(!$meta_json){
                 if($title==''){
-                    $seo['title'] = ZFC('webconfig.site_name');
+                    $seo['title'] = ZFC('webconfig.site_name'.$lang);
                 }else{
                     $seo['title'] = $title;
                 }
                 if($keywords==''){
-                    $seo['keywords'] = ZFC('webconfig.site_keywords');
+                    $seo['keywords'] = ZFC('webconfig.site_keywords'.$lang);
                 }else{
                     $seo['keywords'] = $keywords;
                 }
                 if($description==''){
-                    $seo['description'] = ZFC('webconfig.site_description');
+                    $seo['description'] = ZFC('webconfig.site_description'.$lang);
                 }else{
                     $seo['description'] = $description;
                 }
@@ -2477,7 +2479,7 @@ if(!function_exists('seo_tpl')){
         }
         $seo_title_type = ZFC('webconfig.seo_title_type');//1 默认  2 尾部加上网站名称
         if($seo_title_type==1){
-            $seo['title'].= ' - '.ZFC('webconfig.site_name');
+            $seo['title'].= ' - '.ZFC('webconfig.site_name'.$lang);
         }
         return $seo;
         
@@ -2696,8 +2698,16 @@ function test_performance($func, ...$params) {
     return $end_time - $start_time;
 }
 
-
-
+/**
+ * 20240634新增
+ * 默认值(共多语言使用)
+ */
+function def_cate_id($id=''){
+    return  $id;
+}
+function def_post_id($id=''){
+    return  $id;
+}
 
 
 if(is_dir('./application/function')){
