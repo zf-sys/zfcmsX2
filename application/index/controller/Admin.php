@@ -45,6 +45,18 @@ class Admin extends Base
         $data = $this->Yun->get_plugin_config_db('theme','',$this->zf_tpl_suffix);//保存在数据库
         $this->assign("config",$data);
         $this->assign("type",'基本设置');
+        if($this->zf_tpl_suffix=='-1'){
+            $this->zf_tpl_suffix = ZFC('zf_tpl_suffix');
+            $this->tpl = str_replace('-1',$this->zf_tpl_suffix,$this->tpl);
+        }
+        
+        if($this->zf_tpl_suffix==''){
+            $this->error('未设置模板');
+        }
+        //判断是否需要配置
+        if(!file_exists('./theme/'.$this->zf_tpl_suffix.'/admin/index.html')){
+            $this->error('此模板不需要配置');
+        }
         return view($this->tpl);
     }
     
