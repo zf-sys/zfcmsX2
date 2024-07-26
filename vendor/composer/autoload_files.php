@@ -20,7 +20,6 @@ return array(
     '0d59ee240a4cd96ddbb4ff164fccea4d' => $vendorDir . '/symfony/polyfill-php73/bootstrap.php',
     '667aeda72477189d0494fecd327c3641' => $vendorDir . '/symfony/var-dumper/Resources/functions/dump.php',
     '8a9dc1de0ca7e01f3e08231539562f61' => $vendorDir . '/aws/aws-sdk-php/src/functions.php',
-    '2cffec82183ee1cea088009cef9a6fc3' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
     'abede361264e2ae69ec1eee813a101af' => $vendorDir . '/markbaker/complex/classes/src/functions/abs.php',
     '21a5860fbef5be28db5ddfbc3cca67c4' => $vendorDir . '/markbaker/complex/classes/src/functions/acos.php',
     '1546e3f9d127f2a9bb2d1b6c31c26ef1' => $vendorDir . '/markbaker/complex/classes/src/functions/acosh.php',

@@ -2,6 +2,8 @@
 
 namespace PhpOffice\PhpSpreadsheet\Style;
 
+use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
+
 class Protection extends Supervisor
 {
     /** Protection styles */
@@ -82,7 +84,9 @@ class Protection extends Supervisor
      *
      * @param array $pStyles Array containing style information
      *
-     * @return $this
+     * @throws PhpSpreadsheetException
+     *
+     * @return Protection
      */
     public function applyFromArray(array $pStyles)
     {
@@ -119,7 +123,7 @@ class Protection extends Supervisor
      *
      * @param string $pValue see self::PROTECTION_*
      *
-     * @return $this
+     * @return Protection
      */
     public function setLocked($pValue)
     {
@@ -152,7 +156,7 @@ class Protection extends Supervisor
      *
      * @param string $pValue see self::PROTECTION_*
      *
-     * @return $this
+     * @return Protection
      */
     public function setHidden($pValue)
     {
@@ -182,14 +186,5 @@ class Protection extends Supervisor
             $this->hidden .
             __CLASS__
         );
-    }
-
-    protected function exportArray1(): array
-    {
-        $exportedArray = [];
-        $this->exportArray2($exportedArray, 'locked', $this->getLocked());
-        $this->exportArray2($exportedArray, 'hidden', $this->getHidden());
-
-        return $exportedArray;
     }
 }

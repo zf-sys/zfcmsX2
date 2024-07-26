@@ -21,7 +21,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -103,10 +102,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         array (
             'app\\' => 4,
         ),
-        'Z' => 
-        array (
-            'ZipStream\\' => 10,
-        ),
         'W' => 
         array (
             'Wmc1125\\TpFast\\' => 15,
@@ -147,7 +142,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
-            'Psr\\Http\\Client\\' => 16,
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
@@ -223,10 +217,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         'app\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application',
-        ),
-        'ZipStream\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
         'Wmc1125\\TpFast\\' => 
         array (
@@ -319,11 +309,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
-        ),
-        'Psr\\Http\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
         'Psr\\EventDispatcher\\' => 
         array (
@@ -441,13 +426,6 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
             'Pimple' => 
             array (
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
-            ),
-        ),
-        'H' => 
-        array (
-            'HTMLPurifier' => 
-            array (
-                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
     );

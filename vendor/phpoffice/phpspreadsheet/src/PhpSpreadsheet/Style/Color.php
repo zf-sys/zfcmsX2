@@ -2,19 +2,10 @@
 
 namespace PhpOffice\PhpSpreadsheet\Style;
 
+use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
+
 class Color extends Supervisor
 {
-    const NAMED_COLORS = [
-        'Black',
-        'White',
-        'Red',
-        'Green',
-        'Blue',
-        'Yellow',
-        'Magenta',
-        'Cyan',
-    ];
-
     // Colors
     const COLOR_BLACK = 'FF000000';
     const COLOR_WHITE = 'FFFFFFFF';
@@ -71,14 +62,14 @@ class Color extends Supervisor
      */
     public function getSharedComponent()
     {
-        if ($this->parentPropertyName === 'endColor') {
-            return $this->parent->getSharedComponent()->getEndColor();
+        switch ($this->parentPropertyName) {
+            case 'endColor':
+                return $this->parent->getSharedComponent()->getEndColor();
+            case 'color':
+                return $this->parent->getSharedComponent()->getColor();
+            case 'startColor':
+                return $this->parent->getSharedComponent()->getStartColor();
         }
-        if ($this->parentPropertyName === 'startColor') {
-            return $this->parent->getSharedComponent()->getStartColor();
-        }
-
-        return $this->parent->getSharedComponent()->getColor();
     }
 
     /**
@@ -102,7 +93,9 @@ class Color extends Supervisor
      *
      * @param array $pStyles Array containing style information
      *
-     * @return $this
+     * @throws PhpSpreadsheetException
+     *
+     * @return Color
      */
     public function applyFromArray(array $pStyles)
     {
@@ -139,7 +132,7 @@ class Color extends Supervisor
      *
      * @param string $pValue see self::COLOR_*
      *
-     * @return $this
+     * @return Color
      */
     public function setARGB($pValue)
     {
@@ -175,7 +168,7 @@ class Color extends Supervisor
      *
      * @param string $pValue RGB value
      *
-     * @return $this
+     * @return Color
      */
     public function setRGB($pValue)
     {
@@ -205,8 +198,11 @@ class Color extends Supervisor
     private static function getColourComponent($RGB, $offset, $hex = true)
     {
         $colour = substr($RGB, $offset, 2);
+        if (!$hex) {
+            $colour = hexdec($colour);
+        }
 
-        return ($hex) ? $colour : hexdec($colour);
+        return $colour;
     }
 
     /**
@@ -261,8 +257,7 @@ class Color extends Supervisor
      */
     public static function changeBrightness($hex, $adjustPercentage)
     {
-        $rgba = (strlen($hex) === 8);
-        $adjustPercentage = max(-1.0, min(1.0, $adjustPercentage));
+        $rgba = (strlen($hex) == 8);
 
         $red = self::getRed($hex, false);
         $green = self::getGreen($hex, false);
@@ -277,10 +272,26 @@ class Color extends Supervisor
             $blue += $blue * $adjustPercentage;
         }
 
+        if ($red < 0) {
+            $red = 0;
+        } elseif ($red > 255) {
+            $red = 255;
+        }
+        if ($green < 0) {
+            $green = 0;
+        } elseif ($green > 255) {
+            $green = 255;
+        }
+        if ($blue < 0) {
+            $blue = 0;
+        } elseif ($blue > 255) {
+            $blue = 255;
+        }
+
         $rgb = strtoupper(
-            str_pad(dechex((int) $red), 2, '0', 0) .
-            str_pad(dechex((int) $green), 2, '0', 0) .
-            str_pad(dechex((int) $blue), 2, '0', 0)
+            str_pad(dechex($red), 2, '0', 0) .
+            str_pad(dechex($green), 2, '0', 0) .
+            str_pad(dechex($blue), 2, '0', 0)
         );
 
         return (($rgba) ? 'FF' : '') . $rgb;
@@ -293,7 +304,7 @@ class Color extends Supervisor
      * @param bool $background Flag to indicate whether default background or foreground colour
      *                                            should be returned if the indexed colour doesn't exist
      *
-     * @return self
+     * @return Color
      */
     public static function indexedColor($pIndex, $background = false)
     {
@@ -388,13 +399,5 @@ class Color extends Supervisor
             $this->argb .
             __CLASS__
         );
-    }
-
-    protected function exportArray1(): array
-    {
-        $exportedArray = [];
-        $this->exportArray2($exportedArray, 'argb', $this->getARGB());
-
-        return $exportedArray;
     }
 }

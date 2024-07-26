@@ -2,7 +2,6 @@
 
 namespace PhpOffice\PhpSpreadsheet\Reader;
 
-use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
 use PhpOffice\PhpSpreadsheet\Shared\File;
 
@@ -59,6 +58,21 @@ abstract class BaseReader implements IReader
     public function __construct()
     {
         $this->readFilter = new DefaultReadFilter();
+
+        // A fatal error will bypass the destructor, so we register a shutdown here
+        register_shutdown_function([$this, '__destruct']);
+    }
+
+    private function shutdown()
+    {
+        if ($this->securityScanner !== null) {
+            $this->securityScanner = null;
+        }
+    }
+
+    public function __destruct()
+    {
+        $this->shutdown();
     }
 
     public function getReadDataOnly()
@@ -132,30 +146,30 @@ abstract class BaseReader implements IReader
         return $this;
     }
 
-    public function getSecurityScanner()
+    public function getSecuritySCanner()
     {
-        return $this->securityScanner;
+        if (property_exists($this, 'securityScanner')) {
+            return $this->securityScanner;
+        }
+
+        return null;
     }
 
     /**
      * Open file for reading.
      *
      * @param string $pFilename
+     *
+     * @throws Exception
      */
-    protected function openFile($pFilename): void
+    protected function openFile($pFilename)
     {
-        if ($pFilename) {
-            File::assertFile($pFilename);
+        File::assertFile($pFilename);
 
-            // Open file
-            $fileHandle = fopen($pFilename, 'rb');
-        } else {
-            $fileHandle = false;
-        }
-        if ($fileHandle !== false) {
-            $this->fileHandle = $fileHandle;
-        } else {
-            throw new ReaderException('Could not open file ' . $pFilename . ' for reading.');
+        // Open file
+        $this->fileHandle = fopen($pFilename, 'r');
+        if ($this->fileHandle === false) {
+            throw new Exception('Could not open file ' . $pFilename . ' for reading.');
         }
     }
 }

@@ -2,8 +2,6 @@
 
 namespace PhpOffice\PhpSpreadsheet\Worksheet;
 
-use GdImage;
-
 class MemoryDrawing extends BaseDrawing
 {
     // Rendering functions
@@ -21,7 +19,7 @@ class MemoryDrawing extends BaseDrawing
     /**
      * Image resource.
      *
-     * @var GdImage|resource
+     * @var resource
      */
     private $imageResource;
 
@@ -55,7 +53,7 @@ class MemoryDrawing extends BaseDrawing
         $this->imageResource = null;
         $this->renderingFunction = self::RENDERING_DEFAULT;
         $this->mimeType = self::MIMETYPE_DEFAULT;
-        $this->uniqueName = md5(mt_rand(0, 9999) . time() . mt_rand(0, 9999));
+        $this->uniqueName = md5(rand(0, 9999) . time() . rand(0, 9999));
 
         // Initialize parent
         parent::__construct();
@@ -64,7 +62,7 @@ class MemoryDrawing extends BaseDrawing
     /**
      * Get image resource.
      *
-     * @return GdImage|resource
+     * @return resource
      */
     public function getImageResource()
     {
@@ -74,9 +72,9 @@ class MemoryDrawing extends BaseDrawing
     /**
      * Set image resource.
      *
-     * @param GdImage|resource $value
+     * @param resource $value
      *
-     * @return $this
+     * @return MemoryDrawing
      */
     public function setImageResource($value)
     {
@@ -106,7 +104,7 @@ class MemoryDrawing extends BaseDrawing
      *
      * @param string $value see self::RENDERING_*
      *
-     * @return $this
+     * @return MemoryDrawing
      */
     public function setRenderingFunction($value)
     {
@@ -130,7 +128,7 @@ class MemoryDrawing extends BaseDrawing
      *
      * @param string $value see self::MIMETYPE_*
      *
-     * @return $this
+     * @return MemoryDrawing
      */
     public function setMimeType($value)
     {
