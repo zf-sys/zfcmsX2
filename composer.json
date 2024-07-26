@@ -16,7 +16,7 @@
         }
     ],
     "require":{
-        "php":">=5.6.0",
+        "php": ">=7.2",
         "topthink\/framework":"^5.1.41",
         "topthink\/think-image":"^1.0",
         "topthink\/think-captcha":"^2.0",
@@ -31,7 +31,7 @@
         "guzzlehttp/guzzle":"^6.5.8",
         "overtrue/wechat": "~5.0",
         "jaeger/querylist": "v4.2",
-        "phpoffice/phpspreadsheet": "v1.8.0",
+        "phpoffice/phpspreadsheet": "v1.16.0",
         "league/flysystem-aws-s3-v3": "^1.0"
         
     },
