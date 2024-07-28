@@ -28,5 +28,5 @@ composer.lock
 /upgrade_box/*
 
 /.idea
-/docker_data
-/docker-compose.yml
+/docker
+/docker/docker-compose.yml
