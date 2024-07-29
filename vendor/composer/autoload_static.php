@@ -107,6 +107,10 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         array (
             'ZipStream\\' => 10,
         ),
+        'Y' => 
+        array (
+            'Yurun\\Util\\' => 11,
+        ),
         'W' => 
         array (
             'Wmc1125\\TpFast\\' => 15,
@@ -228,6 +232,10 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
+        'Yurun\\Util\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yurunsoft/chinese-util/src',
+        ),
         'Wmc1125\\TpFast\\' => 
         array (
             0 => __DIR__ . '/..' . '/wmc1125/tpfast-public/src',
@@ -318,8 +326,8 @@ class ComposerStaticInitd4de90bbdf74858834ca2d49b00efa81
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (

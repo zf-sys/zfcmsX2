@@ -3,7 +3,7 @@
         'name' => 'topthink/think',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd409ecbb31f560edf9280ad7575a10d587a7f8be',
+        'reference' => 'a0bd478a66e6c540d81ebe3c9a8820a7a5366241',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -579,7 +579,7 @@
         'topthink/think' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd409ecbb31f560edf9280ad7575a10d587a7f8be',
+            'reference' => 'a0bd478a66e6c540d81ebe3c9a8820a7a5366241',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -639,6 +639,15 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
+            'dev_requirement' => false,
+        ),
+        'yurunsoft/chinese-util' => array(
+            'pretty_version' => 'v2.0.5',
+            'version' => '2.0.5.0',
+            'reference' => '818c995d85f95d71ee2d5795f84ce4d56bfc1332',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../yurunsoft/chinese-util',
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'zf-sys/think-addons' => array(

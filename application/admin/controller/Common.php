@@ -16,7 +16,8 @@ use think\Db;
 use think\facade\Image;
 use OSS\OssClient as AliOssClient;
 use think\captcha\Captcha;
-use lib\Pinyin;
+use \Yurun\Util\Chinese;
+use \Yurun\Util\Chinese\Pinyin;
 
 class Common extends Admin
 {
@@ -296,8 +297,7 @@ class Common extends Admin
      */
     public function generate_to_title(){
         $title = input('title','');
-        $Pinyin = new Pinyin();
-        $str = $Pinyin->getAllPY($title,'-');
+        $str = Chinese::toPinyin($title, Pinyin::CONVERT_MODE_PINYIN , '-')['pinyin'][0];
         $str = str_replace('+','-',$str);
         $str = str_replace('/','-',$str);
         $str = str_replace('?','-',$str);

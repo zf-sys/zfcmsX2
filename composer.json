@@ -32,7 +32,8 @@
         "overtrue/wechat": "~5.0",
         "jaeger/querylist": "v4.2",
         "phpoffice/phpspreadsheet": "v1.16.0",
-        "league/flysystem-aws-s3-v3": "^1.0"
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "yurunsoft/chinese-util": "^2.0"
         
     },
     "autoload":{
