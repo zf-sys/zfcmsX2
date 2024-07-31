@@ -50,6 +50,19 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 		},"json");
 	})
 
+	form.on('switch(zstatus_change)', function(data){
+		var id = $(this).attr("item_id")
+		var field = $(this).attr("item_f")
+		var dbname = $(this).attr("item_dbname")
+		var status = this.checked ? '1' : '0'
+		$.get("/admin/common/value_status",{id:id,dbname:dbname,status:status,field:field},function(res){
+			if(res.result==1){
+				layer.msg(res.msg, {icon: 1});
+			}else{
+				layer.msg(res.msg, {icon: 2});
+			}
+		},"json");
+	});
 	/*
 	 * @todo 弹出层，弹窗方法
 	 * layui.use 加载layui.define 定义的模块，当外部 js 或 onclick调用 use 内部函数时，需要在 use 中定义 window 函数供外部引用
@@ -232,48 +245,48 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
      * @attr refresh 操作完成后是否自动刷新
      * @class confirm confirm提示内容
      */
-    $(document).on('click', '.j-ajax,.zf-ajax', function() {
-        var that = $(this), 
-            href = !that.attr('data-href') ? that.attr('href') : that.attr('data-href'),
-            refresh = !that.attr('refresh') ? 'true' : that.attr('refresh');
-        if (!href) {
-            layer.msg('请设置data-href参数');
-            return false;
-        }
-
-        if (!that.attr('confirm')) {
-            layer.msg('数据提交中...', {time:500000});
-            $.get(href, {}, function(res) {
-                layer.msg(res.msg, {}, function() {
-                    if (refresh == 'true' || refresh == 'yes') {
-                        if (typeof(res.url) != 'undefined' && res.url != null && res.url != '') {
-                            location.href = res.url;
-                        } else {
-                            location.reload();
-                        }
-                    }
-                });
-            });
-            layer.close();
-        } else {
-            layer.confirm(that.attr('confirm'), {title:false, closeBtn:0}, function(index){
-                layer.msg('数据提交中...', {time:500000});
-                $.get(href, {}, function(res) {
-                    layer.msg(res.msg, {}, function() {
-                        if (refresh == 'true') {
-                            if (typeof(res.url) != 'undefined' && res.url != null && res.url != '') {
-                                location.href = res.url;
-                            } else {
-                                location.reload();
-                            }
-                        }
-                    });
-                });
-                layer.close(index);
-            });
-        }
-        return false;
-    });
+    // $(document).on('click', '.j-ajax,.zf-ajax', function() {
+    //     var that = $(this),
+    //         href = !that.attr('data-href') ? that.attr('href') : that.attr('data-href'),
+    //         refresh = !that.attr('refresh') ? 'true' : that.attr('refresh');
+    //     if (!href) {
+    //         layer.msg('请设置data-href参数');
+    //         return false;
+    //     }
+	//
+    //     if (!that.attr('confirm')) {
+    //         layer.msg('数据提交中...', {time:500000});
+    //         $.get(href, {}, function(res) {
+    //             layer.msg(res.msg, {}, function() {
+    //                 if (refresh == 'true' || refresh == 'yes') {
+    //                     if (typeof(res.url) != 'undefined' && res.url != null && res.url != '') {
+    //                         location.href = res.url;
+    //                     } else {
+    //                         location.reload();
+    //                     }
+    //                 }
+    //             });
+    //         });
+    //         layer.close();
+    //     } else {
+    //         layer.confirm(that.attr('confirm'), {title:false, closeBtn:0}, function(index){
+    //             layer.msg('数据提交中...', {time:500000});
+    //             $.get(href, {}, function(res) {
+    //                 layer.msg(res.msg, {}, function() {
+    //                     if (refresh == 'true') {
+    //                         if (typeof(res.url) != 'undefined' && res.url != null && res.url != '') {
+    //                             location.href = res.url;
+    //                         } else {
+    //                             location.reload();
+    //                         }
+    //                     }
+    //                 });
+    //             });
+    //             layer.close(index);
+    //         });
+    //     }
+    //     return false;
+    // });
 
 
     /**
@@ -283,67 +296,129 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
      * @class confirm 类似系统confirm
      * @attr tips confirm提示内容
      */
-    $(document).on('click', '.j-page-btns,.zf-page-btns', function(){
-        var that = $(this),
-		query = '',
-		code = function(that) {
-			var href = that.attr('href') ? that.attr('href') : that.attr('data-href');
-			var tableObj = that.attr('data-table') ? that.attr('data-table') : 'dataTable';
-			if (!href) {
-				layer.msg('请设置data-href参数');
-				return false;
-			}
+    // $(document).on('click', '.j-page-btns,.zf-page-btns', function(){
+    //     var that = $(this),
+	// 	query = '',
+	// 	code = function(that) {
+	// 		var href = that.attr('href') ? that.attr('href') : that.attr('data-href');
+	// 		var tableObj = that.attr('data-table') ? that.attr('data-table') : 'dataTable';
+	// 		if (!href) {
+	// 			layer.msg('请设置data-href参数');
+	// 			return false;
+	// 		}
+	//
+	// 		if ($('.checkbox-ids:checked').length <= 0) {
+	// 			var checkStatus = table.checkStatus(tableObj);
+	// 			if (checkStatus.data.length <= 0) {
+	// 				layer.msg('请选择要操作的数据');
+	// 				return false;
+	// 			}
+	// 			for (var i in checkStatus.data) {
+	// 				if (i > 0) {
+	// 					query += '&';
+	// 				}
+	// 				query += 'id[]='+checkStatus.data[i].id;
+	// 			}
+	// 		} else {
+	// 			if (that.parents('form')[0]) {
+	// 				query = that.parents('form').serialize();
+	// 			} else {
+	// 				query = $('#pageListForm').serialize();
+	// 			}
+	// 		}
+	//
+	// 		layer.msg('数据提交中...',{time:500000});
+	// 		$.post(href, query, function(res) {
+	// 			layer.msg(res.msg, {}, function(){
+	// 				if (res.result != 0) {
+	// 					location.reload();
+	// 				}else{
+	// 					location.reload();
+	// 				}
+	// 			});
+	//
+	// 		});
+	// 	};
+    //     if (that.hasClass('confirm')) {
+    //         var tips = that.attr('tips') ? that.attr('tips') : '您确定要执行此操作吗？';
+    //         layer.confirm(tips, {title:false, closeBtn:0}, function(index){
+    //             code(that);
+    //             layer.close(index);
+    //         });
+    //     } else {
+    //        code(that);
+    //     }
+    //     return false;
+    // });
+	//
 
-			if ($('.checkbox-ids:checked').length <= 0) {
-				var checkStatus = table.checkStatus(tableObj);
-				if (checkStatus.data.length <= 0) {
-					layer.msg('请选择要操作的数据');
-					return false;
+
+
+
+	//选中
+	$(document).on('click', '.zf_all_check', function() {
+		var check = $(this).text();
+		if (check == '全选') {
+			$('input[name="ids[]"]').prop('checked', true);
+			$(this).text('取消');
+		} else {
+			$('input[name="ids[]"]').prop('checked', false);
+			$(this).text('全选');
+		}
+		form.render('checkbox');
+	})
+	//批量删除
+	$(document).on('click', '.pl_del', function() {
+		var ids = [];
+		$('input[name="ids[]"]:checked').each(function(){
+			ids.push($(this).val());
+		});
+		if(ids.length==0){
+			layer.msg('请选择要删除的数据', {icon: 2});
+			return false;
+		}
+		layer.confirm('确认删除？', {
+			btn: ['删除','取消']
+		}, function(){
+			$.get("{:url('admin/common/more_del')}",{ids:ids,dbname:'post'},function(res){
+				if(res.result==1){
+					layer.msg("删除成功", {icon: 1});
+					setTimeout(function() {
+						location.reload(true);
+					}, 1000);
+				}else{
+					layer.msg(res.msg, {icon: 2});
+
 				}
-				for (var i in checkStatus.data) {
-					if (i > 0) {
-						query += '&';
-					}
-					query += 'id[]='+checkStatus.data[i].id;
+			},"json");
+
+		}, function(){
+			//取消的操作
+		});
+	})
+
+	// 删除
+	$(document).on('click', '.zf_btn_del', function() {
+		var url = $(this).attr("rel");
+		layer.confirm('确认删除？', {
+			btn: ['删除','取消']
+		}, function(){
+
+			$.get(url, {},function(res){
+				if(res.result==1){
+					layer.msg("删除成功", {icon: 1});
+					setTimeout(function() {
+						location.reload(true);
+					}, 1000);
+				}else{
+					layer.msg(res.msg, {icon: 2});
+
 				}
-			} else {
-				if (that.parents('form')[0]) {
-					query = that.parents('form').serialize();
-				} else {
-					query = $('#pageListForm').serialize();
-				}
-			}
+			},"json");
 
-			layer.msg('数据提交中...',{time:500000});
-			$.post(href, query, function(res) {
-				layer.msg(res.msg, {}, function(){
-					if (res.result != 0) {
-						location.reload();
-					}else{
-						location.reload();
-					}
-				});
-
-			});
-		};
-        if (that.hasClass('confirm')) {
-            var tips = that.attr('tips') ? that.attr('tips') : '您确定要执行此操作吗？';
-            layer.confirm(tips, {title:false, closeBtn:0}, function(index){
-                code(that);
-                layer.close(index);
-            });
-        } else {
-           code(that);
-        }
-        return false;
-    });
-
-
-		
-
-
-
-
- 
+		}, function(){
+			//取消的操作
+		});
+	})
 	
 });
