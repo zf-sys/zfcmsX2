@@ -14,7 +14,7 @@ use think\Db;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Wmc1125\TpFast\GetImgSrc; 
+use Wmc1125\TpFast\GetImgSrc;
   
 class Category extends Admin
 {
@@ -429,7 +429,7 @@ class Category extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca);
         // 栏目id
-        $cid = input('cid');
+        $cid = input('cid',0);
         $mid = input('mid');
         $t = input('t',0);
         $this->assign('t',$t);
@@ -510,7 +510,7 @@ class Category extends Admin
                 $where[] = ['status','=','0'];
             }
             $where[] = ['status','<>',9];
-            $where[] = ['cid','=',$cid];
+            $where[] = ['cid','in',$this->get_child_id($cid)];
             $keyword = input("get.keyword".'');
             if($keyword!=''){
                 $where[] = ['title|content|summary','like','%'.$keyword.'%'];
@@ -535,6 +535,20 @@ class Category extends Admin
             if(!is_file('./application/admin/view/'.$tpl.'.html')){
                 $tpl = 'category/zf_tpl/index';
             }
+            //栏目
+            $pres =ZFTB('category')->where(['status'=>1])->select();
+            $cat = new cat(array('cid', 'pid', 'name', 'cname'));
+            $plist = $cat->getTree($pres);
+            if(!$plist){
+                $plist = [];
+            }
+            $plist[999] =
+            [
+                'cid'=>0,
+                'name'=>'顶级目录',
+                'cname'=>'顶级目录'
+            ];
+            $this->assign("plist",$plist);
             return view($tpl);
         }
     }
