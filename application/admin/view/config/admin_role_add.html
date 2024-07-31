@@ -20,6 +20,8 @@
           {$form_widget->form_input(['title'=>'名称','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
           {$form_widget->form_input(['title'=>'权限','name'=>'value','data'=>$res['value'],'readonly'=>1,'theme'=>2])|raw}
           {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$list,'theme'=>6])|raw}
+          {$form_widget->form_select(['title'=>'权限参数','name'=>'is_parm_auth','data'=>$res['is_parm_auth'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>[['id'=>'0','name'=>'否'],['id'=>'1','name'=>'是'
+          ]],'theme'=>4])|raw}
           {$form_widget->form_input(['title'=>'参数','name'=>'parm','data'=>$res['parm'],'theme'=>2])|raw}
           <div class="layui-form-item">
             <label class="layui-form-label">图标:</label>

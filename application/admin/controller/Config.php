@@ -358,7 +358,7 @@ class Config extends Admin
     {
         $control = input('get.control');
         //通过控制器查找已存在的方法
-        $now_act = db('admin_role')->field("act")->where('control', $control)->select();
+        $now_act = db('admin_role')->field("act")->where([['control', '=',$control],['status', '<>',9],['is_parm_auth','=','0']])->select();
         if(!empty($now_act)){
             foreach($now_act as $k=>$vo){
                 $now_act_now[$k] = $vo['act'];
