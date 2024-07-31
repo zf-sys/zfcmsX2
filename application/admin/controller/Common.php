@@ -137,6 +137,7 @@ class Common extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         $dbname = input('db');
         $id = input('id');
+        $field = input('field','status');
         try {
             if($dbname=='category' || $dbname=='product_cate'){
                 $res = ZFTB($dbname)->where(['cid'=> $id])->update(['status' => 9]);
@@ -206,6 +207,19 @@ class Common extends Admin
             }else{
                 $res = ZFTB($dbname)->where(['id'=>$id])->update([$field => $value]);      
             }
+            return ZFRetMsg($res,'更新成功','更新失败');
+        }catch (Exception $e) {
+            return jserror($e->getMessage());
+        }
+    }
+    public function value_status(){
+        admin_role_check($this->z_role_list,$this->mca,1);
+        $dbname = input('dbname');
+        $is_show = input('status');
+        $id = input('id');
+        $field = input('field');
+        try {
+            $res = ZFTB($dbname)->where(['id'=>$id])->update([$field => $is_show]);
             return ZFRetMsg($res,'更新成功','更新失败');
         }catch (Exception $e) {
             return jserror($e->getMessage());
