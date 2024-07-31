@@ -33,7 +33,7 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 	 * 
 	 * 修改排序
 	 */
-	$('.edit_sort').on('blur',function(){
+	$(document).on('blur', '.edit_sort', function(){
 		var id = $(this).attr('item-id')
 		var  dbname= $(this).attr('item-dbname')
 		var field = $(this).attr('item_f')
@@ -48,6 +48,22 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 				layer.msg(res.msg, {icon: 2});
 			}
 		},"json");
+	})
+	$(document).on('click', '.zfcms_picshow', function(){
+		var pic = $(this).attr("src")
+		layer.photos({
+			photos: {
+				"title": "预览",
+				"start": 0,
+				"data": [
+					{
+						"alt": "",
+						"pid": 1,
+						"src": pic,
+					}
+				]
+			}
+		});
 	})
 
 	form.on('switch(zstatus_change)', function(data){
