@@ -1,245 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>管理系统</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  {:widget_st('layui','css')}
-  {:widget_st('admin','css')}
-  {:widget_st('bootstrap')}
-</head>
-<body>
-  <div class="layui-fluid">
-    <div class="layui-card">
-        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-          <div class="layui-form-item">
-            <form method="get">
-              <input type="hidden" name="mid" value="{$mid}" />
-              <input type="hidden" name="cid" value="{$cid}" />
-              <div class="layui-inline">
-                <label class="layui-form-label">关键词</label>
-                <div class="layui-input-block">
-                  <input type="text" name="keyword" placeholder="请输入" autocomplete="off" class="layui-input" value="{$keyword}">
-                </div>
-              </div>
-              <div class="layui-inline">
-                  <button class="layui-btn" ><i class="layui-icon layui-icon-search layuiadmin-button-btn"></i></button>
-              </div>
-            </form>
-              <div class="layui-inline">
-                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("新增内容","{:url('admin/category/post_add',['cid' => $cid,'mid' => $mid] )}")'>新增</button> 
-                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("批量新增","{:url('admin/category/post_add_pl',['cid' => $cid,'mid' => $mid] )}")'>批量新增</button> 
-                  <a  class="layui-btn layui-btn-sm" href="{:url('admin/category/post_add',['cid' => $cid,'mid' => $mid] )}" target="_blank"> 新增(新页面打开)</a>
-              </div>
-              <a class="layui-btn layui-btn-sm layui-btn-normal" href="?cid={$cid}&mid={$mid}"> 全部</a>
-            <!-- <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=wsl"> 未收录</a>
-            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=sl"> 收录</a>
-            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=wfb"> 未发布</a>
-            <a class="layui-btn layui-btn-sm layui-btn-normal"  href="?cid={$cid}&mid={$mid}&where_type=fb"> 已发布</a> -->
-          </div>
-        </div>
-      <div class="layui-card-body">
-        <a class="zf_all_check">全选</a>
-        <span class="pl_del" style="color: red;">批量删除</span>
-        <table class="layui-table">
-            <colgroup>
-              <col width="30">
-              <col width="60">
-              <col width="60">
-              <col width="60">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-              <col>
-            </colgroup>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>标题</th>
-                <th>图片</th>
-                <!-- <th>百度收录</th>           -->
-                <th>排序</th>
-                <th>点击量</th>
-                <th>推荐</th>
-                <th>状态</th>
-                <th>操作</th>
-              </tr> 
-            </thead>
-            <tbody>
-              <?php foreach($list as $k=>$vo){ ?>
-                <tr>
-                  <td>
-                    <input type="checkbox" name="ids[]" value="{$vo['id']}" >
-                    {$vo['id']}
-                  </td>
-                  <td><a href="{$site_path}{$lang!=1?$lang.'/':''}detail/{$vo['id']}.html" target="_blank">{$vo['title']}</a></td>
-                  <td><img src="{$vo['pic']}" style="width:50px;height:50px"/></td>
-                  <!-- <td>
-                    <a href="http://www.baidu.com/s?wd=<?php echo request()->domain().$site_path.'detail/'.$vo['id'].'.html'; ?>" target="_blank">
-                      {$vo['bd_sl']==1?'已收录':'未收录'}                    
-                    </a>
-                  </td> -->
-                  <td>
-                    <input type="text" name="sort" autocomplete="off" class="layui-input edit_sort"  value="{$vo['sort']}" item-id="{$vo['id']}" item-dbname="post" >
-                  </td>
-                  <td>{$vo['hits']}</td>
-                  <td> 
-                    <div class=" layui-form" lay-filter="component-form-element">        
-                       <input type="checkbox" name="recommend" <?php echo $vo['recommend']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="recommend_change" item="{$vo['id']}">
-                    </div>
-                  </td>  
-                  <td> 
-                    <div class=" layui-form" lay-filter="component-form-element">        
-                       <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
-                    </div>
-                  </td>                
-                  <td> 
-                    <a class="layui-btn btn_del layui-btn-danger layui-btn-sm" rel="{$vo['id']}" href="#">删除</a> <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/category/post_add',['id' => $vo['id'],'cid' => $vo['cid'],'mid' => $mid] )}")'>编辑</button> 
-                    <a  class="layui-btn layui-btn-sm" href="{:url('admin/category/post_add',['id' => $vo['id'],'cid' => $vo['cid'],'mid' => $mid] )}" target="_blank"> 编辑(新页面打开)</a>
-                    <a class="layui-btn  layui-btn-sm"  href="{$site_path}{$lang!=1?$lang.'/':''}detail/{$vo['id']}.html?t=show_admin" target="_blank">预览</a> 
-                    {:doZfAction('sys_post_list_item',['type'=>'view','id'=>$vo['id']])}
-                    
-                  
-                  </td>
-                </tr>
-              <?php } ?>         
-            </tbody>
-          </table>
-          {$page|raw}
+<?php
+$general_tb = new \general\table(['htmlName'=>'测试管理中心','formConfig'=>['method'=>'get','action'=>'/admin/category/post_list','id'=>'form_search','class'=>''],'batchDel'=>true,'idType'=>'id']);
+//head
+$html = $general_tb->setHtmlHead([widget_st('layui','css')])
+->setHtmlHead([widget_st('admin','css')])
+->setHtmlHead(widget_st('bootstrap'))
+->setHtmlHead([widget_st('jq','js')])
+->setHtmlHead([widget_st('layui','js')])
+->setHtmlHead([widget_st('common','js')])
 
-      </div>
-    </div>
-  </div>
-  {include file="public/common_tool"}
-  
-  {:widget_st('jq','js')}
-  {:widget_st('layui','js')} 
-  {:widget_st('common','js')}
+//    表单
+->setFormItem('mid','hidden','模型id',$mid)
+->setFormItem('cid','hidden','栏目id',$cid)
+->setFormItem('keyword','text','关键词',$keyword,['theme_type'=>2,'col'=>4,'placeholder'=>'请输入标题或内容或摘要'])
+->setFormItem('cid','select','分类',$cid,['theme_type'=>2,'options'=>$plist,'option_id'=>'cid','option_name'=>'name','placeholder'=>'请选择类别'])
+//    按钮
+->setBtnItem('onclick','新增内容',url('admin/category/post_add',['cid' => $cid,'mid' => $mid] ))
+->setBtnItem('onclick','批量新增',url('admin/category/post_add_pl',['cid' => $cid,'mid' => $mid] ))
+->setBtnItem('href','全部',url('admin/category/post_list',['cid' => $cid,'mid' => $mid] ),['target'=>'_self','class'=>'layui-btn-normal'])
+->setBtnItem('href','新增(新页面打开)',url('admin/category/post_add',['cid' => $cid,'mid' => $mid] ),['target'=>'_blank'])
+//     表格
+->setTableField('id','ID')
+->setTableField('title','标题','',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('pic','图片','pic',['append'=>'<img src="{pic}" style="width: 50px;height: 50px;" class="zfcms_picshow">'])
+->setTableField('sort','排序','edit',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('hits','点击量')
+->setTableField('recommend','推荐','checkbox',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('status','状态','checkbox',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('ctime','时间','time',['append'=>'Y-m-d H:i:s'])
+//操作
+->setTableField('--','操作','act',['append'=>[
+  ['del','删除','/admin/common/del_post?db=post&id=<id>&field=status',['target'=>'_self','width'=>800,'height'=>600]],
+  ['onclick','编辑','/admin/category/post_add?id=<id>&cid=<cid>&mid='.$mid,['target'=>'_self','width'=>800,'height'=>600]],
+  ['href','编辑(新页面打开)','/admin/category/post_add?id=<id>&cid=<cid>&mid='.$mid,['target'=>'_blank'  ]],
+  ['href','预览','/detail/<id>.html?t=show_admin',['target'=>'_blank'  ]],
+]])
+->setDiyJs('
 
-  <script>
- layui.use([ 'table','element','layer','upload'], function(){
-    var $ = layui.$
-    ,form = layui.form
-    ,element = layui.element
-    ,table = layui.table
-    ,layer = layui.layer
-    ,upload = layui.upload;
+')
+->setTableData($list)
+->build();
+echo $html;
 
-    upload.render({
-      elem: '#up_file'
-      ,url: "{:url('admin/category/import')}?cid={$cid}"
-      ,accept: 'file' 
-      ,done: function(res){
-        console.log(res);
-        if(res.result==1){
-            layer.msg(res.msg, {icon: 1});
-            setTimeout(function() {
-              window.location.reload();
-            }, 2000);
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      }
-      ,error: function(){
-          layer.msg(res.msg, {icon: 2});
-      }
-    });
-
-    form.on('switch(status_change)', function(data){
-      var id = $(this).attr("item")
-      var dbname = 'post'
-      var status = this.checked ? '1' : '0'
-      console.log(id)
-      $.get("{:url('admin/common/is_switch')}",{id:id,dbname:dbname,status:status},function(res){
-          if(res.result==1){
-            layer.msg(res.msg, {icon: 1});
-          }else{
-            layer.msg(res.msg, {icon: 2});
-          }
-        },"json");
-    });
-     form.on('switch(recommend_change)', function(data){
-      var id = $(this).attr("item")
-      var dbname = 'post'
-      var status = this.checked ? '1' : '0'
-      console.log(id)
-      $.get("{:url('admin/common/is_recommend')}",{id:id,dbname:dbname,status:status},function(res){
-          if(res.result==1){
-            layer.msg(res.msg, {icon: 1});
-          }else{
-            layer.msg(res.msg, {icon: 2});
-          }
-        },"json");
-    });
-    
-    //选中
-    $('.zf_all_check').on('click',function(){
-      var check = $(this).text();
-      if(check=='全选'){
-        $('input[name="ids[]"]').prop('checked',true);
-        $(this).text('取消');
-      }else{
-        $('input[name="ids[]"]').prop('checked',false);
-        $(this).text('全选');
-      }
-    })
-    //批量删除
-    $('.pl_del').on('click',function(){
-      var ids = [];
-      $('input[name="ids[]"]:checked').each(function(){
-        ids.push($(this).val());
-      });
-      if(ids.length==0){
-        layer.msg('请选择要删除的数据', {icon: 2});
-        return false;
-      }
-      layer.confirm('确认删除？', {
-        btn: ['删除','取消']
-      }, function(){
-        $.get("{:url('admin/common/more_del')}",{ids:ids,dbname:'post'},function(res){
-          if(res.result==1){
-            layer.msg("删除成功", {icon: 1});
-            setTimeout(function() {
-              location.reload(true);
-            }, 1000);
-          }else{
-            layer.msg(res.msg, {icon: 2});
-            
-          }
-        },"json");
-
-      }, function(){
-          //取消的操作
-      });
-    })
-    // 删除
-    $(".btn_del").on("click",function(){
-      var id = $(this).attr("rel");
-      layer.confirm('确认删除？', {
-        btn: ['删除','取消']
-      }, function(){
-        
-        $.get("{:url('admin/common/del_post')}",{id:id,db:'post'},function(res){
-          if(res.result==1){
-            layer.msg("删除成功", {icon: 1});
-            setTimeout(function() {
-              location.reload(true);
-            }, 1000);
-          }else{
-            layer.msg(res.msg, {icon: 2});
-            
-          }
-        },"json");
-
-      }, function(){
-          //取消的操作
-      });
-    })
-  });
-  </script>
-</body>
-</html>
+?>
