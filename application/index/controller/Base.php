@@ -84,6 +84,10 @@ class Base extends Zfb
                     if($_parm_controller_arr[0]!=''){
                         $this->controller = $_parm_controller_arr[0];
                     }
+//                    测试中....
+                    if($_parm_controller_arr[1]!=''){
+                        $this->action = $_parm_controller_arr[1];
+                    }
                 }
                 $this->tpl =  $this->zf_tpl_suffix.'/'.$this->template.'/'.str_replace(request()->routeInfo()['option']['append']['lang'],'',$this->controller) .'/'.$this->action;
             }else{

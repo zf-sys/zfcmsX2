@@ -396,7 +396,7 @@ layui.define(['jquery', 'form', 'layer', 'element','table'], function(exports) {
 		layer.confirm('确认删除？', {
 			btn: ['删除','取消']
 		}, function(){
-			$.get("{:url('admin/common/more_del')}",{ids:ids,dbname:'post'},function(res){
+			$.get("/admin/common/more_del",{ids:ids,dbname:'post'},function(res){
 				if(res.result==1){
 					layer.msg("删除成功", {icon: 1});
 					setTimeout(function() {
