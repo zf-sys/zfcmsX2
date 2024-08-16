@@ -93,6 +93,8 @@ class Index extends Admin
         }else{
             $tpl = 'index/welcome_community';
         }
+        do_action('admin_welcome_after',$this);
+
         return view($tpl);
     }
 
