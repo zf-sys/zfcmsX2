@@ -39,7 +39,7 @@
                   <td>{$vo['id']}</td>
                   <td>
                     {$vo['name']}
-                    {:doZfAction('sys_ulink_check',['data'=>$vo['url']])}
+                 {:apply_filters('admin_link_view',$vo,'string')}
                   </td>
                   <td>{$vo['url']}</td>
                   <td>
