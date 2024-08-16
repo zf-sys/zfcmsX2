@@ -12,8 +12,9 @@
 use think\Controller;
 use think\Db;
 use think\facade\Hook;
+include './application/hooks.php';
 include './application/common_db.php';
-   
+
 // 应用公共文件
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
