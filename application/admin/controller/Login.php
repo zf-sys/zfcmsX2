@@ -53,10 +53,9 @@ class Login extends Controller
                 die;
             }
         }
-        $init_sql = ZFC("zf_auth.init_sql",'file');
-        if($init_sql!=1){
-            $this->redirect('/common/base/upgrade_sys_sql');
-        }
+        $right_img =  ZFC('webconfig.admin_login_right_pic')==''?'//static.zf-sys.com/zfcms/image/dlbox.svg':ZFC('webconfig.admin_login_right_pic');
+        $this->assign('right_img',$right_img);
+        do_action('admin_login_before',$this);
         return view('login/index');
     }
     
@@ -90,40 +89,20 @@ class Login extends Controller
             if($data['name']==''){
                 return jserror('用户名不能为空');
             }
-            $max_login_err_num = intval(ZFC("webconfig.max_login_err_num"));
-            if($max_login_err_num==0){
-                $max_login_err_num = 3;
+            $userInfo = ZFTB('admin')->where('name', $data['name'])->where('pwd', md5('zfcms-'.$data['pwd']))->where('status', 1)->find();
+            do_action('admin_login_after',$this,$data,$userInfo);
+            if (!$userInfo) {
+                return jserror('用户名或者密码不正确 或没有权限');
             }
-            $login_interval_time = intval(ZFC("webconfig.login_interval_time"));
-            if($login_interval_time==0){
-                $login_interval_time = 5;
+            $admin  = $userInfo;
+            session('admin', $admin);
+            if(!session('zf_login_tap_url')){
+                $url= url('admin/index/index');
+            }else{
+                $url= session('zf_login_tap_url');
+                session('zf_login_tap_url',null);
             }
-            try{
-                $err_login_num = db('admin_login_log')->where([['ip','=',request()->ip()],['ctime','between time',[date("Y-m-d H:i:s",time()-$login_interval_time*60), date("Y-m-d H:i:s")]],['err_num','<>','0'],['name','=',$data['name']]])->order('id asc')->count();
-                if($err_login_num>=$max_login_err_num){
-                    return jserror('登录错误超过'.$max_login_err_num.'次,请'.$login_interval_time.'分钟后重试');
-                }
-                $data['err_login_num'] = $err_login_num;
-                $userInfo = ZFTB('admin')->where('name', $data['name'])->where('pwd', md5('zfcms-'.$data['pwd']))->where('status', 1)->find();
-                if (!$userInfo) {
-                    save_admin_login($data['name'],$data,0);
-                    return jserror('用户名或者密码不正确 或没有权限');
-                }
-                doZfAction('sys_adminlogin_parm',['type'=>'action','data'=>$data]);
-                save_admin_login($data['name'],$data,1);
-                $admin  = $userInfo;
-                session('admin', $admin);
-                if(!session('zf_login_tap_url')){
-                    $url= url('admin/index/index');
-                }else{
-                    $url= session('zf_login_tap_url');
-                    session('zf_login_tap_url',null);
-                }
-                return jssuccess($url);
-            } catch (\Exception $e) {
-                return jserror($e->getMessage());
-            }
-            
+            return jssuccess($url);
         }else{
             return jserror('异常访问');
         }

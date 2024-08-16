@@ -35,15 +35,14 @@
                    {$web_config['login_html_notice']|raw|default=''}
                     <div class="mx-auto max-w-xs">
                         <form class="info_tj" onclick="return false;">
-                            <input class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white" type="text" name="name" placeholder="账号">
-                            <input class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5" type="password" name="pwd" placeholder="密码">
+                            {:do_action('admin_login_before_view')}
                             <button class="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none tijiao">
                                 <span class="ml-3 ">登 录</span>
                             </button>
                         </form>
                         <div style="margin: 10px 0;"  class="text-xs text-gray-600">
                             <span>其他方式登录:</span>
-                                        {:doZfAction('sys_adminlogin_other')}
+                            {:do_action('admin_login_oauth_view')}
                           </div>
                         <p class="mt-6 text-xs text-gray-600 text-center">
                             Copyright © {:date("Y",time())} <a href="http://www.zf-sys.com" target="_blank">子枫工作室</a>. All right reserved
@@ -53,7 +52,7 @@
             </div>
         </div>
         <div class="flex-1 bg-indigo-100 text-center hidden lg:flex">
-            <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat" style="background-image: url('<?php if( ZFC('webconfig.admin_login_right_pic')==''){ echo '//static.zf-sys.com/zfcms/image/dlbox.svg';}else{ echo ZFC('webconfig.admin_login_right_pic');}?>');"></div>
+            <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat" style="background-image: url('{$right_img|default=''}');"></div>
         </div>
     </div>
 </body>
