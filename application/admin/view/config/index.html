@@ -65,6 +65,7 @@
             <form class="info_tj" >
               <div class="layui-form" wid100 lay-filter="">
                 <?php if($type=='网站设置'){ ?>
+                  {:do_action('admin_config_setting_view',$form_widget,$config)}
                   <div  class="list_item" >
                     {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">ICP备案</a>','name'=>'site_icp','data'=>isset_arr_key($config,'site_icp',''),'notes'=>'','theme'=>2])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_icp") ICP</span></div>','theme'=>2])|raw}
