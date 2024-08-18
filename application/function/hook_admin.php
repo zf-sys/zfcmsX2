@@ -114,5 +114,3 @@ function admin_login_before_func_input_show()
 add_action('admin_login_before_view', 'admin_login_before_func_input_show',1);
 
 
-
-
