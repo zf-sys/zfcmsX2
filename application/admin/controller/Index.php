@@ -94,7 +94,6 @@ class Index extends Admin
             $tpl = 'index/welcome_community';
         }
         do_action('admin_welcome_after',$this);
-
         return view($tpl);
     }
 
@@ -285,15 +284,10 @@ class Index extends Admin
             $_two_pwd = session('admin_two_pwd');
             if(!$_two_pwd){
                 return jserror('session未开启');
-            }else{
-                $url = session('zadmin_two_tap_url');
-                return jssuccess('二级验证通过',$url);
             }
+            $url = session('zadmin_two_tap_url');
+            return jssuccess('二级验证通过',$url);
 
-
-            dd(1);
-            // session('admin',$admin);
-            // $this->success('设置成功');
         }
         return view();
     }
