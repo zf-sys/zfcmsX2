@@ -34,3 +34,4 @@ composer.lock
 /git/*
 /application/function/hook_demo_test.php
 /application/function/hooks_test.php
+/check.php
