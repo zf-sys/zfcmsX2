@@ -713,7 +713,8 @@ class Category extends Admin
                 doZfAction('sys_post_edit',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
-                
+                $data = apply_filters('admin_post_save',$data,'array');
+
                 deal_meta_data_edit('post',$data,'id');
                 
             }else{
@@ -784,6 +785,7 @@ class Category extends Admin
             $cid = input("cid",'');
             $data_res['meta'] = false;
             $this->assign("data_res",$data_res);
+            $content_act = 'add';
         }else{
             //编辑
             if($cj_id==''){
@@ -800,6 +802,7 @@ class Category extends Admin
             $cid = input("cid",$data_res['cid']);
             $mid = ZFTB('category')->where(['cid'=>$cid])->value('mid');
             $this->assign("act",'edit');
+            $content_act = 'edit';
         }
         $m_res =ZFTB('category_model')->field('model,is_two,is_parm,id,form_parm_static')->where(['id'=>$mid])->find();
         if($m_res['is_parm']==1){
@@ -835,6 +838,7 @@ class Category extends Admin
         #####参数模式
         $form_parm_arr = getFormParams($m_res);
         $this->assign('form_parm_arr',$form_parm_arr);
+        do_action('admin_post_after',$content_act,$data_res);
         return view($tpl);
     }
 
