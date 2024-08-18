@@ -32,3 +32,5 @@ composer.lock
 /docker/docker-compose.yml
 
 /git/*
+/application/function/hook_demo_test.php
+/application/function/hooks_test.php
