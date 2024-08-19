@@ -18,7 +18,7 @@ class Hook
     // 执行动作钩子
     public static function do_action($hook, ...$params)
     {
-        if(request()->isGet() && zf_show_hooktip()){
+        if(request()->isGet() && zf_show_hooktip() && !in_array(request()->url(),['/admin/index/get_menu.html'])){
             self::display_hook_info('action', $hook);
         }
 

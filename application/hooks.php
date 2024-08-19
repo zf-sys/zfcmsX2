@@ -63,11 +63,7 @@ function zf_assign($name, $value)
 
 function zf_show_hooktip()
 {
-//    if(session('admin')){
-        return true;
-//    }else{
-//        return false;
-//    }
+    return Env::get('app_hook_tag_show',false);
 }
 
 
