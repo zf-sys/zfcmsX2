@@ -96,7 +96,6 @@ class Index extends Admin
         do_action('admin_welcome_after',$this);
         return view($tpl);
     }
-
     /**
      * @Notes:清除数据库的垃圾箱文件
      * @Interface db_clear
@@ -153,22 +152,6 @@ class Index extends Admin
             'image'=>$admin_logo_pic ,
             'href'=>'//www.zf-sys.com/',
         ];
-        // $menu = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=','0']])->select();
-        // foreach($menu as $k=>$vo){
-        //     $menu[$k]['href'] = $site_path.'/'.$vo['value'].'?'.$vo['parm'];
-        //     $menu[$k]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vo['id']]])->select();
-        //     foreach($menu[$k]['child'] as $kk=>$vv){
-        //         $menu[$k]['href'] = '';
-        //         $menu[$k]['child'][$kk]['href'] = $site_path.'/'.$vv['value'].'?'.$vv['parm'];
-        //         $menu[$k]['child'][$kk]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vv['id']]])->select();
-        //         foreach($menu[$k]['child'][$kk]['child'] as $kkk=>$vvv){
-        //           $menu[$k]['child'][$kk]['href']='';
-        //           $menu[$k]['child'][$kk]['child'][$kkk]['href'] = $site_path.'/'.$vvv['value'].'?'.$vvv['parm'];
-        //         }
-
-        //     }
-        // }
-
         //用户权限
         $admin = session('admin');
         $role_str = db('admin_group')->where(['id'=>$admin['gid']])->value('role');
@@ -213,53 +196,7 @@ class Index extends Admin
             }
 
         }
-        
-        //插件菜单
-        $application_menu = [
-            'title'=>'插件',
-            'href'=>'',
-            'child'=>[]
-        ];
-        //顶部菜单
-        $application_menu_top = [];
-        //插件/顶部菜单
-        if(is_dir('./addons')){
-            $data = db('plugin')->where([['status','=',1],['type','=','plugin']])->select();
-            foreach ($data as $k => $vo) {
-               if($vo['plugin_name']!='.' && $vo['plugin_name']!='..' && is_dir('./addons/'.$vo['plugin_name']) && is_dir('./addons/'.$vo['plugin_name'].'/controller')){
-                    $_file = './addons/'.$vo['plugin_name'].'/controller/Plugin.php';
-                    if(file_exists($_file)){
-                       $_namespace = '\addons\\'.$vo['plugin_name'].'\controller\Plugin';
-                       if(class_exists($_namespace)){
-                            $_obj = new $_namespace;
-                            $_is_menu = method_exists($_obj,'menu');
-                            if($_is_menu){
-                                 $plugin_menu_arr = $_obj->menu();
-                                 if(is_array($plugin_menu_arr) && $plugin_menu_arr!=[]){
-                                     array_push($application_menu['child'],$plugin_menu_arr);
-                                 }
-                            }
-                            $_is_menu_top = method_exists($_obj,'menu_top');
-                            if($_is_menu_top){
-                                 $plugin_menu_top_arr = $_obj->menu_top();
-                                 if(is_array($plugin_menu_top_arr) && $plugin_menu_top_arr!=[]){
-                                     array_push($application_menu_top,$plugin_menu_top_arr);
-                                 }
-                            }
-                        }
-                    }
-               }
-            }
-        }
-        // 插件
-        array_push($menu,$application_menu);
-        $amenu = new AMenu($menu);
-        doZfAction('admin_menu_append',$amenu);
-        $ret_menu = $amenu->menu;
-        // //顶部
-        foreach($application_menu_top as $k=>$vo){
-            $ret_menu[] = $vo;
-        }
+        $ret_menu = apply_filters('admin_menu_append',$menu,'array');
         $arr['menuInfo'] = $ret_menu;
         return $arr;
     }

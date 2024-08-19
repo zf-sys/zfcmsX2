@@ -114,3 +114,25 @@ function admin_login_before_func_input_show()
 add_action('admin_login_before_view', 'admin_login_before_func_input_show',1);
 
 
+//后台菜单
+function admin_menu_append_filter($arr)
+{
+    $arr[] = [
+        'title'=>'插件',
+        'href'=>'',
+        'child'=> [
+//            [
+//                "title"=>"软件拼团购",
+//                "href"=>"",
+//                "child"=>[
+//                    [
+//                        "title"=>"软件列表",
+//                        "href"=>"/addons/zf_soft_pingo.admin/goods_list",
+//                    ],
+//                ]
+//            ]
+        ]
+    ];
+    return $arr;
+}
+add_filter('admin_menu_append','admin_menu_append_filter',9);
