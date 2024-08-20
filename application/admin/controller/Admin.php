@@ -108,10 +108,9 @@ class Admin extends Zfb
                 }else{
                 }
             }
-            
-            
-            
         }
+        do_action('admin_init');
+
 
     }
     /**
