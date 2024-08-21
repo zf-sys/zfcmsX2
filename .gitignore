@@ -7,6 +7,7 @@ composer.lock
 !/addons/.gitignore
 /theme/*
 !/theme/index/*
+!/theme/demo/*
 !/theme/install/*
 /application/common/controller/*
 !/application/common/controller/Fileupload.php
