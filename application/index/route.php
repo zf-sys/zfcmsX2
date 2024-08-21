@@ -14,6 +14,10 @@ if(isset($_SERVER['REQUEST_URI'])){
 		    $val = ZFC('zf_tpl_suffix');
 	    }
 	}
+    if($val=='-1' ){
+        $val = ZFC('zf_tpl_suffix');
+        cookie('theme',$val,300*1000);
+    }
 	$val = strtolower($val);
 	//---------------增加静态化---------------
 	$is_theme_cache = ZFC('webconfig.is_theme_cache');
@@ -39,6 +43,7 @@ if(isset($_SERVER['REQUEST_URI'])){
 		}
 	}
 	//---------------end----------------------
+
 
 	//路由
 	if($val!=''){

@@ -26,6 +26,9 @@ class Index extends Base
         $this->zf_tpl_suffix = cookie('theme') ?: $this->zf_tpl_suffix;
         $this->zf_tpl_suffix = strtolower($this->zf_tpl_suffix);
     }
+    public function index(){
+        echo '请安装模板';
+    }
 
     public function hook(){
         $theme_name = $this->zf_tpl_suffix;
