@@ -120,7 +120,7 @@ add_filter('admin_menu_append','admin_menu_append_filter',9);
 
 
 //后台的内容
-add_action('admin_field_append_view_',function ($hook_data,$form_widget){
+add_action('admin_field_append_view_left',function ($hook_data,$form_widget){
 //    $hook_db,$hook_id,$hook_type,$hook_data
         $html = '<div class="layui-card">';
         $html .= $form_widget->form_input(['title'=>'SEO(标题)','name'=>'meta[seo_t]','data'=>isset_arr_key($hook_data[3]['meta'],'seo_t',''),'theme'=>1]);
@@ -129,3 +129,6 @@ add_action('admin_field_append_view_',function ($hook_data,$form_widget){
         $html .= '</div>';
         echo $html;
 });
+
+
+
