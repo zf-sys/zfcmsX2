@@ -465,52 +465,7 @@ class Zfyun extends Admin
 	}
 
    
-    /**
-     * 20231109新增
-     * ai写内容
-     */
-    public function ai_write(){
-        if(!$this->is_professional_edition){
-            return ZFRetMsg(false,'','yun.php文件不存在,不支持此功能');
-        }
-        $t = input('ai_w_type','');
-        $data = input('post.');
-        if($t=='tdk'){
-            $sys_message = '通过下面提供的内容写网页的标题、关键词、描述,让搜索引擎更好的收录你的网站,给出的内容使用@@@间隔,例如: 标题@@@关键词@@@描述';
-            $old_content = html_out_par($data['content'],1000);
-            $_data = $this->zfyun_openai($old_content,$sys_message);
-            if($_data['code']==0){
-                return ZFRetMsg(false,'',$_data['msg']);
-            }
-            $_ret_data_arr = explode("@@@",$_data['msg']);
-            if(isset($_ret_data_arr[2])){
-                $ret_data['title'] = $_ret_data_arr[0];
-                $ret_data['keywords'] = $_ret_data_arr[1];
-                $ret_data['desc'] = $_ret_data_arr[2];
-                echo json_encode(array("msg" => '获取成功,请查看是否匹配', "data" => $ret_data, "result" => '1'));exit; 
-            }else{
-                return ZFRetMsg(false,'','获取数据错误,请查看提示词是否正确或稍后再试:内容如下,你可以复制到对应位置:<br>'.$_data['msg']);
-            }
-        }elseif($t=='xuxie_content'){
-            $sys_message = '通过下面提供的标题续写一段内容,让搜索引擎更好的收录你的网站,并对文章进行润色';
-            if(isset($data['title'])){
-                $old_content = html_out_par($data['title'],1000);
-            }elseif(isset($data['name'])){
-                $old_content = html_out_par($data['name'],1000);
-            }else{
-                return ZFRetMsg(false,'','页面input不存在name或title');
-            }
-            $_data = $this->zfyun_openai($old_content,$sys_message);
-            if($_data['code']==0){
-                return ZFRetMsg(false,'',$_data['msg']);
-            }
-            $ret_data['content'] = $_data['msg'];
-            echo json_encode(array("msg" => '获取成功,请查看是否匹配', "data" => $ret_data, "result" => '1'));exit; 
-            
-        }else{
-            return jserror('该类型不存在');
-        }
-    }
+
 
     
 }

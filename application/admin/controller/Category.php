@@ -300,8 +300,8 @@ class Category extends Admin
             }
         }
         $this->assign('theme_arr',$theme_arr);
-        
 
+        $this->assign('hook_data',['category',$res['cid'],'edit',$res]);
         return view();
     }
 
@@ -495,6 +495,7 @@ class Category extends Admin
                 }
             }
             $this->assign('theme_arr',$theme_arr);
+            $this->assign('hook_data',['post',$cid,'edit',$res]);
 
             return view('/category/category_edit');
         }else{
@@ -839,6 +840,7 @@ class Category extends Admin
         $form_parm_arr = getFormParams($m_res);
         $this->assign('form_parm_arr',$form_parm_arr);
         do_action('admin_post_after',$content_act,$data_res);
+        $this->assign('hook_data',['post',$id,$content_act,$data_res]);
         return view($tpl);
     }
 
@@ -1137,6 +1139,7 @@ class Category extends Admin
         #####参数模式
         $form_parm_arr = getFormParams($res);
         $this->assign('form_parm_arr',$form_parm_arr);
+        $this->assign('hook_data',['special','','add',$res]);
         return view();   
 
          
@@ -1174,6 +1177,7 @@ class Category extends Admin
         #####参数模式
         $form_parm_arr = getFormParams($res);
         $this->assign('form_parm_arr',$form_parm_arr);
+        $this->assign('hook_data',['special','','edit',$res]);
         return view('/category/special_add');
     }
     public function special_post_edit()
@@ -1267,6 +1271,7 @@ class Category extends Admin
         #####参数模式
         $form_parm_arr = getFormParams($res);
         $this->assign('form_parm_arr',$form_parm_arr);
+        $this->assign('hook_data',['tag','','add',$res]);
         return view();   
 
          
@@ -1304,6 +1309,7 @@ class Category extends Admin
         #####参数模式
         $form_parm_arr = getFormParams($res);
         $this->assign('form_parm_arr',$form_parm_arr);
+        $this->assign('hook_data',['tag','','edit',$res]);
         return view('/category/tag_add');
     }
 
