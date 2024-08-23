@@ -2237,6 +2237,10 @@ if(!function_exists('deal_meta_data_add')){
             if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1]])->find()){
                 return ZFRetMsg(false,'','自定义URL已存在,请换个链接');
             }
+            //判断是否字符中有空格
+            if(strpos($data['meta']['diy_url'], ' ') !== false){
+                return ZFRetMsg(false, '', '自定义URL不能包含空格');
+            }
         }
         Db::startTrans();
         try {
@@ -2289,6 +2293,10 @@ if(!function_exists('deal_meta_data_edit')){
         if(isset($data['meta']['diy_url'])){
             if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1],['post_id','<>',$data[$field_id]]])->find()){
                 return ZFRetMsg(false,'','自定义URL已存在,请换个链接');
+            }
+            //判断是否字符中有空格
+            if(strpos($data['meta']['diy_url'], ' ') !== false){
+                return ZFRetMsg(false, '', '自定义URL不能包含空格');
             }
         }
         Db::startTrans();
@@ -2422,7 +2430,8 @@ EOL;
  * $this->assign('seo', seo_tpl('post',['id'=>$content['id'],'t'=>$content['title'],'k'=>$content['title'],'d'=>$content['summary']]));  //文章详情
  */
 if(!function_exists('seo_tpl')){
-    function seo_tpl($tb='',$content=['id'=>"",'t'=>'','d'=>'','k'=>''],$lang=''){
+    function seo_tpl($tb='',$content=['id'=>"",'t'=>'','d'=>'','k'=>'']){
+        $lang = ZLANG;
         $title = isset_arr_key($content,'t','');
         $description = isset_arr_key($content,'d','');
         $keywords = isset_arr_key($content,'k','');
@@ -2703,6 +2712,43 @@ function test_performance($func, ...$params) {
     return $end_time - $start_time;
 }
 
+
+/**
+ * @param $seo
+ * @return void
+ * 20240821
+ * 输出首页tdk
+ */
+if(!function_exists('index_tdk')){
+   function index_tdk($seo){
+        $html = '<title>'.$seo['title'].'</title>';
+        $html.= '<meta name="keywords" content="'.$seo['keywords'].'" />';
+        $html.= '<meta name="description" content="'.$seo['description'].'" />';
+        echo $html;
+    }
+}
+if(!function_exists('the_link')){
+    function the_link($type,$vo){
+        $lang = ZLANG;
+        if(isset($vo['url']) && $vo['url']!=''){
+            return $vo['url'];
+        }elseif($type=='category'){
+            if($lang==''){
+                return '/cate/'.$vo['cid'].'.html';
+            }else{
+                return '/'.$lang.'/cate/'.$vo['cid'].'.html';
+            }
+        }elseif($type=='post'){
+            if($lang==''){
+                return '/detail/'.$vo['id'].'.html';
+            }else{
+                return '/'.$lang.'/detail/'.$vo['id'].'.html';
+            }
+        }
+        return '';
+    }
+
+}
 /**
  * 20240634新增
  * 默认值(共多语言使用)
