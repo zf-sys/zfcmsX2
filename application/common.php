@@ -2241,6 +2241,10 @@ if(!function_exists('deal_meta_data_add')){
             if(strpos($data['meta']['diy_url'], ' ') !== false){
                 return ZFRetMsg(false, '', '自定义URL不能包含空格');
             }
+            //首字符不能为/,不能包含.
+            if(strpos($data['meta']['diy_url'], '/') === 0 || strpos($data['meta']['diy_url'], '.') !== false){
+                return ZFRetMsg(false, '', '自定义URL不能以/开头,不能包含.号');
+            }
         }
         Db::startTrans();
         try {
@@ -2297,6 +2301,10 @@ if(!function_exists('deal_meta_data_edit')){
             //判断是否字符中有空格
             if(strpos($data['meta']['diy_url'], ' ') !== false){
                 return ZFRetMsg(false, '', '自定义URL不能包含空格');
+            }
+            //首字符不能为/,不能包含.
+            if(strpos($data['meta']['diy_url'], '/') === 0 || strpos($data['meta']['diy_url'], '.') !== false){
+                return ZFRetMsg(false, '', '自定义URL不能以/开头,不能包含.号');
             }
         }
         Db::startTrans();
