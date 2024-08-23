@@ -88,6 +88,7 @@
                 <th>模型</th>
                 <th>排序</th>
                 <th>状态</th>
+                <th>菜单</th>
                 <th>操作</th>
               </tr> 
             </thead>
@@ -111,6 +112,11 @@
                   <td>
                     <div class=" layui-form" lay-filter="component-form-element">        
                        <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['cid']}">
+                    </div>
+                  </td>
+                  <td>
+                    <div class=" layui-form" lay-filter="component-form-element">
+                      <input type="checkbox" name="menu" <?php echo $vo['menu']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="menu_change" item="{$vo['cid']}">
                     </div>
                   </td>
                   <td>
