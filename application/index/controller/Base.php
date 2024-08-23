@@ -14,6 +14,7 @@ use app\common\controller\Base as Zfb;
 use think\Controller;
 use think\facade\Request;
 use think\Db;
+use Wmc1125\TpFast\Category as cat;
 
 class Base extends Zfb
 {
@@ -145,7 +146,70 @@ class Base extends Zfb
         $seo['description'] = isset_arr_key($web_config,'site_description','');
         $this->assign('seo', $seo);
         if(!$this->lang){ $this->lang = ''; }
+        // 定义全局变量zlng
+        define('ZLANG', $this->lang);
+
+        $top_cid_now['cid'] = 0;
+        $this->assign('top_cid_now',$top_cid_now);
+        $this->assign('page','');
     }
+
+
+
+    //返回当前最顶层栏目
+    protected function get_top_category($cid = 0,$field = 'cid,pid,name,cname,icon,tpl_category,tpl_post,mid,sort,menu') {
+        $where = [
+            'status'=>1,
+            'lang'=>ZLANG,
+        ];
+        $data = Db::name('category')->field($field)->where($where)->order("sort asc,cid asc")->select();
+        $cat = new cat(array('cid', 'pid', 'name', 'cname')); //初始化无限分类
+        $list = $cat->getPath($data, $cid); //获取分类数据树结构
+        if(isset($list[0])){
+            return $list[0];
+        }else{
+            return [];
+        }
+    }
+    //当前位置导航   <img src="aaaa你好.png" />
+    protected function get_path($cid = 0, $space = '>', $field = 'cid,pid,name,cname,icon,tpl_category,tpl_post,mid,sort,menu') {
+        //查询分类信息
+        $where = [
+            'status'=>1,
+            'lang'=>ZLANG,
+        ];
+        $data = Db::name('category')->field($field)->where($where)->order("sort asc,cid asc")->select();
+        $cat = new cat(array('cid', 'pid', 'name', 'cname')); //初始化无限分类
+        $list = $cat->getPath($data, $cid); //获取分类数据树结构
+        $path = '';
+        $url_str = '/';
+        if(ZLANG!=''){
+            $url_str = '/' . ZLANG . '/';
+        }
+        if (is_array($list)) {
+            foreach ($list as $vo) {
+                $path .= $space . ' <a href="'. $url_str . 'cate/' . $vo['cid'] . '.html">' . $vo['name'] . '</a> ';
+            }
+        }
+        return $path;
+    }
+    //子栏目所有CID
+    protected function get_child_id($pid = 0, $condition = '1=1', $field = 'cid,pid,name') {
+        //查询分类信息
+        $data = Db::name('category')->field($field)->where($condition)->order("sort asc,cid asc")->select();
+        $cat = new cat(array('cid', 'pid', 'name', 'cname')); //初始化无限分类
+        $child_array = $cat->getTree($data, $pid);//获取分类数据树结构
+        if(is_array($child_array) && !empty($child_array)){
+            $child_cid[] = $pid;
+            foreach($child_array as $vo){
+                $child_cid[] = $vo['cid'];
+            }
+        }else{
+            return $pid;
+        }
+        return implode(',', $child_cid);//获取所有子分类cid字符串
+    }
+
 
 }
 function convertUnderline( $str , $ucfirst = true)
