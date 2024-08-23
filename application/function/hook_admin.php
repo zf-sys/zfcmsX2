@@ -13,10 +13,7 @@ function admin_login_before_func_initsql($ti)
 }
 add_action('admin_login_before', 'admin_login_before_func_initsql',9999);
 
-//测试匿名函数
-add_action('admin_login_before',function (){
-    echo '--';
-});
+
 function admin_login_before_func_right_pic($ti)
 {
     $right_img = 'http://bbs.zf-sys.com/upload/common/filesystem/fp/20231105/b89ee6e4cbdf9e7288b291fffd9d95e0.png';
