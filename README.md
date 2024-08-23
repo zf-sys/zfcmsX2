@@ -49,7 +49,10 @@ Github: https://github.com/zf-sys/zfcmsX2
 
 Gitee:https://gitee.com/zf-sys/zfcmsX2
 
-反馈地址: https://bbs.zf-sys.com
+反馈地址: 
+
+https://bbs.jianshe2.com/forum.php?mod=forumdisplay&fid=5
+
 
 
 支持子枫CMS的用户请给我们一个star _
