@@ -50,12 +50,12 @@
                   <td>{$vo['name']}</td>
                   <td>{$vo['plugin_name']}</td>
                   <td>
-                    {$vo['version']}
+                    {$vo['version']|default=''}
                     <?php if(isset($vo['soft_key'])){ ?>
-                    <img src="{$api_domain}/addons/zf_store_softclientv2.api/get_new_version?site={$client_config['site']}&token=11&soft_id={$vo['soft_id']}&ver={$vo['version']}&soft_key={$vo['soft_key']}" />
+                    <img src="{$api_domain}/addons/zf_store_softclientv2.api/get_new_version?site={$client_config['site']}&token=11&soft_id={$vo['soft_id']}&ver={$vo['version']|default=''}&soft_key={$vo['soft_key']}" />
                     <?php } ?>
                   </td>
-                  <td>{$vo['path']}</td>
+                  <td>{$vo['path']|default=''}</td>
                   <td style="text-align: center;">
                     <img src="{$vo['pic']}" style="height: 50px;" /> 
                   </td>
