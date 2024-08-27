@@ -2735,27 +2735,46 @@ if(!function_exists('index_tdk')){
         echo $html;
     }
 }
-if(!function_exists('the_link')){
-    function the_link($type,$vo){
+if (!function_exists('the_link')) {
+    function the_link($type, $vo) {
+        static $metaCache = [];
+        static $linkCache = [];
+
         $lang = ZLANG;
-        if(isset($vo['url']) && $vo['url']!=''){
-            return $vo['url'];
-        }elseif($type=='category'){
-            if($lang==''){
-                return '/cate/'.$vo['cid'].'.html';
-            }else{
-                return '/'.$lang.'/cate/'.$vo['cid'].'.html';
-            }
-        }elseif($type=='post'){
-            if($lang==''){
-                return '/detail/'.$vo['id'].'.html';
-            }else{
-                return '/'.$lang.'/detail/'.$vo['id'].'.html';
+        $id = isset($vo['id']) ? $vo['id'] : (isset($vo['cid']) ? $vo['cid'] : null);
+
+        if ($id === null) {
+            return '';
+        }
+        $cacheKey = $type . '_' . $id . '_' . $lang;
+
+        if (isset($linkCache[$cacheKey])) {
+            return $linkCache[$cacheKey];
+        }
+
+        if (!isset($metaCache[$type])) {
+            $metaCache[$type] = db('meta_data')
+                ->where(['tb' => $type, 'status' => 1, 'lang' => $lang])
+                ->column('diy_url', 'post_id');
+        }
+
+        if (isset($metaCache[$type][$id]) && $metaCache[$type][$id] !== '') {
+            $link = '/' . $metaCache[$type][$id];
+        } elseif (isset($vo['url']) && $vo['url'] !== '') {
+            $link = $vo['url'];
+        } else {
+            if ($type == 'category') {
+                $link = ($lang ? '/' . $lang : '') . '/cate/' . $id . '.html';
+            } elseif ($type == 'post') {
+                $link = ($lang ? '/' . $lang : '') . '/detail/' . $id . '.html';
+            } else {
+                $link = '';
             }
         }
-        return '';
-    }
 
+        $linkCache[$cacheKey] = $link;
+        return $link;
+    }
 }
 /**
  * 20240634新增
