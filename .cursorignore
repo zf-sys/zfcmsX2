@@ -1,0 +1,17 @@
+# Ignore all files in the `dist` directory
+addons/
+cache/
+backup/
+upgrade_box/
+Upload/
+runtime/
+
+# Ignore all `.log` files
+*.log
+*.lock
+*.css
+*.js
+
+
+# Ignore specific file `config.json`
+# config.json
