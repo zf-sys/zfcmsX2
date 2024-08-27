@@ -136,7 +136,7 @@ class Upload extends Controller{
         $water_res = $this->_water_act($file->getInfo());
         if($water_res['code']==1){
           $url = $water_res['msg'];
-          $this->save_upload_info($file,$url);die;
+          $this->save_upload_info($file,$url, input('cid',0));die;
         }
         $name_temp = $this->auto_get_filename($file,$dir='upload/common/image');
         if($this->upload_type!=''){
@@ -151,7 +151,7 @@ class Upload extends Controller{
           $url = $this->_add_domain_prefix($this->site_path.$name_temp['dir_name'].'/'.$getSaveName);
           
         }
-        $this->save_upload_info($file,$url);
+        $this->save_upload_info($file,$url, input('cid',0));
       }catch (Exception $e) {
         @save_exception('upload','上传异常',['type'=>'upload_one','content'=>['data'=>$e->getMessage()]]);
         return jserror($e->getMessage());
@@ -202,7 +202,7 @@ class Upload extends Controller{
         $water_res = $this->_water_act($file->getInfo());
         if($water_res['code']==1){
           $url = $water_res['msg'];
-          $this->save_upload_info($file,$url);die;
+          $this->save_upload_info($file,$url, input('cid',0));die;
         }
         $name_temp = $this->auto_get_filename($file,$dir='upload/common/file');
         if($this->upload_type!=''){
@@ -217,7 +217,7 @@ class Upload extends Controller{
           $url = $this->_add_domain_prefix($this->site_path.$name_temp['dir_name'].'/'.$getSaveName);
         }
         //保存上传数据
-        $this->save_upload_info($file,$url);
+        $this->save_upload_info($file,$url, input('cid',0));
       }catch (Exception $e) {
         @save_exception('upload','上传异常',['type'=>'upload_one_file','content'=>['data'=>$e->getMessage()]]);
         return jserror($e->getMessage());
@@ -233,7 +233,7 @@ class Upload extends Controller{
         $water_res = $this->_water_act($file->getInfo());
         if($water_res['code']==1){
           $url = $water_res['msg'];
-          $this->save_upload_info($file,$url);die;
+          $this->save_upload_info($file,$url, input('cid',0));die;
         }
         $name_temp = $this->auto_get_filename($file,$dir='upload/common/mfile');
         if($this->upload_type!=''){
@@ -307,7 +307,7 @@ class Upload extends Controller{
         $water_res = $this->_water_act($file->getInfo());
         if($water_res['code']==1){
           $url = $water_res['msg'];
-          $this->save_upload_info($file,$url);die;
+          $this->save_upload_info($file,$url, input('cid',0));die;
         }
         $name_temp = $this->auto_get_filename($file,$dir='upload/common/filesystem/file');
         if($this->upload_type!=''){
@@ -479,6 +479,7 @@ class Upload extends Controller{
         }
         $save_data['url'] = $url;
         $save_data['ctime'] = time();
+        $save_data['cid'] = $cid;
         $save_data['ip'] = request()->ip();
         $save_data['status'] = 1;
         $save_data['uniacid'] = session('uniacid');
@@ -494,7 +495,7 @@ class Upload extends Controller{
         }else{
             $save_data['uid'] = '非登录上传';
         }
-        $save_data['cid'] = '';
+//        $save_data['cid'] = '';
         $res = Db::name('upload')->insertGetId($save_data);
         if($res){
           if(is_file('./extend/zf/Yun.php') && isset($this->is_file_dlj) && $this->is_file_dlj==1 ){

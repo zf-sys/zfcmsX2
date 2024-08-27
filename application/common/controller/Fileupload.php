@@ -134,6 +134,12 @@ class Fileupload extends Controller
             return jserror("文件移动失败");
         }
     }
+    //cropImage
+    public function cropimage(){
+        $cid = input('cid','0');
+        $this->assign('cid',$cid);
+        return view();
+    }
 
 
 

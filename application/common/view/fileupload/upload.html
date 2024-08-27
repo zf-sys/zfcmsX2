@@ -3,16 +3,18 @@
 <head>
   <meta charset="utf-8">
   <title>上传面板</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   {:widget_st('layui','css')}
   {:widget_st('admin','css')}
   {:widget_st('jq','js')}
   {:widget_st('layer','js')}  
   {:widget_st('layui','js')}  
   {:widget_st('common','js')} 
-  {:widget_st('fcup')} 
+  {:widget_st('fcup')}
+
+  <!-- 在 <head> 标签内添加 Cropper.js 的 CSS 和 JS 文件 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.min.js"></script>
 
 </head>
 <style type="text/css">
@@ -54,120 +56,146 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
   .select_item_pic{
     width: 20px;
   }
+
+  /* 添加响应式样式 */
+  @media screen and (max-width: 768px) {
+    .layui-col-md3, .layui-col-md9 {
+      width: 100%;
+    }
+    
+    .layui-card {
+      margin-bottom: 15px;
+    }
+    
+    .layui-col-md2 {
+      width: 50%;
+    }
+    
+    .click_item {
+      height: 150px;
+    }
+    
+    .zf_item_pic {
+      max-width: 90%;
+      max-height: 90%;
+    }
+  }
 </style>
 <?php $name = input('name',''); ?>
 <body style="background-color: #fff">
-  <div class="layui-row">
-    <div class="layui-col-md3 layui-col-xs12 layui-col-sm3 ">
-      <div class="layui-card">
-        <!-- <div class="layui-card-header">分组</div> -->
-        <div class="layui-card-body">
-          <form onclick="return false;" class="info_tj">
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md3 layui-col-xs12 layui-col-sm12">
+        <div class="layui-card">
+          <!-- <div class="layui-card-header">分组</div> -->
+          <div class="layui-card-body">
+            <form onclick="return false;" class="info_tj">
 
-            <div class="layui-input-black">
-              <input type="text" name="name" placeholder="请输入分组名称" autocomplete="off" class="layui-input">
-              <button class="layui-btn layui-btn-xs layui-btn-sm" onclick="tijiao_data('/common/Fileupload/cate_add',0)"  >新增分组</button>
-            </div>
-          </form>
-          <!-- <div class="layui-col-md12"> -->
-            <div class="layui-card-body" style="<?php if(count($cate_list)>=10){ echo 'height: 500px; '; }?>overflow-y: auto;overflow-x: hidden; width:auto;">
-              <table class="layui-table">
-                  <colgroup>
-                    <col width="60">
-                    <col width="60">
-                    <col>
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>名称</th>
-                      <th>操作
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid=0&zf_class={$zf_class}&name={$name}">查看全部</a>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php foreach($cate_list as $k=>$vo){ ?>
-                    <tr class="{$cid==$vo['id']?'cate_tr_cur':''}">
-                      <th class="click_cate_name" rel="{$vo['id']}" rel2="{$vo['name']}">
-                        {$vo['name']}
-                      </th>
-                      <th>
-                        <a class="ajax_cate_del" item="{$vo['id']}">删除</a> 
-                        <a href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid={$vo['id']}&zf_class={$zf_class}&name={$name}" >查看</a>
-                      </th>
-                    </tr>
-                    <?php } ?>
-                  </tbody>
-              </table>
-            </div>
-          <!-- </div> -->
-
-        </div>
-      </div>
-    </div>
-    <div class="layui-col-md9 layui-col-xs12 layui-col-sm9">
-      <div class="layui-card">
-        <!-- <div class="layui-card-header">列表</div> -->
-        <div class="layui-card-body">
-            <blockquote class="layui-elem-quote" style="padding:5px;">
-              <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary " id="up_file">上传</a>
-              <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary "  id="upid_fp">大文件上传(本地)</button> 
-
-              <a href="javascript:;" class="layui-btn layui-btn-xs ajax_file_move">移动</a>
-              <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-normal ajax_file_del">删除</a>
-              <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
-            </blockquote> 
-            <div class="upload_loading" style="display:none">
-              <progress id="myProgress" value="0" max="100"></progress> <span id="mySpan">0%</span>
-            </div>
-            <div class="layui-row" style="border: 1px solid #ccc;">
-                当前已选择:    
-                <div class="select_item">
-                  <!-- <img class="select_item_pic select_item_id" title="" src="http://oss002.wangmingchang.com/oss001/box/media/text.png"  > -->
-                </div>          
-            </div>
-            <br>
-            <div class="layui-row">
-              <form class="zf_clickdata_list">
-                <?php foreach($pic_list as $k=>$vo){ ?>
-                <div class="layui-col-md2 layui-col-xs6 layui-col-sm3 " >
-                  <div class="click_item" url="{$vo['url']}" _id="{$vo['id']}" _name="{$vo['name']}" >
-                    <?php if($vo['type']=='文本'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/text.png"  >
-                    <?php }elseif($vo['type']=='压缩'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/archive.png" >
-                    <?php }elseif($vo['type']=='图片'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="{$vo['thumb']==''?$vo['url']:$vo['thumb']}" >
-                    <?php }elseif($vo['type']=='视频'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/interactive.png" >
-                    <?php }elseif($vo['type']=='音频'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/audio.png" >
-                    <?php }elseif($vo['type']=='其他'){ ?>
-                      <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/default.png" >
-                    <?php } ?>
-                    <tt class="tt pic_tt">{$vo['name']}</tt>
-                    <span class="loading" ></span>
-                    <input type="hidden" name="files[]" value="">
-                    <input type="hidden" name="ids[]" value="">
-                    <!-- <input type="hidden" name="checked[]" value="0"> -->
-                  </div>
-                </div>             
-                <?php } ?>
-                <?php if(count($pic_list)< 1){ ?>
-                  <div style="text-align: center;height: 500px;line-height: 500px;">
-                    暂无数据
-                  </div>
-                <?php } ?>
-              </form>
-            </div>
-          <div id="zf_page">
-            {$page|raw}
+              <div class="layui-input-black">
+                <input type="text" name="name" placeholder="请输入分组名称" autocomplete="off" class="layui-input">
+                <button class="layui-btn layui-btn-xs layui-btn-sm" onclick="tijiao_data('/common/Fileupload/cate_add',0)"  >新增分组</button>
+              </div>
+            </form>
+            <!-- <div class="layui-col-md12"> -->
+              <div class="layui-card-body" style="<?php if(count($cate_list)>=10){ echo 'height: 500px; '; }?>overflow-y: auto;overflow-x: hidden; width:auto;">
+                <table class="layui-table">
+                    <colgroup>
+                      <col width="60">
+                      <col width="60">
+                      <col>
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>名称</th>
+                        <th>操作
+                          <a class="layui-btn layui-btn-danger layui-btn-xs" href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid=0&zf_class={$zf_class}&name={$name}">查看全部</a>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach($cate_list as $k=>$vo){ ?>
+                      <tr class="{$cid==$vo['id']?'cate_tr_cur':''}">
+                        <th class="click_cate_name" rel="{$vo['id']}" rel2="{$vo['name']}">
+                          {$vo['name']}
+                        </th>
+                        <th>
+                          <a class="ajax_cate_del" item="{$vo['id']}">删除</a> 
+                          <a href="{:siteUrl('common/Fileupload/upload')}?t={$t}&cid={$vo['id']}&zf_class={$zf_class}&name={$name}" >查看</a>
+                        </th>
+                      </tr>
+                      <?php } ?>
+                    </tbody>
+                </table>
+              </div>
+            <!-- </div> -->
           </div>
-
         </div>
       </div>
+      <div class="layui-col-md9 layui-col-xs12 layui-col-sm12">
+        <div class="layui-card">
+          <!-- <div class="layui-card-header">列表</div> -->
+          <div class="layui-card-body">
+              <blockquote class="layui-elem-quote" style="padding:5px;">
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary " id="up_file">上传</a>
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary " id="up_file_crop">上传图片(可裁剪)</a>
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary "  id="upid_fp">大文件上传(本地)</button> 
+
+                <a href="javascript:;" class="layui-btn layui-btn-xs ajax_file_move">移动</a>
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-normal ajax_file_del">删除</a>
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
+              </blockquote> 
+              <div class="upload_loading" style="display:none">
+                <progress id="myProgress" value="0" max="100"></progress> <span id="mySpan">0%</span>
+              </div>
+              <div class="layui-row" style="border: 1px solid #ccc;">
+                  当前已选择:    
+                  <div class="select_item">
+                    <!-- <img class="select_item_pic select_item_id" title="" src="http://oss002.wangmingchang.com/oss001/box/media/text.png"  > -->
+                  </div>          
+              </div>
+              <br>
+              <div class="layui-row">
+                <form class="zf_clickdata_list">
+                  <?php foreach($pic_list as $k=>$vo){ ?>
+                  <div class="layui-col-md2 layui-col-xs6 layui-col-sm3 " >
+                    <div class="click_item" url="{$vo['url']}" _id="{$vo['id']}" _name="{$vo['name']}" >
+                      <?php if($vo['type']=='文本'){ ?>
+                        <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/text.png"  >
+                      <?php }elseif($vo['type']=='压缩'){ ?>
+                        <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/archive.png" >
+                      <?php }elseif($vo['type']=='图片'){ ?>
+                        <img class="zf_item_pic" lazyLoadSrc="{$vo['thumb']==''?$vo['url']:$vo['thumb']}" >
+                      <?php }elseif($vo['type']=='视频'){ ?>
+                        <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/interactive.png" >
+                      <?php }elseif($vo['type']=='音频'){ ?>
+                        <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/audio.png" >
+                      <?php }elseif($vo['type']=='其他'){ ?>
+                        <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/default.png" >
+                      <?php } ?>
+                      <tt class="tt pic_tt">{$vo['name']}</tt>
+                      <span class="loading" ></span>
+                      <input type="hidden" name="files[]" value="">
+                      <input type="hidden" name="ids[]" value="">
+                      <!-- <input type="hidden" name="checked[]" value="0"> -->
+                    </div>
+                  </div>             
+                  <?php } ?>
+                  <?php if(count($pic_list)< 1){ ?>
+                    <div style="text-align: center;height: 500px;line-height: 500px;">
+                      暂无数据
+                    </div>
+                  <?php } ?>
+                </form>
+              </div>
+            <div id="zf_page">
+              {$page|raw}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
     </div>
-    
   </div>
 
 
@@ -193,583 +221,601 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
     </form>
   </div>
 
-<script> 
-  var index = parent.layer.getFrameIndex(window.name); 
-$('.click_item').on('click',function(){
-  if($(this).css('border')=='1px solid rgb(255, 0, 0)'){
-    $(this).css('border','0px none rgb(102, 102, 102)');
-    $(this).children('input').eq(0).val('')
-    $(this).children('input').eq(1).val('')
-    //add
-    $('.select_item').find('.select_item_'+$(this).attr('_id')).remove()
-
-  }else{
-    $(this).css('border','1px solid red');
-    $(this).css('border','1px solid red');
-    $(this).children('input').eq(0).val($(this).attr('url'))
-    $(this).children('input').eq(1).val($(this).attr('_id'))
-    //add
-    $('.select_item').append('<div class="select_item_div select_item_'+$(this).attr('_id')+'"><img class="select_item_pic" title="'+$(this).attr('_name')+'" src="'+$(this).attr('url')+'"  > <input type="hidden" name="files[]" value="'+$(this).attr('url')+'"  /></div>')
-
-  }
-  var url = $(this).children('input').eq(0).val()
-  var ids = $(this).children('input').eq(1).val()
-  // var checked = $(this).children('input').eq(2).val()
-})
-// 选中
-$('.zf_xz_click').on('click',function(){
-  // var data = $(".zf_clickdata_list input").serializeArray();   
-  // var data = $(".zf_clickdata_list input[name='files[]']").serializeArray();   
-  var data = $(".select_item input").serializeArray();
-  var html = ''
-  var src = ''
-  var num = 0;
-  <?php if($t=='ueditor'){ ?>
-    for (var i = 0; i <= data.length - 1; i++) {
-      if(data[i].value!=''){
-        html+=' <img src="'+ data[i].value +'" alt="" style="width:600px"   /><br/> '
-      }
-    }
-    parent.$("{$zf_class}").html(html)
-  <?php }elseif($t==2){ ?>
-   for (var i = 0; i <= data.length - 1; i++) {
-      if(data[i].value!=''){
-        html+='<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'+ data[i].value +'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" ></div> '
-        html+='<input type="hidden" name="zf_list_{$name}" value="'+ data[i].value +'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span></div>'
-      }
-    }
-    parent.$("{$zf_class}").append(html)
-  <?php }elseif($t==1){ ?>
-   for (var i = 0; i <= data.length - 1; i++) {
-      if(data[i].value!=''){
-        num++
-        if(num>1){
-          parent.layer.msg('当前只能选择一个', {shade: 0.3})
-          return 
-        }
-        src = data[i].value
-      }
-    }
-    parent.$("{$zf_class}").val(src)
-    parent.$("{$zf_class}").attr('src',src)
-  <?php }elseif($t==3){ ?>
-   for (var i = 0; i <= data.length - 1; i++) {
-      if(data[i].value!=''){
-        src = data[i].value
-      }
-      if(num>1){
-          parent.layer.msg('当前只能选择一个', {shade: 0.3})
-          return 
-        }
-    }
-    parent.$("{$zf_class}").val(src)
-  <?php }elseif($t=='return_url'){ ?>
-    for (var i = 0; i <= data.length - 1; i++) {
-      if(data[i].value!=''){
-        num++
-        if(num>1){
-          parent.layer.msg('当前只能选择一个', {shade: 0.3})
-          return 
-        }
-        src = data[i].value
-      }
-    }
-    // parent.$("{$zf_class}").val(src)
-    // parent.$("{$zf_class}").attr('src',src)
-    window.parent.selectedPicInfo = src;
-    // 关闭弹窗
-    window.parent.layer.closeAll();
-  
-  <?php } ?>
-
-
-  parent.layer.close(index);
-
-})
-
-
-layui.use([ 'table','element','laypage','upload','form'], function(){
-  var $ = layui.$
-  ,form = layui.form
-  ,element = layui.element
-  ,laypage = layui.laypage
-  ,upload = layui.upload
-  ,table = layui.table;
+  <!-- 在 body 中添加裁剪模态框 -->
+  <div id="cropModal" style="display: none;">
+    <div style="max-width: 500px; margin: 20px auto;">
+      <img id="cropImage" src="" alt="待裁剪图片" style="max-width: 100%;">
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+      <button id="rotateLeft">向左旋转</button>
+      <button id="rotateRight">向右旋转</button>
+      <button id="cropConfirm">确认裁剪</button>
+      <button id="cropCancel">取消</button>
+    </div>
+  </div>
 
 
 
-  upload.render({
-      elem: '#up_file'
-      ,url: "{:siteUrl('common/upload/upload_one_filesystem')}?cid={$cid}"
-      ,accept: 'file' 
-      ,multiple: true
-      ,before:function(res){
-        layer.load();
-      }
-      ,done: function(res){
-        layer.closeAll('loading');
-        if(res.result==1){
-            layer.msg('上传成功', {icon: 1});
-            setTimeout(function(){
-              window.location.reload()
-            },2000);
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      }
-    });
 
-  $('.ajax_cate_del').on('click',function() {
-    var id = $(this).attr('item')
-    layer.confirm('确定删除？', {
-      btn: ['删除','取消'] 
-    }, function(){
-      $.get("{:siteUrl('common/Fileupload/cate_del')}",{id:id},function(res){
-        if(res.result==1){
-          layer.msg(res.msg, {icon: 1});
-          setTimeout(function() {
-              window.location.reload();
-          }, 2000);
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      },"json");
-    });
-  });
-  $('.ajax_file_del').on('click',function() {
-    var id = $(this).attr('item')
-    var data = $(".zf_clickdata_list input").serialize();      
-    layer.confirm('文件删除无法恢复,确认删除？', {
-      btn: ['删除','取消'] 
-    }, function(){
-      $.post("{:siteUrl('common/Fileupload/file_del')}",data,function(res){
-        if(res.result==1){
-          layer.msg(res.msg, {icon: 1});
-          setTimeout(function() {
-              window.location.reload();
-          }, 2000);
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      },"json");
-    });
-  });
-  $('.ajax_file_move').on('click',function(){
-    layer.open({
-      type: 1,
-      skin: 'layui-layer-rim', 
-      area: ['420px', '240px'], 
-      content: $('.move_info').html(),
-      success: function(layero, index){
-        form.render('select');
-      }
-
-    });
-  })
-
-  form.on('select(move_cate_list)',function(data){
-    // var move_cid = data.elem[data.elem.selectedIndex].text
-    var move_cid = data.value
-    $('.zf_move_cid').val(move_cid)
-  })
-  $(document).on('click','.ajax_file_move_save',function(){
-    var cid = $('.zf_move_cid').val()
-    var data = $(".zf_clickdata_list input").serialize();      
-    layer.confirm('确认移动？', {
-      btn: ['确认','取消'] 
-    }, function(){
-      $.post("{:siteUrl('common/Fileupload/file_move')}?cid="+cid,data,function(res){
-        if(res.result==1){
-          layer.msg(res.msg, {icon: 1});
-          setTimeout(function() {
-              window.location.reload();
-          }, 2000);
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      },"json");
-    });
-
-  });
-  $('.click_cate_name').dblclick(function(){
-    var id = $(this).attr('rel')
-    var name = $(this).attr('rel2')
-    var html = `<input type="hidden" class="cate_id" value="`+id+`"/>`
-    html+=`<input class="cate_name" name="name" value="`+name+`" style="width:50px"  />`
-    $(this).html(html)
-  });
-
-  
-  $('.cate_name').live('blur',function(){
-    var id = $(this).prev().val();
-    var name = $(this).val();
-    var that = $(this)
-    $.post("{:siteUrl('common/Fileupload/cate_edit')}",{id,name},function(res){
-        if(res.result==1){
-          layer.msg(res.msg, {icon: 1});
-          that.parent().html(name)
-        }else{
-          layer.msg(res.msg, {icon: 2});
-        }
-      },"json");
-  });
-
-
- 
-});
-var tag = "{:time()}"
-let up = new fcup({
-  id: "upid_fp", // 绑定id
-  url: "{:url('common/upload/fenpian_one_upload')}&cid={$cid}&tag="+tag, // url地址
-  check_url: "{:url('common/upload/fenpian_one_check')}&cid={$cid}&tag="+tag, // 检查上传url地址
-  type: "", // 限制上传类型，为空不限制
-  shard_size: "1", // 每次分片大小，单位为M，默认1M
-  min_size: '', // 最小文件上传M数，单位为M，默认为无
-  max_size: "500", // 上传文件最大M数，单位为M，默认200M
-// headers: {"version": "fcup-v2.0"}, // 附加的文件头,默认为null, 请注意指定header头时将不能进行跨域操作
-// apped_data: {}, //每次上传的附加数据
-  // 定义错误信息
-  error_msg: {
-      1000: "未找到上传id",
-      1001: "类型不允许上传",
-      1002: "上传文件过小",
-      1003: "上传文件过大",
-      1004: "上传请求超时"
-  },
-  // 错误提示
-  error: (msg) => {
-      alert(msg);
-  },      
-  // 初始化事件                
-  start: () => {
-    //  console.log('上传已准备就绪');
-      Progress(0);
-  },
-  // 等待上传事件，可以用来loading
-  before_send: () => {
-    //  console.log('等待请求中');
-    $('.upload_loading').show()
-      $('#myProgress').show()
-  },
-  // 上传进度事件
-  progress: (num, other) => {
-      Progress(num);
-    //  console.log(num);
-    //  console.log('上传进度' + num);
-    //  console.log("上传类型" + other.type);
-    //  console.log("已经上传" + other.current);
-    //  console.log("剩余上传" + other.surplus);
-    //  console.log("已用时间" + other.usetime);
-    //  console.log("预计时间" + other.totaltime);
-  },
-  // 检查地址回调,用于判断文件是否存在,类型,当前上传的片数等操作
-  check_success: (res) => {
-      let data = res ? eval('(' + res + ')') : '';
-      let status = data.status;
-      let url = data.url;
-      let msg = data.message;
-      // 错误提示
-      if (status == 1 ) {
-        alert(msg);
-        return false;
-      }
-    // 已经上传
-      if (status == 2) {
-        Progress(100);
-        $('.upload_url').html(url)
-        $('#myProgress').hide()
-        alert('图片已存在');
-        $('.upload_loading').hide()
-        return false;
-      }
-    // 如果提供了这个参数,那么将进行断点上传的准备
-    if(data.file_index){
-          // 起始上传的切片要从1开始
-      let file_index = data.file_index ? parseInt(data.file_index) : 1;
-          // 设置上传切片的起始位置		   
-      up.set_shard(file_index);
-    }
-    // 如果接口没有错误，必须要返回true，才不会终止上传
-      return true;
-  },
-  // 上传成功回调，回调会根据切片循环，要终止上传循环，必须要return false，成功的情况下要始终返回true;
-  success: (res) => {
-    let data = res ? eval('(' + res + ')') : '';
-    if(data.result==1){
-      layer.msg('上传成功', {icon: 1});
-      $('.upload_loading').hide()
-      setTimeout(function() {
-          window.location.reload();
-      }, 2000);
-      return true;
-    }else{
-      // layer.msg(data.msg, {icon: 2});
-    }
-      // let url = data.url + "?" + Math.random();
-      // let file_index = data.file_index ? parseInt(data.file_index) : 1;
-      // if (data.status == 2) {
-      //   $('.upload_url').html(url)
-      //   $('#myProgress').hide()
-      // }
-      // 如果接口没有错误，必须要返回true，才不会终止上传循环
-  }
-});	  
-   
-// 进度条
-function Progress(value) {
-    var myProgress = document.getElementById("myProgress");
-    var mySpan = document.getElementById("mySpan");
-    mySpan.innerText = value + "%";
-    myProgress.value = value;
-}
-   	     
-   
-</script>
 </body>
 </html>
+
+
+<script> 
+  var index = parent.layer.getFrameIndex(window.name); 
+  $('.click_item').on('click',function(){
+    if($(this).css('border')=='1px solid rgb(255, 0, 0)'){
+      $(this).css('border','0px none rgb(102, 102, 102)');
+      $(this).children('input').eq(0).val('')
+      $(this).children('input').eq(1).val('')
+      //add
+      $('.select_item').find('.select_item_'+$(this).attr('_id')).remove()
+  
+    }else{
+      $(this).css('border','1px solid red');
+      $(this).css('border','1px solid red');
+      $(this).children('input').eq(0).val($(this).attr('url'))
+      $(this).children('input').eq(1).val($(this).attr('_id'))
+      //add
+      $('.select_item').append('<div class="select_item_div select_item_'+$(this).attr('_id')+'"><img class="select_item_pic" title="'+$(this).attr('_name')+'" src="'+$(this).attr('url')+'"  > <input type="hidden" name="files[]" value="'+$(this).attr('url')+'"  /></div>')
+  
+    }
+    var url = $(this).children('input').eq(0).val()
+    var ids = $(this).children('input').eq(1).val()
+    // var checked = $(this).children('input').eq(2).val()
+  })
+  // 选中
+  $('.zf_xz_click').on('click',function(){
+    // var data = $(".zf_clickdata_list input").serializeArray();   
+    // var data = $(".zf_clickdata_list input[name='files[]']").serializeArray();   
+    var data = $(".select_item input").serializeArray();
+    var html = ''
+    var src = ''
+    var num = 0;
+    <?php if($t=='ueditor'){ ?>
+      for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          html+=' <img src="'+ data[i].value +'" alt="" style="width:600px"   /><br/> '
+        }
+      }
+      parent.$("{$zf_class}").html(html)
+    <?php }elseif($t==2){ ?>
+     for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          html+='<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'+ data[i].value +'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" ></div> '
+          html+='<input type="hidden" name="zf_list_{$name}" value="'+ data[i].value +'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span></div>'
+        }
+      }
+      parent.$("{$zf_class}").append(html)
+    <?php }elseif($t==1){ ?>
+     for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          num++
+          if(num>1){
+            parent.layer.msg('当前只能选择一个', {shade: 0.3})
+            return 
+          }
+          src = data[i].value
+        }
+      }
+      parent.$("{$zf_class}").val(src)
+      parent.$("{$zf_class}").attr('src',src)
+    <?php }elseif($t==3){ ?>
+     for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          src = data[i].value
+        }
+        if(num>1){
+            parent.layer.msg('当前只能选择一个', {shade: 0.3})
+            return 
+          }
+      }
+      parent.$("{$zf_class}").val(src)
+    <?php }elseif($t=='return_url'){ ?>
+      for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          num++
+          if(num>1){
+            parent.layer.msg('当前只能选择一个', {shade: 0.3})
+            return 
+          }
+          src = data[i].value
+        }
+      }
+      // parent.$("{$zf_class}").val(src)
+      // parent.$("{$zf_class}").attr('src',src)
+      window.parent.selectedPicInfo = src;
+      // 关闭弹窗
+      window.parent.layer.closeAll();
+    
+    <?php } ?>
+  
+  
+    parent.layer.close(index);
+  
+  })
+  
+  
+  layui.use([ 'table','element','laypage','upload','form'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,element = layui.element
+    ,laypage = layui.laypage
+    ,upload = layui.upload
+    ,table = layui.table;
+  
+  
+  
+    upload.render({
+        elem: '#up_file'
+        ,url: "{:siteUrl('common/upload/upload_one_filesystem')}?cid={$cid}"
+        ,accept: 'file' 
+        ,multiple: true
+        ,before:function(res){
+          layer.load();
+        }
+        ,done: function(res){
+          layer.closeAll('loading');
+          if(res.result==1){
+              layer.msg('上传成功', {icon: 1});
+              setTimeout(function(){
+                window.location.reload()
+              },2000);
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        }
+      });
+  
+    $('.ajax_cate_del').on('click',function() {
+      var id = $(this).attr('item')
+      layer.confirm('确定删除？', {
+        btn: ['删除','取消'] 
+      }, function(){
+        $.get("{:siteUrl('common/Fileupload/cate_del')}",{id:id},function(res){
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+            setTimeout(function() {
+                window.location.reload();
+            }, 2000);
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        },"json");
+      });
+    });
+    $('.ajax_file_del').on('click',function() {
+      var id = $(this).attr('item')
+      var data = $(".zf_clickdata_list input").serialize();      
+      layer.confirm('文件删除无法恢复,确认删除？', {
+        btn: ['删除','取消'] 
+      }, function(){
+        $.post("{:siteUrl('common/Fileupload/file_del')}",data,function(res){
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+            setTimeout(function() {
+                window.location.reload();
+            }, 2000);
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        },"json");
+      });
+    });
+    $('.ajax_file_move').on('click',function(){
+      layer.open({
+        type: 1,
+        skin: 'layui-layer-rim', 
+        area: ['420px', '240px'], 
+        content: $('.move_info').html(),
+        success: function(layero, index){
+          form.render('select');
+        }
+  
+      });
+    })
+  
+    form.on('select(move_cate_list)',function(data){
+      // var move_cid = data.elem[data.elem.selectedIndex].text
+      var move_cid = data.value
+      $('.zf_move_cid').val(move_cid)
+    })
+    $(document).on('click','.ajax_file_move_save',function(){
+      var cid = $('.zf_move_cid').val()
+      var data = $(".zf_clickdata_list input").serialize();      
+      layer.confirm('确认移动？', {
+        btn: ['确认','取消'] 
+      }, function(){
+        $.post("{:siteUrl('common/Fileupload/file_move')}?cid="+cid,data,function(res){
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+            setTimeout(function() {
+                window.location.reload();
+            }, 2000);
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        },"json");
+      });
+  
+    });
+    $('.click_cate_name').dblclick(function(){
+      var id = $(this).attr('rel')
+      var name = $(this).attr('rel2')
+      var html = `<input type="hidden" class="cate_id" value="`+id+`"/>`
+      html+=`<input class="cate_name" name="name" value="`+name+`" style="width:50px"  />`
+      $(this).html(html)
+    });
+  
+    
+    $('.cate_name').live('blur',function(){
+      var id = $(this).prev().val();
+      var name = $(this).val();
+      var that = $(this)
+      $.post("{:siteUrl('common/Fileupload/cate_edit')}",{id,name},function(res){
+          if(res.result==1){
+            layer.msg(res.msg, {icon: 1});
+            that.parent().html(name)
+          }else{
+            layer.msg(res.msg, {icon: 2});
+          }
+        },"json");
+    });
+  
+  
+   
+  });
+  var tag = "{:time()}"
+  let up = new fcup({
+    id: "upid_fp", // 绑定id
+    url: "{:url('common/upload/fenpian_one_upload')}&cid={$cid}&tag="+tag, // url地址
+    check_url: "{:url('common/upload/fenpian_one_check')}&cid={$cid}&tag="+tag, // 检查上传url地址
+    type: "", // 限制上传类型，为空不限制
+    shard_size: "1", // 每次分片大小，单位为M，默认1M
+    min_size: '', // 最小文件上传M数，单位为M，默认为无
+    max_size: "500", // 上传文件最大M数，单位为M，默认200M
+  // headers: {"version": "fcup-v2.0"}, // 附加的文件头,默认为null, 请注意指定header头时将不能进行跨域操作
+  // apped_data: {}, //每次上传的附加数据
+    // 定义错误信息
+    error_msg: {
+        1000: "未找到上传id",
+        1001: "类型不允许上传",
+        1002: "上传文件过小",
+        1003: "上传文件过大",
+        1004: "上传请求超时"
+    },
+    // 错误提示
+    error: (msg) => {
+        alert(msg);
+    },      
+    // 初始化事件                
+    start: () => {
+      //  console.log('上传已准备就绪');
+        Progress(0);
+    },
+    // 等待上传事件，可以用来loading
+    before_send: () => {
+      //  console.log('等待请求中');
+      $('.upload_loading').show()
+        $('#myProgress').show()
+    },
+    // 上传进度事件
+    progress: (num, other) => {
+        Progress(num);
+      //  console.log(num);
+      //  console.log('上传进度' + num);
+      //  console.log("上传类型" + other.type);
+      //  console.log("已经上传" + other.current);
+      //  console.log("剩余上传" + other.surplus);
+      //  console.log("已用时间" + other.usetime);
+      //  console.log("预计时间" + other.totaltime);
+    },
+    // 检查地址回调,用于判断文件是否存在,类型,当前上传的片数等操作
+    check_success: (res) => {
+        let data = res ? eval('(' + res + ')') : '';
+        let status = data.status;
+        let url = data.url;
+        let msg = data.message;
+        // 错误提示
+        if (status == 1 ) {
+          alert(msg);
+          return false;
+        }
+      // 已经上传
+        if (status == 2) {
+          Progress(100);
+          $('.upload_url').html(url)
+          $('#myProgress').hide()
+          alert('图片已存在');
+          $('.upload_loading').hide()
+          return false;
+        }
+      // 如果提供了这个参数,那么将进行断点上传的准备
+      if(data.file_index){
+            // 起始上传的切片要从1开始
+        let file_index = data.file_index ? parseInt(data.file_index) : 1;
+            // 设置上传切片的起始位置		   
+        up.set_shard(file_index);
+      }
+      // 如果接口没有错误，必须要返回true，才不会终止上传
+        return true;
+    },
+    // 上传成功回调，回调会根据切片循环，要终止上传循环，必须要return false，成功的情况下要始终返回true;
+    success: (res) => {
+      let data = res ? eval('(' + res + ')') : '';
+      if(data.result==1){
+        layer.msg('上传成功', {icon: 1});
+        $('.upload_loading').hide()
+        setTimeout(function() {
+            window.location.reload();
+        }, 2000);
+        return true;
+      }else{
+        // layer.msg(data.msg, {icon: 2});
+      }
+        // let url = data.url + "?" + Math.random();
+        // let file_index = data.file_index ? parseInt(data.file_index) : 1;
+        // if (data.status == 2) {
+        //   $('.upload_url').html(url)
+        //   $('#myProgress').hide()
+        // }
+        // 如果接口没有错误，必须要返回true，才不会终止上传循环
+    }
+  });	  
+     
+  // 进度条
+  function Progress(value) {
+      var myProgress = document.getElementById("myProgress");
+      var mySpan = document.getElementById("mySpan");
+      mySpan.innerText = value + "%";
+      myProgress.value = value;
+  }
+            
+     
+</script>
 <script>
 // 图片延迟加载插件
 (function(window, $){
-	//图片延迟加载实现函数
-	var YdxLazyLoad = function(window, $) {
-		//默认参数
-		var defaultOption = {
-				threshold: 0, //灵敏度
+  //图片延迟加载实现函数
+  var YdxLazyLoad = function(window, $) {
+    //默认参数
+    var defaultOption = {
+        threshold: 0, //灵敏度
         failure_limit : 0,
         event: "scroll resize", //触发事件
         effect: "fadeIn", //显示模式，支持jquery所有显示方式
         container: window, //容器
         effectTime: 300, //图片显示时间
         callback: null //图片显示后执行的回调函数
-			};
+      };
 
-		//option参数管理器
-		var optionHandel = {
-			//设置参数对象
-			setOption : function(element, opt) {
-				return element.data("_YdxLazyLoadOption_", opt);
-			},
+    //option参数管理器
+    var optionHandel = {
+      //设置参数对象
+      setOption : function(element, opt) {
+        return element.data("_YdxLazyLoadOption_", opt);
+      },
 
-			//获取参数对象
-			getOption : function(element) {
-				return element.data("_YdxLazyLoadOption_");
-			},
+      //获取参数对象
+      getOption : function(element) {
+        return element.data("_YdxLazyLoadOption_");
+      },
 
-			//删除对象参数
-			removeOption : function(element) {
-				return element.removeData("_YdxLazyLoadOption_");
+      //删除对象参数
+      removeOption : function(element) {
+        return element.removeData("_YdxLazyLoadOption_");
 
-			}
-		};
-		
+      }
+    };
+    
 
-		//判断图片元素位置
-		var checkPosition = {
-			////判断是否在纵向滚动条之上
-		    above : function(element) {
-		        var fold, 
-					$window = $(window),
-					option = optionHandel.getOption(element);
-		        
-		        if (option.container === undefined || option.container === window) {
-		            fold = $window.height() + $window.scrollTop();
-		        } else {
-		            fold = $(option.container).offset().top + $(option.container).height();
-		        }
+    //判断图片元素位置
+    var checkPosition = {
+      ////判断是否在纵向滚动条之上
+        above : function(element) {
+            var fold, 
+          $window = $(window),
+          option = optionHandel.getOption(element);
+            
+            if (option.container === undefined || option.container === window) {
+                fold = $window.height() + $window.scrollTop();
+            } else {
+                fold = $(option.container).offset().top + $(option.container).height();
+            }
 
-		        return fold >= $(element).offset().top + option.threshold;
-		    },
+            return fold >= $(element).offset().top + option.threshold;
+        },
 
-			//判断是否在纵向滚动条之下
-			below : function(element) {
-		        var fold, 
-					$window = $(window),
-					option = optionHandel.getOption(element);
-		        
-		        if (option.container === undefined || option.container === window) {
-		            fold = $window.height() + $window.scrollTop();
-		        } else {
-		            fold = $(option.container).offset().top + $(option.container).height();
-		        }
+      //判断是否在纵向滚动条之下
+      below : function(element) {
+            var fold, 
+          $window = $(window),
+          option = optionHandel.getOption(element);
+            
+            if (option.container === undefined || option.container === window) {
+                fold = $window.height() + $window.scrollTop();
+            } else {
+                fold = $(option.container).offset().top + $(option.container).height();
+            }
 
-		        return fold <= $(element).offset().top - option.threshold;
-			},
+            return fold <= $(element).offset().top - option.threshold;
+      },
 
-			//判断是否在横向滚动条左侧
-		    left : function(element) {
-		        var fold, 
-					$window = $(window),
-					option = optionHandel.getOption(element);
-		        
-		        if (option.container === undefined || option.container === window) {
-		            fold = $window.width() + $window.scrollLeft();
-		        } else {
-		            fold = $(option.container).offset().left + $(option.container).width();
-		        }
+      //判断是否在横向滚动条左侧
+        left : function(element) {
+            var fold, 
+          $window = $(window),
+          option = optionHandel.getOption(element);
+            
+            if (option.container === undefined || option.container === window) {
+                fold = $window.width() + $window.scrollLeft();
+            } else {
+                fold = $(option.container).offset().left + $(option.container).width();
+            }
 
-		        return fold >= $(element).offset().left + option.threshold;
-		    },
+            return fold >= $(element).offset().left + option.threshold;
+        },
 
-		    //判断是否在横向滚动条右侧
-		    right : function(element) {
-		        var fold, 
-					$window = $(window),
-					option = optionHandel.getOption(element);
+        //判断是否在横向滚动条右侧
+        right : function(element) {
+            var fold, 
+          $window = $(window),
+          option = optionHandel.getOption(element);
 
-		        if (option.container === undefined || option.container === window) {
-		            fold = $window.width() + $window.scrollLeft();
-		        } else {
-		            fold = $(option.container).offset().left + $(option.container).width();
-		        }
+            if (option.container === undefined || option.container === window) {
+                fold = $window.width() + $window.scrollLeft();
+            } else {
+                fold = $(option.container).offset().left + $(option.container).width();
+            }
 
-		        return fold <= $(element).offset().left - option.threshold;
-		    },
+            return fold <= $(element).offset().left - option.threshold;
+        },
 
-		    flag : function(element) {
-				var option = optionHandel.getOption(element);
-				return !$.rightoffold(element, element) && !$.leftofbegin(element, element) &&
-					   !$.belowthefold(element, element) && !$.abovethetop(element, element);
-		    }
-		};
+        flag : function(element) {
+        var option = optionHandel.getOption(element);
+        return !$.rightoffold(element, element) && !$.leftofbegin(element, element) &&
+              !$.belowthefold(element, element) && !$.abovethetop(element, element);
+        }
+    };
 
-		function showImg() {
-			var $this = $(this),
-				opt = optionHandel.getOption($this);
-			if (!opt.isLoad) {
-				var currentImgSrc = opt.src || $this.attr("lazyLoadSrc");
-				$(new Image()).attr("src", currentImgSrc).load([opt, $this], function(e) {
-					var para = e.data,
-						opt = para[0],
-						element = para[1];
-					element.attr("src", currentImgSrc).hide()[opt.effect](opt.effectTime);
-					opt.isLoad = true;
-					opt.callback && opt.callback.call(element, currentImgSrc);
-					$(this).unbind("load");
-					opt.onShow && opt.onShow.call(element);
-				});
-			}
-		}
+    function showImg() {
+      var $this = $(this),
+        opt = optionHandel.getOption($this);
+      if (!opt.isLoad) {
+        var currentImgSrc = opt.src || $this.attr("lazyLoadSrc");
+        $(new Image()).attr("src", currentImgSrc).load([opt, $this], function(e) {
+          var para = e.data,
+            opt = para[0],
+            element = para[1];
+          element.attr("src", currentImgSrc).hide()[opt.effect](opt.effectTime);
+          opt.isLoad = true;
+          opt.callback && opt.callback.call(element, currentImgSrc);
+          $(this).unbind("load");
+          opt.onShow && opt.onShow.call(element);
+        });
+      }
+    }
 
-		//初始化控件
-		function init() {
-			//默认有lazyLoadSrc属性的都添加延迟加载
-			$("[lazyLoadSrc]:visible").each(function(i, element) {
-				add($(element));
-			});
-		}
+    //初始化控件
+    function init() {
+      //默认有lazyLoadSrc属性的都添加延迟加载
+      $("[lazyLoadSrc]:visible").each(function(i, element) {
+        add($(element));
+      });
+    }
 
-		/**
-		* 添加延迟加载绑定
-		* @参数 element: 被绑定的元素
-		*		opt: 设置参数
-		*/		
-		function add(element, opt) {
-			if (optionHandel.getOption(element)) {
-				return;
-			}
-			//element.load([opt],function(e) {
-				//var opt = e.data[0],
-				//	element = $(this);
-				//合并参数
-			opt = $.extend(true, {}, defaultOption, opt);
+    /**
+    * 添加延迟加载绑定
+    * @参数 element: 被绑定的元素
+    *		opt: 设置参数
+    */		
+    function add(element, opt) {
+      if (optionHandel.getOption(element)) {
+        return;
+      }
+      //element.load([opt],function(e) {
+        //var opt = e.data[0],
+        //	element = $(this);
+        //合并参数
+      opt = $.extend(true, {}, defaultOption, opt);
 
-			//将参数保存到data中，同时绑定显示图片事件
-			optionHandel.setOption(element, opt).bind("showImg", showImg);
+      //将参数保存到data中，同时绑定显示图片事件
+      optionHandel.setOption(element, opt).bind("showImg", showImg);
 
-			var $container = $(opt.container), 
-				containerData = {elementMap : {}, num : 0};
-			//初始化容器的存储数据
-			if (!$container.data("_YdxLazyLoad_container_")) {
-				$container.data("_YdxLazyLoad_container_", containerData);
-			} else {
-				containerData = $container.data("_YdxLazyLoad_container_");
-			}
+      var $container = $(opt.container), 
+        containerData = {elementMap : {}, num : 0};
+      //初始化容器的存储数据
+      if (!$container.data("_YdxLazyLoad_container_")) {
+        $container.data("_YdxLazyLoad_container_", containerData);
+      } else {
+        containerData = $container.data("_YdxLazyLoad_container_");
+      }
 
-			//将元素保存到容器存储数据中
-			opt._index = containerData.num;
-			containerData.elementMap[containerData.num++] = element;
+      //将元素保存到容器存储数据中
+      opt._index = containerData.num;
+      containerData.elementMap[containerData.num++] = element;
 
-			//判断容器是否已绑定事件
-			if (!containerData.isBind || containerData.event !== opt.event) {
-				$container.bind(opt.event, function(e){
-					var data = $(this).data("_YdxLazyLoad_container_"),
-						elementMap = data.elementMap;
+      //判断容器是否已绑定事件
+      if (!containerData.isBind || containerData.event !== opt.event) {
+        $container.bind(opt.event, function(e){
+          var data = $(this).data("_YdxLazyLoad_container_"),
+            elementMap = data.elementMap;
 
-					//循环判断元素是否满足显示要求
-					$.each(elementMap, function(key, el) {
-						if (el.data("_YdxLazyLoadOption_")) {
-							if (checkPosition.above(el) && checkPosition.left(el)) {
-								el.trigger("showImg");
-								delete elementMap[key];
-							}
-						} else {
-							delete elementMap[key];
-							el.remove();
-						}
-					});
-					return false;
-				});
-				//标识容器已绑定事件
-				containerData.isBind = true;
-				containerData.event = opt.event;
-			}
-			//手动触发一次绑定事件
-			$.each(opt.event.split(" "), function(i, event) {
-				if (event === 'scroll') {
-					var e = $.Event(event, {scrollTop: $('body').scrollTop()});
-					$container.trigger(e);
-					return;
-				}				  
-				$container.trigger(event);
-			});
+          //循环判断元素是否满足显示要求
+          $.each(elementMap, function(key, el) {
+            if (el.data("_YdxLazyLoadOption_")) {
+              if (checkPosition.above(el) && checkPosition.left(el)) {
+                el.trigger("showImg");
+                delete elementMap[key];
+              }
+            } else {
+              delete elementMap[key];
+              el.remove();
+            }
+          });
+          return false;
+        });
+        //标识容器已绑定事件
+        containerData.isBind = true;
+        containerData.event = opt.event;
+      }
+      //手动触发一次绑定事件
+      $.each(opt.event.split(" "), function(i, event) {
+        if (event === 'scroll') {
+          var e = $.Event(event, {scrollTop: $('body').scrollTop()});
+          $container.trigger(e);
+          return;
+        }				  
+        $container.trigger(event);
+      });
 
-				//删除load绑定
-				//element.unbind("load");
-			//})
-		}
+        //删除load绑定
+        //element.unbind("load");
+      //})
+    }
 
-		/**
-		* 删除延迟加载绑定
-		* @参数 element: 被绑定的元素
-		*/
-		function remove(element) {
-			var opt = optionHandel.getOption(element);
-			//删除对应容器中的映射关系
-			delete $(opt.container).data("_YdxLazyLoad_container_").elementMap[opt._index];
-			//删除元素中的_YdxLazyLoadOption_数据
-			optionHandel.removeOption(element);
-		}
+    /**
+    * 删除延迟加载绑定
+    * @参数 element: 被绑定的元素
+    */
+    function remove(element) {
+      var opt = optionHandel.getOption(element);
+      //删除对应容器中的映射关系
+      delete $(opt.container).data("_YdxLazyLoad_container_").elementMap[opt._index];
+      //删除元素中的_YdxLazyLoadOption_数据
+      optionHandel.removeOption(element);
+    }
 
-		return {
-			init : init,
-			add : add,
-			remove : remove
-		};
+    return {
+      init : init,
+      add : add,
+      remove : remove
+    };
 
-	}(window, $);
-	
+  }(window, $);
+  
 
-	//
-	$.fn.YdxLazyLoad = function(opt) {
-		return this.each(function() {
-			switch($.type(opt)) {
-				//不传入参数或者为json对象，则进行add操作
-				case "undefined":
-				case "object": 
-				YdxLazyLoad.add($(this), opt);
-				break;
-				//传入参数为string类型，则判断为方法调用
-				case "string":
-				var args = Array.prototype.slice.call(arguments, 1);
-				args.unshift($(this));
-				YdxLazyLoad[opt].call(YdxLazyLoad, args);
-				break;
-			}	
-		});	
-	};	
+  //
+  $.fn.YdxLazyLoad = function(opt) {
+    return this.each(function() {
+      switch($.type(opt)) {
+        //不传入参数或者为json对象，则进行add操作
+        case "undefined":
+        case "object": 
+        YdxLazyLoad.add($(this), opt);
+        break;
+        //传入参数为string类型，则判断为方法调用
+        case "string":
+        var args = Array.prototype.slice.call(arguments, 1);
+        args.unshift($(this));
+        YdxLazyLoad[opt].call(YdxLazyLoad, args);
+        break;
+      }	
+    });	
+  };	
 })(window, jQuery)	
 
-	
+  
 </script>
 <script type="text/javascript">
     $(function(){
@@ -781,4 +827,71 @@ function Progress(value) {
             }
         });
     });
+</script>
+
+<script>
+layui.use(['upload', 'layer'], function(){
+  var upload = layui.upload;
+  var layer = layui.layer;
+  
+  // 上传裁剪图片
+  $('#up_file_crop').on('click', function(){
+    layer.open({
+      type: 2,
+      title: '选择并裁剪图片',
+      content: "{:siteUrl('common/Fileupload/cropImage')}?cid={$cid}",
+      area: ['800px', '600px'],
+      //窗口关闭时调用
+      end: function(layero, index){
+        console.log('end');
+        // 刷新当前页面
+        window.location.reload();
+      },
+      cancel: function (index, layero) {
+                // 点击右上角 X 的回调方法
+        console.log('cancel');
+      },
+      //窗口打开时调用
+
+      success: function(layero, index){
+        console.log('open');
+
+        var iframeWin = window[layero.find('iframe')[0]['name']];
+        iframeWin.cropperCallback = function(croppedImageUrl) {
+          // console.log(11);
+          // console.log(croppedImageUrl);
+          // layer.close(index);
+          // uploadCroppedImage(croppedImageUrl);
+          //刷新当前页面
+          window.location.reload();
+        };
+      }
+    });
+  });
+
+  // // 上传裁剪后的图片
+  // function uploadCroppedImage(imageUrl) {
+  //   $.ajax({
+  //     url: "{:siteUrl('common/upload/upload_cropped_image')}",
+  //     method: "POST",
+  //     data: {
+  //       image_url: imageUrl,
+  //       cid: '{$cid}'
+  //     },
+  //     success: function(res){
+  //       if(res.result == 1){
+  //         layer.msg('裁剪图片上传成功', {icon: 1});
+  //         setTimeout(function(){
+  //           window.location.reload();
+  //         }, 2000);
+  //       } else {
+  //         layer.msg(res.msg, {icon: 2});
+  //       }
+  //     },
+  //     error: function(){
+  //       layer.msg('裁剪图片上传失败', {icon: 2});
+  //     }
+  //   });
+  // }
+});
 </script>
