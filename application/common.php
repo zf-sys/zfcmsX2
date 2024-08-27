@@ -1896,6 +1896,10 @@ if(!function_exists('widget_st')){
             if(in_array($name,['ztree'])){
                 return "<link rel='stylesheet' href='$_static/ztree/css/zTreeStyle/zTreeStyle.css?$v' type='text/css'>\n<script type='text/javascript' src='$_static/ztree/js/jquery.ztree.core.min.js?$v'></script>\n";
             }
+            //裁剪图片
+            if(in_array($name,['cropper'])){
+                return "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css' type='text/css'>\n<script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js'></script>\n";
+            }
 
         }
         // <!-- 拖动排序 -->
