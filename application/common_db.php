@@ -583,3 +583,22 @@ if (!function_exists('get_post_list_v2')) {
         return $list;
     }
 }
+
+/**
+ * 240824新增
+ * 优化获取分类列表-数组形式
+ */
+if (!function_exists('get_cate_list_v2')) {
+    function get_cate_list_v2($cid,$req_arr = []){
+        $where = isset_arr_key($req_arr,'where',[]);
+        $limit = isset_arr_key($req_arr,'limit',10);
+        $tb = isset_arr_key($req_arr,'tb','category');
+        $order = isset_arr_key($req_arr,'order','sort asc,cid asc');
+        $field = isset_arr_key($req_arr,'field','*');
+        $where[] = ['pid','=',$cid];
+        $where[] = ['status','=',1];
+        $where[] = ['lang','=',ZLANG];
+        $list =ZFTB($tb)->where($where)->field($field)->limit($limit)->order($order)->select();
+        return $list;
+    }
+}
