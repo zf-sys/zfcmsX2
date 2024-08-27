@@ -8,7 +8,11 @@ function add_action($hook, $callback, $priority = 10)
 
 function do_action($hook, ...$params)
 {
-    Hook::do_action($hook, ...$params);
+    try {
+        Hook::do_action($hook, ...$params);
+    } catch (\Exception $e) {
+        handle_hook_exception($hook, 'action', $e);
+    }
 }
 
 function add_filter($hook, $callback, $priority = 10)
@@ -16,10 +20,15 @@ function add_filter($hook, $callback, $priority = 10)
     Hook::add_filter($hook, $callback, $priority);
 }
 
-function apply_filters($hook, $value, $return_type = 'string',$separator=',', ...$params)
+function apply_filters($hook, $value, $return_type = 'string', $separator=',', ...$params)
 {
-    $data = Hook::apply_filters($hook, $value, $return_type,$separator, ...$params);
-    return $data;
+    try {
+        $data = Hook::apply_filters($hook, $value, $return_type, $separator, ...$params);
+        return $data;
+    } catch (\Exception $e) {
+        handle_hook_exception($hook, 'filter', $e);
+        return $value; // 返回原始值，因为过滤器失败了
+    }
 }
 
 /**
@@ -80,4 +89,58 @@ function zf_filer_deal($ret_str,$data_res,$is_cover=true)
         $data_res['zf_hookresults'][] = $ret_str;
     }
     return $data_res;
+}
+
+// 新增的沙箱相关方法
+function enter_sandbox()
+{
+    Hook::enter_sandbox();
+}
+
+function exit_sandbox()
+{
+    Hook::exit_sandbox();
+}
+
+function get_sandbox_hooks()
+{
+    return Hook::get_sandbox_hooks();
+}
+
+function clear_sandbox()
+{
+    Hook::clear_sandbox();
+}
+
+// 可选：添加一个辅助函数来在沙箱中执行代码
+function run_in_sandbox(callable $callback)
+{
+    enter_sandbox();
+    try {
+        $result = $callback();
+    } finally {
+        exit_sandbox();
+    }
+    return $result;
+}
+
+// 新增一个处理钩子异常的函数
+function handle_hook_exception($hook, $callback, $exception)
+{
+    // 自定义的异常处理逻辑
+    $callback_str = is_string($callback) ? $callback : (is_array($callback) ? implode('::', $callback) : 'Closure');
+    $message = "钩子异常: {$hook} - 回调: {$callback_str} - " . $exception->getMessage();
+    
+    // 记录到错误日志
+    // error_log($message);
+    @save_exception('hook',$message);
+    
+    // 在开发环境中显示异常
+    if (config('app_debug')) {
+        echo "<div style='background-color: #ffcccc; border: 1px solid #ff0000; padding: 10px; margin: 10px 0;'>";
+        echo "<strong>钩子异常警告:</strong><br>";
+        echo nl2br(htmlspecialchars($message));
+        echo "<br><strong>异常追踪:</strong><pre>" . $exception->getTraceAsString() . "</pre>";
+        echo "</div>";
+    }
 }

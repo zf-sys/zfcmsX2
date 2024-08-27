@@ -1,30 +1,59 @@
 <?php
 namespace app\common\controller;
+
 class Hook
 {
     protected static $actions = [];
     protected static $filters = [];
+    protected static $sandbox_actions = [];
+    protected static $sandbox_filters = [];
+    protected static $is_sandbox_mode = false;
 
     public function  __construct()
     {
 //        parent::__construct();
     }
+
+    // 进入沙箱模式
+    public static function enter_sandbox()
+    {
+        self::$is_sandbox_mode = true;
+        self::$sandbox_actions = [];
+        self::$sandbox_filters = [];
+    }
+
+    // 退出沙箱模式
+    public static function exit_sandbox()
+    {
+        self::$is_sandbox_mode = false;
+    }
+
     // 注册动作钩子
     public static function add_action($hook, $callback, $priority = 10)
     {
-        self::$actions[$hook][$priority][] = $callback;
+        if (self::$is_sandbox_mode) {
+            self::$sandbox_actions[$hook][$priority][] = $callback;
+        } else {
+            self::$actions[$hook][$priority][] = $callback;
+        }
     }
 
     // 执行动作钩子
     public static function do_action($hook, ...$params)
     {
+        $actions = self::$is_sandbox_mode ? self::$sandbox_actions : self::$actions;
+
         if(request()->isGet() && zf_show_hooktip() && !in_array(request()->url(),['/admin/index/get_menu.html'])){
             self::display_hook_info('action', $hook);
         }
 
-        if (isset(self::$actions[$hook])) {
-            foreach (self::get_hooks_by_priority(self::$actions[$hook]) as $callback) {
-                call_user_func_array($callback, $params);
+        if (isset($actions[$hook])) {
+            foreach (self::get_hooks_by_priority($actions[$hook]) as $callback) {
+                try {
+                    call_user_func_array($callback, $params);
+                } catch (\Exception $e) {
+                    handle_hook_exception($hook, $callback, $e);
+                }
             }
         }
     }
@@ -32,15 +61,25 @@ class Hook
     // 注册过滤器钩子
     public static function add_filter($hook, $callback, $priority = 10)
     {
-        self::$filters[$hook][$priority][] = $callback;
+        if (self::$is_sandbox_mode) {
+            self::$sandbox_filters[$hook][$priority][] = $callback;
+        } else {
+            self::$filters[$hook][$priority][] = $callback;
+        }
     }
 
     // 执行过滤器钩子
     public static function apply_filters($hook, $value, $return_type = 'string',$separator=',', ...$params)
     {
-        if (isset(self::$filters[$hook])) {
-            foreach (self::get_hooks_by_priority(self::$filters[$hook]) as $callback) {
-                $value = call_user_func_array($callback, array_merge([$value], $params));
+        $filters = self::$is_sandbox_mode ? self::$sandbox_filters : self::$filters;
+
+        if (isset($filters[$hook])) {
+            foreach (self::get_hooks_by_priority($filters[$hook]) as $callback) {
+                try {
+                    $value = call_user_func_array($callback, array_merge([$value], $params));
+                } catch (\Exception $e) {
+                    handle_hook_exception($hook, $callback, $e);
+                }
             }
         }
         // 根据 $return_type 判断返回类型
@@ -75,7 +114,7 @@ class Hook
                 foreach ($callbacks as $key => $registered_callback) {
                     if (self::compare_callbacks($registered_callback, $callback)) {
                         unset(self::${$storage}[$hook][$priority][$key]);
-                        // 如果某个优先级下的钩子为空，删除该优先级
+                        // 如���某个优先级下的钩子为空，删除该优先级
                         if (empty(self::${$storage}[$hook][$priority])) {
                             unset(self::${$storage}[$hook][$priority]);
                         }
@@ -238,7 +277,7 @@ class Hook
                     $issue = self::analyze_callback_security($callback);
                     if ($issue) {
                         $security_issues[] = [
-                            '优先级' => $priority,
+                            '优先' => $priority,
                             '回调' => self::callback_to_string($callback),
                             '问题' => $issue
                         ];
@@ -345,9 +384,21 @@ class Hook
             $all['filter'][] = $key;
         }
         return $all;
-
-
-//
     }
 
+    // 新增方法：获取沙箱中的钩子
+    public static function get_sandbox_hooks()
+    {
+        return [
+            'actions' => self::$sandbox_actions,
+            'filters' => self::$sandbox_filters
+        ];
+    }
+
+    // 新增方法：清除沙箱中的钩子
+    public static function clear_sandbox()
+    {
+        self::$sandbox_actions = [];
+        self::$sandbox_filters = [];
+    }
 }
