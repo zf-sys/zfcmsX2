@@ -2764,7 +2764,7 @@ if (!function_exists('the_link')) {
 
         if (isset($metaCache[$type][$id]) && $metaCache[$type][$id] !== '') {
             $link = '/' . $metaCache[$type][$id];
-        } elseif (isset($vo['url']) && $vo['url'] !== '') {
+        } elseif (isset($vo['url']) && $vo['url'] !== '' && $type!= 'post') {
             $link = $vo['url'];
         } else {
             if ($type == 'category') {
