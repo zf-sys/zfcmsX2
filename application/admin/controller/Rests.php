@@ -12,7 +12,7 @@
 namespace app\admin\controller;
 use think\facade\Request;
 use think\Db;
-use Wmc1125\TpFast\Category as cat; 
+use Wmc1125\TpFast\Category as cat;
 
 class Rests extends Admin
 {
@@ -59,7 +59,7 @@ class Rests extends Admin
         }catch (Exception $e) {
             return jserror($e->getMessage());
         }
-        
+
         $page = $list->render();
         $this->assign("list",$list);
         $this->assign("page",$page);
@@ -78,7 +78,7 @@ class Rests extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(!request()->isPost()){
             if(input('type')=='child'){
-                $tpl="rests/advert_add_child";   
+                $tpl="rests/advert_add_child";
                 $this->assign("pid",input("pid"));
                 $partent_res = ZFTB('advert')->where(['id'=>input('pid')])->find();
                 $this->assign('partent_res',$partent_res);
@@ -91,7 +91,7 @@ class Rests extends Admin
             $form_parm_arr = getFormParams($partent_res);
             $this->assign('form_parm_arr',$form_parm_arr);
             return view($tpl);
-        }  
+        }
         $data = input("post.");
         if($data['name']==''){
             return jserror('名称不能为空');exit;
@@ -102,7 +102,7 @@ class Rests extends Admin
             $data['status'] = 1;
         }
         deal_meta_data_add('advert',$data,'id');
-        
+
     }
 
     /**
@@ -120,7 +120,7 @@ class Rests extends Admin
     public function advert_edit()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
-    	if(request()->isGet()){
+        if(request()->isGet()){
             $id = input('id','');
             $tag = input('tag','');
             try {
@@ -138,13 +138,13 @@ class Rests extends Admin
             }catch (Exception $e) {
                 return jserror($e->getMessage());
             }
-            
-            $res =  ZFTB('advert')->where(['id'=>$id])->find(); 
+
+            $res =  ZFTB('advert')->where(['id'=>$id])->find();
             $meta_json = ZFTB('meta_data')->where([['tb','=','advert'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
             $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             if(input('type')=='child'){
-                $tpl="rests/advert_add_child";   
+                $tpl="rests/advert_add_child";
                 $this->assign("pid",input("pid"));
                 //判断是否子类自定义
                 #####参数模式
@@ -158,11 +158,11 @@ class Rests extends Admin
                 $tpl='rests/advert_add';
                 #####参数模式
                 $form_parm_arr = getFormParams($res);
-                
+
             }
             $this->assign('form_parm_arr',$form_parm_arr);
             return view($tpl);
-        } 
+        }
         if(request()->isPost()){
             $data = input('post.');
             if($data['name']==''){
@@ -171,7 +171,7 @@ class Rests extends Admin
             $data['utime'] = time();
             deal_meta_data_edit('advert',$data,'id');
 
-        } 
+        }
     }
 
     /**
@@ -182,7 +182,7 @@ class Rests extends Admin
      * @author: 子枫
      * @Time: 2019/11/13   10:59 下午
      */
-     public function link()
+    public function link()
     {
         admin_role_check($this->z_role_list,$this->mca);
         $where[] = ['status','<>',9];
@@ -206,7 +206,7 @@ class Rests extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(!request()->isPost()){
             return view();
-        }  
+        }
         $data = input("post.");
         if($data['name']==''){
             return jserror('请填写信息');exit;
@@ -214,9 +214,9 @@ class Rests extends Admin
         $data['ctime'] = time();
         $data = array_merge($data,$this->common_tag);
         deal_meta_data_add('link',$data,'id');
-            
 
-        
+
+
     }
 
     /**
@@ -235,17 +235,17 @@ class Rests extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isGet()){
-            $res =  ZFTB('link')->where(['id'=>input('id')])->find(); 
+            $res =  ZFTB('link')->where(['id'=>input('id')])->find();
             $meta_json = ZFTB('meta_data')->where([['tb','=','link'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
             $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             return view('rests/link_add');
-        } 
+        }
         if(request()->isPost()){
             $data = input('post.');
             deal_meta_data_edit('link',$data,'id');
 
-        } 
+        }
     }
 
     /**
@@ -256,13 +256,23 @@ class Rests extends Admin
      * @author: 子枫
      * @Time: 2019/11/13   11:00 下午
      */
-     public function guessbook()
-    {   
+    public function guessbook()
+    {
         admin_role_check($this->z_role_list,$this->mca);
-        $list = ZFTB('guessbook')->where([['status','<>',9]])->order("ctime desc,sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
+        $ctype = input('ctype','');
+        if($ctype!=''){
+            $where[] = ['ctype','=',$ctype];
+        }
+        $this->assign("ctype",$ctype);
+        $where[] = ['status','<>',9];
+        $list = ZFTB('guessbook')->where($where)->order("ctime desc,sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
         $page = $list->render();
         $this->assign("list",$list);
         $this->assign("page",$page);
+
+        //类型
+        $type_list = ZFTB('guessbook')->where([['status','<>',9]])->group('ctype')->order("sort desc,id desc")->select();
+        $this->assign("type_list",$type_list);
         return view();
     }
 
@@ -278,7 +288,7 @@ class Rests extends Admin
         admin_role_check($this->z_role_list,$this->mca,1);
         if(!request()->isPost()){
             return view();
-        }  
+        }
         $data = input("post.");
         if($data['name']==''){
             return jserror('请填写信息');exit;
@@ -287,7 +297,7 @@ class Rests extends Admin
         $data = array_merge($data,$this->common_tag);
         deal_meta_data_add('guessbook',$data,'id');
 
-        
+
     }
 
     /**
@@ -306,17 +316,17 @@ class Rests extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isGet()){
-            $res =  ZFTB('guessbook')->where(['id'=>input('id')])->find(); 
+            $res =  ZFTB('guessbook')->where(['id'=>input('id')])->find();
             $meta_json = ZFTB('meta_data')->where([['tb','=','guessbook'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
             $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             return view('rests/guessbook_add');
-        } 
+        }
         if(request()->isPost()){
             $data = input('post.');
             deal_meta_data_edit('guessbook',$data,'id');
 
-        } 
+        }
     }
 
     public function menu()
@@ -340,14 +350,14 @@ class Rests extends Admin
                 }catch (Exception $e) {
                     return jserror($e->getMessage());
                 }
-                
+
             }
             $tpl='rests/menu_child';
             $where_parant[] = ['status','<>',9];
             $where_parant[] = ['pid','=',$pid];
             $arr_partent = ZFTB('menu')->where($where_parant)->order("sort asc,id asc")->select();
-            $cat = new cat(array('id', 'menu_pid', 'name', 'cname')); 
-            $list = $cat->getTree($arr_partent,0); 
+            $cat = new cat(array('id', 'menu_pid', 'name', 'cname'));
+            $list = $cat->getTree($arr_partent,0);
             if(!$list){
                 $list = [];
             }
@@ -367,20 +377,20 @@ class Rests extends Admin
         return view($tpl);
     }
 
-    
+
     public function menu_add()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
         $pid = input('pid',0);
         if(!request()->isPost()){
             if(input('type')=='child'){
-                $tpl="rests/menu_add_child";   
+                $tpl="rests/menu_add_child";
                 $this->assign("pid",$pid);
                 $where_parant[] = ['status','=',1];
                 $where_parant[] = ['pid','=',$pid];
                 $arr_partent = ZFTB('menu')->field('id,pid,name,cname,menu_pid')->where($where_parant)->order("sort asc,id asc")->select();
-                $cat = new cat(array('id', 'menu_pid', 'name', 'cname')); 
-                $plist = $cat->getTree($arr_partent,0); 
+                $cat = new cat(array('id', 'menu_pid', 'name', 'cname'));
+                $plist = $cat->getTree($arr_partent,0);
                 if(!$plist){
                     $plist = [];
                 }
@@ -397,7 +407,7 @@ class Rests extends Admin
                 $tpl='';
             }
             return view($tpl);
-        }  
+        }
         $data = input("post.");
         if($data['name']==''){
             return jserror('名称不能为空');exit;
@@ -405,27 +415,27 @@ class Rests extends Admin
         $data = array_merge($data,$this->common_tag);
         deal_meta_data_add('menu',$data,'id');
 
-        
+
     }
 
-   
+
     public function menu_edit()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
         $pid = input('pid',0);
-    	if(request()->isGet()){
-            $res =  ZFTB('menu')->where(['id'=>input('id')])->find(); 
+        if(request()->isGet()){
+            $res =  ZFTB('menu')->where(['id'=>input('id')])->find();
             $meta_json = ZFTB('meta_data')->where([['tb','=','menu'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
             $res['meta'] = json_decode($meta_json,true);
             $this->assign("res",$res);
             if(input('type')=='child'){
-                $tpl="rests/menu_add_child";   
+                $tpl="rests/menu_add_child";
                 $this->assign("pid",input("pid"));
                 $where_parant[] = ['status','=',1];
                 $where_parant[] = ['pid','=',$pid];
                 $arr_partent = ZFTB('menu')->field('id,pid,name,cname,menu_pid')->where($where_parant)->order("sort asc,id asc")->select();
-                $cat = new cat(array('id', 'menu_pid', 'name', 'cname')); 
-                $plist = $cat->getTree($arr_partent,0); 
+                $cat = new cat(array('id', 'menu_pid', 'name', 'cname'));
+                $plist = $cat->getTree($arr_partent,0);
                 if(!$plist){
                     $plist = [];
                 }
@@ -441,7 +451,7 @@ class Rests extends Admin
                 $tpl='rests/menu_add';
             }
             return view($tpl);
-        } 
+        }
         if(request()->isPost()){
             $data = input('post.');
             if($data['name']==''){
@@ -449,9 +459,9 @@ class Rests extends Admin
             }
             deal_meta_data_edit('menu',$data,'id');
 
-        } 
+        }
     }
-  
+
 
 
 }

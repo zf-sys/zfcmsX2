@@ -12,63 +12,67 @@
 </head>
 {:do_action('admin_head')}
 <body>
-  <div class="layui-fluid">
-    <div class="layui-card">
-      <div class="layui-card-body">
-        <div style="padding-bottom: 10px;">
-          <!-- <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/rests/guessbook_add")}',800)">添加</button> -->
-        </div>
-        <table class="layui-table">
-            <colgroup>
-              <col width="30">
-              <col>
-            </colgroup>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>姓名</th>          
-                <th>电话</th>          
-                <th>邮箱</th>          
-                <th>留言时间</th>          
-                <th>状态</th>
-                <th>操作</th>
-              </tr> 
-            </thead>
-            <tbody>
-              <?php foreach($list as $k=>$vo){ ?>
-                <tr>
-                  <td>{$vo['id']}</td>
-                  <td>{$vo['name']}</td>
-                  <td>{$vo['tel']}</td>
-                  <td>{$vo['email']}</td>
-                  <td>{:date("Y-m-d H:i:s",$vo['ctime'])}</td>
-                  <td> 
-                    <div class=" layui-form" lay-filter="component-form-element">        
-                       <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
-                    </div>
-                  </td>
-                  <td>
-                    <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'guessbook')" href="#">删除</a> 
-                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/guessbook_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
-                  </td>
-                </tr>
-              <?php } ?>         
-            </tbody>
-          </table>
-          {$page|raw}
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        <!-- <button class="layui-btn layui-btn-sm" onclick="zfAdminShow('添加','{:url("admin/rests/guessbook_add")}',800)">添加</button> -->
+        <a class="layui-btn layui-btn-sm {$ctype==''?'':'layui-btn-primary'}" href="{:url('admin/rests/guessbook')}" >全部</a>
+        <?php foreach($type_list as $k=>$vo){ ?>
+        <a class="layui-btn layui-btn-sm {$vo['ctype']==$ctype?'':'layui-btn-primary'}" href="{:url('admin/rests/guessbook',['ctype' => $vo['ctype']])}" >{$vo['ctype']}</a>
+        <?php } ?>
       </div>
+      <table class="layui-table">
+        <colgroup>
+          <col width="30">
+          <col>
+        </colgroup>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>邮箱</th>
+          <th>留言时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($list as $k=>$vo){ ?>
+        <tr>
+          <td>{$vo['id']}</td>
+          <td>{$vo['name']}</td>
+          <td>{$vo['tel']}</td>
+          <td>{$vo['email']}</td>
+          <td>{:date("Y-m-d H:i:s",$vo['ctime'])}</td>
+          <td>
+            <div class=" layui-form" lay-filter="component-form-element">
+              <input type="checkbox" name="status" <?php echo $vo['status']==1?'checked':''; ?> lay-skin="switch" lay-text="开启|关闭" lay-filter="status_change" item="{$vo['id']}">
+            </div>
+          </td>
+          <td>
+            <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'guessbook')" href="#">删除</a>
+            <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/guessbook_edit',['id' => $vo['id']] )}",800)'>编辑</button>
+          </td>
+        </tr>
+        <?php } ?>
+        </tbody>
+      </table>
+      {$page|raw}
     </div>
   </div>
-  {:widget_st('jq','js')}
-  {:widget_st('layui','js')}  
-  {:widget_st('common','js')} 
+</div>
+{:widget_st('jq','js')}
+{:widget_st('layui','js')}
+{:widget_st('common','js')}
 
-  <script>
- layui.use([ 'table','element'], function(){
+<script>
+  layui.use([ 'table','element'], function(){
     var $ = layui.$
-    ,form = layui.form
-    ,element = layui.element
-    ,table = layui.table;
+            ,form = layui.form
+            ,element = layui.element
+            ,table = layui.table;
 
     form.on('switch(status_change)', function(data){
       var id = $(this).attr("item")
@@ -76,18 +80,18 @@
       var status = this.checked ? '1' : '0'
       console.log(id)
       $.get("{:url('admin/common/is_switch')}",{id:id,dbname:dbname,status:status},function(res){
-          if(res.result==1){
-            layer.msg(res.msg, {icon: 1});
-          }else{
-            layer.msg(res.msg, {icon: 2});
-          }
-        },"json");
+        if(res.result==1){
+          layer.msg(res.msg, {icon: 1});
+        }else{
+          layer.msg(res.msg, {icon: 2});
+        }
+      },"json");
     });
 
 
- 
-   
+
+
   });
-  </script>
+</script>
 </body>
 </html>

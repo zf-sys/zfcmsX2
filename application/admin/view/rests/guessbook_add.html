@@ -10,67 +10,57 @@
 </head>
 {:do_action('admin_head')}
 <body>
-  <div class="layui-fluid">
-      <div class="layui-row layui-col-space15">
-        <div class="layui-col-md8">
-          <div class="layui-card">
-            <div class="layui-card-body">
-              <form class="layui-form info_tj" onclick="return false;" >
-                <?php $form_widget = new \app\common\widget\FormPro();  ?>
-                <?php if(isset($res['id'])){ ?>
-                  <input type="hidden" name="id" value="{$res.id}">
-                  {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>$res['title'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'留言人','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'电话','name'=>'tel','data'=>$res['tel'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'邮箱','name'=>'email','data'=>$res['email'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'公司','name'=>'company','data'=>$res['company'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'类型','name'=>'ctype','data'=>$res['ctype'],'theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'预算','name'=>'yusuan','data'=>$res['yusuan'],'theme'=>2])|raw}
-                  {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$res['summary'],'theme'=>2])|raw}
-                  {$form_widget->form_textarea(['title'=>'内容','name'=>'content','data'=>$res['content'],'theme'=>2])|raw}
-                  {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$res['status'],'parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
-                  <div class="layui-form-item">
-                    <div class="layui-input-block">
-                      <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/rests/guessbook_edit')" lay-submit="" lay-filter="component-form-element">提交</button>
-                    </div>
-                  </div>
-                <?php }else{ ?>
-                  {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>2])|raw}
-                  {$form_widget->form_input(['title'=>'留言人','name'=>'name','data'=>'','theme'=>2])|raw}
-                  {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>2])|raw}
-                  {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>'0','parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
-                  
-                  
-                  <div class="layui-form-item">
-                    <div class="layui-input-block">
-                      <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/rests/guessbook_add')" lay-submit="" lay-filter="component-form-element">提交</button>
-                    </div>
-                  </div>
-                <?php } ?>
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8">
+      <div class="layui-card">
+        <div class="layui-card-body">
+          <form class="layui-form info_tj" onclick="return false;" >
+            <?php $form_widget = new \app\common\widget\FormPro();  ?>
+            <?php if(isset($res['id'])){ ?>
+            <input type="hidden" name="id" value="{$res.id}">
 
-                
-              </form>
+
+            {:do_action('add_guessbook_edit_view',$res,$form_widget)}
+
+
+            <?php }else{ ?>
+            {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>2])|raw}
+            {$form_widget->form_input(['title'=>'留言人','name'=>'name','data'=>'','theme'=>2])|raw}
+            {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>2])|raw}
+            {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>'0','parm_data'=>['0'=>'关闭','1'=>'开启'],'theme'=>2])|raw}
+
+
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/rests/guessbook_add')" lay-submit="" lay-filter="component-form-element">提交</button>
+              </div>
             </div>
-          </div>
-        
-          
-          
+            <?php } ?>
+
+
+          </form>
         </div>
-        
       </div>
+
+
+
     </div>
 
-  {:widget_st('layui','js')}  
-  {:widget_st('common','js')} 
+  </div>
+</div>
 
-  <script>
- layui.use(['form', 'upload'], function(){
+{:widget_st('layui','js')}
+{:widget_st('common','js')}
+
+<script>
+  layui.use(['form', 'upload'], function(){
     var $ = layui.$
-    ,form = layui.form
-    ,upload = layui.upload ;
-    
-    
+            ,form = layui.form
+            ,upload = layui.upload ;
+
+
   })
-  </script>
+</script>
 </body>
 </html>
