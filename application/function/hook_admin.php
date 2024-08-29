@@ -130,5 +130,8 @@ add_action('admin_field_append_view_left',function ($hook_data,$form_widget){
         echo $html;
 });
 
-
+add_action('zf_home_js',function (){
+    $html = ZFC("webconfig.site_js");
+    echo $html;
+});
 
