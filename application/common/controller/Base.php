@@ -14,6 +14,9 @@ use think\captcha\Captcha;
 class Base extends Controller
 {
     public function __construct ($load = true){
+        $zfcommon = new \zf\ZfCommon();
+        $zfcommon->load_plug_tag();
+
         $this->module = strtolower(request()->module());
         $this->controller = strtolower(request()->controller());
         $this->action = strtolower(request()->action());
@@ -220,6 +223,35 @@ class Base extends Controller
         }
         $this->temp_plugin = '';
     }
+
+    /**
+     * zfyun初始化
+     */
+    public function zfyun_init(){
+        if(ZFC('webconfig.site_path')){
+            if(ZFC('webconfig.site_path')!=''){
+                $this->site_dir = true;
+            }else{
+                $this->site_dir = false;
+            }
+        }else{
+            $this->site_dir = false;
+        }
+        $this->assign('site_dir',$this->site_dir);
+        if($this->site_dir){
+            echo "Prohibit the use of secondary directory access";
+            die;
+        }
+        $this->temp_plugin = '';
+        $client_config['site'] = request()->host();
+        if(isHTTPS()){
+            $client_config['http'] = 'https';
+        }else{
+            $client_config['http'] = 'http';
+        }
+        $client_config['token'] = ZFC('zf_auth.site_token','file');
+        $this->assign('client_config',$client_config);
+    }
     public function upgrade_sys_sql(){
         if(!$this->is_professional_edition){
             echo str_show_tpl($this->sqb_error_msg); die;
@@ -234,6 +266,153 @@ class Base extends Controller
             $this->success('更新Sql成功');
         }
     }
+
+    /**
+     * 模板列表的调用
+     */
+    public function zfyun_themes(){
+        //数据库方式
+        $z_module=input('z_module','index');
+        $list = db('plugin')->where([['status','<>',9],['type','=','theme']])->order('sort desc,id asc')->paginate(10,false,['query' => request()->param()])->each(function($item, $key){
+            $_file = './theme/'.$item['plugin_name'];
+            if( is_dir($_file) && file_exists($_file.'/plugin_info.php')){
+                $item['ok'] = 1;
+                $item['path'] = $_file;
+            }else{
+                $item['ok'] = 0;
+                $item['path'] = $_file;
+            }
+            return $item;
+        });
+
+        $this->assign('list',$list);
+        $page = $list->render();
+        $this->assign("page",$page);
+
+
+        $this->assign('tpl_name',ZFC('zf_tpl_suffix'));
+    }
+    /**
+     * 插件列表的调用
+     */
+    public function zfyun_plugins(){
+        $z_module=input('z_module','plugins');
+        $list = db('plugin')->where([['status','<>',9],['type','=','plugin']])->order('sort desc,id asc')->paginate(10,false,['query' => request()->param()])->each(function($item, $key){
+            $_file = './addons/'.$item['plugin_name'].'/config';
+            if( is_dir($_file) && file_exists($_file.'/plugin_info.php')){
+                $item['ok'] = 1;
+                $item['path'] = $_file;
+            }else{
+                $item['ok'] = 0;
+                $item['path'] = $_file;
+            }
+            $plugin_file = './addons/'.$item['plugin_name'].'/controller/Plugin.php';
+            if(file_exists($plugin_file)){
+                $_class = "\addons\\".$item['plugin_name']."\controller\Plugin";
+                $plugin_obj = new $_class();
+                if($plugin_obj && method_exists($plugin_obj,'menu_act')){
+                    $item['menu_act'] = $plugin_obj->menu_act();
+                }else{
+                    $item['menu_act'] =false;
+                }
+            }else{
+                $item['menu_act'] =false;
+            }
+
+            return $item;
+        });
+        $this->assign('list',$list);
+        $page = $list->render();
+        $this->assign("page",$page);
+    }
+
+
+    /**
+     * 文件输出接口
+     * /get_file_out?....
+     */
+    public function get_file_out(){
+        $id = input('id','');
+        $token = input('token','');
+        if($id==''){ echo "parameter error";die; }
+        $res = db('upload')->where([['id','=',$id],['token','=',$token]])->cache(true,60*5)->find();
+        if(!$res){ echo "parameter error";die; }
+        if($res['status']==9){ echo "File has been deleted";die; }
+        if($res['status']!=1){ echo "File blocking access";die; }
+        $url = $res['url'];
+        if(ZFC('webconfig.get_file_out_ptype')=='slt' &&  isset($res['thumb']) && $res['thumb']!=''){
+            $url = $res['thumb'];
+        }
+        //判断缓存输出
+        if(ZFC('webconfig.is_upload_chrome_cache')==1){
+            $this->statics($url);
+        }else{
+            // 原样输出
+            $file_fr = pathinfo($url);
+            $application= get_mimetype($file_fr['extension']);
+            header("Content-type: ".$application);
+            header("Content-Length: ".$res['size']);
+            $fp = fopen($url, "rb"); //二进制方式打开文件
+            fpassthru($fp); // 输出至浏览器
+            exit;
+        }
+    }
+    /**
+     * base的静态文件304
+     * /statics?p=路径
+        http://master.x2.zfcms.90ckm.com/statics?p=https://cdn.learnku.com/uploads/avatars/1_1530614766.png
+        http://master.x2.zfcms.90ckm.com/statics?p=http://plugin.x2.zfcms.90ckm.com/addons/zf_test/data/1.png
+        http://master.x2.zfcms.90ckm.com/statics?p=http://bbs.wangmingchang.com/forum.php?mod=image&aid=7608&size=300x300&key=d6a4aff7413e7188&nocache=yes&type=fixnone
+        http://master.x2.zfcms.90ckm.com/statics?p=https://www.runoob.com/try/demo_source/movie.mp4 
+        http://master.x2.zfcms.90ckm.com/statics?p=https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png
+        http://master.x2.zfcms.90ckm.com/statics?p=https://cdn.learnku.com/uploads/avatars/1_1530614766.png
+        http://master.x2.zfcms.90ckm.com/statics?p=./index.php   须在后台配置 v0.231008版本
+     */
+    public function statics(){
+        $p = input('p','');
+        $dir = $p;
+        if($dir==''){
+          echo 'parameter error';die;
+        }
+        $file_fr = pathinfo($dir);
+        if(!isset($file_fr['extension'])){
+            if (strpos($dir, '/get_file_out?id=') !== false) {
+                // $_url_arr = parse_url($dir);
+                // dd($_url_arr);
+            }
+            echo 'link does not include suffix, does not support use';die;
+        }
+        if(!in_array($file_fr['extension'], explode(',',ZFC("webconfig.statics_ext")))){
+            echo 'This format is currently not supported';die;
+        }
+        $application= get_mimetype($file_fr['extension']);
+        header("Content-type: ".$application);
+        if (filter_var($dir, FILTER_VALIDATE_URL) !== false) {
+            $last_modified_time = strtotime(date("Y-m"));
+        }else{
+            if(is_file($dir)){
+                $last_modified_time = filemtime($dir);
+            }elseif(is_file('.'.$dir)){
+                $dir = '.'.$dir;
+                $last_modified_time = filemtime($dir);
+            }else{
+                $last_modified_time = '';
+            }
+        }
+        $etag = md5($dir); 
+        header("Last-Modified: ".gmdate("D, d M Y H:i:s", $last_modified_time)." GMT");
+        header("Etag: $etag");
+        //使用缓存
+        if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $last_modified_time ||        @trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+            header("HTTP/1.1 304 Not Modified");
+            exit; 
+        }
+        $fp = fopen($dir, "rb"); //二进制方式打开文件
+        fpassthru($fp); // 输出至浏览器
+        exit;
+    }
+
+    
     
 }
 

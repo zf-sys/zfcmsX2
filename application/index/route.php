@@ -51,11 +51,6 @@ if(isset($_SERVER['REQUEST_URI'])){
 		if(file_exists($_file)){
 			include $_file;
 		}
-        //方法
-        $_file = './theme/'.$val.'/function.php';
-        if(file_exists($_file)){
-            include $_file;
-        }
 	}else{
 		$_file = './theme/def/route.php';
 		if(file_exists($_file)){

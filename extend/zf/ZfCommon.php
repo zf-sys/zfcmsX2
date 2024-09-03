@@ -74,4 +74,25 @@ class ZfCommon extends Controller
         }
     }
 
+
+    //加载插件/模板中钩子
+    public function load_plug_tag(){
+//        $func_file = './addons/zf_adminer2/function.php';
+//        if(file_exists($func_file)){
+////            dd('插件加载');
+//            include_once($func_file);
+//        }
+        $list = db('plugin')->where(['status'=>1,'type'=>'plugin'])->order('sort desc,id asc')->select();
+        foreach($list as $k=>$vo){
+            $func_file = './addons/'.$vo['plugin_name'].'/function.php';
+            if(file_exists($func_file)){
+                include_once($func_file);
+            }
+        }
+        //模板
+        $mb_name = ZFC('zf_tpl_suffix');
+        if($mb_name!='' && file_exists('./theme/'.$mb_name.'/function.php')){
+            include_once('./theme/'.$mb_name.'/function.php');
+        }
+    }
 }

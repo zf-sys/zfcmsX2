@@ -22,6 +22,7 @@ class Index extends Admin
 {
     public function __construct (){
         parent::__construct();
+
     }
 
     /**
@@ -196,6 +197,7 @@ class Index extends Admin
             }
 
         }
+
         $ret_menu = apply_filters('admin_menu_append',$menu,'array');
         $arr['menuInfo'] = $ret_menu;
         return $arr;
