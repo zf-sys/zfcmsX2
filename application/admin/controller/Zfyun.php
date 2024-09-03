@@ -111,32 +111,175 @@ class Zfyun extends Admin
     }
     public function themes_upload(){
         admin_role_check($this->z_role_list,$this->mca);
-        $this->zfyun_themes_upload();
+        $z_module=input('z_module','index');
+        // $this->zfapi_upload_plugin($z_module);
+        if(request()->isPost()){
+            $file = $_FILES['file'];
+            $file2 = request()->file('file');
+            $save_path = './upgrade/'.$z_module.'/zip';
+            $info = $file2->validate(['ext'=>'zip'])->move($save_path);
+            $getSaveName = str_replace('\\', '/', $info->getSaveName());
+            //win下反斜杠替换成斜杠
+            //清空缓存目录
+            if(is_dir('./upgrade/'.$z_module.'/temp_data')){
+                $r = deldir('./upgrade/'.$z_module.'/temp_data');
+                if(!$r){
+                    die('Failed to delete directory, please check permissions (./upgrade/'.$z_module.'/temp_data)');
+                }
+            }
+            mkdir('./upgrade/'.$z_module.'/temp_data',0777,true);
+            if($getSaveName){
+                $y_path = $save_path.'/'.$getSaveName;
+                $zip = new \ZipArchive();
+                if ($zip->open($y_path)=== TRUE){
+                    $r = $zip->extractTo('./upgrade/'.$z_module.'/temp_data');
+                    $zip->close();
+                }
+                if(!$r){
+                    return jserror('Decompression failed');
+                }
+                $dir = './upgrade/'.$z_module.'/temp_data';
+                $_file = $dir.'/plugin_info.php';
+                if(file_exists($_file)){
+                    $data = include $_file;
+                    $plugin_name = $data['plugin_name'];
+                    $version = $data['version'];
+                    if(is_dir('./upgrade/'.$z_module.'/temp_data')){
+                        copydir('./upgrade/'.$z_module.'/temp_data','./theme/'.$plugin_name);   //copydir('旧','新');
+                    }
+                    if(!is_dir('./theme/'.$plugin_name)){
+                        return jserror('move_error');
+                    }else{
+                        return jssuccess('Installed successfully');
+                    }
+                }else{
+                    return jserror("Configuration file plugin_Info.php does not exist");
+                }
+            }else{
+                return jserror("Upload failed");
+            }
+            die;
+        }
+
+
     }
     public function plugin_upload(){
         admin_role_check($this->z_role_list,$this->mca);
-        $this->zfyun_plugin_upload();
+        $z_module=input('z_module','plugins');
+        if(request()->isPost()){
+            $file = $_FILES['file'];
+            $file2 = request()->file('file');
+            $save_path = './upgrade/'.$z_module.'/zip';
+            $info = $file2->validate(['ext'=>'zip'])->move($save_path);
+            $getSaveName = str_replace('\\', '/', $info->getSaveName());
+            //清空缓存目录
+            if(is_dir('./upgrade/'.$z_module.'/temp_data')){
+                $r = deldir('./upgrade/'.$z_module.'/temp_data');
+                if(!$r){
+                    die('Failed to delete directory, please check permissions(./upgrade/'.$z_module.'/temp_data)');
+                }
+            }
+            mkdir('./upgrade/'.$z_module.'/temp_data',0777,true);
+            if($getSaveName){
+                $y_path = $save_path.'/'.$getSaveName;
+                //解压
+                $zip = new \ZipArchive();
+                if ($zip->open($y_path)=== TRUE){
+                    $r = $zip->extractTo('./upgrade/'.$z_module.'/temp_data');
+                    $zip->close();//关闭处理的zip文件
+                }
+                if(!$r){
+                    return jserror('Decompression failed');
+                }
+                $dir = './upgrade/'.$z_module.'/temp_data';
+                $_file = $dir.'/config/plugin_info.php';
+                if(file_exists($_file)){
+                    $data = include $_file;
+                    $plugin_name = $data['plugin_name'];
+                    $version = $data['version'];
+                    if(is_dir('./addons/'.$plugin_name) && file_exists('./addons/'.$plugin_name.'/config/plugin_info.php')){
+                        //判断版本
+                        $data_y = include './addons/'.$plugin_name.'/config/plugin_info.php';
+                        $version_y = $data_y['version'];
+                        if($version_y==$version){
+                            return jserror('This version already exists');
+                        }
+                    }
+                    #@#
+                    $this->_back_plugin($plugin_name,$z_module);
+                    $update_act = [
+                        'controller',
+                        'view',
+                        'config',
+                        'data',
+                    ];
+                    foreach($update_act as $k=>$vo){
+                        if(is_dir('./upgrade/'.$z_module.'/temp_data/'.$vo)){
+                            copydir('./upgrade/'.$z_module.'/temp_data/'.$vo,'./addons/'.$plugin_name.'/'.$vo);   //copydir('旧','新');
+                        }
+                    }
+                    if(!is_dir('./addons/'.$plugin_name)){
+                        return jserror('Move failed');
+                    }else{
+                        return jssuccess('Installed successfully');
+                    }
+                }else{
+                    return jserror("Configuration file plugin_Info.php does not exist");
+                }
+            }else{
+                return jserror("Upload failed");
+            }
+            die;
+        }
     }
     public function plugin_uninstall(){
         admin_role_check($this->z_role_list,$this->mca);
-      $this->zfyun_plugin_uninstall();
+        $z_module=input('z_module','addons');
+        $plugin_name = input('plugin_name','');
+        //删除,目录文件
+        if($plugin_name==''){
+            return jserror('parameter error');
+        }
+        if(is_dir('./addons/'.$plugin_name)){
+            deldir('./addons/'.$plugin_name);
+        }
+        if(is_dir('./addons/'.$plugin_name)){
+            return jserror('Delete failed');
+        }else{
+            return jssuccess('Delete successful');
+        }
+
     }
     public function themes_uninstall(){
         admin_role_check($this->z_role_list,$this->mca);
-        $this->zfyun_themes_uninstall();
+        $z_module=input('z_module','index');
+        $plugin_name = input('plugin_name','');
+        //删除,目录文件
+        if($plugin_name==''){
+            return jserror('parameter error');
+        }
+        if(is_dir('./theme/'.$plugin_name)){
+            deldir('./theme/'.$plugin_name);
+        }
+        if(is_dir('./theme/'.$plugin_name)){
+            return jserror('Delete failed');
+        }else{
+            return jssuccess('Delete successful');
+        }
     }
     public function plugin_backup(){
         admin_role_check($this->z_role_list,$this->mca);
-        $this->zfyun_plugin_backup();
+        dd('暂不支持');
     }
     public function theme_backup(){
         admin_role_check($this->z_role_list,$this->mca);
-        $this->zfyun_theme_backup();
+        dd('暂不支持');
     }
    
     public function plugin_act(){
         admin_role_check($this->z_role_list,$this->mca);
-        $this->zfyun_plugin_act();
+        dd('暂不支持');
+//        $this->zfyun_plugin_act();
     }
     public function upgrade(){
         admin_role_check($this->z_role_list,$this->mca);

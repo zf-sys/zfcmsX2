@@ -11,6 +11,7 @@
 
 return [
     'app\common\command\Task',
+    'cron:run' => 'app\command\Cron',
 ];
 
 
