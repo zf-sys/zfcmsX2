@@ -602,3 +602,21 @@ if (!function_exists('get_cate_list_v2')) {
         return $list;
     }
 }
+
+/**
+ * 240912新增
+ * 获取表字段内容
+ */
+if (!function_exists('get_tb_field')) {
+    function get_tb_field($tb='category',$field='content',$cid=''){
+        if($tb=='category'){
+            $res =ZFTB($tb)->where('cid',$cid)->value($field);
+        }else{
+            $res =ZFTB($tb)->where('id',$cid)->value($field);
+        }
+        if($res==''){
+            return '';
+        }
+        return $res;
+    }
+}
