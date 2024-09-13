@@ -53,7 +53,7 @@
                 <?php if($pid==0){ ?>
                 <option value="0">---顶级目录---</option>
                 <?php }else{ ?>
-                <option value="{$pid}"><?php echo get_cate_name($pid); ?></option>
+                <option value="{$pid}"><?php echo get_cate_name('category',$pid); ?></option>
                 <?php } ?>
                 <?php if(is_array($list)){ ?>
                 <?php foreach($list as $k=>$vo){ ?>
@@ -73,6 +73,9 @@
 
 
     <div class="layui-card-body">
+      <?php if($pid!=0){?>
+        <button class="layui-btn layui-btn-sm " onclick='zfAdminShow("父类栏目","{:url('admin/category/category_edit',['cid' => $pid] )}")'>父类栏目</button>
+      <?php }?>
       <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("批量修改栏目","{:url('admin/category/cate_all_edit',['type'=>$type])}")'>批量修改栏目</button>
       <button class="layui-btn layui-btn-sm" id="expandAll">一键展开</button>
       <button class="layui-btn layui-btn-sm" id="collapseAll">一键收缩</button>
