@@ -32,7 +32,8 @@
               </div>
             </form>
               <div class="layui-inline">
-                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("新增内容","{:url('admin/category/post_add',['cid' => $cid,'mid' => $mid] )}")'>新增</button> 
+                <button class="layui-btn layui-btn-sm " onclick='zfAdminShow("栏目设置","{:url('admin/category/category_edit',['cid' => $cid] )}")'>栏目设置</button>
+                  <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("新增内容","{:url('admin/category/post_add',['cid' => $cid,'mid' => $mid] )}")'>新增</button>
               </div>
           </div>
         </div>

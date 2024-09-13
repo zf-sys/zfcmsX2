@@ -14,6 +14,8 @@ $html = $general_tb->setHtmlHead([widget_st('layui','css')])
 ->setFormItem('keyword','text','关键词',$keyword,['theme_type'=>2,'col'=>4,'placeholder'=>'请输入标题或内容或摘要'])
 ->setFormItem('cid','select','分类',$cid,['theme_type'=>2,'options'=>$plist,'option_id'=>'cid','option_name'=>'name','placeholder'=>'请选择类别'])
 //    按钮
+
+->setBtnItem('onclick','栏目设置',url('admin/category/category_edit',['cid' => $cid] ))
 ->setBtnItem('onclick','新增内容',url('admin/category/post_add',['cid' => $cid,'mid' => $mid] ))
 ->setBtnItem('onclick','批量新增',url('admin/category/post_add_pl',['cid' => $cid,'mid' => $mid] ))
 ->setBtnItem('href','全部',url('admin/category/post_list',['cid' => $cid,'mid' => $mid] ),['target'=>'_self','class'=>'layui-btn-normal'])
