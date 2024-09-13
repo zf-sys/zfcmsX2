@@ -2239,7 +2239,7 @@ if(!function_exists('deal_meta_data_add')){
         }
         //判断diy_url是否存在
         if(isset($data['meta']['diy_url'])){
-            if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1]])->find()){
+            if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1]])->find() && $data['meta']['diy_url']!=''){
                 return ZFRetMsg(false,'','自定义URL已存在,请换个链接');
             }
             //判断是否字符中有空格
@@ -2300,7 +2300,7 @@ if(!function_exists('deal_meta_data_edit')){
         }
         //判断diy_url是否存在
         if(isset($data['meta']['diy_url'])){
-            if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1],['post_id','<>',$data[$field_id]]])->find()){
+            if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1],['post_id','<>',$data[$field_id]]])->find() && $data['meta']['diy_url']!=''){
                 return ZFRetMsg(false,'','自定义URL已存在,请换个链接');
             }
             //判断是否字符中有空格
