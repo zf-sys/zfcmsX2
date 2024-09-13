@@ -169,8 +169,11 @@ if (!function_exists('get_tag_list')) {
     }
 }
 if (!function_exists('get_links_list')) {
-    function get_links_list($tb='',$limit=10){
+    function get_links_list($tb='',$limit=10,$type=''){
         if($tb=='') $tb = 'link';
+        if($type!=''){
+            $where[] = ['type','=',$type];
+        }
         $list = db($tb)->where(['status'=>1,'lang'=>ZLANG])->order('id desc')->limit($limit)->select();
         return $list;
     }
