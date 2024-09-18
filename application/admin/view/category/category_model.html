@@ -69,7 +69,11 @@
                 <tr>
                   <td>{$vo['id']}</td>
                   <td>
+                    <?php if(ZFC("webconfig.isshow_form_parm")==1){ ?>
                     <a  onclick='zfAdminShow("设置静态文件","{:url('admin/setting/category_form_parm',['id' => $vo['id'],'tb_name'=>'zf_category_model'] )}?t=4")' >
+                    <?php }else{ ?>
+                    <a href="#">
+                    <?php } ?>
                     {$vo['name']}
                       </a>
                   </td>

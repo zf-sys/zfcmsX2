@@ -38,7 +38,11 @@
                 <tr>
                   <td>{$vo['id']}</td>
                   <td>
+                    <?php if(ZFC("webconfig.isshow_form_parm")==1){ ?>
                     <a  onclick='zfAdminShow("编辑参数","{:url('admin/setting/category_form_parm',['id' => $vo['id'],'tb_name'=>'zf_advert'] )}")' >
+                    <?php }else{ ?>
+                    <a href="#">
+                    <?php } ?>
                       {$vo['name']}
                     </a>
                   </td>

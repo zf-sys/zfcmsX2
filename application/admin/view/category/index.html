@@ -111,7 +111,11 @@
             <?php else: ?>
             <span class="no-expand">&nbsp;&nbsp;</span>
             <?php endif; ?>
-            <a onclick='zfAdminShow("编辑参数","{:url('admin/setting/category_form_parm',['id' => $vo['cid']] )}")'>
+            <?php if(ZFC("webconfig.isshow_form_parm")==1){ ?>
+              <a onclick='zfAdminShow("编辑参数","{:url('admin/setting/category_form_parm',['id' => $vo['cid']] )}")'>
+            <?php }else{ ?>
+              <a href="#">
+            <?php } ?>
             {$vo['name']}
             </a>
             <?php if(isset($vo['form_parm']) && $vo['form_parm']!=''){ echo ''; } ?>

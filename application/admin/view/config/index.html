@@ -55,7 +55,7 @@
               当前模板配置
             </a>
             <?php } ?>
-            <?php $menu_type = ['网站设置','网站TDK','系统设置','上传设置','水印配置','后台配置','备份相关','JS设置','默认状态','通知','SEO','AI中转站']; ?>
+            <?php $menu_type = ['网站设置','网站TDK','系统设置','开发者','上传设置','水印配置','后台配置','备份相关','JS设置','默认状态','通知','SEO','AI中转站']; ?>
             <?php foreach($menu_type as $k=>$vo){ ?>
               <a class="layui-btn layui-btn-sm {$vo!=$type?'layui-btn-primary':''}" href='{:url("config/index")}?type={$vo}'>{$vo}</a>
               <?php } ?>
@@ -161,8 +161,12 @@
                       {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_path")</span>不为空时,后台登录路径改为 /adminLogin/设置的路径token ,原来的登录路径失效</div>','theme'=>2])|raw}
                     </div>
                   <?php } ?>
-                
-                
+
+                <?php }elseif($type=='开发者'){ ?>
+                  <div  class="list_item" >
+                    {$form_widget->form_radio(['title'=>'Diy_form显示','name'=>'isshow_form_parm','data'=>isset_arr_key($config,'isshow_form_parm',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.isshow_form_parm")</span>自定义参数</div>','theme'=>2])|raw}
+                  </div>
                 <?php }elseif($type=='上传设置'){ ?>
                     <div class="layui-form-item layui-form-text">
                       <label class="layui-form-label">上传设置:</label>
