@@ -38,9 +38,7 @@ class ZfAi
      */
     public function zfyun_openai($content,$sys_message=''){
         
-//        $ai_gpt_model = isset_arr_key($this->webconfig,'ai_gpt_model','');
-        $ai_gpt_model = 'zfcms_seo_v1';
-//        $ai_gpt_model = 'gpt-4o-mini';
+        $ai_gpt_model = isset_arr_key($this->webconfig,'ai_gpt_model','gpt-4o-mini');
         if($ai_gpt_model==''){
             return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置文字模型'];
         }
@@ -135,11 +133,12 @@ class ZfAi
     }
     /**
      * 远程获取openai认证的中转域名
+     * 已废弃
      */
     private function aihost_authhost_token(){
 
         $this->aihost_auth_domain_arr = [
-            'https://gptapi.jianshe2.com'
+            'https://api.bigmodel.org'
         ];
     }
 
