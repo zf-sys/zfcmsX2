@@ -203,3 +203,96 @@ window.addEventListener("load", function() {
     echo $html;
 }
 add_action('admin_js', 'admin_js_html1',1);
+
+
+//ai写url
+add_action('admin_diy_url_view',function ($hook_data){
+    $html = '';
+    $html.='<a class="layui-btn ai_url_act" item-t="diy_url">AI生成URL</a>';
+    $html.='<script>
+  $(document).on("click", ".ai_url_act", function(){
+    var index = layer.load(2);
+    var t = $(this).attr("item-t");
+    var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();
+    $.ajax({
+        type:"post",
+        url:"/common/api/common_act?z_type=ai_write_url&ai_w_type="+t,
+        data:data,
+        dataType:"json",
+        success:function(res){
+            layer.close(index);
+            if(res.result==1){
+                layer.msg(res.msg, {icon: 1});
+                if(t=="diy_url"){
+                    $("input[name=\'meta[diy_url]\']").val(res.data.diy_url);
+                    $(".diy_url_a").attr("href","/"+res.data.diy_url+".html")
+                    $(".diy_url").text(res.data.diy_url)
+                }else{
+                    layer.msg("未知操作", {icon: 2});
+                }
+            }else{
+                if(res.msg.indexOf("只支持ZFSYS授权的中转")!=-1 || res.msg.indexOf("获取数据错误,请查看提示词是否正")!=-1){
+                    layer.confirm(res.msg, {
+                            btn: ["关闭","查看说明"] //按钮
+                        }, function(){
+                        layer.closeAll();
+                    }, function(){
+                        window.open("//bbs.zf-sys.com/bbs_detail/188.html")
+                        });
+                    }else{
+                    layer.confirm(res.msg, {
+                            btn: ["关闭"] //按钮
+                        }, function(){
+                        layer.closeAll();
+                    })
+                }
+            }
+        }
+    })
+});
+    </script>';
+    echo $html;
+});
+//ai写tdk  操作方法
+add_action('common_act', function ($thi){
+    $z_type = input('z_type','');
+    if($z_type=='ai_write_url'){
+        $zfai = new \zf\ZfAi();
+        $ai_w_type = input('ai_w_type','');
+        $data = input('post.');
+        if($ai_w_type=='diy_url'){
+            $sys_message = '通过下面提供的标题生成适合SEO的URL,url链接不要存在空格等特殊符号开头不要加/,直接返回json数据,例如: {title: "网页标题", diy_url: "网站访问链接" }';
+            if(isset($data['title'])){
+                $old_content = html_out_par($data['title'],1000);
+            }elseif(isset($data['name'])){
+                $old_content = html_out_par($data['name'],1000);
+            }else{
+                return ZFRetMsg(false,'参数错误,请联系开发者');
+            }
+
+//            dd($old_content);
+            $_data = $zfai->zfyun_openai($old_content,$sys_message);
+            if($_data['code']==0){
+                return ZFRetMsg(false,'',$_data['msg']);
+            }
+            $_ret_data_arr = json_decode($_data['msg'],true);
+            if(!$_ret_data_arr){
+                return ZFRetMsg(false,'','获取数据错误,请查看提示词是否正确或稍后再试');
+            }
+            if(isset($_ret_data_arr['title']) && isset($_ret_data_arr['diy_url']) )
+            {
+                $ret_data['title'] = $_ret_data_arr['title'];
+                $ret_data['diy_url'] = $_ret_data_arr['diy_url'];
+            }   else{
+                return ZFRetMsg(false,'','获取数据错误,请查看提示词是否正确或稍后再试2');
+            }
+
+            echo json_encode(array("msg" => '获取成功,请查看是否匹配', "data" => $ret_data, "result" => '1'));exit;
+
+        }else{
+            return jserror('该类型不存在');
+        }
+    }
+
+});
+

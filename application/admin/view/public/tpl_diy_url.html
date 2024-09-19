@@ -10,5 +10,8 @@
     <div style="{$res['meta']?'display: none;':''}">
         {$form_widget->form_input(['title'=>'自定义URL','name'=>'meta[diy_url]','data'=>isset_arr_key($res['meta'],'diy_url',''),'placeholder'=>'如：welcome','theme'=>1])|raw}
     </div>
+    <div style="margin-left: 15px;">
+        {:do_action('admin_diy_url_view',$hook_data)}
+    </div>
 
 </blockquote>
