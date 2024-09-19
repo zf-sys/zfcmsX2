@@ -32,8 +32,14 @@ class Hook
     public static function add_action($hook, $callback, $priority = 10)
     {
         if (self::$is_sandbox_mode) {
+            if (!isset(self::$sandbox_actions[$hook][$priority])) {
+                self::$sandbox_actions[$hook][$priority] = [];
+            }
             self::$sandbox_actions[$hook][$priority][] = $callback;
         } else {
+            if (!isset(self::$actions[$hook][$priority])) {
+                self::$actions[$hook][$priority] = [];
+            }
             self::$actions[$hook][$priority][] = $callback;
         }
     }
@@ -48,11 +54,14 @@ class Hook
         }
 
         if (isset($actions[$hook])) {
-            foreach (self::get_hooks_by_priority($actions[$hook]) as $callback) {
-                try {
-                    call_user_func_array($callback, $params);
-                } catch (\Exception $e) {
-                    handle_hook_exception($hook, $callback, $e);
+            ksort($actions[$hook]); // 按优先级排序
+            foreach ($actions[$hook] as $priority => $callbacks) {
+                foreach ($callbacks as $callback) {
+                    try {
+                        call_user_func_array($callback, $params);
+                    } catch (\Exception $e) {
+                        handle_hook_exception($hook, $callback, $e);
+                    }
                 }
             }
         }
@@ -62,8 +71,14 @@ class Hook
     public static function add_filter($hook, $callback, $priority = 10)
     {
         if (self::$is_sandbox_mode) {
+            if (!isset(self::$sandbox_filters[$hook][$priority])) {
+                self::$sandbox_filters[$hook][$priority] = [];
+            }
             self::$sandbox_filters[$hook][$priority][] = $callback;
         } else {
+            if (!isset(self::$filters[$hook][$priority])) {
+                self::$filters[$hook][$priority] = [];
+            }
             self::$filters[$hook][$priority][] = $callback;
         }
     }
@@ -74,11 +89,14 @@ class Hook
         $filters = self::$is_sandbox_mode ? self::$sandbox_filters : self::$filters;
 
         if (isset($filters[$hook])) {
-            foreach (self::get_hooks_by_priority($filters[$hook]) as $callback) {
-                try {
-                    $value = call_user_func_array($callback, array_merge([$value], $params));
-                } catch (\Exception $e) {
-                    handle_hook_exception($hook, $callback, $e);
+            ksort($filters[$hook]); // 按优先级排序
+            foreach ($filters[$hook] as $priority => $callbacks) {
+                foreach ($callbacks as $callback) {
+                    try {
+                        $value = call_user_func_array($callback, array_merge([$value], $params));
+                    } catch (\Exception $e) {
+                        handle_hook_exception($hook, $callback, $e);
+                    }
                 }
             }
         }
@@ -114,7 +132,7 @@ class Hook
                 foreach ($callbacks as $key => $registered_callback) {
                     if (self::compare_callbacks($registered_callback, $callback)) {
                         unset(self::${$storage}[$hook][$priority][$key]);
-                        // 如���某个优先级下的钩子为空，删除该优先级
+                        // 如某个优先级下的钩子为空，删除该优先级
                         if (empty(self::${$storage}[$hook][$priority])) {
                             unset(self::${$storage}[$hook][$priority]);
                         }
