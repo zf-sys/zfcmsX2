@@ -135,3 +135,71 @@ add_action('zf_home_js',function (){
     echo $html;
 });
 
+
+//后台加载效果
+function admin_head_html1()
+{
+    $html = '<style>';
+    $html .= '.loading-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 转圈圈样式 */
+.loading-spinner {
+    border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>';
+    echo $html;
+}
+add_action('admin_head', 'admin_head_html1',1);
+function admin_js_html1()
+{
+    $html = '<script>
+      // 创建加载动画
+function createLoadingOverlay() {
+    var overlay = document.createElement("div");
+    overlay.className = "loading-overlay";
+
+    var spinner = document.createElement("div");
+    spinner.className = "loading-spinner";
+
+    overlay.appendChild(spinner);
+    document.body.appendChild(overlay);
+
+    return overlay;
+}
+
+// 显示加载动画
+var loadingOverlay = createLoadingOverlay();
+
+// 在页面加载完成后延迟隐藏加载动画
+window.addEventListener("load", function() {
+    setTimeout(function() {
+        if (loadingOverlay && loadingOverlay.parentNode) {
+            loadingOverlay.parentNode.removeChild(loadingOverlay);
+        }
+    }, 200); // 2000毫秒 = 2秒
+});
+</script>';
+    echo $html;
+}
+add_action('admin_js', 'admin_js_html1',1);
