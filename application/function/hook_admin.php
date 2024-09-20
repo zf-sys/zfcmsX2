@@ -296,3 +296,12 @@ add_action('common_act', function ($thi){
 
 });
 
+
+//后台index.html  fa图标 白色
+add_action('admin_head', function () {
+    $html = '<style>
+    .fa{color: #fff !important;}
+    .fa_black{color: #000 !important;}
+    </style>';
+    echo $html;
+},1);

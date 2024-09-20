@@ -32,7 +32,7 @@
 
         <div class="layuimini-header-content">
             <a>
-                <div class="layuimini-tool"><i title="展开" class="fa fa-outdent" data-side-fold="1"></i></div>
+                <div class="layuimini-tool"><i title="展开" class="fa fa_black fa-outdent" data-side-fold="1"></i></div>
             </a>
 
             <!--电脑端头部菜单-->
@@ -42,7 +42,7 @@
             <!--手机端头部菜单-->
             <ul class="layui-nav layui-layout-left layuimini-header-menu layuimini-mobile-show">
                 <li class="layui-nav-item">
-                    <a href="javascript:;"><i class="fa fa-list-ul"></i> 选择模块</a>
+                    <a href="javascript:;"><i class="fa fa_black fa-list-ul"></i> 选择模块</a>
                     <dl class="layui-nav-child layuimini-menu-header-mobile">
                     </dl>
                 </li>
@@ -52,16 +52,16 @@
                 {:doZfAction('admin_right_menu',['data'=>''])}
 
                 <li class="layui-nav-item" >
-                    <a target="_blank" href="{$site_path}?theme=-1" data-refresh="管理系统"><i class="fa fa-home"></i></a>
+                    <a target="_blank" href="{$site_path}?theme=-1" data-refresh="管理系统"><i class="fa fa_black fa-home"></i></a>
                 </li>
                 <li class="layui-nav-item" lay-unselect>
-                    <a href="javascript:;" data-refresh="刷新"><i class="fa fa-refresh"></i></a>
+                    <a href="javascript:;" data-refresh="刷新"><i class="fa fa_black fa-refresh"></i></a>
                 </li>
                 <li class="layui-nav-item" lay-unselect>
-                    <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa-trash-o"></i></a>
+                    <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa_black fa-trash-o"></i></a>
                 </li>
                 <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
-                    <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
+                    <a href="javascript:;" data-check-screen="full"><i class="fa fa_black fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
                     <a href="javascript:;">{$lang=='1'?'默认语言':$lang}</a>
@@ -76,19 +76,19 @@
                     <a href="javascript:;">{$admin['name']}</a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="{:url('user/admin_info')}" data-title="基本资料" data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>
+                            <a href="javascript:;" layuimini-content-href="{:url('user/admin_info')}" data-title="基本资料" data-icon="fa fa_black fa-gears">基本资料<span class="layui-badge-dot"></span></a>
                         </dd>
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="{:url('user/pwd_edit')}" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
+                            <a href="javascript:;" layuimini-content-href="{:url('user/pwd_edit')}" data-title="修改密码" data-icon="fa fa_black fa-gears">修改密码</a>
                         </dd>
                         <dd>
-                            <a href="{:url('zfyun/update_sq')}" data-title="更新插件Sql" data-icon="fa fa-gears">更新插件Sql</a>
+                            <a href="{:url('zfyun/update_sq')}" data-title="更新插件Sql" data-icon="fa fa_black fa-gears">更新插件Sql</a>
                         </dd>
                         <dd>
-                            <a href="{:url('zfyun/upgrade_sql')}" data-title="更新系统Sql" data-icon="fa fa-gears">更新系统Sql</a>
+                            <a href="{:url('zfyun/upgrade_sql')}" data-title="更新系统Sql" data-icon="fa fa_black fa-gears">更新系统Sql</a>
                         </dd>
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="{:url('config/tool')}" data-title="系统工具" data-icon="fa fa-gears">系统工具</a>
+                            <a href="javascript:;" layuimini-content-href="{:url('config/tool')}" data-title="系统工具" data-icon="fa fa_black fa-gears">系统工具</a>
                         </dd>
                         <dd>
                             <hr>
@@ -99,7 +99,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item layuimini-select-bgcolor" lay-unselect>
-                    <a href="javascript:;" data-bgcolor="配色方案"><i class="fa fa-ellipsis-v"></i></a>
+                    <a href="javascript:;" data-bgcolor="配色方案"><i class="fa fa_black fa-ellipsis-v"></i></a>
                 </li>
             </ul>
         </div>
