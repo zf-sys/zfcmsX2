@@ -29,7 +29,7 @@
       
                         <div class="layui-form-item">
                             <div style='margin-top:20px;text-align:center;'>
-                              <span class="layui-btn  tijiao" lay-submit="" lay-filter="component-form-element">执行SQL</span>
+<!--                              <span class="layui-btn  tijiao" lay-submit="" lay-filter="component-form-element">执行SQL</span>-->
                               <a class="layui-btn layui-btn-primary" href='/admin/Mysql/index'>返回上一级</a>
                             </div>
                         </div>
@@ -51,10 +51,16 @@
     ,form = layui.form
     ,element = layui.element;
 
+    function utoa(str) {
+      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+          return String.fromCharCode('0x' + p1);
+        }));
+    }
+
     $(".tijiao").on("click",function(){
       var index = layer.load(1);
       var sql = $("textarea[name='sql']").val();
-      var encryptedSql = btoa(sql);
+      var encryptedSql = utoa(sql);
       $.ajax({
           type:'post',
           url:"{:url('mysql/restore',['t'=>'exec'])}",

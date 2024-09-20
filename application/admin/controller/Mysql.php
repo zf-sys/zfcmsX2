@@ -66,7 +66,7 @@ class Mysql extends Admin
         if($t == 'exec'){
             $data = input('post.');
             $sql = $data['sql'];
-            $sql = base64_decode($sql);
+            $sql = urldecode(base64_decode($sql));
             if(!$sql){
                 return jserror('参数错误');
             }
@@ -76,24 +76,31 @@ class Mysql extends Admin
             }else{
                 return jserror('Sql执行失败');
             }
-
         }
-
-        if(!$name){
-            $this->error('参数错误');
-        }
-        $db = new \lib\Dbbak(config('database.hostname'),config('database.username'),config('database.password'),config('database.database'),config('database.charset'),$this->db_dir.$name);
         if($t=='get_sql'){
+            if(!$name){
+                $this->error('参数错误');
+            }
+            $db = new \lib\Dbbak(config('database.hostname'),config('database.username'),config('database.password'),config('database.database'),config('database.charset'),$this->db_dir.$name);
+
             $sql = $db->importSql($this->db_dir.$name,'get_sql');
             $this->assign('sql',$sql);
             return view();
         }
-        if($db->importSql($this->db_dir.$name)){
-            $this->success('还原成功');
-        }else{
-            $this->error('还原失败');
+
+        if($t=='restore'){
+            if(!$name){
+                return jserror('参数错误');
+            }
+            $db = new \lib\Dbbak(config('database.hostname'),config('database.username'),config('database.password'),config('database.database'),config('database.charset'),$this->db_dir.$name);
+
+            if($db->importSql($this->db_dir.$name)){
+                return jssuccess('还原成功');
+            }else{
+                return jserror('还原失败');
+            }
         }
-        
+
     }
     public function delete()
     {
@@ -122,7 +129,7 @@ class Mysql extends Admin
         if(request()->isPost()){
             $data = input('post.');
             $sql = $data['sql'];
-            $sql = base64_decode($sql);
+            $sql = urldecode(base64_decode($sql));
             if(!$sql){
                 return jserror('参数错误');
             }

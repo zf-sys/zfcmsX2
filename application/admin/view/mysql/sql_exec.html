@@ -50,10 +50,15 @@
     ,form = layui.form
     ,element = layui.element;
 
+    function utoa(str) {
+      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+          return String.fromCharCode('0x' + p1);
+        }));
+    }
     $(".tijiao").on("click",function(){
       var index = layer.load(1);
       var sql = $("textarea[name='sql']").val();
-      var encryptedSql = btoa(sql);
+      var encryptedSql = utoa(sql);
       $.ajax({
           type:'post',
           data:{sql:encryptedSql},
