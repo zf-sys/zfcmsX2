@@ -61,12 +61,20 @@ class Index extends Admin
     public function welcome()
     {
         admin_role_check($this->z_role_list,$this->mca);
-        //授权查询
-        $ZfAuth = new \zf\ZfAuth();
-        $site_org_res = $ZfAuth->get_location_auth_info();
-        $this->assign('site_org_res',$site_org_res);
+        $tt = input('tt','');
+        if($tt=='getData'){
+            if (!request()->isAjax()) {
+                return json(['code' => 0, 'msg' => '非法请求']);
+            }
+            try {
+                $ZfAuth = new \zf\ZfAuth();
+                $site_org_res = $ZfAuth->get_location_auth_info();
+                return json(['code' => 1, 'msg' => 'success', 'data' => $site_org_res]);
+            } catch (\Exception $e) {
+                return json(['code' => 0, 'msg' => $e->getMessage()]);
+            }
+        }
         
-       
        
         $post_list = ZFTB('post')
                     ->where([['status','=',1],['ctime','<>','']])

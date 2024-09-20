@@ -143,22 +143,6 @@
                 
               </div>
             </div>
-            <!-- <div class="layui-card">
-              <div class="layui-tab layui-tab-brief layadmin-latestData">
-                <ul class="layui-tab-title">
-                  <li class="layui-this">今日热搜</li>
-                  <li>今日热帖</li>
-                </ul>
-                <div class="layui-tab-content">
-                  <div class="layui-tab-item layui-show">
-                    <table id="LAY-index-topSearch"></table>
-                  </div>
-                  <div class="layui-tab-item">
-                    <table id="LAY-index-topCard"></table>
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
           <div class="layui-col-md12">
             <div class="layui-card">
@@ -177,129 +161,156 @@
         <div class="layui-card">
           <div class="layui-card-header">系统信息</div>
           <div class="layui-card-body layui-text layadmin-version">
-            <table class="layui-table">
-              <colgroup>
-                <col width="100">
-                <col>
-              </colgroup>
-              <tbody>
-                <tr>
-                  <td>系统</td>
-                  <td> 
-                    <a target="_blank" href="{$site_org_res['data']['sitelog_init']['soft_domain_url']|default=''}">
-                      {$site_org_res['data']['sitelog_init']['sys_name']|default=''}
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>当前版本</td>
-                  <td>
-                     {:config('version.version')}
-                  </td>
-                </tr>
-                <tr>
-                  <td>最新版本</td>
-                  <td>
-                     {$site_org_res['data']['sitelog_init']['version_list'][0]['version']|default=''}
-                  </td>
-                </tr>
-                <tr>
-                  <td>当前状态</td>
-                  <td>
-                     {$site_org_res['msg']|default=''}<br>
-                  </td>
-                </tr>
-               
-                
-              </tbody>
+            <table class="layui-table" id="systemInfoTable">
+              <!-- 表格内容将通过Ajax动态填充 -->
             </table>
           </div>
         </div>
-        
-       
-        
-       
-        
-        
-        <?php if(isset($site_org_res['data']['sitelog_init']['soft_author_notes'])){?> 
-          <div class="layui-card">
-            <div class="layui-card-header">
-              公告
-            </div>
-            <div class="layui-card-body layui-text layadmin-text">
-              <blockquote class="layui-elem-quote">
-                {$site_org_res['data']['sitelog_init']['soft_author_notes']|default=''|raw}
-              </blockquote>
-            </div>
-          </div>
-        <?php } ?>
-        <?php if(isset($site_org_res['data']['sitelog_init']['sponsor_list'][0]['id'])){?> 
-        <div class="layui-card">
-          <div class="layui-card-header">赞助商</div>
-          <div class="layui-card-body">
-            <div class="layui-carousel" id="zfcms_adv2">
-              <div carousel-item>
-                <?php if(isset($site_org_res['data']['sitelog_init']['sponsor_list'])){ foreach($site_org_res['data']['sitelog_init']['sponsor_list'] as $k=>$vo){ ?>
-                  <a href="{$vo['url']}" target="_blank"  style="width: 100%;text-align: center;">
-                    <img src="{$vo['pic']}" alt="{$vo['title']}" style="width: inherit;">
-                  </a>
-                <?php }} ?>
-              </div>
-            </div> 
-          </div>
-        </div>
-        <?php } ?>
-        
-        <?php if(isset($site_org_res['data']['sitelog_init']['advert_list'][0]['id'])){?> 
-        <div class="layui-card">
-          <div class="layui-card-header">广告</div>
-          <div class="layui-card-body">
-            <div class="layui-carousel" id="zfcms_adv">
-              <div carousel-item>
-                <?php if(isset($site_org_res['data']['sitelog_init']['advert_list'])){ foreach($site_org_res['data']['sitelog_init']['advert_list'] as $k=>$vo){ ?>
-                  <a href="{$vo['url']}" target="_blank"  style="width: 100%;text-align: center;">
-                    <img src="{$vo['pic']}" alt="{$vo['title']}" style="width: inherit;">
-                  </a>
-                <?php }} ?>
-              </div>
-            </div> 
-          </div>
-        </div>
-        <?php } ?>
       </div>
-      
     </div>
   </div>
   
   {:widget_st('layui','js')} 
-  {:widget_st('common','js')} 
-  <script src="__STATIC__/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+  {:widget_st('common','js')}
+   <script src="__STATIC__/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
 
   <script>
-   layui.use(['layer','miniTab'],function(){
-      var $ = layui.$
-      ,carousel = layui.carousel
-      ,miniTab = layui.miniTab;
-      miniTab.listen();
-      
-      carousel.render({
-        elem: '#zfcms_adv',
-        interval: 3000,
-        anim: 'fade',
-        width: 'auto',
-        height: '120px',
-        arrow:'none'
-      });
-      carousel.render({
-        elem: '#zfcms_adv2',
-        interval: 3000,
-        anim: 'fade',
-        width: 'auto',
-        height: '120px',
-        arrow:'none'
-      });
-    });
+   layui.use(['layer','miniTab', 'jquery', 'carousel'], function() {
+     var $ = layui.$,
+             carousel = layui.carousel,
+             miniTab = layui.miniTab;
+
+        miniTab.listen();
+   });
+     get_welcome_data()
+      function get_welcome_data(){
+        // 发送Ajax请求获取数据
+        var index = layer.load(1, {shade: false});
+        $.ajax({
+          url: '{:url("Index/welcome",["tt"=>"getData"])}',
+          type: 'GET',
+          dataType: 'json',
+          success: function(res) {
+            layer.close(index);
+            if(res.code == 1) {
+              updateSystemInfo(res.data);
+              updateAnnouncement(res.data);
+              updateSponsor(res.data);
+              updateAdvert(res.data);
+            } else {
+              layer.msg('获取数据失败: ' + res.msg);
+            }
+          },
+          error: function() {
+            layer.close(index);
+            layer.msg('网络错误,请稍后重试');
+          }
+        });
+      }
+
     
+    function updateSystemInfo(_data) {
+      var data = _data.data;
+      var html = `
+        <tbody>
+          <tr><td>系统</td><td><a target="_blank" href="${data.sitelog_init.soft_domain_url || ''}">${data.sitelog_init.sys_name || ''}</a></td></tr>
+          <tr><td>当前版本</td><td>{:config('version.version')}</td></tr>
+          <tr><td>最新版本</td><td>${data.sitelog_init.version_list[0].version || ''}</td></tr>
+          <tr><td>当前状态</td><td>${_data.msg || ''}</td></tr>
+        </tbody>
+      `;
+      $('#systemInfoTable').html(html);
+    }
+    
+    function updateAnnouncement(_data) {
+      var data = _data.data;
+      if (data && data.sitelog_init && data.sitelog_init.soft_author_notes) {
+        var safeNotes = (data.sitelog_init.soft_author_notes);
+        var card = createCard('公告', `
+          <div class="layui-card-body layui-text layadmin-text">
+            <blockquote class="layui-elem-quote">${safeNotes}</blockquote>
+          </div>
+        `);
+        $('.layui-col-md4').append(card);
+      }
+    }
+
+    function updateSponsor(_data) {
+      var data = _data.data;
+      if (data && data.sitelog_init && data.sitelog_init.sponsor_list && data.sitelog_init.sponsor_list.length > 0) {
+        var sponsorContent = `
+          <div class="layui-card-body">
+            <div class="layui-carousel" id="zfcms_adv2">
+              <div carousel-item>
+                ${data.sitelog_init.sponsor_list.map(item => `
+                  <a href="${escapeHtml(item.url)}" target="_blank" style="width: 100%;text-align: center;">
+                    <img src="${escapeHtml(item.pic)}" alt="${escapeHtml(item.title)}" style="width: inherit;">
+                  </a>
+                `).join('')}
+              </div>
+            </div> 
+          </div>
+        `;
+        var card = createCard('赞助商', sponsorContent);
+        $('.layui-col-md4').append(card);
+        renderCarousel('#zfcms_adv2');
+      }
+    }
+    
+    function updateAdvert(_data) {
+      var data = _data.data;
+      if (data && data.sitelog_init && data.sitelog_init.advert_list && data.sitelog_init.advert_list.length > 0) {
+        var advertContent = `
+          <div class="layui-card-body">
+            <div class="layui-carousel" id="zfcms_adv">
+              <div carousel-item>
+                ${data.sitelog_init.advert_list.map(item => `
+                  <a href="${escapeHtml(item.url)}" target="_blank" style="width: 100%;text-align: center;">
+                    <img src="${escapeHtml(item.pic)}" alt="${escapeHtml(item.title)}" style="width: inherit;">
+                  </a>
+                `).join('')}
+              </div>
+            </div> 
+          </div>
+        `;
+        var card = createCard('广告', advertContent);
+        $('.layui-col-md4').append(card);
+        renderCarousel('#zfcms_adv');
+      }
+    }
+    
+    function createCard(title, content) {
+      var card = document.createElement('div');
+      card.className = 'layui-card';
+      card.innerHTML = `
+        <div class="layui-card-header">${escapeHtml(title)}</div>
+        ${content}
+      `;
+      return card;
+    }
+
+    function escapeHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+    
+    function renderCarousel(selector) {
+      layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        carousel.render({
+          elem: selector,
+          interval: 3000,
+          anim: 'fade',
+          width: 'auto',
+          height: '120px',
+          arrow:'none'
+        });
+      });
+    }
   </script>
 </body>
 </html>
