@@ -305,7 +305,7 @@ class Zfyun extends Admin
                 return jssuccess('更新授权成功');
             }elseif($t==2){
                 //更新插件sql
-                $this->zfauth->_update_plugind_db();  
+                $this->zfauth->_update_plugind_db();
                 return jssuccess('更新插件Sql成功');
             }elseif($t==3){
                 //更新模板
@@ -352,7 +352,7 @@ class Zfyun extends Admin
                     unset($db_plugin[array_search($vo,$db_plugin)]);
                 }
             }
-        } 
+        }
         $is = db('plugin')->where([['plugin_name','in',$db_plugin]])->update(['status'=>3]);
     }
     public function upgrade_sql(){

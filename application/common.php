@@ -1710,11 +1710,11 @@ if(!function_exists('plugin_update_check_show')){
         if($db_theme_count==$theme_count){
             $ret_data[1] = false;
         }
-        // echo "<br>.".$db_plugin_count;
-        // echo "<br>.".$plugin_count;
-        // echo "<br>.".$db_theme_count;
-        // echo "<br>.".$theme_count;
-        // dd($ret_data);
+//         echo "<br> 插件db".$db_plugin_count;
+//         echo "<br> 本地插件".$plugin_count;
+//         echo "<br>模板db ".$db_theme_count;
+//         echo "<br> 本地模板".$theme_count;
+//         die;
         return $ret_data;
     }
 }
