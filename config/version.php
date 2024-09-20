@@ -14,13 +14,13 @@
   // 站点信息最后修改于 2024/07/31 14:14:02  
   
  return [
-	'version' => 'v0.240830',
+	'version' => 'v0.240920',
 	'soft_id' => '0230873d1167beba153d1a29f88924f4',
 	'ver_name' => '子枫内容管理系统X2',
 	'ver_date' => '20220801',
 	'ver_author' => '子枫',
 	'ver_email' => '287851074@qq.com',
-	'api_domain' => '//zf-sys.wangmingchang.com',
+	'api_domain' => '//store-v2.zf-sys.com',
 	'ver_url' => '',
 	'version_temp' => 'v0.0.0.0',
 	'pulg_data_path' => './upgrade',

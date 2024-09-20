@@ -66,6 +66,7 @@ class Mysql extends Admin
         if($t == 'exec'){
             $data = input('post.');
             $sql = $data['sql'];
+            $sql = base64_decode($sql);
             if(!$sql){
                 return jserror('参数错误');
             }
@@ -115,6 +116,26 @@ class Mysql extends Admin
     }
 
 
+    public function sql_exec()
+    {
+        admin_role_check($this->z_role_list,$this->mca);
+        if(request()->isPost()){
+            $data = input('post.');
+            $sql = $data['sql'];
+            $sql = base64_decode($sql);
+            if(!$sql){
+                return jserror('参数错误');
+            }
+            $db = new \lib\Dbbak(config('database.hostname'),config('database.username'),config('database.password'),config('database.database'),config('database.charset'),$this->db_dir);
+            $result = $db->exec_return($sql);
+            if($result['code']==1){
+                return jssuccess($result['data']);
+            }else{
+                return jserror($result['data']);
+            }
+        }
+        return view();
+    }
 
 
 

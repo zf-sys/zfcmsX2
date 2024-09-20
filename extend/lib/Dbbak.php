@@ -233,6 +233,95 @@ class Dbbak {
     }
 
     /**
+     * 执行sql,并返回结果
+     * @param $sql
+     * @return  返回值
+     */
+    public function exec_return($sql=''){
+        if(substr($sql,0,13) == '<?php exit;?>'){
+            $sql = substr($sql, 13);
+        }
+        $sqls = explode(";\n", $sql);
+        if (empty($sqls)) {
+            return false;
+        }
+        $results = array();
+        try {
+            foreach ($sqls as $sql) {
+                if (empty($sql) || preg_match('/^\s+$/', $sql)) {
+                    continue;
+                }
+                
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute();
+                
+                // 获取查询结果
+                if ($stmt->columnCount() > 0) {
+                    $results[] = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                } else {
+                    $results[] = $stmt->rowCount();
+                }
+            }
+            return ['code'=>1,'msg'=>'success','data'=>$this->resultToHtml($results,$sqls)];
+        } catch(\PDOException $e) {
+            // 可以选择记录错误日志
+            return ['code'=>0,'msg'=>'error','data'=>$e->getMessage()];
+        }
+
+    }
+    private function resultToHtml($result,$sqls)
+    {
+        $html = '';
+        
+        foreach ($result as $index => $item) {
+            $html .= "<h3>结果 " . ($index + 1) . "</h3>";
+            $html .= "<p>SQL：" . $sqls[$index] . "</p>";
+            $html .= '<table border="1" cellpadding="5" cellspacing="0">';
+            
+            if (is_array($item)) {
+                if (isset($item[0]) && is_array($item[0])) {
+                    // 处理二维数组
+                    $html .= '<tr><th>' . implode('</th><th>', array_keys($item[0])) . '</th></tr>';
+                    foreach ($item as $row) {
+                        $html .= '<tr>';
+                        foreach ($row as $value) {
+                            $html .= '<td>' . $this->formatValue($value) . '</td>';
+                        }
+                        $html .= '</tr>';
+                    }
+                } else {
+                    // 处理一维数组
+                    $html .= '<tr><th>键</th><th>值</th></tr>';
+                    foreach ($item as $key => $value) {
+                        $html .= "<tr><td>{$key}</td><td>" . $this->formatValue($value) . "</td></tr>";
+                    }
+                }
+            } else {
+                // 处理非数组结果
+                $html .= "<tr><td>结果</td><td>" . $this->formatValue($item) . "</td></tr>";
+            }
+            
+            $html .= '</table><br>';
+        }
+        
+        return $html;
+    }
+    private function formatValue($value)
+    {
+        if (is_array($value)) {
+            return json_encode($value, JSON_UNESCAPED_UNICODE);
+        } elseif (is_object($value)) {
+            return json_encode((array)$value, JSON_UNESCAPED_UNICODE);
+        } elseif (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        } elseif (is_null($value)) {
+            return 'NULL';
+        } else {
+            return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+        }
+    }
+
+    /**
      * 生成sql语句
      * @param   $table     要备份的表
      * @return  $tabledump 生成的sql语句

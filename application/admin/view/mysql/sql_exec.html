@@ -21,7 +21,7 @@
                       <form class="layui-form info_tj" method="post">
                         <div class="layui-row layui-col-space12 layui-form-item">
                           <div class="layui-col-lg12">
-                              <textarea name="sql"  style='width:100%;height:500px;border:1px solid #ccc;font-size:14px;'  >{$sql}</textarea>
+                              <textarea name="sql"  style='width:100%;height:300px;border:1px solid #ccc;font-size:14px;'  ></textarea>
                           </div>
                         </div>
                         
@@ -30,7 +30,6 @@
                         <div class="layui-form-item">
                             <div style='margin-top:20px;text-align:center;'>
                               <span class="layui-btn  tijiao" lay-submit="" lay-filter="component-form-element">执行SQL</span>
-                              <a class="layui-btn layui-btn-primary" href='/admin/Mysql/index'>返回上一级</a>
                             </div>
                         </div>
                       </form>
@@ -57,15 +56,35 @@
       var encryptedSql = btoa(sql);
       $.ajax({
           type:'post',
-          url:"{:url('mysql/restore',['t'=>'exec'])}",
           data:{sql:encryptedSql},
           dataType:'json',
           success:function(res){
             layer.close(index);
             if(res.result==1){
-              layer.msg("执行SQL成功", {icon: 1});
+              var html = res.msg;
+              layer.open({
+                type: 1,
+                title: '执行结果',
+                content:'<div style="padding:20px;">'+ html+'</div>',
+                area: ['800px', '600px'],
+                btn: ['关闭'],
+                btn1: function(index, layero){
+                  layer.close(index);
+                }
+              });
             }else{
-              layer.msg("执行SQL失败", {icon: 2});
+              // layer.msg("执行SQL失败", {icon: 2});
+                var html = res.msg;
+                layer.open({
+                    type: 1,
+                    title: '执行结果',
+                    content:'<div style="padding:20px;">'+ html+'</div>',
+                    area: ['800px', '600px'],
+                    btn: ['关闭'],
+                    btn1: function(index, layero){
+                        layer.close(index);
+                    }
+                });
             }
             
           }
