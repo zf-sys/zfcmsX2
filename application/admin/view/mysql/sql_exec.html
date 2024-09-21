@@ -17,6 +17,25 @@
       <div class="layui-card-body">
           <div class="layui-row layui-col-space15">
               <div class="layui-col-md12">
+                <div class="layui-collapse" lay-accordion>
+                  <div class="layui-colla-item">
+                    <div class="layui-colla-title">常用SQL语句</div>
+                    <div class="layui-colla-content layui-show_ sql_list"> 
+                        <p><span>select * from zf_post</span></p>
+                        <p>新增字段 <span>alter table zf_post add column zf_post_new_field varchar(255);</span></p>
+                        <p>删除字段 <span>alter table zf_post drop column zf_post_new_field;</span></p>
+                        <p>修改字段 <span>alter table zf_post modify column zf_post_new_field varchar(255);</span></p>
+                        <p>修改字段名 <span>alter table zf_post change column zf_post_old_field zf_post_new_field varchar(255);</span></p>
+                        <p>删除表 <span>drop table zf_post;</span></p>
+                        <p>删除表并删除数据 <span>truncate table zf_post;</span></p>
+                        <p>删除表中数据 <span>delete from zf_post;</span></p>
+                        <p>删除表中数据 <span>delete from zf_post where id=1;</span></p>
+                        <p>删除表中数据 <span>delete from zf_post where id=1;</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="layui-col-md12">
                   <div class="layui-card">
                       <form class="layui-form info_tj" method="post">
                         <div class="layui-row layui-col-space12 layui-form-item">
@@ -55,6 +74,12 @@
           return String.fromCharCode('0x' + p1);
         }));
     }
+    $('.sql_list span').on('click',function(){
+      var sql = $(this).text();
+      // textarea[name='sql']后面填充
+      var old_sql = $("textarea[name='sql']").val();
+      $("textarea[name='sql']").val(old_sql + '\n' + sql);
+    })
     $(".tijiao").on("click",function(){
       var index = layer.load(1);
       var sql = $("textarea[name='sql']").val();
