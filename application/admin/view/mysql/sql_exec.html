@@ -59,6 +59,11 @@
       var index = layer.load(1);
       var sql = $("textarea[name='sql']").val();
       var encryptedSql = utoa(sql);
+      // 检查加密后的SQL大小
+      if (encryptedSql.length > 10485760) { // 假设限制为10MB
+        layer.msg("SQL语句太长,请减少内容后重试", {icon: 2});
+        return;
+      }
       $.ajax({
           type:'post',
           data:{sql:encryptedSql},
