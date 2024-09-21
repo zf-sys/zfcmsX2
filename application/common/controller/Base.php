@@ -101,41 +101,94 @@ class Base extends Controller
                 echo str_show_tpl($this->sqb_error_msg); die;
             }
         }
-        
+
     }
-    
-    
-    public function __call( $methodName, $arguments){
-        if($this->is_professional_edition){
-            if(empty($arguments)){
-                return $this->Yun->$methodName();
-            }else{
-                $count =  count($arguments);
-                switch ($count){
-                    case 1:
-                        return $this->Yun->$methodName($arguments[0]);
-                        break;
-                    case 2:
-                        return $this->Yun->$methodName($arguments[0],$arguments[1]);
-                        break;
-                    case 3:
-                        return $this->Yun->$methodName($arguments[0],$arguments[1],$arguments[2]);
-                        break;
-                    case 4:
-                        return $this->Yun->$methodName($arguments[0],$arguments[1],$arguments[2],$arguments[3]);
-                        break;
-                    case 5:
-                        return $this->Yun->$methodName($arguments[0],$arguments[1],$arguments[2],$arguments[3],$arguments[4]);
-                        break;
-                    case 6:
-                        return $this->Yun->$methodName($arguments[0],$arguments[1],$arguments[2],$arguments[3],$arguments[4],$arguments[5]);
-                        break;
-                    default:
-                        return $this->Yun->$methodName();
+
+
+    public function initialize()
+    {
+        parent::initialize();
+        if(in_array(strtolower(request()->module()),['index','admin','addons'])){
+            $this->filter(function($content){
+                $m = strtolower(request()->module());
+                $c = strtolower(request()->controller());
+                $a = strtolower(request()->action());
+
+                if($m=='install'){
+                    return $content;
+                }elseif($m=='admin'){
+                    $content = apply_filters('content_replace_admin',$content);
+                    return $content;
+                }elseif($m=='api'){
+                    $content = apply_filters('content_replace_api',$content);
+                    return $content;
+                }elseif($m=='index'){
+                    $content = apply_filters('content_replace_index',$content);
+                    if(request()->path()=='i_admin'){
+                        return $content;
+                    }
+                    //---------------增加前台静态化---------------
+                    if(in_array(strtolower(request()->module()),['index'])){
+                        $is_theme_cache = ZFC('webconfig.is_theme_cache');
+                        if($is_theme_cache==1){
+                            //过滤特殊的路径
+                            $theme_cache_lth_tsdir = ZFC('webconfig.theme_cache_lth_tsdir');
+                            if(cookie('theme')){
+                                $theme = cookie('theme');
+                            }else{
+                                $theme = ZFC('zf_tpl_suffix');
+                            }
+                            //判断是否存在此文件 路径/cache/模板名/链接.html
+                            $_url = $_SERVER['REQUEST_URI'];
+                            //判断该链接是否是特殊路径的链接
+                            foreach(explode(',',$theme_cache_lth_tsdir) as $k=>$vo){
+                                if(strpos($_url,$vo) !== false){
+                                    return $content;
+                                }
+                            }
+                            //判断是否有.html后缀,如果没有则加上
+                            if(strpos($_url,'.html') === false){
+                                $_url = $_url.'.html';
+                            }
+                            $_file = './cache/'.$theme.$_url;
+                            $file = new \lib\File();
+                            $url_arr = parse_url($_url);
+                            if(isset($url_arr['query'])){
+                                $_filename = $url_arr['query'];
+                                //$_filename不能包含\ / : * ? " < > | ,如果包含直接替换成@
+                                $_filename = str_replace(['\\','/',':','*','?','"','<','>','|',','],'@',$_filename);
+                                $_file = './cache/'.$theme.$url_arr['path'].'/'.$_filename;
+                                $file->mk_dir('./cache/'.$theme.$url_arr['path']);
+                            }else{
+                                $file->mk_dir(dirname($_file));
+                            }
+                            //判断是否存在此文件
+                            if(!file_exists($_file)){
+                                //存在则直接输出
+                                $r = $file->write_file($_file, $content, $openmod = 'w');
+                            }
+                        }
+
+                    }
+                    return $content;
                 }
-            }
+                //other
+                return $content;
+            });
         }
     }
+    public function __call($methodName, $arguments)
+    {
+        if ($this->is_professional_edition) {
+            return $this->callYunMethod($methodName, $arguments);
+        }
+    }
+
+    private function callYunMethod($methodName, $arguments)
+    {
+        return call_user_func_array([$this->Yun, $methodName], $arguments);
+    }
+
     
     public function zf_down_load(){
         $this->zfyun_down_load();
