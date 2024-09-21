@@ -81,11 +81,47 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
     }
   }
 </style>
-<?php $name = input('name',''); ?>
+<style>
+  #toggleButton {
+    position: fixed;
+    left: 10px;  /* 距离左边的距离 */
+    top: 2px;   /* 距离顶部的距离，根据您的页面布局可能需要调整 */
+    z-index: 1000;
+    background-color: #1E9FFF;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: left 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  #toggleButton:hover {
+    background-color: #1a90e6;
+  }
+
+  #toggleButton .layui-icon {
+    font-size: 18px;
+  }
+
+  #categoryColumn {
+    transition: all 0.3s ease;
+    position: relative;
+    padding-top: 40px;
+  }
+  #contentArea {
+    transition: all 0.3s ease;
+  }
+</style>
+<?php $name = input('name',''); ?>  
 <body style="background-color: #fff">
   <div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-      <div class="layui-col-md3 layui-col-xs12 layui-col-sm12">
+    <div class="layui-row layui-col-space15"> 
+      <!-- 折叠按钮 -->
+      <div id="toggleButton" class="toggle-button">
+        <i class="layui-icon layui-icon-spread-left"></i>
+      </div>
+      <div class="layui-col-md3 layui-col-xs12 layui-col-sm12"  id="categoryColumn"  style="display: none;">
         <div class="layui-card">
           <!-- <div class="layui-card-header">分组</div> -->
           <div class="layui-card-body">
@@ -131,7 +167,7 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
           </div>
         </div>
       </div>
-      <div class="layui-col-md9 layui-col-xs12 layui-col-sm12">
+      <div class="layui-col-md12 layui-col-xs12 layui-col-sm12 file_box">
         <div class="layui-card">
           <!-- <div class="layui-card-header">列表</div> -->
           <div class="layui-card-body">
@@ -141,9 +177,11 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary "  id="upid_fp">大文件上传(本地)</button> 
 
                 <a href="javascript:;" class="layui-btn layui-btn-xs ajax_file_move">移动</a>
-                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-normal ajax_file_del">删除</a>
-                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-danger ajax_file_del">删除</a>
                   <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_edit_click ">编辑</a>
+                  <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_refresh_click ">刷新</a>
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
+
               </blockquote>
               <div class="upload_loading" style="display:none">
                 <progress id="myProgress" value="0" max="100"></progress> <span id="mySpan">0%</span>
@@ -243,6 +281,29 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
 
 
 <script> 
+// 折叠按钮点击事件
+$("#toggleButton").click(function() {
+    var $categoryColumn = $("#categoryColumn");
+    var $contentArea = $(".file_box"); 
+    var $icon = $(this).find("i");
+    var $button = $(this);
+    
+    if ($categoryColumn.is(":visible")) {
+      $categoryColumn.hide();
+      $contentArea.removeClass("layui-col-md8").addClass("layui-col-md12");
+      $icon.removeClass("layui-icon-spread-left").addClass("layui-icon-spread-left");
+      $button.css("left", "10px");  // 折叠时靠左
+    } else {
+      $categoryColumn.show();
+      $contentArea.removeClass("layui-col-md12").addClass("layui-col-md8");
+      $icon.removeClass("layui-icon-spread-left").addClass("layui-icon-spread-left");
+      $button.css("left", ( 10) + "px");  // 展开时移到栏目右侧
+    }
+  });
+
+  $('.zf_refresh_click').on('click',function(){
+    location.reload();
+  })
   var index = parent.layer.getFrameIndex(window.name); 
   $('.click_item').on('click',function(){
     if($(this).css('border')=='1px solid rgb(255, 0, 0)'){
