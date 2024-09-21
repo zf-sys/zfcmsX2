@@ -143,7 +143,8 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                 <a href="javascript:;" class="layui-btn layui-btn-xs ajax_file_move">移动</a>
                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-normal ajax_file_del">删除</a>
                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
-              </blockquote> 
+                  <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_edit_click ">编辑</a>
+              </blockquote>
               <div class="upload_loading" style="display:none">
                 <progress id="myProgress" value="0" max="100"></progress> <span id="mySpan">0%</span>
               </div>
@@ -402,6 +403,63 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
         },"json");
       });
     });
+    $('.zf_edit_click').on('click',function() {
+      var id = $(this).attr('item')
+      // var data = $(".zf_clickdata_list input").serialize();
+      var data = $(".select_item input").serializeArray();
+      console.log(data)
+      var num = 0;
+      for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          num++
+          if(num>1){
+            parent.layer.msg('当前只能选择一个', {shade: 0.3})
+            return
+          }
+          src = data[i].value
+        }
+      }
+      console.log(src)
+      layer.open({
+        type: 2,
+        title: '选择并裁剪图片',
+        content: "{:siteUrl('common/Fileupload/cropImage')}?cid={$cid}&url="+src,
+        area: ['800px', '600px'],
+        //窗口关闭时调用
+        end: function(layero, index){
+          console.log('end');
+          // 刷新当前页面
+          window.location.reload();
+        },
+        cancel: function (index, layero) {
+          // 点击右上角 X 的回调方法
+          console.log('cancel');
+        },
+        //窗口打开时调用
+        success: function(layero, index){
+          var iframeWin = window[layero.find('iframe')[0]['name']];
+          iframeWin.cropperCallback = function(croppedImageUrl) {
+            //刷新当前页面
+            window.location.reload();
+          };
+        }
+      });
+      // layer.confirm('文件删除无法恢复,确认删除？', {
+      //   btn: ['删除','取消']
+      // }, function(){
+      //   $.post("{:siteUrl('common/Fileupload/file_del')}",data,function(res){
+      //     if(res.result==1){
+      //       layer.msg(res.msg, {icon: 1});
+      //       setTimeout(function() {
+      //         window.location.reload();
+      //       }, 2000);
+      //     }else{
+      //       layer.msg(res.msg, {icon: 2});
+      //     }
+      //   },"json");
+      // });
+    });
+
     $('.ajax_file_move').on('click',function(){
       layer.open({
         type: 1,
@@ -852,16 +910,9 @@ layui.use(['upload', 'layer'], function(){
         console.log('cancel');
       },
       //窗口打开时调用
-
       success: function(layero, index){
-        console.log('open');
-
         var iframeWin = window[layero.find('iframe')[0]['name']];
         iframeWin.cropperCallback = function(croppedImageUrl) {
-          // console.log(11);
-          // console.log(croppedImageUrl);
-          // layer.close(index);
-          // uploadCroppedImage(croppedImageUrl);
           //刷新当前页面
           window.location.reload();
         };

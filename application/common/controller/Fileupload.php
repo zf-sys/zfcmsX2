@@ -138,8 +138,62 @@ class Fileupload extends Controller
     public function cropimage(){
         $cid = input('cid','0');
         $this->assign('cid',$cid);
+        $url = input('url','');
+        $this->assign('url',$url);
+        // 获取文件名并添加随机数
+        if($url!=''){
+            $filename = $this->handleFileUrl($url);
+        }else{
+            $filename = '';
+        }
+        $this->assign('filename',$filename);
+
         return view();
     }
+    public function handleFileUrl($url) {
+        $pathinfo = pathinfo($url);
+        $filename = $pathinfo['filename'] . '_' . mt_rand(1000, 9999);
+        
+        if (isset($pathinfo['extension'])) {
+            $filename .= '.' . $pathinfo['extension'];
+        } else {
+            // 尝试获取文件类型
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+            curl_exec($ch);
+            $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+            curl_close($ch);
+            // 根据 Content-Type 设置扩展名
+            $extension = $this->getExtensionFromMimeType($contentType);
+            
+            if ($extension) {
+                $filename .= '.' . $extension;
+            } else {
+                // 如果不是图片类型，可以抛出异常或返回错误信息
+               $this->error('不支持的文件类型/不支持短链接');
+                // 或者
+                // return false; 
+            }
+        }
+        
+        return $filename;
+    }
+    
+    private function getExtensionFromMimeType($mimeType) {
+        $imageTypes = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/bmp' => 'bmp',
+            'image/webp' => 'webp',
+            'image/tiff' => 'tiff',
+            'image/svg+xml' => 'svg'
+        ];
+        
+        return isset($imageTypes[$mimeType]) ? $imageTypes[$mimeType] : null;
+    }
+
 
 
 

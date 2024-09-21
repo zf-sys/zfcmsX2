@@ -71,6 +71,67 @@
         var originalFileName;
         var isUploading = false; // 添加上传状态标志
 
+        <?php if($url!=''){ ?>
+            // 自动加载图片并初始化 Cropper
+            (function() {
+                function initImage() {
+                    var imageElement = document.getElementById('image');
+                    var fileInput = document.getElementById('file-input');
+
+                    if (!imageElement || !fileInput) {
+                        // 如果元素还不存在，等待一段时间后再次尝试
+                        setTimeout(initImage, 100);
+                        return;
+                    }
+
+                    imageElement.src = '{$url}';
+                    originalFileName = '{$filename}';
+
+                    imageElement.onload = function() {
+                        if (cropper) {
+                            cropper.destroy();
+                        }
+                        cropper = new Cropper(imageElement, {
+                            viewMode: 1,
+                            responsive: true,
+                            restore: false,
+                            crop: updatePreview
+                        });
+
+                        // 模拟文件选择
+                        fetch('{$url}')
+                            .then(response => response.blob())
+                            .then(blob => {
+                                var file = new File([blob], originalFileName, {type: "image/jpeg"});
+                                var dataTransfer = new DataTransfer();
+                                dataTransfer.items.add(file);
+                                fileInput.files = dataTransfer.files;
+                            })
+                            .catch(error => {
+                                console.error('获取图片失败:', error);
+                                layer.msg('获取图片失败', {icon: 2});
+                            });
+                    };
+
+                    imageElement.onerror = function() {
+                        console.error('加载图片失败');
+                        layer.msg('加载图片失败', {icon: 2});
+                    };
+                }
+
+                // 修改 updatePreview 函数
+                window.updatePreview = function() {
+                    if (cropper && cropper.getCroppedCanvas()) {
+                        var croppedCanvas = cropper.getCroppedCanvas();
+                        document.getElementById('preview-image').src = croppedCanvas.toDataURL('image/jpeg');
+                    }
+                }
+
+                // 立即执行初始化函数
+                initImage();
+            })();
+        <?php } ?>
+
         function updatePreview() {
             if (cropper) {
                 var croppedCanvas = cropper.getCroppedCanvas();
