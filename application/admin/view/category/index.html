@@ -14,6 +14,15 @@
 
 <div class="layui-fluid">
   <div class="layui-card">
+    <div>
+      <?php if($type!=''){ ?>
+        <span class="layui-badge layui-bg-red">类型:<?php echo $type; ?></span>
+      <?php } ?>
+        <span class="layui-badge layui-bg-orange">pid:{$pid}</span>
+
+
+    </div>
+
     <form onclick="return false;" class="info_tj">
       <div class="layui-form layui-card-header layuiadmin-card-header-auto">
         <div class="layui-form-item">
