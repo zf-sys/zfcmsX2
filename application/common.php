@@ -2318,8 +2318,11 @@ if(!function_exists('deal_meta_data_edit')){
                 $meta_data['meta_data'] = json_encode($data['meta']);
                 $_meta = $data['meta'];
                 unset($data['meta']);
-                $res = ZFTB($tb)->where([$field_id=>$data[$field_id]])->update($data);
-                if(!$res){
+                if(!isset($data['token'])){
+                    $data['token'] = time();
+                }
+                $res_main = ZFTB($tb)->where([$field_id=>$data[$field_id]])->update($data);
+                if(!$res_main){
                     Db::rollback();
                     return ZFRetMsg(false,'','修改失败');
                 }
@@ -2336,7 +2339,7 @@ if(!function_exists('deal_meta_data_edit')){
                 }
                 if(!$res){
                     Db::rollback();
-                    return ZFRetMsg(false,'','修改失败');
+                    return ZFRetMsg(false,'','修改失败/没有内容修改');
                 }
             }else{
                 $res = ZFTB($tb)->where([$field_id=>$data[$field_id]])->update($data);
