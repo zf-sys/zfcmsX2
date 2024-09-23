@@ -118,6 +118,7 @@ class Category extends Admin
         //     $where[] = ['pid','=' ,$pid];
         // }
         // $pid = 0;
+        $where = array_merge($where, $this->common_select_tag);
         $res = ZFTB('category')->field('cid,pid,name,cname,icon,tpl_category,tpl_post,mid,sort,status,menu,page,pic')->where($where)->order("sort asc,cid asc")->select();
         $cat = new cat(array('cid', 'pid', 'name', 'cname')); 
         $list = $cat->getTree($res,$pid); 
