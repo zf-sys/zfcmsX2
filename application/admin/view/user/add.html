@@ -8,68 +8,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
   {:widget_st('layui','css')}
   {:widget_st('jq','js')}
-  {:widget_st('layui','js')}  
-  {:widget_st('common','js')} 
+  {:widget_st('layui','js')}
+  {:widget_st('common','js')}
 </head>
 {:do_action('admin_head')}
 <body>
-  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
-    <div class="layui-card-body">
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+  <div class="layui-card-body">
     <form class="info_tj" onclick="return false">
       <div style="width: 500px;">
         <input type="hidden" name="id" value="{$res['id']|default=''}">
         <?php $form_widget = new \app\common\widget\FormPro();  ?>
         <?php if(isset($res['id'])){ ?>
-          {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
-          {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>$res['gid'],'list_arr'=>$glist,'theme'=>4])|raw}
-          {$form_widget->form_input(['title'=>'手机号','name'=>'tel','data'=>$res['tel'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'邮箱','name'=>'email','data'=>$res['email'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
-          {$form_widget->filesystem_pic(['title'=>'头像','name'=>'pic','data'=>$res['pic'],'theme'=>3])|raw}
-          {$form_widget->form_radio(['title'=>'性别','name'=>'sex','data'=>$res['sex'],'parm_data'=>['2'=>'女','1'=>'男',''=>'其他'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'归属地','name'=>'meta[gsd]','data'=>isset_arr_key($res['meta'],'gsd',''),'theme'=>2])|raw}
-
-
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/edit')" lay-submit lay-filter="formDemo">立即提交</button>
-            </div>
+        {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+        {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>$res['gid'],'list_arr'=>$glist,'theme'=>4])|raw}
+        {$form_widget->form_input(['title'=>'手机号','name'=>'tel','data'=>$res['tel'],'theme'=>2])|raw}
+        {$form_widget->form_input(['title'=>'邮箱','name'=>'email','data'=>$res['email'],'theme'=>2])|raw}
+        {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
+        {$form_widget->filesystem_pic(['title'=>'头像','name'=>'pic','data'=>$res['pic'],'theme'=>3])|raw}
+        {$form_widget->form_radio(['title'=>'性别','name'=>'sex','data'=>$res['sex'],'parm_data'=>['2'=>'女','1'=>'男',''=>'其他'],'theme'=>2])|raw}
+        {:do_action('admin_user_view',$form_widget,$res,'edit')}
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/edit')" lay-submit lay-filter="formDemo">立即提交</button>
           </div>
+        </div>
         <?php }else{ ?>
-          {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>'','list_arr'=>$glist,'theme'=>4])|raw}
-          {$form_widget->form_input(['title'=>'手机号','name'=>'tel','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'邮箱','name'=>'email','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
-          {$form_widget->filesystem_pic(['title'=>'头像','name'=>'pic','data'=>'','theme'=>3])|raw}
-          {$form_widget->form_radio(['title'=>'性别','name'=>'sex','data'=>1,'parm_data'=>['2'=>'女','1'=>'男',''=>'其他'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'归属地','name'=>'meta[gsd]','data'=>'','theme'=>2])|raw}
-
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/add')" lay-submit lay-filter="formDemo">立即提交</button>
-            </div>
+        {$form_widget->form_input(['title'=>'用户名','name'=>'name','data'=>'','theme'=>2])|raw}
+        {$form_widget->form_select(['title'=>'分组','name'=>'gid','data'=>'','list_arr'=>$glist,'theme'=>4])|raw}
+        {$form_widget->form_input(['title'=>'手机号','name'=>'tel','data'=>'','theme'=>2])|raw}
+        {$form_widget->form_input(['title'=>'邮箱','name'=>'email','data'=>'','theme'=>2])|raw}
+        {$form_widget->form_input(['title'=>'密码','name'=>'pwd','data'=>'','theme'=>2])|raw}
+        {$form_widget->filesystem_pic(['title'=>'头像','name'=>'pic','data'=>'','theme'=>3])|raw}
+        {$form_widget->form_radio(['title'=>'性别','name'=>'sex','data'=>1,'parm_data'=>['2'=>'女','1'=>'男',''=>'其他'],'theme'=>2])|raw}
+        {:do_action('admin_user_view',$form_widget,'','add')}
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/add')" lay-submit lay-filter="formDemo">立即提交</button>
           </div>
+        </div>
         <?php } ?>
       </div>
-      
+
     </form>
   </div>
-  </div>
+</div>
 
 
 
-  <script>
- layui.use(['form', 'upload'], function(){
+<script>
+  layui.use(['form', 'upload'], function(){
     var $ = layui.$
-    ,form = layui.form
-    ,upload = layui.upload ;
+            ,form = layui.form
+            ,upload = layui.upload ;
 
-    
-    
-    
+
+
+
   })
-  </script>
+</script>
 </body>
 </html>
 {:do_action('admin_js')}
