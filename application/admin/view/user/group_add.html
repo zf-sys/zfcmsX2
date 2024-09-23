@@ -11,52 +11,54 @@
 {:do_action('admin_head')}
 
 <body>
-  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
-    <div class="layui-card-body">
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+  <div class="layui-card-body">
     <form class="info_tj" onclick="return false">
       <div style="width: 500px;">
         <?php $form_widget = new \app\common\widget\FormPro();  ?>
         <?php if(isset($res['id'])){ ?>
-          <input type="hidden" name="id" value="{$res['id']|default=''}">
-          {$form_widget->form_input(['title'=>'分类名','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
+        <input type="hidden" name="id" value="{$res['id']|default=''}">
+        {$form_widget->form_input(['title'=>'分类名','name'=>'name','data'=>$res['name'],'theme'=>2])|raw}
+        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'theme'=>2])|raw}
+        {:do_action('admin_usergroup_view',$form_widget,$res,'edit')}
 
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/group_edit')" lay-submit lay-filter="formDemo">立即提交</button>
-            </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/group_edit')" lay-submit lay-filter="formDemo">立即提交</button>
           </div>
+        </div>
         <?php }else{ ?>
-          {$form_widget->form_input(['title'=>'分类名','name'=>'name','data'=>'','theme'=>2])|raw}
-          {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'0','theme'=>2])|raw}
+        {$form_widget->form_input(['title'=>'分类名','name'=>'name','data'=>'','theme'=>2])|raw}
+        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>'0','theme'=>2])|raw}
+        {:do_action('admin_usergroup_view',$form_widget,'','add')}
 
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/group_add')" lay-submit lay-filter="formDemo">立即提交</button>
-            </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" onclick="tijiao_data('/admin/user/group_add')" lay-submit lay-filter="formDemo">立即提交</button>
           </div>
+        </div>
         <?php } ?>
       </div>
-      
-      
+
+
     </form>
   </div>
 </div>
 
-  {:widget_st('layui','js')}  
-  {:widget_st('common','js')} 
+{:widget_st('layui','js')}
+{:widget_st('common','js')}
 
-  <script>
- layui.use(['form', 'upload'], function(){
+<script>
+  layui.use(['form', 'upload'], function(){
     var $ = layui.$
-    ,form = layui.form
-    ,upload = layui.upload ;
+            ,form = layui.form
+            ,upload = layui.upload ;
 
-    
-    
-    
+
+
+
   })
-  </script>
+</script>
 </body>
 </html>
 {:do_action('admin_js')}

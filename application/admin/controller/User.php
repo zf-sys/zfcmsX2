@@ -52,7 +52,7 @@ class User extends Admin
                 }
                 $is = ZFTB('user_group')->where([['status','<>',9],['tag','=',$tag]])->order("id asc")->find();
             }
-            $gid = $is['id']; 
+            $gid = $is['id'];
             $this->redirect(url('admin/user/index',['gid'=>$gid]));
         }
 
@@ -61,7 +61,7 @@ class User extends Admin
         if($key!=''){
             $where[] = ['name|email|tel','like','%'.$key.'%'];
         }
-         $gid = input('gid','');
+        $gid = input('gid','');
         if($gid!=''){
             $where[] = ['gid','=',$gid];
         }
@@ -87,11 +87,11 @@ class User extends Admin
     public function add()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
-        if(!request()->isPost()){ 
+        if(!request()->isPost()){
             $glist = ZFTB('user_group')->where(['status'=>1])->select();
             $this->assign("glist",$glist);
-            return view();   
-        }  
+            return view();
+        }
         $data = input('post.');
         $data['ctime'] = time();
         if($data['pwd']!=''){
@@ -104,8 +104,8 @@ class User extends Admin
             return jserror('用户名已存在');exit;
         }
         deal_meta_data_add('user',$data);
-        
-        
+
+
     }
 
     /**
@@ -123,7 +123,7 @@ class User extends Admin
     public function edit()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
-    	if(request()->isGet()){
+        if(request()->isGet()){
             $res =  ZFTB('user')->where(['id'=>input('id')])->find();
             if(!$res){
                 $this->error('用户不存在');
@@ -134,7 +134,7 @@ class User extends Admin
             $glist =  ZFTB('user_group')->where(['status'=>1])->select();
             $this->assign("glist",$glist);
             return view('user/add');
-        } 
+        }
         if(request()->isPost()){
             $data = input('post.');
             if($data['pwd']!= ''){
@@ -148,7 +148,7 @@ class User extends Admin
                 return jserror('用户名已存在');exit;
             }
             deal_meta_data_edit('user',$data);
-        } 
+        }
     }
 
     /**
@@ -180,22 +180,13 @@ class User extends Admin
     public function group_add()
     {
         admin_role_check($this->z_role_list,$this->mca,1);
-        if(request()->isPost()){ 
+        if(request()->isPost()){
             $data = input('post.');
             $data['ctime'] = time();
             // $data = array_merge($data,$this->common_tag);
-            try {
-                $res =ZFTB('user_group')->insert($data);
-                return ZFRetMsg($res,'新增成功','新增失败');
-            }catch (Exception $e) {
-                return jserror($e->getMessage());
-            }
-            
-            
-        }  
-            return view();   
-
-         
+            deal_meta_data_add('user_group',$data);
+        }
+        return view();
     }
 
     /**
@@ -212,18 +203,14 @@ class User extends Admin
      */
     public function group_edit()
     {
-        admin_role_check($this->z_role_list,$this->mca,1);   
+        admin_role_check($this->z_role_list,$this->mca,1);
         if(request()->isPost()){
             $data = input('post.');
-            try {
-                $res = ZFTB('user_group')->where(['id'=>$data['id']])->update($data); 
-                return ZFRetMsg($res,'修改成功','修改失败');
-            }catch (Exception $e) {
-                return jserror($e->getMessage());
-            }
-                        
-        } 
+            deal_meta_data_edit('user_group',$data);
+        }
         $res =  ZFTB('user_group')->where(['id'=>input('id')])->find();
+        $meta_json = ZFTB('meta_data')->where([['tb','=','user_group'],['post_id','=',$res['id']],['status','<>',9]])->value('meta_data');
+        $res['meta'] = json_decode($meta_json,true);
         $this->assign("res",$res);
         return view('user/group_add');
     }
@@ -249,14 +236,14 @@ class User extends Admin
             }catch (Exception $e) {
                 return jserror($e->getMessage());
             }
-            
-            
-            if($res){ 
+
+
+            if($res){
                 session('admin',null);
                 return jssuccess('修改成功');
             }else{
                 return jserror('修改失败');
-            }   
+            }
         } else{
             $res = session('admin');
             $this->assign('res',$res);
@@ -287,7 +274,7 @@ class User extends Admin
             }catch (Exception $e) {
                 return jserror($e->getMessage());
             }
-        } 
+        }
         $id = session('admin.id');
         $res = ZFTB('admin')->where(['id'=>$id])->find();
         $this->assign('res',$res);
@@ -321,9 +308,9 @@ class User extends Admin
         // $data=[['aa','aa','cc','dd','ee'],['bb','bb','cc','dd','ee']];
         $data = ZFTB('user')->where(['status'=>1])->select();
         //设置表头：
-        $head = ['用户ID', '用户名', '性别', '地址', '注册日期']; 
+        $head = ['用户ID', '用户名', '性别', '地址', '注册日期'];
         //数据中对应的字段，用于读取相应数据：
-        $keys = ['id','name', 'sex', 'address', 'ctime'];     
+        $keys = ['id','name', 'sex', 'address', 'ctime'];
         zf_excel_export($head,$keys,$data,$name) ;
     }
 
