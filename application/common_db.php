@@ -623,3 +623,64 @@ if (!function_exists('get_tb_field')) {
         return $res;
     }
 }
+/**
+ * 240924新增
+ * 第三方授权登录时使用
+ */
+if(!function_exists('updateUserOauth')){
+    function updateUserOauth($user_info, $type = 'github',$app_id='',$pic='',$name='')
+    {
+        try {
+            // 查找是否存在对应的OAuth记录
+            $oauth = \think\Db::name('user_oauth')->where([
+                'type' => $type,
+                'app_id' => (string)$user_info['id']
+            ])->find();
+            $now = time();
+            if (!$oauth) {
+                // 如果不存在，创建新的OAuth记录
+                $oauth_id = \think\Db::name('user_oauth')->insertGetId([
+                    'type' => $type,
+                    'app_id' => $app_id,
+                    'pic' => $pic,
+                    'name' => $name,
+                    'data' => json_encode($user_info),
+                    'ctime' => $now,
+                    'utime' => $now,
+                    'status' => 1,
+                    'token' => Session::get('access_token')
+                ]);
+                // 创建新的用户记录
+                $user_id = \think\Db::name('user')->insertGetId([
+                    'name' => $type . '_' . $app_id,
+                    'nickName' => $name,
+                    'pic' => $pic,
+                    'ctime' => $now,
+                    'utime' => $now,
+                    'status' => 1,
+                ]);
+                // 更新OAuth记录的uid
+                \think\Db::name('user_oauth')->where('id', $oauth_id)->update(['uid' => $user_id]);
+                return $user_id;
+            } else {
+                // 如果存在，更新OAuth记录
+                if($oauth['uid']==''){
+                    // 如果uid为空，则更新uid
+                    $user_id = \think\Db::name('user')->insertGetId([
+                        'name' => $type . '_' . $app_id,
+                        'nickName' => $name,
+                        'pic' => $pic,
+                        'ctime' => $now,
+                        'utime' => $now,
+                        'status' => 1
+                    ]);
+                    \think\Db::name('user_oauth')->where('id', $oauth['id'])->update(['uid' => $user_id]);
+                    $oauth['uid'] = $user_id;
+                }
+                return $oauth['uid'];
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+}
