@@ -801,7 +801,7 @@ INFO;
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
-                     <img class="layui-upload-img $tpl_id" style="max-height:200px;width:40%;" src="$data" >
+                     <img class="layui-upload-img $tpl_id" style="height: auto;width: 200px;" src="$data" >
                      <p id="demoText"></p>
                    </div>
                  </div> 
@@ -889,7 +889,7 @@ INFO;
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
-                     <img class="layui-upload-img $tpl_id" style="max-height:200px;width:40%;" src="$data" >
+                     <img class="layui-upload-img $tpl_id" style="height: auto;width: 200px;" src="$data" >
                      <p id="demoText"></p>
                    </div>
                  </div> 
@@ -1147,7 +1147,7 @@ INFO;
                  <div class="layui-upload">
                    <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                    <div class="layui-upload-list">
-                     <img class="layui-upload-img $tpl_id" style="height:auto;width:40%;" src="$data" >
+                     <img class="layui-upload-img $tpl_id" style="height:auto;width:200px;" src="$data" >
                      <p id="demoText"></p>
                    </div>
                  </div> 
@@ -1209,7 +1209,7 @@ INFO;
               <div class="layui-upload">
                 <button type="button" class="layui-btn" id="$tpl_id">上传</button>
                 <div class="layui-upload-list">
-                  <img class="layui-upload-img $tpl_id" style="height:auto;width:40%;" src="$data" >
+                  <img class="layui-upload-img $tpl_id" style="height:auto;width:200px;" src="$data" >
                   <p id="demoText"></p>
                 </div>
               </div> 
