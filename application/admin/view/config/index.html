@@ -353,7 +353,7 @@
                   </div>
                 <?php }elseif($type=='AI中转站'){ ?>
                   <div  class="list_item" >
-                    {$form_widget->form_input_select(['title'=>'<a href="//api-gpt.zf-sys.com/" target="_blank">AI中转站</a>','name'=>'ai_gpt_host','data'=>isset_arr_key($config,'ai_gpt_host','http://api-gpt.zf-sys.com'),'notes'=>'只支持ZFSYS中转站,<a href="//api-gpt.zf-sys.com/" target="_blank">点击跳转注册</a>','url'=>$api_domain.'/addons/zf_store_softclientv2.api/zfcms_ai_init/t/domain','theme'=>4])|raw}
+                    {$form_widget->form_input_select(['title'=>'<a href="//api.bigmodel.org/" target="_blank">AI中转站</a>','name'=>'ai_gpt_host','data'=>isset_arr_key($config,'ai_gpt_host','http://api.bigmodel.org'),'notes'=>'只支持ZFSYS中转站,<a href="//api.bigmodel.org/" target="_blank">点击跳转注册</a>','url'=>$api_domain.'/addons/zf_store_softclientv2.api/zfcms_ai_init/t/domain','theme'=>4])|raw}
                     {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
                   </div>
 
