@@ -79,13 +79,13 @@
                     </div>
                     <div class="layui-col-sm3">
                       <div class="layui-card">
+                        {:do_action('add_category_edit_rt_view',$res,$form_widget)}
                         {$form_widget->upload_pic(['title'=>'封面图','name'=>'pic','data'=>$res['pic'],'notes'=>'','theme'=>1])|raw}
                         {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$res['ctime']),'notes'=>'','theme'=>1,'time_type'=>'datetime'])|raw}
                         {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'notes'=>'','theme'=>1])|raw}
-                      </div>
-                      <div class="layui-card">
                         {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'notes'=>'','theme'=>1])|raw}
                         {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'notes'=>'','theme'=>3])|raw}
+                        {:do_action('add_category_edit_rb_view',$res,$form_widget)}
                       </div>
                       
                       {include file="public/widget_submit"}
