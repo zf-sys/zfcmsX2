@@ -2831,6 +2831,42 @@ function get_all_cron_tasks()
     return CronManager::getAllTasks();
 }
 
+
+
+/**
+ * 20240926新增
+ * 后台专用 自定义URL 页面
+ */
+function tpl_diy_url_v($res, $hook_data, $form_widget)
+{
+    $html = '';
+    $html .= do_action('admin_diy_url_view', $hook_data);
+    $html .= '<blockquote class="layui-elem-quote">';
+    
+    $diy_url = isset($res['meta']['diy_url']) ? $res['meta']['diy_url'] : '';
+    
+    $html .= '<div style="margin-left: 15px;">';
+    $html .= '当前页面URL:<a style="color:red" href="/' . $diy_url . '.html" class="diy_url_a" target="_blank">/<span class="diy_url">' . $diy_url . '</span>.html</a>';
+    $html .= '</div>';
+    
+    $html .= '<div style="margin-left: 15px;">';
+    $html .= '根据标题自动生成url:<input class="auto_active_url" lay-filter="auto_active_url" type="checkbox" value="1" ' . (isset($res['meta']) && !empty($res['meta']) ? '' : 'checked') . ' />';
+    $html .= '</div>';
+    
+    $display_style = isset($res['meta']) && !empty($res['meta']) ? 'display: none;' : '';
+    $html .= '<div style="' . $display_style . '">';
+    $html .= $form_widget->form_input([
+        'title' => '自定义URL',
+        'name' => 'meta[diy_url]',
+        'data' => $diy_url,
+        'placeholder' => '如：welcome',
+        'theme' => 1
+    ]);
+    $html .= '</div>';
+    
+    $html .= '</blockquote>';
+    return $html;
+}
 // 定义预设的 Cron 任务
 // function define_cron_tasks()
 // {
