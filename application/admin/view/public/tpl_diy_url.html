@@ -1,17 +1,2 @@
 <?php if(isset($data_res) && !isset($res)){ $res = $data_res;} ?>
-
-<blockquote class="layui-elem-quote">
-    <div  style="margin-left: 15px;" >
-        当前页面URL:<a style="color:red"  href="/{$res['meta']['diy_url']|default=''}.html" class="diy_url_a" target="_blank">/<span class="diy_url">{$res['meta']['diy_url']|default='未知'}</span>.html</a>
-    </div>
-    <div style="margin-left: 15px;">
-        根据标题自动生成url:<input class="auto_active_url" lay-filter="auto_active_url" type="checkbox" value="1" {$res['meta']?'':'checked'} />
-    </div>
-    <div style="{$res['meta']?'display: none;':''}">
-        {$form_widget->form_input(['title'=>'自定义URL','name'=>'meta[diy_url]','data'=>isset_arr_key($res['meta'],'diy_url',''),'placeholder'=>'如：welcome','theme'=>1])|raw}
-    </div>
-    <div style="margin-left: 15px;">
-        {:do_action('admin_diy_url_view',$hook_data)}
-    </div>
-
-</blockquote>
+{:tpl_diy_url_v($res,$hook_data,$form_widget)}
