@@ -305,3 +305,18 @@ add_action('admin_head', function () {
     </style>';
     echo $html;
 },1);
+
+function add_category_edit_l_view_default($res,$form_widget,$hook_data){
+     $html = tpl_diy_url_v($res,$hook_data,$form_widget);
+      $html .= $form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'notes'=>'','theme'=>2]);
+      $html .= $form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'notes'=>'','theme'=>2]);
+      $html .= $form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'notes'=>'','theme'=>2]);
+      $html .= $form_widget->form_input(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'notes'=>'','theme'=>2]);
+      $html .= $form_widget->form_input(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'notes'=>'','theme'=>2]);
+      $html .= $form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'notes'=>'','theme'=>2]);
+      $html .= $form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'notes'=>'','theme'=>2]);
+      $html .= $form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'notes'=>'','theme'=>1]);
+      
+    echo $html;
+}
+add_action('add_category_edit_l_view', 'add_category_edit_l_view_default');

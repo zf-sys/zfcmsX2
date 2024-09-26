@@ -56,36 +56,20 @@
                     <!-- 默认表单 -->
                     <div class="layui-col-sm9">
                       <div class="layui-card">
-                        {include file="public/tpl_diy_url"}
 
-                        {$form_widget->form_input(['title'=>'栏目名称','name'=>'name','data'=>$res['name'],'notes'=>'','theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'英文名称','name'=>'ename','data'=>$res['ename'],'notes'=>'','theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'外部链接','name'=>'url','data'=>$res['url'],'notes'=>'','theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'栏目模板名','name'=>'tpl_category','data'=>$res['tpl_category'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'内容模板名','name'=>'tpl_post','data'=>$res['tpl_post'],'list_arr'=>$theme_arr,'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>2])|raw}
-                        {$form_widget->form_input(['title'=>'每页显示数','name'=>'page','data'=>$res['page'],'notes'=>'','theme'=>2])|raw}
-                        <!-- {$form_widget->form_input(['title'=>'链接目标','name'=>'target','data'=>$res['target'],'notes'=>'','theme'=>2])|raw} -->
-                        {$form_widget->form_textarea(['title'=>'栏目描述','name'=>'summary','data'=>$res['summary'],'notes'=>'','theme'=>2])|raw}
-                      <br>
-                      </div>
-                      
-                      <div class="layui-card">
-                        <br>
-                        <div class="layui-card-body">
-                        
-                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$res['content'],'notes'=>'','theme'=>1])|raw}
-                        </div>
+                        {:do_action('add_category_edit_l_view',$res,$form_widget,$hook_data)}
+
                       </div>
                     </div>
                     <div class="layui-col-sm3">
                       <div class="layui-card">
-                        {:do_action('add_category_edit_rt_view',$res,$form_widget)}
+                        {:do_action('add_category_edit_rt_view',$res,$form_widget,$hook_data)}
                         {$form_widget->upload_pic(['title'=>'封面图','name'=>'pic','data'=>$res['pic'],'notes'=>'','theme'=>1])|raw}
                         {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$res['ctime']),'notes'=>'','theme'=>1,'time_type'=>'datetime'])|raw}
                         {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$res['sort'],'notes'=>'','theme'=>1])|raw}
                         {$form_widget->form_select(['title'=>'父类','name'=>'pid','data'=>$res['pid'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'notes'=>'','theme'=>1])|raw}
                         {$form_widget->form_select(['title'=>'栏目模型','name'=>'mid','data'=>$res['mid'],'id_t'=>'id', 'name_t'=>'name','list_arr'=>$mlist,'notes'=>'','theme'=>3])|raw}
-                        {:do_action('add_category_edit_rb_view',$res,$form_widget)}
+                        {:do_action('add_category_edit_rb_view',$res,$form_widget,$hook_data)}
                       </div>
                       
                       {include file="public/widget_submit"}
