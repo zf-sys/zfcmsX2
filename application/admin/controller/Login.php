@@ -21,6 +21,8 @@ class Login extends Controller
 {
     public function __construct (){
         parent::__construct();
+        $zfcommon = new \zf\ZfCommon();
+        $zfcommon->load_plug_tag();
         zf_to_site_url();
         $web_config = ZFC('webconfig','db','arr');
         $this->web_config = $web_config;
