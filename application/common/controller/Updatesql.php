@@ -55,7 +55,7 @@ class Updatesql extends Controller
             $this->version_arr[$file_name] = ['type'=>'file','name'=>'./application/common/updateSql/'.$vo['filename']];
         }
         //sql钩子
-        do_action('sys_sql_act',$this->tb_prefix,$this->site_version);
+        $this->version_arr = apply_filters('sys_sql_act',$this->version_arr,'array');
     }
 
    
