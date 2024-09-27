@@ -320,3 +320,49 @@ function add_category_edit_l_view_default($res,$form_widget,$hook_data){
     echo $html;
 }
 add_action('add_category_edit_l_view', 'add_category_edit_l_view_default');
+
+
+//add_action('admin_js', function () {
+//    $html = '';
+//    if(request()->url()=='/admin/index/welcome.html'){
+//
+//    $html .= '<script>
+//    layui.use([ "element","layer"], function(){
+//        var $ = layui.$;
+//        var layer = layui.layer;
+//
+//        layer.open({
+//            type: 1,
+//            title: "提示",
+//            area: ["800px", "600px"],
+//            content: "<div style=\'padding: 30px;\'>" +
+//             "ZFCMS使用说明:" +
+//             "<br><br>" +
+//             "当前有两种版本:社区版和授权版"+
+//             "<br><br>" +
+//             "社区版：免费使用，但无法升级，<span style=\'color:red\'>不提供技术支持</span>,无法使用插件，无法使用付费功能。" +
+//             "<br><br>" +
+//             "授权版：需要绑定授权信息，才能使用付费功能，使用插件，使用付费功能。" +
+//             "<br><br>" +
+//             "<hr>"+
+//             "<br><br>" +
+//
+//              "</div>",
+//            btn: ["我已了解"],
+//            yes: function(index, layero){
+//                layer.close(index);
+//            },
+//        });
+//    });
+//</script>';
+//    }
+//    echo $html;
+//},1);
+function admin_welcome_after_func_initsql($ti)
+{
+    if(ZFC("zf_auth.key",'file')=='' && ZFC("zf_auth.sc",'file')=='' && file_exists('./extend/zf/Yun.php')){
+        redirect('/common/Sysauth/auth')->send();
+    }
+}
+add_action('admin_welcome_after', 'admin_welcome_after_func_initsql',9999);
+
