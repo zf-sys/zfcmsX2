@@ -326,7 +326,15 @@ class Base extends Controller
     public function zfyun_themes(){
         //数据库方式
         $z_module=input('z_module','index');
-        $list = db('plugin')->where([['status','<>',9],['type','=','theme']])->order('sort desc,id asc')->paginate(10,false,['query' => request()->param()])->each(function($item, $key){
+        $status = input('status','1');
+        if($status==''){
+            $where[] = ['status','<>',9];
+        }else{
+            $where[] = ['status','=',$status];
+        }
+        $this->assign('status',$status);
+        $where[] = ['type','=','theme'];
+        $list = db('plugin')->where($where)->order('sort desc,id asc')->paginate(10,false,['query' => request()->param()])->each(function($item, $key){
             $_file = './theme/'.$item['plugin_name'];
             if( is_dir($_file) && file_exists($_file.'/plugin_info.php')){
                 $item['ok'] = 1;
@@ -334,6 +342,7 @@ class Base extends Controller
             }else{
                 $item['ok'] = 0;
                 $item['path'] = $_file;
+                db('plugin')->where(['plugin_name'=>$item['plugin_name'],'type'=>'theme'])->update(['status'=>3]);
             }
             return $item;
         });
@@ -350,7 +359,15 @@ class Base extends Controller
      */
     public function zfyun_plugins(){
         $z_module=input('z_module','plugins');
-        $list = db('plugin')->where([['status','<>',9],['type','=','plugin']])->order('sort desc,id asc')->paginate(10,false,['query' => request()->param()])->each(function($item, $key){
+        $status = input('status','1');
+        if($status==''){
+            $where[] = ['status','<>',9];
+        }else{
+            $where[] = ['status','=',$status];
+        }
+        $this->assign('status',$status);
+        $where[] = ['type','=','plugin'];
+        $list = db('plugin')->where($where)->order('sort desc,id asc')->paginate(10,false,['query' => request()->param()])->each(function($item, $key){
             $_file = './addons/'.$item['plugin_name'].'/config';
             if( is_dir($_file) && file_exists($_file.'/plugin_info.php')){
                 $item['ok'] = 1;
@@ -358,6 +375,7 @@ class Base extends Controller
             }else{
                 $item['ok'] = 0;
                 $item['path'] = $_file;
+                db('plugin')->where(['plugin_name'=>$item['plugin_name'],'type'=>'plugin'])->update(['status'=>3]);
             }
             $plugin_file = './addons/'.$item['plugin_name'].'/controller/Plugin.php';
             if(file_exists($plugin_file)){

@@ -44,61 +44,10 @@ class Zfyun extends Admin
     }
     public function themes(){
         admin_role_check($this->z_role_list,$this->mca);
-        if($this->is_professional_edition){
-            $this->zfyun_themes();
-        }else{
-            $z_module=input('z_module','index');
-            $start_dir = './theme';  
-            $dirs = [];
-            if (is_dir($start_dir)) {    
-                $fh = opendir($start_dir);    
-                while (($file = readdir($fh)) !== false) {    
-                if (strcmp($file, '.')==0 || strcmp($file, '..')==0) continue;    
-                $filepath = $start_dir . '/' . $file;    
-                array_push($dirs, $filepath);    
-                }    
-                closedir($fh);    
-            } 
-            $list = [];
-            foreach ($dirs as $k => $vo) {
-                try {
-                    $_plugin_info = $vo.'/plugin_info.php';
-                    if(file_exists($_plugin_info)){
-                        $_plugin_data = include $_plugin_info;
-                        // $list[$k]['data'] = 
-                        $list[$k]['name'] = isset_arr_key($_plugin_data,'name','');
-                        $list[$k]['plugin_name'] = isset_arr_key($_plugin_data,'plugin_name','');
-                        $list[$k]['soft_id'] = isset_arr_key($_plugin_data,'soft_id','');
-                        $list[$k]['pic'] = isset_arr_key($_plugin_data,'pic','');
-                        $list[$k]['ok'] = 1;
-                        $is_version = db('plugin')->where(['plugin_name'=>$list[$k]['plugin_name']])->value('version');
-                        if($is_version){
-                            $list[$k]['version'] =$is_version;
-                        }else{
-                            $list[$k]['version'] =$list[$k]['data']['version'];
-                        }
-                        $list[$k]['path'] = $vo; 
-                    }
-                } catch (\Exception $e) {
-                    $r = $e->getMessage();
-                }
-            }
-            
-            $this->assign('list',$list);
-            $this->assign('page',false);
-            //查询当前的模板
-            $this->assign('tpl_name',ZFC('zf_tpl_suffix'));
-            // client_config
-            $client_config['site'] = request()->host();
-            if(isHTTPS()){
-                $client_config['http'] = 'https';
-            }else{
-                $client_config['http'] = 'http';
-            }
-            $client_config['token'] = config()["zf_auth"]['site_token'];
-            $this->assign('client_config',$client_config);
-
+        if(!$this->is_professional_edition){
+            echo str_show_tpl($this->sqb_error_msg); die;
         }
+        $this->zfyun_themes();
         return view();
     }
     public function plugins(){
