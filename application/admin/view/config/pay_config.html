@@ -12,7 +12,7 @@
 </head>
 {:do_action('admin_head')}
 <body>
-  <style>
+  <style> 
     @media screen and (min-width:1200px) {
       .list_item{
         width: 800px;
@@ -30,6 +30,7 @@
     .layui-input-block{
       min-height: 0px;
     }
+   
   </style>
   <?php $form_widget = new \app\common\widget\FormPro();  ?>
   <div class="layui-fluid">
@@ -37,48 +38,17 @@
       <div class="layui-col-md12">
 
         <div class="layui-card">
-          <div class="layui-card-header layuiadmin-card-header-auto">
-              <?php $menu_type = ['易支付']; ?>
-            <?php foreach($menu_type as $k=>$vo){ ?>
-              <a class="layui-btn layui-btn-sm {$vo!=$type?'layui-btn-primary':''}" href='{:url("config/pay_config")}?type={$vo}'>{$vo}</a>
-            <?php } ?>
-          </div>
+          {include file="public/setting_menu" /}
           <div class="layui-card-body" pad15>
-
             <form class="info_tj" >
               <div class="layui-form" wid100 lay-filter="">
-                <?php if($type=='易支付'){ ?>
-                  <?php if(!is_dir('./extend/epay')){ ?> 
-                    <blockquote class="layui-elem-quote" style="text-align: center;">
-                      使用此功能需先安装扩展 
-                      <a class="layui-btn layui-btn-sm" onclick='zfAdminShow("下载","{:url('/admin/config/tool')}")'>点击下载(功能下载==>易支付类库)</a> 
-
-                    </blockquote>
-                  <?php } ?>
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips_">API地址</a>','name'=>'epay_apiurl','data'=>isset_arr_key($config,'epay_apiurl',''),'notes'=>'例如: http://pay.jianshe2.com/     使用:','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips_">商户号</a>','name'=>'epay_partner','data'=>isset_arr_key($config,'epay_partner',''),'notes'=>'例如: 123456','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips_">Key</a>','name'=>'epay_key','data'=>isset_arr_key($config,'epay_key',''),'notes'=>'例如: saaaaaaa','theme'=>2])|raw}
-                  </div>
-                  
-
-                
-                <?php } ?>
+                {:do_action('admin_pay_setting',$form_widget,$config,$type)}
                 <div class="layui-form-item">
                   <div class="layui-input-block">
                     <a href="javascript:;" class="layui-btn layui-btn-sm"  onclick="tijiao_data2('config/pay_config',0)" >确认保存</a>
                     <a class="layui-btn layui-btn-sm layui-btn-danger" href="//bbs.zf-sys.com/bbs_detail/248.html" target="_blank" >查看帮助</a>
                   </div>
                 </div>
-
-
-                
-
-
               </div>
             </form>
           </div>

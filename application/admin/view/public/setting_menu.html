@@ -1,0 +1,24 @@
+<style>
+    menu{
+        display: none;
+    }
+</style>
+<div class="layui-card-header layuiadmin-card-header-auto" id="menuTypeContainer">
+</div>
+<script>
+    $(document).ready(function() {
+        var menuType = [];
+        $('menu').each(function() {
+            menuType.push($(this).text());
+        });
+        var type = '<?php echo $type; ?>';
+        var container = $('#menuTypeContainer');
+        $.each(menuType, function(index, vo) {
+            var a = $('<a></a>')
+                .addClass('layui-btn layui-btn-sm ' + (vo !== type ? 'layui-btn-primary' : ''))
+                .attr('href', '?type=' + vo)
+                .text(vo);
+            container.append(a);
+        });
+    });
+</script>

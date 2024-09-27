@@ -366,3 +366,296 @@ function admin_welcome_after_func_initsql($ti)
 }
 add_action('admin_welcome_after', 'admin_welcome_after_func_initsql',9999);
 
+
+
+function admin_pay_setting_epay($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>易支付</menu>';
+    if($type=='易支付'){
+        if(!is_dir('./extend/epay')){
+            $html .= '<blockquote class="layui-elem-quote" style="text-align: center;">
+                        使用此功能需先安装扩展
+                        <a class="layui-btn layui-btn-sm" onclick=\'zfAdminShow("下载","'.url('/admin/config/tool').'")\'>点击下载(功能下载==>易支付类库)</a>
+                      </blockquote>';
+        }
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_input(['title'=>'<a class="zf-layui-tips_">API地址</a>','name'=>'epay_apiurl','data'=>isset_arr_key($config,'epay_apiurl',''),'notes'=>'例如: http://pay.jianshe2.com/     使用:','theme'=>2]).
+                 '</div>';
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_input(['title'=>'<a class="zf-layui-tips_">商户号</a>','name'=>'epay_partner','data'=>isset_arr_key($config,'epay_partner',''),'notes'=>'例如: 123456','theme'=>2]).
+                 '</div>';
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_input(['title'=>'<a class="zf-layui-tips_">Key</a>','name'=>'epay_key','data'=>isset_arr_key($config,'epay_key',''),'notes'=>'例如: saaaaaaa','theme'=>2]).
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_pay_setting', 'admin_pay_setting_epay');
+
+
+function admin_web_setting_def($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>网站设置</menu>';
+    if($type=='网站设置'){
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_input(['title'=>'<a class="zf-layui-tips">ICP备案</a>','name'=>'site_icp','data'=>isset_arr_key($config,'site_icp',''),'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_icp") ICP</span></div>','theme'=>2]).
+                 '</div>';
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_input(['title'=>'<a class="zf-layui-tips">公安备案</a>','name'=>'site_ga','data'=>isset_arr_key($config,'site_ga',''),'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_ga") 公安备案</span></div>','theme'=>2]).
+                 '</div>';
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">版权信息</a>','name'=>'site_copyright','data'=>isset_arr_key($config,'site_copyright',''),'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_copyright") 版权信息</span></div>','theme'=>2]).
+                 '</div>';
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">统计代码/JS</a>','name'=>'site_js','data'=>isset_arr_key($config,'site_js',''),'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_js") 统计代码/JS</span></div>','theme'=>2]).
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_def');
+
+function admin_web_setting_tdk($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>网站TDK</menu>';
+    if($type=='网站TDK'){
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_input(['title'=>'<a class="zf-layui-tips">网站名称</a>','name'=>'site_name','data'=>isset_arr_key($config,'site_name',''),'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_name") 网站名称</span></div>','theme'=>2]).
+                 '</div>';
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">META关键词</a>','name'=>'site_keywords','data'=>isset_arr_key($config,'site_keywords',''),'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_keywords") META关键词</span></div>','theme'=>2]).
+                 '</div>';
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">META描述</a>','name'=>'site_description','data'=>isset_arr_key($config,'site_description',''),'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_description") META描述</span></div>','theme'=>2]).
+                 '</div>';
+        foreach(explode(',',ZFC('lang')) as $k=>$vo){
+            if($vo!=''){
+                $html .= '<div class="list_item">'.
+                         $form_widget->form_input(['title'=>'<a class="zf-layui-tips">网站名称'.$vo.'</a>','name'=>'site_name_'.$vo,'data'=>isset_arr_key($config,'site_name_'.$vo,''),'notes'=>'','theme'=>2]).
+                         $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_name_'.$vo.'") 网站名称'.$vo.'</span></div>','theme'=>2]).
+                         '</div>';
+                $html .= '<div class="list_item">'.
+                         $form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">META关键词'.$vo.'</a>','name'=>'site_keywords_'.$vo,'data'=>isset_arr_key($config,'site_keywords_'.$vo,''),'notes'=>'','theme'=>2]).
+                         $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_keywords_'.$vo.'") META关键词'.$vo.'</span></div>','theme'=>2]).
+                         '</div>';
+                $html .= '<div class="list_item">'.
+                         $form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">META描述'.$vo.'</a>','name'=>'site_description_'.$vo,'data'=>isset_arr_key($config,'site_description_'.$vo,''),'notes'=>'','theme'=>2]).
+                         $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_description_'.$vo.'") META描述'.$vo.'</span></div>','theme'=>2]).
+                         '</div>';
+            }
+        }
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_tdk');
+
+function admin_web_setting_dev($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>开发者</menu>';
+    if($type=='开发者'){
+        $html .= '<div class="list_item">'.
+                 $form_widget->form_radio(['title'=>'Diy_form显示','name'=>'isshow_form_parm','data'=>isset_arr_key($config,'isshow_form_parm',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2]).
+                 $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.isshow_form_parm")</span>自定义参数</div>','theme'=>2]).
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_dev');
+function admin_web_setting_ai($form_widget,$config,$type){
+    $api_domain = ZFC('version.api_domain','file');
+    $html = '';
+    $html .='<menu>AI中转站</menu>';
+    if($type=='AI中转站'){
+        $html .= '<div class="list_item">' .
+        $form_widget->form_input_select(['title' => '<a href="//api.bigmodel.org/" target="_blank">AI中转站</a>', 'name' => 'ai_gpt_host', 'data' => isset_arr_key($config, 'ai_gpt_host', 'http://api.bigmodel.org'), 'notes' => '只支持ZFSYS中转站,<a href="//api.bigmodel.org/" target="_blank">点击跳转注册</a>', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/domain', 'theme' => 4]);
+        $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]);
+        $html .= '</div>';
+
+        $html .= '<div class="list_item">' .
+                $form_widget->form_input_select(['title' => '文字模型:', 'name' => 'ai_gpt_model', 'data' => isset_arr_key($config, 'ai_gpt_model', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/text_ai', 'theme' => 4]);
+        $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]);
+        $html .= '</div>';
+
+        $html .= '<div class="list_item">' .
+                $form_widget->form_textarea(['title' => '<a class="zf-layui-tips">KEY</a>', 'name' => 'ai_gpt_key', 'data' => isset_arr_key($config, 'ai_gpt_key', ''), 'notes' => '', 'theme' => 2]);
+        $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.ai_gpt_key") </span></div>', 'theme' => 2]);
+        $html .= '</div>';
+
+        $html .= '<div class="list_item">' .
+                $form_widget->form_input_select(['title' => '图片模型:', 'name' => 'ai_gpt_pic_model', 'data' => isset_arr_key($config, 'ai_gpt_pic_model', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai', 'theme' => 4]);
+        $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]);
+        $html .= '</div>';
+
+        $html .= '<div class="list_item">' .
+                $form_widget->form_input_select(['title' => '图片大小:', 'name' => 'ai_gpt_pic_size', 'data' => isset_arr_key($config, 'ai_gpt_pic_size', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai_size', 'theme' => 4]);
+        $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]);
+        $html .= '</div>';
+    }
+ 
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_ai');
+
+
+function admin_web_setting_admin($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>后台配置</menu>';
+    if($type=='后台配置'){
+        $html .= '<div class="list_item">' .
+                 $form_widget->filesystem_pic(['title' => '登录右侧图片', 'name' => 'admin_login_right_pic', 'data' => isset_arr_key($config, 'admin_login_right_pic', ''), 'notes' => '', 'theme' => 3]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_login_right_pic")</span>后台登录右侧的图片</div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->filesystem_pic(['title' => '后台Logo', 'name' => 'admin_logo_pic', 'data' => isset_arr_key($config, 'admin_logo_pic', ''), 'notes' => '', 'theme' => 3]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_logo_pic")</span>后台左上角的logo</div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips"><a class="zf-layui-tips">最大登录错误数</a></a>', 'name' => 'max_login_err_num', 'data' => isset_arr_key($config, 'max_login_err_num', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.max_login_err_num")<br>一定时间内(可配置)最大登录错误数,默认3次</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips"><a class="zf-layui-tips">最大间隔时间</a></a>', 'name' => 'login_interval_time', 'data' => isset_arr_key($config, 'login_interval_time', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.login_interval_time")<br>这里单位是分钟,直接填数字,默认5</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_textarea(['title' => '<a class="zf-layui-tips">后台登录提示文字</a>', 'name' => 'login_html_notice', 'data' => isset_arr_key($config, 'login_html_notice', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.login_html_notice") 后台登录提示文字</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips">默认图片</a>', 'name' => 'def_pic', 'data' => isset_arr_key($config, 'def_pic', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.def_pic") 默认图片</span></div>', 'theme' => 2]) .
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_admin');
+
+
+function admin_web_setting_back($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>备份相关</menu>';
+    if($type=='备份相关'){
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_radio(['title' => '插件升级备份', 'name' => 'is_back_addons', 'data' => isset_arr_key($config, 'is_back_addons', '1'), 'parm_data' => ['0' => '关闭', '1' => '开启'], 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_back_addons")</span>插件升级备份,该功能仅用于升级时使用</div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_radio(['title' => '模板升级备份', 'name' => 'is_back_theme', 'data' => isset_arr_key($config, 'is_back_theme', '1'), 'parm_data' => ['0' => '关闭', '1' => '开启'], 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_back_theme")</span>模板升级备份,该功能仅用于升级时使用</div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_radio(['title' => '系统升级备份', 'name' => 'is_back_system', 'data' => isset_arr_key($config, 'is_back_system', '1'), 'parm_data' => ['0' => '关闭', '1' => '开启'], 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_back_system")</span>系统升级备份,该功能仅用于升级时使用</div>', 'theme' => 2]) .
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_back');
+
+function admin_web_setting_js($form_widget,$config,$type){
+    $api_domain = ZFC('version.api_domain','file');
+    $html = '';
+    $html .='<menu>JS设置</menu>';
+    if($type=='JS设置'){
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_select(['title' => 'JS版本更新:', 'name' => 'js_version_type', 'data' => isset_arr_key($config, 'js_version_type', ''), 'list_arr' => [['id' => '1', 'name' => '固定版本'], ['id' => 'time', 'name' => '实时更新'], ['id' => 'ymd', 'name' => '每日更新'], ['id' => 'ym', 'name' => '每月更新'], ['id' => 'y', 'name' => '每年更新']], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'theme' => 4]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">JS版本更新,仅支持使用widget_st方法引用的文件</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_select(['title' => '弹框类型:', 'name' => 'js_tan_type', 'data' => isset_arr_key($config, 'js_tan_type', ''), 'list_arr' => [['id' => 'now', 'name' => '当前窗口'], ['id' => 'newwindow', 'name' => '新窗口打开']], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'theme' => 4]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">仅支持使用zfAdminShow方法</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_radio(['title' => '开启外部样式', 'name' => 'is_web_static', 'data' => isset_arr_key($config, 'is_web_static', '0'), 'parm_data' => ['0' => '关闭', '1' => '开启'], 'notes' => '是否使用外部样式  css/js ', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_web_static")</span>是否使用外部样式</div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input_select(['title' => '外部样式引用', 'name' => 'web_static_host', 'data' => isset_arr_key($config, 'web_static_host', ''), 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_web_static/t/domain', 'notes' => '  仅限于/public/static/zfcms/style下的静态文件  ', 'theme' => 4]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]) .
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_js');
+
+function admin_web_setting_moren($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>默认状态</menu>';
+    if($type=='默认状态'){
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_radio(['title' => '栏目新增状态', 'name' => 'category_status', 'data' => isset_arr_key($config, 'category_status', ''), 'parm_data' => ['0' => '关闭', '1' => '打开'], 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.category_status")</span>栏目新增时默认的状态</div>', 'theme' => 2]) .
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_moren');
+
+function admin_web_setting_tongzhi($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>通知</menu>';
+    if($type=='通知'){
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_select(['title' => '选择通知方式:', 'name' => 'notice_type', 'data' => isset_arr_key($config, 'notice_type', ''), 'list_arr' => [['id' => '', 'name' => '未配置'], ['id' => 'notice_bark', 'name' => 'bark'], ['id' => 'notice_feishu', 'name' => '飞书'], ['id' => 'notice_dingding', 'name' => '钉钉'], ['id' => 'notice_qiwei', 'name' => '企业微信'], ['id' => 'email', 'name' => '邮箱']], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'theme' => 4]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">通知方式</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips">Bark</a>', 'name' => 'notice_bark', 'data' => isset_arr_key($config, 'notice_bark', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.notice_bark")<br>Bark通知</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips">飞书</a>', 'name' => 'notice_feishu', 'data' => isset_arr_key($config, 'notice_feishu', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.notice_feishu")<br>飞书通知</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips">钉钉</a>', 'name' => 'notice_dingding', 'data' => isset_arr_key($config, 'notice_dingding', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.notice_dingding")<br>钉钉通知(钉钉上需设置你的服务器地址)</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips">企微</a>', 'name' => 'notice_qiwei', 'data' => isset_arr_key($config, 'notice_qiwei', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.notice_qiwei")<br>企微通知</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_input(['title' => '<a class="zf-layui-tips">接收邮箱地址</a>', 'name' => 'notice_email', 'data' => isset_arr_key($config, 'notice_email', ''), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.notice_email")<br>接收邮箱地址</span></div>', 'theme' => 2]) .
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_tongzhi');
+
+function admin_web_setting_seo($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>SEO</menu>';
+    if($type=='SEO'){
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_select(['title' => 'seo标题方式:', 'name' => 'seo_title_type', 'data' => isset_arr_key($config, 'seo_title_type', ''), 'list_arr' => [['id' => '', 'name' => '保持现状'], ['id' => '1', 'name' => '尾部加系统站点名']], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'theme' => 4]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">seo标题方式,用于前台的seo标题显示</span></div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_radio(['title' => '前台静态化', 'name' => 'is_theme_cache', 'data' => isset_arr_key($config, 'is_theme_cache', ''), 'parm_data' => ['0' => '关闭', '1' => '打开'], 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_theme_cache")</span>是否开启前台静态化,缓存路径/cache/模板/</div>', 'theme' => 2]) .
+                 '</div>';
+        $html .= '<div class="list_item">' .
+                 $form_widget->form_textarea(['title' => '<a class="zf-layui-tips">静态化过滤路径</a>', 'name' => 'theme_cache_lth_tsdir', 'data' => isset_arr_key($config, 'theme_cache_lth_tsdir', 'search'), 'notes' => '', 'theme' => 2]) .
+                 $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.theme_cache_lth_tsdir") 使用,间隔</span></div>', 'theme' => 2]) .
+                 '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_seo');
+
+
+
+
+
+
+
+
+
