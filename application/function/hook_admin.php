@@ -652,8 +652,26 @@ function admin_web_setting_seo($form_widget,$config,$type){
 add_action('admin_web_setting', 'admin_web_setting_seo');
 
 
+function admin_web_setting_xitong($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>系统设置</menu>';
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_xitong');
 
+function admin_web_setting_water($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>水印配置</menu>';
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_water');
 
+function admin_web_setting_upload($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>上传设置</menu>';
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_upload');
 
 
 
