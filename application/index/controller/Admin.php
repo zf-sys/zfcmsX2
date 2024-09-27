@@ -15,7 +15,7 @@ use think\Db;
 class Admin extends Base
 {
     public function __construct (){
-        parent::__construct();
+        parent::__construct(true);
         if(!session('admin'))
         {
             session('zf_login_tap_url',request()->url());
