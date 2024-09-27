@@ -64,7 +64,7 @@ class Dbbak {
             $this->conn->exec("set names $charset");
             return true;
         } catch(\PDOException $e) {
-            $this->error('无法连接数据库服务器'.$e->getMessage());
+//            $this->error('无法连接数据库服务器'.$e->getMessage());
             return false;
         }
     }
@@ -96,7 +96,7 @@ class Dbbak {
     public function exportSql($table = '', $subsection = 0) {
         $table = empty($table) ? $this->getTables() : $table;
         if (!$this->_checkDir($this->dataDir)) {
-            $this->error('您没有权限操作目录,备份失败');
+//            $this->error('您没有权限操作目录,备份失败');
             return false;
         }
         if($subsection == 0){
@@ -198,7 +198,7 @@ class Dbbak {
 
             return true;
         } catch (\PDOException $e) {
-            $this->error('恢复失败：' . $e->getMessage());
+//            $this->error('恢复失败：' . $e->getMessage());
             return false;
         }
     }
@@ -226,7 +226,7 @@ class Dbbak {
             }
             return true;
         }catch(\PDOException $e){
-            // $this->error('恢复失败：' . $e->getMessage());
+//            // $this->error('恢复失败：' . $e->getMessage());
             return false;
         }
 
@@ -403,15 +403,15 @@ class Dbbak {
         $re = true;
         if (!$fp = @fopen($fileName, "w+")) {
             $re = false;
-            $this->error("在打开文件时遇到错误，备份失败!");
+//            $this->error("在打开文件时遇到错误，备份失败!");
         }
         if (!@fwrite($fp, '<?php exit;?>' . $str)) {
             $re = false;
-            $this->error("在写入信息时遇到错误，备份失败!");
+//            $this->error("在写入信息时遇到错误，备份失败!");
         }
         if (!@fclose($fp)) {
             $re = false;
-            $this->error("在关闭文件 时遇到错误，备份失败!");
+//            $this->error("在关闭文件 时遇到错误，备份失败!");
         }
         return $re;
     }

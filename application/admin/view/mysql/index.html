@@ -19,17 +19,12 @@
         <table class="layui-table">
             <colgroup>
               <col width="30">
-              <col width="60">
-              <col width="60">
-              <col width="50">
-              <col width="50">
-              <col width="50">
-
               <col>
             </colgroup>
             <thead>
               <tr>
                 <th>ID</th>
+                <th>类型</th>
                 <th>备份路径</th>
                 <th>创建时间</th>
                 <th>大小</th>
@@ -40,16 +35,24 @@
               <?php foreach($list as $k => $vo){ ?>
                 <tr>
                   <td><?php echo $k+1;?></td>
+                  <td>
+                    <?php if($vo['ori']=='模板目录'){ ?>
+
+                      <span class="layui-badge layui-bg-blue">{:ZFC('zf_tpl_suffix')}{$vo['ori']}</span>
+                    <?php }else{ ?>
+                      <span class="layui-badge layui-bg-green">{$vo['ori']}</span>
+                    <?php }?>
+
+                  </td>
                   <td>{$vo['filename']}</td>
                   <td>
                     {$vo['ctime']|date='Y-m-d H:i:s'}
                   </td>
                   <td>{$vo['size']}</td>
                   <td>
-                    <button class="layui-btn btn_del layui-btn-danger layui-btn-xs  " rel="{$vo['filename']}" href="">删除</button> 
-                    <a class="layui-btn layui-btn-xs restore" ref="{:url('Mysql/restore',['name' => $vo['filename'],'t'=>'restore'] )}" >还原</a>
-                    <a class="layui-btn layui-btn-xs " href="{:url('Mysql/restore',['name' => $vo['filename'],'t'=>'get_sql'] )}" >查看SQL</a> 
-
+                    <button class="layui-btn btn_del layui-btn-danger layui-btn-xs  " rel="{$vo['filename']}" rel2="{$vo['ori']}" href="">删除</button>
+                    <a class="layui-btn layui-btn-xs restore" ref="{:url('Mysql/restore',['name' => $vo['filename'],'t'=>'restore','ori' => $vo['ori']] )}" >还原</a>
+                    <a class="layui-btn layui-btn-xs " href="{:url('Mysql/restore',['name' => $vo['filename'],'t'=>'get_sql','ori' => $vo['ori']] )}" >查看SQL</a>
                   </td>
                 </tr>
               <?php } ?>     
@@ -94,11 +97,12 @@
     // 删除
     $(".btn_del").on("click",function(){
       var name = $(this).attr("rel");
+      var ori = $(this).attr("rel2");
       layer.confirm('确认删除？', {
         btn: ['删除','取消'] //按钮
       }, function(){
         //执行删除操作
-        $.get("{:url('mysql/delete')}",{name:name},function(res){
+        $.get("{:url('mysql/delete')}",{name:name,ori:ori},function(res){
           if(res.result==1){
             layer.msg("删除成功", {icon: 1});
             setTimeout(function() {

@@ -23,16 +23,23 @@
                       <form class="layui-form info_tj" method="post">
                         <div class="layui-row layui-col-space10 layui-form-item">
                           <div class="layui-col-lg6">
-                            <label class="layui-form-label">备份自定义目录:</label>
+                            <label class="layui-form-label">文件名:</label>
                             <div class="layui-input-block">
                               <input type="text" name="filename_dir" placeholder="" autocomplete="off" class="layui-input filename_dir" value="<?php echo date('YmdHis',time()); ?>">
+                            </div>
+                            <br>
+                            <label class="layui-form-label">保存目录:</label>
+                            <div class="layui-input-block">
+                              <select name="dir_type" class="dir_type">
+                                <option value="theme">当前模板目录(./theme/{:ZFC('zf_tpl_suffix')}/db)</option>
+                                <option value="backup">系统备份目录(./backup/db)</option>
+                              </select>
                             </div>
                           </div>
                           <div class="layui-col-lg6">
                           </div>
                         </div>
-                        
-                       
+
       
                         <div class="layui-form-item">
                           <div class="layui-input-block">
@@ -61,7 +68,7 @@
     $(".tijiao").on("click",function(){
       var index = layer.load(1);
       var filename_dir = $(".filename_dir").val();  
-      var volumesize = $(".volumesize").val();  
+      var dir_type = $(".dir_type").val();
       var method = $("input[name='method']:checked").val();
       var charset = $("input[name='charset']:checked").val();
       var hex = $("input[name='hex']:checked").val();
@@ -69,26 +76,20 @@
       $.ajax({
           type:'post',
           url:"{:url('mysql/backup')}",
-          data:{filename_dir:filename_dir,volumesize:volumesize,method:method,charset:charset,hex:hex,zip:zip},
+          data:{filename_dir:filename_dir,dir_type:dir_type,method:method,charset:charset,hex:hex,zip:zip},
           dataType:'json',
           success:function(res){
             layer.close(index);
-            // console.log(res)
             if(res.result==1){
               layer.msg(res.msg, {icon: 1});
               return
-              // http://localhost/zfadmin/public/admin.php/mysql/backup
             }else{
               layer.msg(res.msg, {icon: 2});
               return
             }
-            
           }
       })
-
     })
- 
-   
   });
   </script>
 </body>
