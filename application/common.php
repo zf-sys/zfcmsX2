@@ -1828,8 +1828,11 @@ if(!function_exists('widget_st')){
             }
         }
         if($type=='js'){
-            if(in_array($name,['jq183','jq'])){
+            if(in_array($name,['jq183'])){
                 return "<script type='text/javascript' src='$_static/jquery-1.8.3/jquery-1.8.3.min.js?$v'></script>\n";
+            }
+            if(in_array($name,['jq351','jq'])){
+                return "<script type='text/javascript' src='$_static/jquery-3.5.1/jquery-3.5.1.min.js?$v'></script>\n";
             }
             if(in_array($name,['layui'])){
                 return "<script type='text/javascript' src='$_static/layui/layui.js?$v'></script>\n";
