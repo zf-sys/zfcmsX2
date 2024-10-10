@@ -56,6 +56,8 @@ class ZfCommon extends Controller
                             Db::query('ALTER TABLE '.$vo['name'].' ALTER COLUMN `'.$vv['field'].'` SET DEFAULT "0"');
                         }elseif(is_str_find($vv['type'],'text')){
                             Db::query('ALTER TABLE '.$vo['name'].' CHANGE `'.$vv['field'].'` `'.$vv['field'].'` text COLLATE "utf8_general_ci" NULL');
+                        }elseif(is_str_find($vv['type'],'date')){
+                            Db::query('ALTER TABLE '.$vo['name'].' CHANGE `'.$vv['field'].'` `'.$vv['field'].'` date COLLATE "utf8_general_ci" NULL');
                         }elseif(is_str_find($vv['type'],'decimal')){
                             // decimal(11,2)
                             $isMatched = preg_match_all('/decimal(.*?),(.*?)\)/', $vv['type'], $matches);
