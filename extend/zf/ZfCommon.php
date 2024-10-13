@@ -49,24 +49,36 @@ class ZfCommon extends Controller
                         continue;
                     }
                     // if($vv['null']=='NO' && $vv['default']===NULL && $vv['key']!='PRI' && $vv['type']!='text' && !is_str_find($vv['type'],'text')){ 
-                    if($vv['null']=='NO' && $vv['default']===NULL && $vv['key']!='PRI' ){ 
-                        if(is_str_find($vv['type'],'varchar')){
+                    if($vv['null']=='NO' && $vv['default']===NULL && $vv['key']!='PRI') {
+                        $fieldType = strtolower($vv['type']);
+                        
+                        if (strpos($fieldType, 'varchar') !== false) {
                             Db::query('ALTER TABLE '.$vo['name'].' ALTER COLUMN `'.$vv['field'].'` SET DEFAULT ""');
-                        }elseif(is_str_find($vv['type'],'int')){
-                            Db::query('ALTER TABLE '.$vo['name'].' ALTER COLUMN `'.$vv['field'].'` SET DEFAULT "0"');
-                        }elseif(is_str_find($vv['type'],'text')){
-                            Db::query('ALTER TABLE '.$vo['name'].' CHANGE `'.$vv['field'].'` `'.$vv['field'].'` text COLLATE "utf8_general_ci" NULL');
-                        }elseif(is_str_find($vv['type'],'date')){
-                            Db::query('ALTER TABLE '.$vo['name'].' CHANGE `'.$vv['field'].'` `'.$vv['field'].'` date COLLATE "utf8_general_ci" NULL');
-                        }elseif(is_str_find($vv['type'],'decimal')){
-                            // decimal(11,2)
-                            $isMatched = preg_match_all('/decimal(.*?),(.*?)\)/', $vv['type'], $matches);
-                            if($isMatched==1 && isset($matches[2]) && $matches[2]!=''){
-                                $_str = str_pad('0.',intval($matches[2][0])+2,'0');
-                                Db::query('ALTER TABLE '.$vo['name'].' ALTER COLUMN `'.$vv['field'].'` SET DEFAULT "'.$_str.'"');
+                        } elseif (strpos($fieldType, 'int') !== false || strpos($fieldType, 'tinyint') !== false) {
+                            Db::query('ALTER TABLE '.$vo['name'].' ALTER COLUMN `'.$vv['field'].'` SET DEFAULT 0');
+                        } elseif (strpos($fieldType, 'text') !== false || strpos($fieldType, 'longtext') !== false) {
+                            Db::query('ALTER TABLE '.$vo['name'].' CHANGE `'.$vv['field'].'` `'.$vv['field'].'` '.$fieldType.' COLLATE utf8mb4_general_ci NULL');
+                        } elseif (strpos($fieldType, 'date') !== false || strpos($fieldType, 'datetime') !== false || strpos($fieldType, 'timestamp') !== false) {
+                            Db::query('ALTER TABLE '.$vo['name'].' CHANGE `'.$vv['field'].'` `'.$vv['field'].'` '.$fieldType.' NULL');
+                        } elseif (strpos($fieldType, 'decimal') !== false || strpos($fieldType, 'float') !== false || strpos($fieldType, 'double') !== false) {
+                            preg_match('/(\w+)\((\d+),(\d+)\)/', $fieldType, $matches);
+                            if (!empty($matches)) {
+                                $precision = $matches[3];
+                                $defaultValue = number_format(0, $precision, '.', '');
+                                Db::query('ALTER TABLE '.$vo['name'].' ALTER COLUMN `'.$vv['field'].'` SET DEFAULT '.$defaultValue);
                             }
-                        }else{
-                            // dd($vv);
+                        } elseif (strpos($fieldType, 'enum') !== false || strpos($fieldType, 'set') !== false) {
+                            preg_match('/\((.*?)\)/', $fieldType, $matches);
+                            if (!empty($matches)) {
+                                $options = explode(',', str_replace("'", '', $matches[1]));
+                                $defaultValue = "'".$options[0]."'";
+                                Db::query('ALTER TABLE '.$vo['name'].' ALTER COLUMN `'.$vv['field'].'` SET DEFAULT '.$defaultValue);
+                            }
+                        } elseif (strpos($fieldType, 'blob') !== false || strpos($fieldType, 'binary') !== false) {
+                            Db::query('ALTER TABLE '.$vo['name'].' CHANGE `'.$vv['field'].'` `'.$vv['field'].'` '.$fieldType.' NULL');
+                        } else {
+                            // 对于其他未知类型，记录日志
+                            logOutput('未处理的字段类型: '.$fieldType.' 表名: '.$vo['name'].' 字段名: '.$vv['field'], 'db_field_types');
                         }
                     }
                 }
