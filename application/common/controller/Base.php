@@ -201,6 +201,7 @@ class Base extends Controller
      */
     public function gourl(){
         $t_url = input('url','');
+        $t_url = filter_xss_input($t_url);
         // gourl_tokens
         $gourl_tokens = ZFC('gourl_tokens');
         $cars = [];

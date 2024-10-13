@@ -2870,6 +2870,89 @@ function tpl_diy_url_v($res, $hook_data, $form_widget)
     $html .= '</blockquote>';
     return $html;
 }
+if (!function_exists('filter_xss_input')) {
+    /**
+     * 过滤可能导致XSS攻击的特殊字符
+     * @param string $input 需要过滤的输入
+     * @return string 过滤后的字符串
+     */
+    function filter_xss_input($input) {
+        if (is_string($input)) {
+            // 定义需要过滤的特殊字符
+            $patterns = [
+                '/[<>]/',
+                '/["]/',  // 双引号
+                '/[\']/', // 单引号
+                '/[%]/',
+                '/[;]/',
+                '/[\(\)]/',
+                '/[&]/',
+                '/[+]/'
+            ];
+
+            // 使用空字符替换特殊字符
+            $input = preg_replace($patterns, '', $input);
+
+            return $input;
+        }
+        return $input;
+    }
+}
+
+function validateHost()
+{
+    try {
+        // 获取当前请求的host
+        $host = request()->host(true);
+
+        // 如果host为空，记录日志并抛出异常
+        if (empty($host)) {
+            dd('无效的Host');
+        }
+
+        // 获取域名白名单
+        $whitelist = Config::get('app.domain_whitelist', []);
+
+        // 如果白名单为空，记录日志并抛出异常
+        if (empty($whitelist)) {
+            Log::warning('域名白名单为空');
+            dd('域名白名单配置错误');
+        }
+
+        // 将host转换为小写进行比较
+        $host = strtolower($host);
+
+        // 检查host是否在白名单中
+        if (!in_array($host, array_map('strtolower', $whitelist))) {
+            // 记录非法Host的访问
+            // Log::warning("检测到非法Host: {$host}");
+            dd('非法的Host');
+        }
+
+        // 可选：检查是否使用HTTPS
+        // if (!request()->isSsl()) {
+        //     Log::warning("非HTTPS请求: {$host}");
+        //     dd('必须使用HTTPS访问');
+        // }
+
+        // 可选：检查是否存在X-Forwarded-Host头，并进行验证
+        $forwardedHost = request()->header('X-Forwarded-Host');
+        if ($forwardedHost && strtolower($forwardedHost) !== $host) {
+            // Log::warning("X-Forwarded-Host不匹配: {$forwardedHost}");
+            dd('非法的X-Forwarded-Host');
+        }
+
+        // Host验证通过
+        Log::info("Host验证通过: {$host}");
+    } catch (Exception $e) {
+        // 记录异常
+
+        // 重新抛出异常
+        throw $e;
+    }
+}
+
+
 // 定义预设的 Cron 任务
 // function define_cron_tasks()
 // {
