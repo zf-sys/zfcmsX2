@@ -27,6 +27,9 @@ class Index extends Base
         $this->zf_tpl_suffix = strtolower($this->zf_tpl_suffix);
     }
     public function index(){
+        if($this->zf_tpl_suffix==''){
+            return view();
+        }
         echo '请安装模板 参考官方文档:<a href="https://bbs.zf-sys.com/bbs_detail/265.html" target="_blank">https://bbs.zf-sys.com/bbs_detail/265.html</a>';
     }
 
