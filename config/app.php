@@ -143,4 +143,11 @@ return [
         404 => Env::get('root_path').'public/tpl/404.html',
         500 => Env::get('root_path').'public/tpl/500.html',
     ],
+    // 开启CSRF防护
+    'verify_token' => true,
+    // 表单令牌名称
+    'form_token_name' => '__token__',
+    // 表单令牌验证规则名称
+    'form_token_rule_name' => 'token',
+
 ];
