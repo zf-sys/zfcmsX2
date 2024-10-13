@@ -27,6 +27,7 @@ class Base extends Zfb
         $is_not_hook = !isset($route_info['route']) || $route_info['route'] !== 'index/index/hook';
         parent::__construct();
         if($load  && $is_not_hook){
+            validateHost();
             $this->home_init();
         }
     }

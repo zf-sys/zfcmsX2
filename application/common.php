@@ -2904,51 +2904,39 @@ function validateHost()
     try {
         // 获取当前请求的host
         $host = request()->host(true);
-
         // 如果host为空，记录日志并抛出异常
         if (empty($host)) {
-            dd('无效的Host');
+            echo str_show_tpl('无效的Host');die;
         }
-
         // 获取域名白名单
-        $whitelist = Config::get('app.domain_whitelist', []);
-
+        $white_str = ZFC('domain_whitelist');
+        $whitelist = explode(PHP_EOL, $white_str);
         // 如果白名单为空，记录日志并抛出异常
-        if (empty($whitelist)) {
-            Log::warning('域名白名单为空');
-            dd('域名白名单配置错误');
+        if (empty($whitelist) || $white_str=='') {
+            //域名白名单未配置
+            return;
         }
-
         // 将host转换为小写进行比较
         $host = strtolower($host);
-
         // 检查host是否在白名单中
         if (!in_array($host, array_map('strtolower', $whitelist))) {
             // 记录非法Host的访问
-            // Log::warning("检测到非法Host: {$host}");
-            dd('非法的Host');
+            echo str_show_tpl('非法的Host, 请在后台<a  href="/admin/index/index.html#//admin/Config/custom_config?">配置域名白名单</a>');die;
         }
-
         // 可选：检查是否使用HTTPS
-        // if (!request()->isSsl()) {
-        //     Log::warning("非HTTPS请求: {$host}");
-        //     dd('必须使用HTTPS访问');
-        // }
-
+//         if (!request()->isSsl()) {
+//             dd('必须使用HTTPS访问');
+//         }
         // 可选：检查是否存在X-Forwarded-Host头，并进行验证
         $forwardedHost = request()->header('X-Forwarded-Host');
         if ($forwardedHost && strtolower($forwardedHost) !== $host) {
-            // Log::warning("X-Forwarded-Host不匹配: {$forwardedHost}");
-            dd('非法的X-Forwarded-Host');
+            echo str_show_tpl('非法的X-Forwarded-Host');die;
         }
-
         // Host验证通过
-        Log::info("Host验证通过: {$host}");
+        return;
     } catch (Exception $e) {
-        // 记录异常
-
         // 重新抛出异常
-        throw $e;
+        echo str_show_tpl($e->getMessage());die;
     }
 }
 
