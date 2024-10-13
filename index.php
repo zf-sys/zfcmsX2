@@ -17,5 +17,7 @@ require __DIR__ . '/thinkphp/base.php';
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: SAMEORIGIN");
 header("X-XSS-Protection: 1; mode=block");
+// 添加X-Frame-Options头  防止点击劫持
+header('X-Frame-Options: SAMEORIGIN');
 // 执行应用并响应
 Container::get('app')->run()->send();
