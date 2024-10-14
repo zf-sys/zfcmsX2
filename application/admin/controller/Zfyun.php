@@ -266,7 +266,7 @@ class Zfyun extends Admin
                 return jssuccess('更新插件/模板钩子成功');
             }elseif($t==5){
                 //更新数据库存在,但是文件不存在的插件
-                $this->update_plugind_file();
+                $this->zfauth->update_plugind_file();
                 return jssuccess('更新数据库/文件统一性成功');
             }else{
                 return view();
@@ -274,36 +274,7 @@ class Zfyun extends Admin
         }
        
     }
-    /**
-     * 更新数据库存在,但是文件不存在的插件
-     */
-    private function update_plugind_file(){
-        $db_plugin = db('plugin')->field('plugin_name,status')->where([['type','in','plugin,theme'],['status','in','1,2']])->group('plugin_name')->select();
-        if($db_plugin){
-            foreach ($db_plugin as $k => $vo) {
-                $db_plugin[$k] = $vo['plugin_name'];
-            }
-        }else{
-            $db_plugin = [];
-        }
-        $dir_arr = scandir('./theme');
-        foreach ($dir_arr as $k => $vo) {
-            if($vo!='.' && $vo!='..' && $vo!='.DS_Store'  && is_dir('./theme/'.$vo) && is_file('./theme/'.$vo.'/plugin_info.php')){
-                if(in_array($vo,$db_plugin)){
-                    unset($db_plugin[array_search($vo,$db_plugin)]);
-                }
-            }
-        }
-        $dir_arr = scandir('./addons');
-        foreach ($dir_arr as $k => $vo) {
-            if($vo!='.' && $vo!='..' && $vo!='.DS_Store' && is_dir('./addons/'.$vo) && is_dir('./addons/'.$vo.'/config') && is_file('./addons/'.$vo.'/config/plugin_info.php')){
-                if(in_array($vo,$db_plugin)){
-                    unset($db_plugin[array_search($vo,$db_plugin)]);
-                }
-            }
-        }
-        $is = db('plugin')->where([['plugin_name','in',$db_plugin]])->update(['status'=>3]);
-    }
+
     public function upgrade_sql(){
         admin_role_check($this->z_role_list,$this->mca);
         if(!$this->is_professional_edition){

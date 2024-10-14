@@ -376,7 +376,7 @@ class Base extends Controller
             }else{
                 $item['ok'] = 0;
                 $item['path'] = $_file;
-                db('plugin')->where(['plugin_name'=>$item['plugin_name'],'type'=>'plugin'])->update(['status'=>3]);
+                Db::name('plugin')->where(['plugin_name'=>$item['plugin_name'],'type'=>'plugin'])->update(['status'=>3]);
             }
             $plugin_file = './addons/'.$item['plugin_name'].'/controller/Plugin.php';
             if(file_exists($plugin_file)){
@@ -390,7 +390,7 @@ class Base extends Controller
             }else{
                 $item['menu_act'] =false;
             }
-
+            Db::close();
             return $item;
         });
         $this->assign('list',$list);
