@@ -50,6 +50,10 @@
                   <td>删除/backup目录下所有文件</td>
                 </tr>
                 <tr>
+                  <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_runtime">删除runtime</span></td>
+                  <td>删除/runtime目录下所有文件</td>
+                </tr>
+                <tr>
                   <td><span class="layui-btn layui-btn-xs zf_act" data-t="del_upgrade">删除升级文件</span></td>
                   <td>删除/upgrade目录下所有文件</td>
                 </tr>
@@ -145,6 +149,9 @@
       switch(t){
         case 'del_temp':
           name = '将删除/runtime/temp目录下所有文件,是否确认?';
+          break;
+        case 'del_runtime':
+          name = '将删除/runtime目录下所有文件,是否确认?';
           break;
         case 'del_log':
           name = '将删除/runtime/log目录下所有文件,是否确认?';

@@ -24,7 +24,8 @@ class Base extends Controller
             if(!extension_loaded("IonCube Loader")) {     
                 echo str_show_tpl(base64_decode('VGhlIGlvbmN1YmUgZXh0ZW5zaW9uIGlzIG5vdCBjdXJyZW50bHkgaW5zdGFsbGVkIGFuZCBjYW5ub3QgYmUgdXNlZCAh')."  <a href='".ZFC('version.api_domain','file')."/question_list.html#ioncube_install' target='_blank'>".base64_decode('PHNwYW4gc3R5bGU9ImNvbG9yOnJlZDsiPklvbmN1YmXmianlsZXmnKrlronoo4Us54K55Ye75p+l55yL5a6J6KOF5pWZ56iLPC9zcGFuPg==')."</a>");die;
             }
-            if($load && $this->module!='index'){
+            if($load && $this->module=='admin'){
+                //用于后台
                 $this->Yun = new \zf\Yun(1); //检测全 (前台有些问题,会造成大数据502,前台建议使用直接查询授权)
             }else{
                 $this->Yun = new \zf\Yun(2);//yun工具

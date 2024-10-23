@@ -761,9 +761,11 @@ class Config extends Admin
      */
     public function tool(){
         $t = input('t','');
-        if(in_array($t,['del_temp','del_log','del_backup','del_upgrade','del_theme_cache','del_zfcms','del_cache_aiauth'])){
-            if($t=='del_temp'){
+        if(in_array($t,['del_temp','del_runtime','del_log','del_backup','del_upgrade','del_theme_cache','del_zfcms','del_cache_aiauth'])){
+            if($t=='del_temp') {
                 $dir = './runtime/temp';
+            }elseif($t=='del_runtime'){
+                $dir = './runtime';
             }elseif($t=='del_log'){
                 $dir = './runtime/log';
             }elseif($t=='del_backup'){
