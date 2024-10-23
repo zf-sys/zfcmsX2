@@ -17,8 +17,8 @@ class ZfAi
     {
         $apikey = $this->getConfigValue('ai_gpt_key');
         $ai_gpt_host = $this->getConfigValue('ai_gpt_host');
-        
-        if (!$apikey || !$ai_gpt_host) {
+
+        if (!$apikey || !$ai_gpt_host || $apikey=='' || $ai_gpt_host=='') {
             return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置KEY和AI中转站'];
         }
         $this->ai_gpt_host = $ai_gpt_host;
@@ -37,7 +37,9 @@ class ZfAi
      * openai的使用
      */
     public function zfyun_openai($content,$sys_message=''){
-        
+        if($this->openAi==null){
+            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置KEY和AI中转站'];
+        }
         $ai_gpt_model = isset_arr_key($this->webconfig,'ai_gpt_model','gpt-4o-mini');
         if($ai_gpt_model==''){
             return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置文字模型'];
@@ -65,7 +67,6 @@ class ZfAi
                 'response_format'=>["type"=> "json_object"]
             ];
             $complete = $this->openAi->chat($_gpt_init);
-//            dd($complete);
             $rr = json_decode($complete,true);
             if(!$complete){
                 return ['code'=>0,'msg'=>'请求异常,请检查网络,或域名是否正确'];
@@ -89,7 +90,9 @@ class ZfAi
 
     }
     public function zfyun_openai_pic($content,$sys_message=''){
-        
+        if($this->openAi==null){
+            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置KEY和AI中转站'];
+        }
         $ai_gpt_pic_model = isset_arr_key($this->webconfig,'ai_gpt_pic_model','');
         if($ai_gpt_pic_model==''){
             return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置图片模型'];

@@ -478,7 +478,7 @@ function admin_web_setting_ai($form_widget,$config,$type){
         $html .= '</div>';
 
         $html .= '<div class="list_item">' .
-                $form_widget->form_input_select(['title' => '文字模型:', 'name' => 'ai_gpt_model', 'data' => isset_arr_key($config, 'ai_gpt_model', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/text_ai', 'theme' => 4]);
+                $form_widget->form_input_select(['title' => '文字模型', 'name' => 'ai_gpt_model', 'data' => isset_arr_key($config, 'ai_gpt_model', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/text_ai', 'theme' => 4]);
         $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]);
         $html .= '</div>';
 
@@ -488,12 +488,12 @@ function admin_web_setting_ai($form_widget,$config,$type){
         $html .= '</div>';
 
         $html .= '<div class="list_item">' .
-                $form_widget->form_input_select(['title' => '图片模型:', 'name' => 'ai_gpt_pic_model', 'data' => isset_arr_key($config, 'ai_gpt_pic_model', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai', 'theme' => 4]);
+                $form_widget->form_input_select(['title' => '图片模型', 'name' => 'ai_gpt_pic_model', 'data' => isset_arr_key($config, 'ai_gpt_pic_model', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai', 'theme' => 4]);
         $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]);
         $html .= '</div>';
 
         $html .= '<div class="list_item">' .
-                $form_widget->form_input_select(['title' => '图片大小:', 'name' => 'ai_gpt_pic_size', 'data' => isset_arr_key($config, 'ai_gpt_pic_size', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai_size', 'theme' => 4]);
+                $form_widget->form_input_select(['title' => '图片大小', 'name' => 'ai_gpt_pic_size', 'data' => isset_arr_key($config, 'ai_gpt_pic_size', ''), 'list_arr' => [], 'id_t' => 'id', 'name_t' => 'name', 'notes' => '', 'url' => $api_domain . '/addons/zf_store_softclientv2.api/zfcms_ai_init/t/image_ai_size', 'theme' => 4]);
         $html .= $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>', 'theme' => 2]);
         $html .= '</div>';
     }
