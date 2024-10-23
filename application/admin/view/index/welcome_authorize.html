@@ -12,233 +12,235 @@
 </head>
 {:do_action('admin_head')}
 <style>
-.layui-carousel-ind {
+  .layui-carousel-ind {
     /* display: none; */
-}
+  }
 </style>
 <body>
-   <div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-      <div class="layui-col-md8">
-        <div class="layui-row layui-col-space15">
-          <div class="layui-col-md12">
-            <div class="layui-card">
-              <div class="layui-card-header">快捷方式</div>
-              <div class="layui-card-body">
-                
-                <div class="layui-carousel layadmin-carousel layadmin-shortcut">
-                  <div >
-                    <ul class="layui-row layui-col-space10">
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('Config/index')}" data-title="基本设置">
-                          <i class="layui-icon layui-icon-set"></i>
-                          <cite>基本设置</cite>
-                        </a>
-                      </li>
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('Config/admin_role')}" data-title="权限管理">
-                          <i class="layui-icon layui-icon-chart"></i>
-                          <cite>权限管理</cite>
-                        </a>
-                      </li>
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('Category/post_all_list')}" data-title="内容列表">
-                          <i class="layui-icon layui-icon-template-1"></i>
-                          <cite>内容列表</cite>
-                        </a>
-                      </li>
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('Rests/advert')}" data-title="广告管理">
-                          <i class="layui-icon layui-icon-chat"></i>
-                          <cite>广告管理</cite>
-                        </a>
-                      </li>
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('Rests/guessbook')}" data-title="留言管理">
-                          <i class="layui-icon layui-icon-find-fill"></i>
-                          <cite>留言管理</cite>
-                        </a>
-                      </li>
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('User/index')}" data-title="会员管理">
-                          <i class="layui-icon layui-icon-user"></i>
-                          <cite>会员管理</cite>
-                        </a>
-                      </li>
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('Category/special')}" data-title="专题管理">
-                          <i class="layui-icon layui-icon-survey"></i>
-                          <cite>专题管理</cite>
-                        </a>
-                      </li>
-                      <li class="layui-col-xs3">
-                        <a href="javascript:;" layuimini-content-href="{:url('Category/tag')}" data-title="标签管理">
-                          <i class="layui-icon layui-icon-note"></i>
-                          <cite>标签管理</cite>
-                        </a>
-                      </li>
-                    </ul>
-                    
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-          </div>
-          
-          <div class="layui-col-md12">
-            <div class="layui-card">
-              <div class="layui-card-header">服务器环境</div>
-              <div class="layui-card-body">
-                
-                <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
-                  <table class="layui-table">
-                    <colgroup>
-                      <col width="400">
-                      <col width="300">
-                      <col>
-                    </colgroup>
-                    <tbody>
-                      <tr>
-                        <td>站点信息:</td>
-                        <td>
-                            <?php echo $_SERVER["SERVER_NAME"];?>(IP:<?php echo $_SERVER["SERVER_ADDR"];?>)
-                        </td>
-                      </tr>
-                      
-                      <tr>
-                        <td>服务器：</td>
-                        <td>
-                          <?php echo php_uname('s').' '.php_uname('r');?>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>站点物理路径：</td>
-                        <td>
-                          <?php echo $_SERVER['DOCUMENT_ROOT'];?>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>POST大小：</td>
-                        <td>
-                          <?php echo ini_get('max_execution_time').'M';?>
-                        </td>
-                      </tr>
-                        <tr>
-                        <td>上传大小：</td>
-                        <td>
-                          <?php echo ini_get('upload_max_filesize');?>
-                        </td>
-                      </tr>
-                        <tr>
-                        <td>服务器时间：</td>
-                        <td>
-                          <?php echo date('Y-m-d H:i:s');?>
-                        </td>
-                      </tr>
-                      
-                    </tbody>
-                  </table>
-                </div>
-                
-              </div>
-            </div>
-          </div>
-          <div class="layui-col-md12">
-            <div class="layui-card">
-              <div class="layui-card-header">安全提醒</div>
-              <div class="layui-card-body">
-                {include file='public/show_safety_tips'}
-              </div>
-            </div>
-          </div>
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-header">快捷方式</div>
+            <div class="layui-card-body">
 
+              <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                <div >
+                  <ul class="layui-row layui-col-space10">
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('Config/index')}" data-title="基本设置">
+                        <i class="layui-icon layui-icon-set"></i>
+                        <cite>基本设置</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('Config/admin_role')}" data-title="权限管理">
+                        <i class="layui-icon layui-icon-chart"></i>
+                        <cite>权限管理</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('Category/post_all_list')}" data-title="内容列表">
+                        <i class="layui-icon layui-icon-template-1"></i>
+                        <cite>内容列表</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('Rests/advert')}" data-title="广告管理">
+                        <i class="layui-icon layui-icon-chat"></i>
+                        <cite>广告管理</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('Rests/guessbook')}" data-title="留言管理">
+                        <i class="layui-icon layui-icon-find-fill"></i>
+                        <cite>留言管理</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('User/index')}" data-title="会员管理">
+                        <i class="layui-icon layui-icon-user"></i>
+                        <cite>会员管理</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('Category/special')}" data-title="专题管理">
+                        <i class="layui-icon layui-icon-survey"></i>
+                        <cite>专题管理</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a href="javascript:;" layuimini-content-href="{:url('Category/tag')}" data-title="标签管理">
+                        <i class="layui-icon layui-icon-note"></i>
+                        <cite>标签管理</cite>
+                      </a>
+                    </li>
+                  </ul>
 
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
-      </div>
-      
-      <div class="layui-col-md4">
-        <div class="layui-card">
-          <div class="layui-card-header">系统信息</div>
-          <div class="layui-card-body layui-text layadmin-version">
-            <table class="layui-table" id="systemInfoTable">
-              <!-- 表格内容将通过Ajax动态填充 -->
-            </table>
+
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-header">服务器环境</div>
+            <div class="layui-card-body">
+
+              <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
+                <table class="layui-table">
+                  <colgroup>
+                    <col width="400">
+                    <col width="300">
+                    <col>
+                  </colgroup>
+                  <tbody>
+                  <tr>
+                    <td>站点信息:</td>
+                    <td>
+                      <?php echo $_SERVER["SERVER_NAME"];?>(IP:<?php echo $_SERVER["SERVER_ADDR"];?>)
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>服务器：</td>
+                    <td>
+                      <?php echo php_uname('s').' '.php_uname('r');?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>站点物理路径：</td>
+                    <td>
+                      <?php echo $_SERVER['DOCUMENT_ROOT'];?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>POST大小：</td>
+                    <td>
+                      <?php echo ini_get('max_execution_time').'M';?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>上传大小：</td>
+                    <td>
+                      <?php echo ini_get('upload_max_filesize');?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>服务器时间：</td>
+                    <td>
+                      <?php echo date('Y-m-d H:i:s');?>
+                    </td>
+                  </tr>
+
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
           </div>
+        </div>
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-header">安全提醒</div>
+            <div class="layui-card-body">
+              {include file='public/show_safety_tips'}
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="layui-col-md4">
+      <div class="layui-card">
+        <div class="layui-card-header">系统信息</div>
+        <div class="layui-card-body layui-text layadmin-version">
+          <table class="layui-table" id="systemInfoTable">
+            <!-- 表格内容将通过Ajax动态填充 -->
+          </table>
         </div>
       </div>
     </div>
   </div>
-  
-  {:widget_st('layui','js')} 
-  {:widget_st('common','js')}
-   <script src="__STATIC__/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+</div>
 
-  <script>
-   layui.use(['layer','miniTab', 'jquery', 'carousel'], function() {
-     var $ = layui.$,
-             carousel = layui.carousel,
-             miniTab = layui.miniTab;
+{:widget_st('layui','js')}
+{:widget_st('common','js')}
+<script src="__STATIC__/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
 
-        miniTab.listen();
-   });
-     get_welcome_data()
-      function get_welcome_data(){
-        // 发送Ajax请求获取数据
-        var index = layer.load(1, {shade: false});
-        $.ajax({
-          url: '{:url("Index/welcome",["tt"=>"getData"])}',
-          type: 'GET',
-          dataType: 'json',
-          success: function(res) {
-            layer.close(index);
-            if(res.code == 1) {
-              updateSystemInfo(res.data);
-              updateAnnouncement(res.data);
-              updateSponsor(res.data);
-              updateAdvert(res.data);
-            } else {
-              layer.msg('获取数据失败: ' + res.msg);
-            }
-          },
-          error: function() {
-            layer.close(index);
-            layer.msg('网络错误,请稍后重试');
-          }
-        });
+<script>
+  layui.use(['layer','miniTab', 'jquery', 'carousel'], function() {
+    var $ = layui.$,
+            carousel = layui.carousel,
+            miniTab = layui.miniTab;
+
+    miniTab.listen();
+  });
+  get_welcome_data()
+  function get_welcome_data(){
+    // 发送Ajax请求获取数据
+    var index = layer.load(1, {shade: false});
+    $.ajax({
+      url: '{:url("Index/welcome",["tt"=>"getData"])}',
+      type: 'GET',
+      dataType: 'json',
+      success: function(res) {
+        layer.close(index);
+        if(res.code == 1) {
+          updateSystemInfo(res.data);
+          updateAnnouncement(res.data);
+          updateSponsor(res.data);
+          updateAdvert(res.data);
+        } else {
+          layer.msg('获取数据失败: ' + res.msg);
+        }
+      },
+      error: function() {
+        layer.close(index);
+        layer.msg('网络错误,请稍后重试');
       }
+    });
+  }
 
-    
-    function updateSystemInfo(_data) {
-      var data = _data.data;
-      var html = `
+
+  function updateSystemInfo(_data) {
+    var data = _data.data;
+    var html = `
         <tbody>
           <tr><td>系统</td><td><a target="_blank" href="${data.sitelog_init.soft_domain_url || ''}">${data.sitelog_init.sys_name || ''}</a></td></tr>
           <tr><td>当前版本</td><td>{:config('version.version')}</td></tr>
           <tr><td>最新版本</td><td>${data.sitelog_init.version_list[0].version || ''}</td></tr>
-          <tr><td>当前状态</td><td>${_data.msg || ''}</td></tr>
+          <tr><td>当前状态</td><td>${_data.msg || ''}
+          <a href="/common/Sysauth/auth">重新授权</a>
+          </td></tr>
         </tbody>
       `;
-      $('#systemInfoTable').html(html);
-    }
-    
-    function updateAnnouncement(_data) {
-      var data = _data.data;
-      if (data && data.sitelog_init && data.sitelog_init.soft_author_notes) {
-        var safeNotes = (data.sitelog_init.soft_author_notes);
-        var card = createCard('公告', `
+    $('#systemInfoTable').html(html);
+  }
+
+  function updateAnnouncement(_data) {
+    var data = _data.data;
+    if (data && data.sitelog_init && data.sitelog_init.soft_author_notes) {
+      var safeNotes = (data.sitelog_init.soft_author_notes);
+      var card = createCard('公告', `
           <div class="layui-card-body layui-text layadmin-text">
             <blockquote class="layui-elem-quote">${safeNotes}</blockquote>
           </div>
         `);
-        $('.layui-col-md4').append(card);
-      }
+      $('.layui-col-md4').append(card);
     }
+  }
 
-    function updateSponsor(_data) {
-      var data = _data.data;
-      if (data && data.sitelog_init && data.sitelog_init.sponsor_list && data.sitelog_init.sponsor_list.length > 0) {
-        var sponsorContent = `
+  function updateSponsor(_data) {
+    var data = _data.data;
+    if (data && data.sitelog_init && data.sitelog_init.sponsor_list && data.sitelog_init.sponsor_list.length > 0) {
+      var sponsorContent = `
           <div class="layui-card-body">
             <div class="layui-carousel" id="zfcms_adv2">
               <div carousel-item>
@@ -251,16 +253,16 @@
             </div> 
           </div>
         `;
-        var card = createCard('赞助商', sponsorContent);
-        $('.layui-col-md4').append(card);
-        renderCarousel('#zfcms_adv2');
-      }
+      var card = createCard('赞助商', sponsorContent);
+      $('.layui-col-md4').append(card);
+      renderCarousel('#zfcms_adv2');
     }
-    
-    function updateAdvert(_data) {
-      var data = _data.data;
-      if (data && data.sitelog_init && data.sitelog_init.advert_list && data.sitelog_init.advert_list.length > 0) {
-        var advertContent = `
+  }
+
+  function updateAdvert(_data) {
+    var data = _data.data;
+    if (data && data.sitelog_init && data.sitelog_init.advert_list && data.sitelog_init.advert_list.length > 0) {
+      var advertContent = `
           <div class="layui-card-body">
             <div class="layui-carousel" id="zfcms_adv">
               <div carousel-item>
@@ -273,45 +275,45 @@
             </div> 
           </div>
         `;
-        var card = createCard('广告', advertContent);
-        $('.layui-col-md4').append(card);
-        renderCarousel('#zfcms_adv');
-      }
+      var card = createCard('广告', advertContent);
+      $('.layui-col-md4').append(card);
+      renderCarousel('#zfcms_adv');
     }
-    
-    function createCard(title, content) {
-      var card = document.createElement('div');
-      card.className = 'layui-card';
-      card.innerHTML = `
+  }
+
+  function createCard(title, content) {
+    var card = document.createElement('div');
+    card.className = 'layui-card';
+    card.innerHTML = `
         <div class="layui-card-header">${escapeHtml(title)}</div>
         ${content}
       `;
-      return card;
-    }
+    return card;
+  }
 
-    function escapeHtml(unsafe) {
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-    
-    function renderCarousel(selector) {
-      layui.use('carousel', function(){
-        var carousel = layui.carousel;
-        carousel.render({
-          elem: selector,
-          interval: 3000,
-          anim: 'fade',
-          width: 'auto',
-          height: '120px',
-          arrow:'none'
-        });
+  function escapeHtml(unsafe) {
+    return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+  }
+
+  function renderCarousel(selector) {
+    layui.use('carousel', function(){
+      var carousel = layui.carousel;
+      carousel.render({
+        elem: selector,
+        interval: 3000,
+        anim: 'fade',
+        width: 'auto',
+        height: '120px',
+        arrow:'none'
       });
-    }
-  </script>
+    });
+  }
+</script>
 </body>
 </html>
 {:do_action('admin_js')}
