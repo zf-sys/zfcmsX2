@@ -328,11 +328,12 @@ class Base extends Controller
     public function zfyun_themes(){
         //数据库方式
         $z_module=input('z_module','index');
-        $status = input('status','1');
+        $status = input('status','');
         if($status==''){
-            $where[] = ['status','<>',9];
+            $where[] = ['status','in','1,2'];
         }else{
-            $where[] = ['status','=',$status];
+//            $where[] = ['status','=',$status];
+            $where[] = ['status','in','1,2'];
         }
         $this->assign('status',$status);
         $where[] = ['type','=','theme'];
@@ -361,12 +362,14 @@ class Base extends Controller
      */
     public function zfyun_plugins(){
         $z_module=input('z_module','plugins');
-        $status = input('status','1');
+        $status = input('status','');
         if($status==''){
-            $where[] = ['status','<>',9];
+            $where[] = ['status','in','1,2'];
         }else{
-            $where[] = ['status','=',$status];
+//            $where[] = ['status','=',$status];
+            $where[] = ['status','in','1,2'];
         }
+
         $this->assign('status',$status);
         $where[] = ['type','=','plugin'];
         $list = db('plugin')->where($where)->order('sort desc,id asc')->paginate(10,false,['query' => request()->param()])->each(function($item, $key){
