@@ -514,6 +514,7 @@ if(!function_exists('save_admin_log')){
 if(!function_exists('save_exception')){
     function save_exception($type,$err_msg,$data=[],$code=0){
         //保存日志
+        $err_msg = substr($err_msg, 0, 200); // 截取前200个字符
         $save_data['name'] = $type;
         $save_data['ctime'] = time();
         $save_data['ip'] = request()->ip();
