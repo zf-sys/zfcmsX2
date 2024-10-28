@@ -558,6 +558,24 @@ function admin_web_setting_back($form_widget,$config,$type){
 }
 add_action('admin_web_setting', 'admin_web_setting_back');
 
+
+function admin_web_setting_diyurl($form_widget,$config,$type){
+    $html = '';
+    $html .='<menu>URL显示过滤</menu>';
+    if($type=='URL显示过滤'){
+        $html .= '<div class="list_item">' .
+            $form_widget->form_textarea(['title' => '<a class="zf-layui-tips">分类</a>', 'name' => 'diyurl_cates', 'data' => isset_arr_key($config, 'diyurl_cates', ''), 'notes' => '', 'theme' => 2]) .
+            $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.diyurl_cates") 过滤的分类id  英文,隔开</span></div>', 'theme' => 2]) .
+            '</div>';
+        $html .= '<div class="list_item">' .
+            $form_widget->form_textarea(['title' => '<a class="zf-layui-tips">内容</a>', 'name' => 'diyurl_posts', 'data' => isset_arr_key($config, 'diyurl_posts', ''), 'notes' => '', 'theme' => 2]) .
+            $form_widget->form_note(['data' => '<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.diyurl_posts") 过滤的内容id  英文,隔开</span></div>', 'theme' => 2]) .
+            '</div>';
+    }
+    echo $html;
+}
+add_action('admin_web_setting', 'admin_web_setting_diyurl');
+
 function admin_web_setting_js($form_widget,$config,$type){
     $api_domain = ZFC('version.api_domain','file');
     $html = '';

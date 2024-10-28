@@ -2842,6 +2842,12 @@ function get_all_cron_tasks()
  */
 function tpl_diy_url_v($res, $hook_data, $form_widget)
 {
+    if($hook_data[0]=='category' && in_array($hook_data[3]['cid'],explode(',',ZFC("webconfig.diyurl_cates") ))){
+        return '';
+    }
+    if($hook_data[0]=='post' && in_array($hook_data[3]['cid'],explode(',',ZFC("webconfig.diyurl_posts") )) ){
+        return '';
+    }
     $html = '';
     $html .= do_action('admin_diy_url_view', $hook_data);
     $html .= '<blockquote class="layui-elem-quote">';

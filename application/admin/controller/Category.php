@@ -496,7 +496,7 @@ class Category extends Admin
                 }
             }
             $this->assign('theme_arr',$theme_arr);
-            $this->assign('hook_data',['post',$cid,'edit',$res]);
+            $this->assign('hook_data',['category',$cid,'edit',$res]);
 
             return view('/category/category_edit');
         }else{
@@ -785,6 +785,7 @@ class Category extends Admin
             $this->assign("data_res",[]);
             $mid = input("mid",'14');
             $cid = input("cid",'');
+            $data_res['cid'] = $cid;
             $data_res['meta'] = false;
             $this->assign("data_res",$data_res);
             $content_act = 'add';
