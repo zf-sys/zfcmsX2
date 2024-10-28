@@ -167,6 +167,10 @@ function admin_head_html1()
     0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.pagination>li img{
+width: 20px !important;
+}
 </style>';
     echo $html;
 }

@@ -7,7 +7,9 @@ $html = $general_tb->setHtmlHead([widget_st('layui','css')])
 ->setHtmlHead([widget_st('jq','js')])
 ->setHtmlHead([widget_st('layui','js')])
 ->setHtmlHead([widget_st('common','js')])
-
+->setDiyCss(".pagination>li img{
+width: 20px !important;
+}")
 //    表单
 ->setFormItem('mid','hidden','模型id',$mid)
 ->setFormItem('cid','hidden','栏目id',$cid)
