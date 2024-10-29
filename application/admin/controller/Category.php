@@ -594,6 +594,9 @@ class Category extends Admin
             $data = input('post.');
             $title_arr = explode(',',$data['titles']);
             $arr = [];
+            if($this->lang=='1'){
+                $this->lang = '';
+            }
             foreach($title_arr as $k=>$vo){
                 if($vo!=''){
                     $arr[] = [
