@@ -29,6 +29,7 @@ composer.lock
 /upgrade_box/*
 
 /.idea
+/.vscode
 /docker
 /docker/docker-compose.yml
 
@@ -36,3 +37,4 @@ composer.lock
 /application/function/hook_demo_test.php
 /application/function/hooks_test.php
 /check.php
+/application/api

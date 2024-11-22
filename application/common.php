@@ -2535,11 +2535,11 @@ if(!function_exists('meta_url_route')){
     function meta_url_route($type=1,$theme_arr=[]){
         if($type==1){
             //路由
-            $list = ZFTB('meta_data')->field('tb,post_id,meta_data,diy_url')->where([['status','<>',9],['diy_url','<>','']])->group('meta_data')->select();
+            $list = ZFTB('meta_data')->field('tb,post_id,meta_data,diy_url')->where([['status','<>',9],['diy_url','<>','']])->select();
             $arr = [];
             foreach($list as $k=>$vo){
                 $meta_data = json_decode($vo['meta_data'],true);
-                $diy_url = isset_arr_key($meta_data,'diy_url','');
+                $diy_url = isset_arr_key($vo,'diy_url','');
                 if($diy_url==''){
                     continue;
                 }
