@@ -7,19 +7,23 @@ class ZfAi
     private $webconfig;
     private $openAi;
 
-    public function __construct()
+    public function __construct($ai_gpt_host='',$apikey='')
     {
         $this->webconfig = json_decode(ZFC('webconfig'), true);
-        $this->initOpenAi();
+        $this->initOpenAi($ai_gpt_host,$apikey);
     }
 
-    private function initOpenAi()
+    private function initOpenAi($ai_gpt_host='',$apikey='')
     {
-        $apikey = $this->getConfigValue('ai_gpt_key');
-        $ai_gpt_host = $this->getConfigValue('ai_gpt_host');
+        if($ai_gpt_host==''){
+            $ai_gpt_host = $this->getConfigValue('ai_gpt_host');
+        }
+        if($apikey==''){
+            $apikey = $this->getConfigValue('ai_gpt_key');
+        }
 
         if (!$apikey || !$ai_gpt_host || $apikey=='' || $ai_gpt_host=='') {
-            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置KEY和AI中转站'];
+            return ['code'=>0,'msg'=>'未设置AI中转站配置---KEY和AI中转站'];
         }
         $this->ai_gpt_host = $ai_gpt_host;
 
@@ -38,11 +42,11 @@ class ZfAi
      */
     public function zfyun_openai($content,$sys_message=''){
         if($this->openAi==null){
-            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置KEY和AI中转站'];
+            return ['code'=>0,'msg'=>'未设置AI中转站配置---KEY和AI中转站'];
         }
         $ai_gpt_model = isset_arr_key($this->webconfig,'ai_gpt_model','gpt-4o-mini');
         if($ai_gpt_model==''){
-            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置文字模型'];
+            return ['code'=>0,'msg'=>'未设置AI中转站配置---文字模型'];
         }
         $messages = [
             [
@@ -91,16 +95,16 @@ class ZfAi
     }
     public function zfyun_openai_pic($content,$sys_message=''){
         if($this->openAi==null){
-            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置KEY和AI中转站'];
+            return ['code'=>0,'msg'=>'未设置AI中转站配置---KEY和AI中转站'];
         }
         $ai_gpt_pic_model = isset_arr_key($this->webconfig,'ai_gpt_pic_model','');
         if($ai_gpt_pic_model==''){
-            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置图片模型'];
+            return ['code'=>0,'msg'=>'未设置AI中转站配置---图片模型'];
         }
 
         $ai_gpt_pic_size = isset_arr_key($this->webconfig,'ai_gpt_pic_size','');
         if($ai_gpt_pic_size==''){
-            return ['code'=>0,'msg'=>'请先在网站设置->基本设置->AI中配置图片大小'];
+            return ['code'=>0,'msg'=>'未设置AI中转站配置---图片大小'];
         }
         $text = $sys_message.' : '.$content;
         try{
