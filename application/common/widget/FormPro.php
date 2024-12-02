@@ -1636,7 +1636,7 @@ tinymce.init({
     },
     mobile: {
       menubar: false
-  },
+    },
     file_picker_types: 'media', 
     file_picker_callback: function(cb, value, meta) {
       if (meta.filetype == 'media'){
@@ -1677,6 +1677,14 @@ tinymce.init({
             }
             input.click();
         }
+    },
+    setup: function(editor) {
+        editor.on('change', function(e) {	
+            console.log('change event');
+            // 获取 TinyMCE 编辑器的内容并赋值给 textarea
+            var content = editor.getContent();
+            $("#$tpl_id").val(content); 
+        });
     }
   });
 
