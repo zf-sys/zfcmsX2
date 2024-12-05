@@ -15,8 +15,8 @@
       {:widget_st('jq','js')}
       {:widget_st('laydate','js')}    
       {:widget_st('ueditor')}
-      {:widget_st('webuploader')}
-      {:widget_st('tinymce515')}
+<!--      {:widget_st('webuploader')}-->
+      {:widget_st('tinymce')}
       {:widget_st('layui','js')}  
       {:widget_st('wangEditor')}
       {:widget_st('vditor')}
@@ -87,37 +87,7 @@
     ,element = layui.element
     ,form = layui.form;
     
-    <?php if($tinymce_num>0){ ?>
-        $(".tijiao").on("click",function(){
-          var index = layer.load(2);
-          var data = $(".info_tj input,.info_tj textarea,.info_tj select").serializeArray();    
-          var z_data = {
-            data:data, 
-            <?php for($_tinymce_ii=0;$_tinymce_ii<$tinymce_num;$_tinymce_ii++){ ?>
-              "{$tinymce_key[$_tinymce_ii]}@tinymce" : tinymce.editors[{$_tinymce_ii}].getContent(),   
-            <?php } ?>
-            editor_type:'tinymce' 
-          }
-          $.ajax({
-              type:'post',
-              url:"{:url('admin/category/post_add')}",
-              data:z_data,
-              dataType:'json',
-              success:function(res){
-                layer.close(index);
-                if(res.result==1){
-                  layer.msg(res.msg, {icon: 1});
-                  setTimeout(function() {
-                    window.parent.location.reload();
-                  }, 2000);
-                }else{
-                  layer.msg(res.msg, {icon: 2});
-                }
-              }
-          })
-        });
-      
-    <?php }else{ ?>
+
       $(".tijiao").on("click",function(){
         var index = layer.load(2);
         var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();      
@@ -142,31 +112,7 @@
         })
       });
     
-    <?php } ?>
 
-
-    // $(".tijiao").on("click",function(){
-    //   // var index = layer.load(2);
-    //   var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();   
-    //   var url = "{:url('admin/category/post_add')}"
-    //   $.ajax({
-    //       type:'post',
-    //       url:url,
-    //       data:data,
-    //       dataType:'json',
-    //       success:function(res){
-    //         // layer.close(index);
-    //         if(res.result==1){
-    //           layer.msg(res.msg, {icon: 1});
-    //           setTimeout(function() {
-    //             window.parent.location.reload();
-    //           }, 2000);
-    //         }else{
-    //           layer.msg(res.msg, {icon: 2});
-    //         }
-    //       }
-    //   })
-    // });
     
   });
  function deleteFile(obj) {
