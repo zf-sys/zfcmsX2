@@ -322,6 +322,9 @@ INFO;
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $parm_data = isset($request_data['parm_data'])?$request_data['parm_data']:['0'=>'否','1'=>'是'];
+        if($parm_data==''){
+            $parm_data = ['0'=>'否','1'=>'是'];
+        }
         if(is_string($parm_data)){
           eval("\$parm_data = ".$request_data['parm_data'].'; ');
         }
