@@ -1012,7 +1012,10 @@ class Category extends Admin
     {
         admin_role_check($this->z_role_list,$this->mca);
         $all_list = Db::query("SHOW FULL COLUMNS FROM zf_".'post');
-        $meta_key_list = db('meta_key')->where([['tb','=','post'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
+        // 临时禁用 ONLY_FULL_GROUP_BY 模式
+        Db::execute("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+        $meta_key_list = Db::name('meta_key')->where([['tb','=','post'],['status','=',1]])->order('sort asc,id asc')->group('key')->select();
+
         foreach($meta_key_list as $k=>$vo){
             $all_list[] = [
                 'Field'=>'meta['.$vo['key'].']',
