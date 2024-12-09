@@ -811,20 +811,26 @@ class Category extends Admin
             $content_act = 'edit';
         }
         $m_res =ZFTB('category_model')->field('model,is_two,is_parm,id,form_parm_static')->where(['id'=>$mid])->find();
-        if($m_res['is_parm']==1){
-            if(is_file('./application/admin/view/category/zf_tpl/add_'.$m_res['model'].'.html')){
-                $tpl = 'category/zf_tpl/add_'.$m_res['model'];
-            }else{
+        if(isset($m_res['is_parm']) && $m_res['is_parm']==1) {
+            if (is_file('./application/admin/view/category/zf_tpl/add_' . $m_res['model'] . '.html')) {
+                $tpl = 'category/zf_tpl/add_' . $m_res['model'];
+            } else {
                 $tpl = 'category/zf_tpl/add';
             }
             // $tpl = '/category/zf_tpl/add';
+            $this->assign('cid', $cid);
+            $this->assign('mid', $mid);
+            $m_list = ZFTB('category_model_parm')->where(['mid' => $mid, 'status' => 1])->order('sort asc,id asc')
+                                                 ->select();
+            $this->assign('m_list', $m_list);
+            $this->assign('m_res', $m_res);
+        }elseif(isset($m_res['is_parm'])){
+            $tpl = '/category/'.$m_res['model'].'/add';
             $this->assign('cid',$cid);
             $this->assign('mid',$mid);
-            $m_list =ZFTB('category_model_parm')->where(['mid'=>$mid,'status'=>1])->order('sort asc,id asc')->select();
-            $this->assign('m_list',$m_list);
             $this->assign('m_res',$m_res);
         }else{
-            $tpl = '/category/'.$m_res['model'].'/add';
+            $tpl = '/category/news/add';
             $this->assign('cid',$cid);
             $this->assign('mid',$mid);
             $this->assign('m_res',$m_res);
