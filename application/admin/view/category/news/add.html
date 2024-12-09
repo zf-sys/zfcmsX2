@@ -14,12 +14,15 @@
     {:widget_st('admin','css')}
     {:widget_st('jq','js')}
     {:widget_st('laydate','js')}
-    {:widget_st('webuploader')}
+<!--    {:widget_st('webuploader')}-->
     {:widget_st('layui','js')}
     {:widget_st('common','js')}
-    {:widget_st('ueditor')}
-    {:widget_st('input-tag')}
-  <?php } ?> 
+<!--    {:widget_st('ueditor')}-->
+  {:widget_st('input-tag')}
+  {:widget_st('tinymce')}
+  {:widget_st('sortable')}
+
+  <?php } ?>
 </head>
 {:do_action('admin_head')}
 <style>
@@ -60,8 +63,9 @@
                         {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$data_res['summary'],'theme'=>1])|raw}
                         {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>$data_res['tags'],'theme'=>1])|raw}
                         {$form_widget->filesystem_album(['title'=>'图集','name'=>'album','data'=>$data_res['album'],'theme'=>1])|raw}
-                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}                    
-      
+                        {$form_widget->form_tinymce(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}
+
+
                        <?php } ?> 
                      
                       
@@ -110,7 +114,6 @@
       </div>
     </div>
   </div>
-  
 
   <script>
  layui.use(['form','upload','laydate'], function(){
@@ -155,6 +158,18 @@
   function deleteFile(obj) {
    $(obj).parent().remove();
   }
+ // 选择所有具有 'sortable-list' 类的元素并初始化 Sortable
+ const sortableLists = document.querySelectorAll('.sortable-list');
+ sortableLists.forEach(list => {
+   new Sortable(list, {
+     animation: 150, // 动画效果的持续时间
+     ghostClass: 'sortable-ghost', // 拖拽时的虚影类
+     onEnd: function (evt) {
+       console.log('排序结束:', evt.oldIndex, '->', evt.newIndex);
+     }
+   });
+ });
+
 </script>
 </body>
 </html>

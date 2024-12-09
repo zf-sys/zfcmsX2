@@ -21,8 +21,9 @@
       {:widget_st('wangEditor')}
       {:widget_st('vditor')}
       {:widget_st('meditor')}
-      {:widget_st('input-tag')} 
-    <?php } ?> 
+      {:widget_st('input-tag')}
+      {:widget_st('sortable')}
+    <?php } ?>
 </head>
 {:do_action('admin_head')}
 <style>
@@ -118,7 +119,19 @@
  function deleteFile(obj) {
    $(obj).parent().remove();
   }
-</script>
+ // 选择所有具有 'sortable-list' 类的元素并初始化 Sortable
+ const sortableLists = document.querySelectorAll('.sortable-list');
+ sortableLists.forEach(list => {
+   new Sortable(list, {
+     animation: 150, // 动画效果的持续时间
+     ghostClass: 'sortable-ghost', // 拖拽时的虚影类
+     onEnd: function (evt) {
+       console.log('排序结束:', evt.oldIndex, '->', evt.newIndex);
+     }
+   });
+ });
+
+  </script>
 
 </body>
 </html>

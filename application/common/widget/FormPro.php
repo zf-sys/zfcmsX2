@@ -701,9 +701,9 @@ INFO;
           <button type="button" class="layui-btn" id="'.$tpl_id.'">上传'.$title.'</button>
           <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
               预览图：
-              <div class="layui-row '.$tpl_id.'">';
+              <div class="layui-row '.$tpl_id.' sortable-list">';
                 for($i=0;$i<$count;$i++){
-                  $zf_html .='<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
+                  $zf_html .='<div class="sortable-item layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
                     <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span>
                     </div>';
                 }

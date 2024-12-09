@@ -1904,11 +1904,10 @@ if(!function_exists('widget_st')){
             if(in_array($name,['cropper'])){
                 return "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css' type='text/css'>\n<script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js'></script>\n";
             }
-
+            if(in_array($name,['sortable'])){
+                return "<script src='https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js'></script>\n";
+            }
         }
-        // <!-- 拖动排序 -->
-        // <!-- <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script> -->
-        // <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.8.3/Sortable.min.js"></script> -->
 
         if($type=='diy_css'){
             return "<link rel='stylesheet' href='$name?$v' media='all'>\n";
