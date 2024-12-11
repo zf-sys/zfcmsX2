@@ -2239,6 +2239,9 @@ if(!function_exists('deal_meta_data_add')){
             }
             unset($data['_temp_arr_key']);
         }
+        $ret_data = apply_filters('filter_data_add',['tb'=>$tb,'data'=>$data],'array');
+        $data = $ret_data['data'];
+        do_action('deal_data_add',$tb,$data);
         //判断diy_url是否存在
         if(isset($data['meta']['diy_url'])){
             if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1]])->find() && $data['meta']['diy_url']!=''){
@@ -2300,6 +2303,9 @@ if(!function_exists('deal_meta_data_edit')){
             }
             unset($data['_temp_arr_key']);
         }
+        $ret_data = apply_filters('filter_data_edit',['tb'=>$tb,'data'=>$data],'array');
+        $data = $ret_data['data'];
+        do_action('deal_data_edit',$tb,$data);
         //判断diy_url是否存在
         if(isset($data['meta']['diy_url'])){
             if(db('meta_data')->where([['tb','=',$tb],['diy_url','=',$data['meta']['diy_url']],['status','=',1],['post_id','<>',$data[$field_id]]])->find() && $data['meta']['diy_url']!=''){

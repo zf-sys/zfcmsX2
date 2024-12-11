@@ -55,3 +55,44 @@
 //    echo $html;
 //}
 //add_action('admin_web_setting', 'admin_web_setting_def2');
+
+
+
+////文章/栏目等过滤参数判断
+//function deal_data_edit1($tb,$data){
+//    if($tb=='post'){
+//        if($data['summary']==''){
+//            return ZFRetMsg(false,'','summary不能为空');
+//        }
+//    }
+//}
+//add_action('deal_data_edit', 'deal_data_edit1');
+//function deal_data_add1($tb,$data){
+//    if($tb=='post'){
+//        if($data['summary']==''){
+//            return ZFRetMsg(false,'','summary不能为空');
+//        }
+//    }
+//}
+//add_action('deal_data_add', 'deal_data_add1');
+////修改数据 (从小到大)
+//function filter_data_edit1($ret_data){
+//    $tb = $ret_data['tb'];
+//    $data = $ret_data['data'];
+//    if($tb=='post'){
+//        $data['summary'].='--tag';
+//    }
+//    $ret_data['data'] = $data;
+//    return $ret_data;
+//}
+//add_filter('filter_data_edit', 'filter_data_edit1',10);
+//function filter_data_add2($ret_data){
+//    $tb = $ret_data['tb'];
+//    $data = $ret_data['data'];
+//    if($tb=='post'){
+//        $data['summary'].='--@@';
+//    }
+//    $ret_data['data'] = $data;
+//    return $ret_data;
+//}
+//add_filter('filter_data_add', 'filter_data_add2',9);
