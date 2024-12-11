@@ -1376,7 +1376,6 @@ class Category extends Admin
 
     //pro文章的导入(开发者自行修改)
     public function import_pro(){
-        return jserror('自定义部分,开发者修改开发...');
         // 设置PHP默认字符集为UTF-8
         ini_set('default_charset', 'UTF-8');
         // $upload_file = $_FILES['file']['tmp_name'];
@@ -1390,31 +1389,33 @@ class Category extends Admin
         $num_all= 0;
         $num_success= 0;
         $save_data = [];
+        $field = $data[1];
         foreach($data as $k=>$vo){
             // dd()
-            if($k>0){
-                $num_all++;
-                $save_data[$k] = [
-                    'cid'=>$vo[0],
-                    'title'=>mb_convert_encoding(isset_arr_key($vo,1,''), 'UTF-8', 'auto'),
-                    'ctime'=>time()
-                ];
-                //移除首字母C-
-                $save_data[$k]['cid'] =  str_replace('C-','',$save_data[$k]['cid']);
-                // if(isset_arr_key($vo,2,'')!=''){
-                //     // $save_data[$k]['file'] = '/upload/pdf/'.isset_arr_key($vo,2,'');
-                //     $save_data[$k]['file'] = isset_arr_key($vo,2,'');
-                // }else{
-                //     $save_data[$k]['file'] = '';
-                // }
-               
+            if($k>1){
+                $save_data[$k] = [];
+                foreach ($field as $k2=>$vo2){
+                    $save_data[$k][$vo2] = $vo[$k2];
+                }
+                if(isset($save_data[$k]['title'])){
+                    if(db('post')->where(['title'=>$save_data[$k]['title']])->find()){
+                        unset($save_data[$k]);
+                    }
+                }else{
+                    $num_all++;
+                }
+
+
             }
+        }
+        if(!$save_data){
+            return jssuccess('导入个数0');
         }
         $is = db('post')->insertAll($save_data);
         if(!$is){
             return jserror('导入失败');
         }else{
-            return jssuccess('导入成功');
+            return jssuccess('导入成功,个数:'.$num_all);
         }
 
     }
