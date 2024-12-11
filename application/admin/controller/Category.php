@@ -715,7 +715,6 @@ class Category extends Admin
                     }
                 }
 
-                doZfAction('sys_post_edit',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
                 $data = apply_filters('admin_post_save',$data,'array');
@@ -774,7 +773,6 @@ class Category extends Admin
                 // }
 
 
-                doZfAction('sys_post_add',['type'=>'controller','data'=>$data]);
                 unset($data['temp']);
                 $data['utime'] = time();
                 deal_meta_data_add('post',$data,'id');
