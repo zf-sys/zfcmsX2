@@ -2242,7 +2242,7 @@ INFO;
                   <div class="layui-card-body layui-row layui-col-space10">
                     <div style="height: 200px;overflow: auto;">';
                       foreach($list as $k=>$vo){
-                          $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'" title="'.$vo[$name_t].'" lay-skin="primary" ';
+                          $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'"  lay-skin="primary" ';
                            if(in_array($vo[$id_t],$data_arr)){
                             $zf_html.='checked';
                            }
@@ -2261,7 +2261,7 @@ INFO;
             <div class="layui-input-block">
               <div style="height: 200px;overflow: auto;">';
               foreach($list as $k=>$vo){
-                  $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'" title="'.$vo[$name_t].'" lay-skin="primary" ';
+                  $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'"  lay-skin="primary" ';
                     if(in_array($vo[$id_t],$data_arr)){
                     $zf_html.='checked';
                     }
