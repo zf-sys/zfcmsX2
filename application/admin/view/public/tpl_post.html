@@ -39,6 +39,8 @@ if (strpos($vo['append3'], '$') === 0) {
 {$form_widget->form_checkbox(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'notes'=>$vo['notes'],'id_t'=>$vo['append1'],'name_t'=>$vo['append2'],'list_arr'=>$deal_list_arr,'theme'=>$vo['theme']])|raw}
 <?php }elseif($vo['type']=='form_select'){ ?>
 {$form_widget->form_select(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'notes'=>$vo['notes'],'id_t'=>$vo['append1'],'name_t'=>$vo['append2'],'list_arr'=>$deal_list_arr,'theme'=>$vo['theme']])|raw}
+<?php }elseif($vo['type']=='form_cate_checkbox'){ ?>
+{$form_widget->form_cate_checkbox(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'notes'=>$vo['notes'],'id_t'=>$vo['append1'],'name_t'=>$vo['append2'],'list_arr'=>$deal_list_arr,'theme'=>$vo['theme']])|raw}
 <?php }elseif($vo['type']=='form_textarea'){ ?>
 {$form_widget->form_textarea(['title'=>$vo['name'],'name'=>$vo['key'],'data'=>$_temp_val,'notes'=>$vo['notes'],'theme'=>$vo['theme']])|raw}
 <?php }elseif($vo['type']=='upload_album'){ ?>

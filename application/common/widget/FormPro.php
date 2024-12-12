@@ -2233,9 +2233,6 @@ INFO;
         $id_t = isset($request_data['id_t'])?$request_data['id_t']:'id';
         $name_t = isset($request_data['name_t'])?$request_data['name_t']:'name';
         $list = isset($request_data['list_arr'])?$request_data['list_arr']:[];
-        if(is_string($list)){
-          eval("\$list = ".$request_data['list_arr'].'; ');
-        }
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html='';

@@ -9,16 +9,16 @@
 * @ param string $url 待检测的网址 
 */
 if (!function_exists('checkBaiduInclude')) {
-    function checkBaiduInclude($url){ 
+    function checkBaiduInclude($url){
         $res = https_get('https://api.uomg.com/api/collect.baidu?url='.$url);
         $res_arr = json_decode($res,true);
         if(isset($res_arr['code']) && $res_arr['code']==1){
-            return 1; 
+            return 1;
         }else{
             return 0;
         }
     }
-} 
+}
 
 
 /**
@@ -38,16 +38,16 @@ if (!function_exists('content2keyword')) {
         if( !is_array($tags) ){
             return $content;
         }
-        
+
         //避免在链接、IMG标签内重复添加，先将A标签和 IMG标签匹配并保存起来
         preg_match_all('/<([a|img]).*>.*<\/\\1>/Uis', $content, $d);
         if( is_array( $d[0] ) ){
-                foreach( $d[0] as $key=>$val ){
-                        $flag = "{======{$key}======}";
-                        $content = str_replace_limit($val, $flag, $content,3);
-                }
+            foreach( $d[0] as $key=>$val ){
+                $flag = "{======{$key}======}";
+                $content = str_replace_limit($val, $flag, $content,3);
+            }
         }
-        
+
         //替换tags链接
         foreach( $tags as $k=>$val ){
             if(!in_array($val,['','/','1']) ){
@@ -57,10 +57,10 @@ if (!function_exists('content2keyword')) {
         }
         //将之前保存的A、IMG标签，再替换回原样
         if( is_array( $d[0] ) ){
-                foreach( $d[0] as $key=>$val ){
-                    $flag = "{======{$key}======}";
-                    $content = str_replace_limit($flag, $val, $content,3);
-                }
+            foreach( $d[0] as $key=>$val ){
+                $flag = "{======{$key}======}";
+                $content = str_replace_limit($flag, $val, $content,3);
+            }
         }
         return $content;
     }
@@ -69,7 +69,7 @@ if (!function_exists('content2keyword')) {
 
 
 if (!function_exists( 'formProActionArr')) {
-    function formProActionArr(){ 
+    function formProActionArr(){
         $arr = [
             ['id'=>'form_input','name'=>'Input框'],
             ['id'=>'form_input_tag','name'=>'Tag框'],
@@ -91,7 +91,8 @@ if (!function_exists( 'formProActionArr')) {
             ['id'=>'form_wangeditor','name'=>'wangeditor'],
             ['id'=>'form_vditor','name'=>'vditor'],
             ['id'=>'form_ueditor','name'=>'ueditor'],
-            ['id'=>'form_input_color','name'=>'颜色']
+            ['id'=>'form_input_color','name'=>'颜色'],
+            ['id'=>'form_cate_checkbox','name'=>'多分组复选框'],
             // ['id'=>'form_meditor','name'=>'']
             // ['id'=>'form_note','name'=>'']
         ];
@@ -99,7 +100,7 @@ if (!function_exists( 'formProActionArr')) {
     }
 }
 if (!function_exists( 'formProActionArrCate')) {
-    function formProActionArrCate(){ 
+    function formProActionArrCate(){
         $arr = [
             ['id'=>'form_input','name'=>'Input框'],
             ['id'=>'form_input_tag','name'=>'Tag框'],
@@ -118,15 +119,16 @@ if (!function_exists( 'formProActionArrCate')) {
             ['id'=>'form_checkbox','name'=>'多选checkbox'],
             ['id'=>'form_select','name'=>'选择select'],
             ['id'=>'form_ueditor','name'=>'ueditor'],
-            ['id'=>'form_input_color','name'=>'颜色']
-             // ['id'=>'form_tinymce','name'=>'tinymce'],
+            ['id'=>'form_input_color','name'=>'颜色'],
+            ['id'=>'form_cate_checkbox','name'=>'多分组复选框'],
+            // ['id'=>'form_tinymce','name'=>'tinymce'],
             // ['id'=>'form_wangeditor','name'=>'wangeditor'],
             // ['id'=>'form_vditor','name'=>'vditor'],
             // ['id'=>'form_meditor','name'=>'']
             // ['id'=>'form_note','name'=>'']
         ];
         return $arr;
-    } 
+    }
 }
 
 /**
@@ -197,7 +199,7 @@ if(!function_exists('getFormParams')){
 }
 
 if (!function_exists( 'formWidgetStatic')) {
-    function formWidgetStatic(){ 
+    function formWidgetStatic(){
         $arr = [
             ['id'=>'css-&-layui','name'=>'layui.css'.static_dir_exit('layui')],
             ['id'=>'css-&-admin','name'=>'admin.css'],
@@ -223,7 +225,7 @@ if (!function_exists( 'formWidgetStatic')) {
             ['id'=>'widget-&-ztree','name'=>'ztree'.static_dir_exit('ztree')],
         ];
         return $arr;
-    } 
+    }
 }
 if (!function_exists( 'static_dir_exit')) {
     function static_dir_exit($dir){
