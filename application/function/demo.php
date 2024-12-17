@@ -96,3 +96,17 @@
 //    return $ret_data;
 //}
 //add_filter('filter_data_add', 'filter_data_add2',9);
+
+
+//栏目和post 关联tags select
+function add_category_edit_l_view_default2($res,$form_widget,$hook_data){
+        $html = $form_widget->form_textarea(['title'=>'TAGS','name'=>'tags','data'=>$res['tags'],'notes'=>'','theme'=>1]);
+        echo $html;
+}
+add_action('add_category_edit_l_view', 'add_category_edit_l_view_default2');
+
+
+add_action('post_add_hook', function($cid) {
+    $list_tags = explode(',',get_tb_field('category','tags',$cid));
+    zf_assign('list_tags', $list_tags);
+});

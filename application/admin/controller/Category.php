@@ -808,6 +808,7 @@ class Category extends Admin
             $this->assign("act",'edit');
             $content_act = 'edit';
         }
+        do_action('post_add_hook',$cid);
         $m_res =ZFTB('category_model')->field('model,is_two,is_parm,id,form_parm_static')->where(['id'=>$mid])->find();
         if(isset($m_res['is_parm']) && $m_res['is_parm']==1) {
             if (is_file('./application/admin/view/category/zf_tpl/add_' . $m_res['model'] . '.html')) {

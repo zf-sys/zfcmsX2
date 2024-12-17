@@ -1,10 +1,45 @@
-<div class="layui-card" style="position:fixed; bottom:10px;right:10px;z-index: 99999;">
-    <div class="layui-card-header">点击提交</div>
-    <div class="layui-card-body layui-row layui-col-space10">
-      <div class="layui-form-item">
-        <div class="layui-input-block" style="margin-left: 50px;">
-          <input class="layui-btn tijiao"  type="button" value="提交" />
-        </div> 
-      </div>
-    </div>
+<div class="layui-card" id="movableButton" style="position:fixed; bottom:10px;right:10px;z-index: 99999;border: 1px solid #ccc; cursor: pointer;
+            user-select: none;">
+    <input class="layui-btn tijiao"  type="button" value="立即提交" />
+
+<!--    <div class="layui-card-header">点击提交</div>-->
+<!--    <div class="layui-card-body layui-row layui-col-space10">-->
+<!--      <div class="layui-form-item">-->
+<!--        <div class="layui-input-block" style="margin-left: 50px;">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 </div>
+<script>
+    // const button = document.getElementById('movableButton');
+    // const input = document.getElementById('inputField');
+    // let isDragging = false;
+    // let offsetX, offsetY;
+    //
+    // // 监听鼠标按下事件，开始拖动
+    // button.addEventListener('mousedown', (e) => {
+    //     // 允许拖动时，记录鼠标位置
+    //     isDragging = true;
+    //     offsetX = e.clientX - button.getBoundingClientRect().left;
+    //     offsetY = e.clientY - button.getBoundingClientRect().top;
+    // });
+    //
+    // // 监听鼠标移动事件，更新按钮位置
+    // document.addEventListener('mousemove', (e) => {
+    //     if (isDragging) {
+    //         // 更新按钮的位置
+    //         button.style.left = (e.clientX - offsetX) + 'px';
+    //         button.style.top = (e.clientY - offsetY) + 'px';
+    //     }
+    // });
+    //
+    // // 监听鼠标抬起事件，停止拖动
+    // document.addEventListener('mouseup', () => {
+    //     isDragging = false;
+    // });
+    //
+    // // 确保输入框的点击不会影响拖动
+    // input.addEventListener('mousedown', (e) => {
+    //     e.stopPropagation(); // 阻止事件冒泡，防止触发按钮的拖动
+    // });
+</script>
