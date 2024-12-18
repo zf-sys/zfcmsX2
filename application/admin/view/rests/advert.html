@@ -56,9 +56,11 @@
                     </div>
                   </td>
                   <td>
-                    <a class="layui-btn layui-btn-sm  layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'advert')"  href="#">删除</a> 
-                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/advert_edit',['id' => $vo['id']] )}",800)'>编辑</button> 
-                    <a class="layui-btn layui-btn-sm" href="{:url('admin/rests/advert',['id' => $vo['id'],'type' =>'child' ] )}">子广告列表</a>
+                    <a class="layui-btn layui-btn-xs  layui-btn-danger" onclick="btn_del('{:url('common/del_post')}',{$vo['id']},'advert')"  href="#">删除</a>
+                    <button class="layui-btn layui-btn-xs" onclick='zfAdminShow("编辑","{:url('admin/rests/advert_edit',['id' => $vo['id']] )}",800)'>编辑</button>
+                    <a class="layui-btn layui-btn-xs" href="{:url('admin/rests/advert',['id' => $vo['id'],'type' =>'child' ] )}">子广告列表</a>
+                    {:do_action('admin_action_btn','advert',$vo)}
+
                   </td>
                 </tr>
               <?php } ?>         

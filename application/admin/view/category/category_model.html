@@ -85,12 +85,13 @@
                     </div>
                   </td>
                   <td>  
-                      <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/category/category_model_edit',['id' => $vo['id']] )}",800)'>编辑</button>
+                      <button class="layui-btn layui-btn-sm layui-btn-xs" onclick='zfAdminShow("编辑","{:url('admin/category/category_model_edit',['id' => $vo['id']] )}",800)'>编辑</button>
                     <?php if($vo['is_parm']==1){ ?>
-                      <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("参数列表","{:url('admin/category/category_model_parm',['mid' => $vo['id']] )}")'>设置参数</button>
-                      <a target="_blank" href="{:url('category/category_model',['t'=>'export','id'=>$vo['id']])}">导出</a>
-                      <a  onclick='zfAdminShow("导入","{:url('admin/category/category_model',['id' => $vo['id'],'t'=>'import'] )}")'>导入</a>
+                      <button class="layui-btn layui-btn-sm layui-btn-xs" onclick='zfAdminShow("参数列表","{:url('admin/category/category_model_parm',['mid' => $vo['id']] )}")'>设置参数</button><br>
+                      <a class="layui-btn layui-btn-sm layui-btn-xs"  target="_blank" href="{:url('category/category_model',['t'=>'export','id'=>$vo['id']])}">导出</a>
+                      <a class="layui-btn layui-btn-sm layui-btn-xs"   onclick='zfAdminShow("导入","{:url('admin/category/category_model',['id' => $vo['id'],'t'=>'import'] )}")'>导入</a>
                     <?php } ?>
+                    {:do_action('admin_action_btn','category_model',$vo)}
                   </td>
                 </tr>
               <?php } ?>         

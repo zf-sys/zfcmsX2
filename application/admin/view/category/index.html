@@ -147,10 +147,11 @@
           </td>
           <td>
             <a class="layui-btn btn_del layui-btn-danger layui-btn-xs" rel="{$vo['cid']}" href="#">删除</a> <br>
-            <button class="layui-btn layui-btn-xs " onclick='zfAdminShow("编辑栏目","{:url('admin/category/category_edit',['cid' => $vo['cid']] )}")'>编辑</button> <br>
+            <button class="layui-btn layui-btn-xs " onclick='zfAdminShow("编辑栏目","{:url('admin/category/category_edit',['cid' => $vo['cid']] )}")'>编辑</button>
             <?php if(!if_pid($vo['cid'])):  if($vo['mid']!=1): ?>
             <a class="layui-btn layui-btn-xs" href="{:url('admin/category/post_list',['cid' => $vo['cid'],'mid'=>$vo['mid']] )}">内容列表</a>
             <?php endif; endif; ?>
+            {:do_action('admin_action_btn','category',$vo)}
           </td>
         </tr>
         <?php } ?>

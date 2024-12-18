@@ -30,14 +30,23 @@ width: 20px !important;
 ->setTableField('hits','点击量')
 ->setTableField('recommend','推荐','checkbox',['edit_id_type'=>'id','edit_dbname'=>'post'])
 ->setTableField('status','状态','checkbox',['edit_id_type'=>'id','edit_dbname'=>'post'])
-->setTableField('ctime','时间','time',['append'=>'Y-m-d H:i:s'])
-//操作
-->setTableField('--','操作','act',['append'=>[
+->setTableField('ctime','时间','time',['append'=>'Y-m-d H:i:s']);
+
+
+$act_append = [
   ['del','删除','/admin/common/del_post?db=post&id=<id>&field=status',['target'=>'_self','width'=>800,'height'=>600]],
   ['onclick','编辑','/admin/category/post_add?id=<id>&cid=<cid>&mid='.$mid,['target'=>'_self','width'=>800,'height'=>600]],
   ['href','编辑(新页面打开)','/admin/category/post_add?id=<id>&cid=<cid>&mid='.$mid,['target'=>'_blank'  ]],
   ['href','预览','/detail/<id>.html?t=show_admin',['target'=>'_blank'  ]],
-]])
+];
+$isshow_admincopy = ZFC("webconfig.isshow_admincopy");
+if($isshow_admincopy) {
+  $_act_append = [['href','复制','/common/api/common_act?t=admin_act_btn_copy_act&tb=post&id=<id>.html',['target'=>'_blank'  ]]];
+  $act_append = array_merge($act_append,$_act_append);
+}
+
+//操作
+$html = $html->setTableField('--','操作','act',['append'=>$act_append])
 ->setDiyJs('
 
 ')

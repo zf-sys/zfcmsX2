@@ -58,8 +58,10 @@
                     </div>
                   </td>
                   <td>
-                    <a class="layui-btn layui-btn-sm btn_del layui-btn-danger" rel="{$vo['id']}" href="#">删除</a> 
-                    <button class="layui-btn layui-btn-sm" onclick='zfAdminShow("编辑","{:url('admin/rests/advert_edit',['id' => $vo['id'],'type'=>'child','pid'=>$vo['pid']] )}",800)'>编辑</button> 
+                    <a class="layui-btn layui-btn-sm layui-btn-xs btn_del layui-btn-danger" rel="{$vo['id']}" href="#">删除</a><br>
+                    <button class="layui-btn layui-btn-sm layui-btn-xs" onclick='zfAdminShow("编辑","{:url('admin/rests/advert_edit',['id' => $vo['id'],'type'=>'child','pid'=>$vo['pid']] )}",800)'>编辑</button>
+                    {:do_action('admin_action_btn','advert',$vo)}
+
                   </td>
                 </tr>
               <?php } ?>         
