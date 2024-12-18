@@ -1424,12 +1424,14 @@ class Category extends Admin
                 if(isset($save_data[$k]['title'])){
                     if(db('post')->where(['title'=>$save_data[$k]['title']])->find()){
                         unset($save_data[$k]);
+                        continue;
                     }
-                }else{
-                    $num_all++;
+                    if($save_data[$k]['title']==''){
+                        unset($save_data[$k]);
+                        continue;
+                    }
                 }
-
-
+                $num_all++;
             }
         }
         if(!$save_data){
