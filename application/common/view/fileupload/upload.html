@@ -172,7 +172,7 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
           <!-- <div class="layui-card-header">列表</div> -->
           <div class="layui-card-body">
               <blockquote class="layui-elem-quote" style="padding:5px;">
-                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary " id="up_file">上传</a>
+                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary " id="_up_file">上传</a>
                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary " id="up_file_crop">上传图片(可裁剪)</a>
                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary "  id="upid_fp">大文件上传(本地)</button> 
 
@@ -183,6 +183,12 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
 
               </blockquote>
+<!--            拖拽上传-->
+            <div class="layui-upload-drag" style="display: none;" id="up_file">
+              <i class="layui-icon layui-icon-upload"></i>
+              <div>点击上传，或将文件拖拽到此处</div>
+            </div>
+
               <div class="upload_loading" style="display:none">
                 <progress id="myProgress" value="0" max="100"></progress> <span id="mySpan">0%</span>
               </div>
@@ -197,7 +203,7 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                 <form class="zf_clickdata_list">
                   <?php foreach($pic_list as $k=>$vo){ ?>
                   <div class="layui-col-md2 layui-col-xs6 layui-col-sm3 " >
-                    <div class="click_item" url="{$vo['url']}" _id="{$vo['id']}" _name="{$vo['name']}" >
+                    <div class="click_item" url="{$vo['url']}" _type="{$vo['type']}" _id="{$vo['id']}" _name="{$vo['name']}" >
                       <?php if($vo['type']=='文本'){ ?>
                         <img class="zf_item_pic" lazyLoadSrc="http://oss002.wangmingchang.com/oss001/box/media/text.png"  >
                       <?php }elseif($vo['type']=='压缩'){ ?>
@@ -280,7 +286,10 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
 </html>
 
 
-<script> 
+<script>
+  $('#_up_file').on('click',function(){
+    $('#up_file').toggle(); // 如果元素可见则隐藏，反之显示
+  })
 // 折叠按钮点击事件
 $("#toggleButton").click(function() {
     var $categoryColumn = $("#categoryColumn");
@@ -306,6 +315,8 @@ $("#toggleButton").click(function() {
   })
   var index = parent.layer.getFrameIndex(window.name); 
   $('.click_item').on('click',function(){
+    var _type = $(this).attr('_type')
+    console.log(_type)
     if($(this).css('border')=='1px solid rgb(255, 0, 0)'){
       $(this).css('border','0px none rgb(102, 102, 102)');
       $(this).children('input').eq(0).val('')
@@ -314,6 +325,10 @@ $("#toggleButton").click(function() {
       $('.select_item').find('.select_item_'+$(this).attr('_id')).remove()
   
     }else{
+      if(_type!='图片'){
+        layer.msg('多选只支持图片类型')
+        return false
+      }
       $(this).css('border','1px solid red');
       $(this).css('border','1px solid red');
       $(this).children('input').eq(0).val($(this).attr('url'))
