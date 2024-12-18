@@ -1352,16 +1352,37 @@ class Category extends Admin
         $t = input('t',0);
         $this->assign('t',$t);
         $this->assign("cid",$cid);
+        $type = input('type','-1');
+        if($type!='-1'){
+            if($type=='0'){
+                $orwhere[] = ['type','=',''];
+                $orwhere[] = ['type','=',null];
+            }else{
+                $where[] = ['type','=',$type];
+            }
+        }
+        $this->assign('type',$type);
         //如果是内容页,加载列表页
         $where_type = input('where_type','');
         $where[] = ['status','<>',9];
         $where[] = ['cid','in',$this->get_child_id($cid)];
         $keyword = input("get.keyword".'');
         if($keyword!=''){
-            $where[] = ['title|content|summary','like','%'.$keyword.'%'];
+            $where[] = ['title','like','%'.$keyword.'%'];
         }
-        $list = ZFTB('post')->where($where)->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
-        if(!$list){ 
+        $list = ZFTB('post');
+        if(isset($orwhere)){
+            foreach($orwhere as $k=>$vo){
+                $_arr = [$vo];
+                $_orwhere[$k] = array_merge($where,$_arr);
+            }
+            $list->whereOr($_orwhere);
+        }else{
+            $list->where($where);
+        }
+
+        $list = $list->order("sort desc,id desc")->paginate(10,false,['query' => request()->param()]);
+        if(!$list){
             $list = [];
         }
         $page = $list->render();
@@ -1369,6 +1390,10 @@ class Category extends Admin
         $this->assign("page",$page);
         $res =  ZFTB('category')->where(['cid'=>$cid])->find();
         $this->assign("res",$res);
+        // 临时禁用 ONLY_FULL_GROUP_BY 模式
+        Db::execute("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+        $type_list = ZFTB('post')->where([['status','<>',9]])->group('type')->select();
+        $this->assign("type_list",$type_list);
         $this->assign("keyword",$keyword);
         return view();
     }

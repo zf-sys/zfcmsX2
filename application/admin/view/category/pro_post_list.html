@@ -27,6 +27,15 @@
             </div>
           </div>
           <div class="layui-inline">
+            <select name="type">
+              <option value="-1">请选择类型</option>
+              <option value="0"  <?php echo $type=='0'?'selected':''; ?> >默认</option>
+              <?php foreach($type_list as $k=>$vo){  ?>
+              <option value="{$vo['type']}" <?php echo $type==$vo['type']?'selected':''; ?>>{$vo['type']}</option>
+              <?php } ?>
+            </select>
+          </div>
+          <div class="layui-inline">
             <button class="layui-btn" ><i class="layui-icon layui-icon-search layuiadmin-button-btn"></i></button>
           </div>
         </form>
