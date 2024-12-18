@@ -473,6 +473,10 @@ function admin_web_setting_dev($form_widget,$config,$type){
                  $form_widget->form_radio(['title'=>'Diy_form显示','name'=>'isshow_form_parm','data'=>isset_arr_key($config,'isshow_form_parm',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2]).
                  $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.isshow_form_parm")</span>自定义参数</div>','theme'=>2]).
                  '</div>';
+        $html .= '<div class="list_item">'.
+            $form_widget->form_radio(['title'=>'Copy显示','name'=>'isshow_admincopy','data'=>isset_arr_key($config,'isshow_admincopy',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2]).
+            $form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.isshow_admincopy")</span>自定义参数</div>','theme'=>2]).
+            '</div>';
     }
     echo $html;
 }
@@ -702,6 +706,169 @@ function admin_web_setting_upload($form_widget,$config,$type){
 add_action('admin_web_setting', 'admin_web_setting_upload');
 
 
+//ZFC("webconfig.isshow_admincopy")
+//z更加copy按钮
+function admin_action_btn_copy($tb,$res){
+    $isshow_admincopy = ZFC("webconfig.isshow_admincopy");
+    if($isshow_admincopy){
+        if($tb=='category'){
+            $url = url('common/api/common_act',['t'=>'admin_act_btn_copy_act','tb'=>$tb,'id'=>$res['cid']]);
+        }else{
+            $url = url('common/api/common_act',['t'=>'admin_act_btn_copy_act','tb'=>$tb,'id'=>$res['id']]);
+        }
+            echo '<br><a class="layui-btn layui-btn-xs" href="'.$url.'" target="_blank">复制</a>';
+    }
+}
+add_action('admin_action_btn', 'admin_action_btn_copy');
 
 
+function admin_act_btn_copy_act()
+{
+    $t = input('t','');
+    $tb = input('tb','');
+    if($t=='admin_act_btn_copy_act'){
+        if(!session('admin')){
+            echo  '<script> alert("未登录")</script>';die;
+        }
+        $isshow_admincopy = ZFC("webconfig.isshow_admincopy");
+        if(!$isshow_admincopy) {
+            echo  '<script> alert("未开启复制功能")</script>';die;
+        }
+        if($tb=='category_model'){
+            $id = input('id','');
+            $data = Db::name('category_model')->where(['id'=>$id])->find();
+            if(!$data){
+                echo  '<script> alert("数据不存在")</script>';die;
+            }
+            if($data['is_parm']==1){
+                //获取下一级的数据
+                $data2 = Db::name('category_model_parm')->where(['mid'=>$data['id']])->select();
+            }
+            //复制数据
+            unset($data['id']);
+            $data['name'] = $data['name'].'-copy';
+            $data['model'] = $data['model'].'-copy';
+            Db::startTrans();
+            try{
+                $add_id = Db::name('category_model')->insertGetId($data);
+                if($add_id){
+                    if(isset($data2) && count($data2)>0){
+                        foreach ($data2 as $key => $value) {
+                            $value['mid'] = $add_id;
+                            unset($value['id']);
+                            Db::name('category_model_parm')->insert($value);
+                        }
+                    }
+                    Db::commit();
+                    echo '<script> alert("复制成功，请刷新页面查看")</script>';die;
+                }else{
+                    Db::rollback();
+                    echo '<script> alert("复制失败，请刷新页面查看")</script>';die;
+                }
+            }catch (\Exception $e){
+                Db::rollback();
+                echo '<script> alert("复制失败2，请刷新页面查看")</script>';die;
+            }
+            
+        }elseif($tb=='category'){
+            $id = input('id','');
+            $data = Db::name('category')->where(['cid'=>$id])->find();
+            if(!$data){
+                echo  '<script> alert("数据不存在")</script>';die;
+            }
+            $data2 = ZFTB('meta_data')->where([['tb','=',$tb],['post_id','=',$data['cid']],['status','<>',9]])->find();
+            unset($data['cid']);
+            $data['name'] = $data['name'].'-copy';
+            $data['ename'] = $data['ename'].'-copy';
+            Db::startTrans();
+            try{
+                $add_id = Db::name('category')->insertGetId($data);
+                if($add_id){
+                    if(isset($data2) && $data2){
+                        unset($data2['meta_id']);
+                        $data2['meta_data'] = str_replace($data2['diy_url'],$data2['diy_url'].'-copy',$data2['meta_data']);
+                        $data2['diy_url'] = $data2['diy_url'].'-copy';
+                        $data2['post_id'] = $add_id;
+                        Db::name('meta_data')->insert($data2);
+                    }
+                    Db::commit();
+                    echo '<script> alert("复制成功，请刷新页面查看")</script>';die;
+                }else{
+                    Db::rollback();
+                    echo '<script> alert("复制失败，请刷新页面查看")</script>';die;
+                }
+            }catch (\Exception $e){
+                Db::rollback();
+                echo '<script> alert("复制失败2，请刷新页面查看")</script>';die;
+            }
+        }elseif($tb=='post'){
+            $id = input('id','');
+            $data = Db::name('post')->where(['id'=>$id])->find();
+            if(!$data){
+                echo  '<script> alert("数据不存在")</script>';die;
+            }
+            $data2 = ZFTB('meta_data')->where([['tb','=',$tb],['post_id','=',$data['id']],['status','<>',9]])->find();
+            unset($data['id']);
+            $data['title'] = $data['title'].'-copy';
+            Db::startTrans();
+            try{
+                $add_id = Db::name('post')->insertGetId($data);
+                if($add_id){
+                    if(isset($data2) && $data2){
+                        unset($data2['meta_id']);
+                        $data2['meta_data'] = str_replace($data2['diy_url'],$data2['diy_url'].'-copy',$data2['meta_data']);
+                        $data2['diy_url'] = $data2['diy_url'].'-copy';
+                        $data2['post_id'] = $add_id;
+                        Db::name('meta_data')->insert($data2);
+                    }
+                    Db::commit();
+                    echo '<script> alert("复制成功，请刷新页面查看")</script>';die;
+                }else{
+                    Db::rollback();
+                    echo '<script> alert("复制失败，请刷新页面查看")</script>';die;
+                }
+            }catch (\Exception $e){
+                Db::rollback();
+                echo '<script> alert("复制失败2，请刷新页面查看")</script>';die;
+            }
+        }elseif($tb=='advert'){
+            $id = input('id','');
+            $data = Db::name('advert')->where(['id'=>$id])->find();
+            if(!$data){
+                echo  '<script> alert("数据不存在")</script>';die;
+            }
+            unset($data['id']);
+            if($data['pid']=='0'){
+                $data2 =  Db::name('advert')->where(['pid'=>$id])->select();
+            }
+            $data['name'] = $data['name'].'-copy';
+            Db::startTrans();
+            try{
+                $add_id = Db::name('advert')->insertGetId($data);
+                if($add_id){
+                    if(isset($data2) && count($data2)>0){
+                        foreach ($data2 as $key => $value){
+                            unset($value['id']);
+                            $value['name'] = $value['name'].'-copy';
+                            $value['pid'] = $add_id;
+                            Db::name('advert')->insert($value);
+                        }
+                    }
+                    Db::commit();
+                    echo '<script> alert("复制成功，请刷新页面查看")</script>';die;
+                }else{
+                    Db::rollback();
+                    echo '<script> alert("复制失败，请刷新页面查看")</script>';die;
+                }
+            }catch (\Exception $e){
+                Db::rollback();
+                echo '<script> alert("复制失败2，请刷新页面查看")</script>';die;
+            }
 
+        }else{
+            echo '<script> alert("暂不支持")</script>';die;
+        }
+    }
+
+}
+add_action('common_act', 'admin_act_btn_copy_act');
