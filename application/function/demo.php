@@ -110,3 +110,43 @@ add_action('post_add_hook', function($cid) {
     $list_tags = explode(',',get_tb_field('category','tags',$cid));
     zf_assign('list_tags', $list_tags);
 });
+
+//function admin_menu_append_filter_defaultmenu($arr)
+//{
+//    $temp_arr[] = [
+//        'title'=>'内容',
+//        'icon'=>'fa fa-file-text-o',
+//        'href'=>'javascript:;',
+//        'child'=>[
+//            [
+//                'title'=>'CMS',
+//                'icon'=>'fa fa-file-text-o',
+//                'href'=>'',
+//                'child'=>[
+//                    ['title'=>'内容板块','href'=>'/admin/Category/index'],
+//                    ['title'=>'内容模板','href'=>'/admin/Category/category_model'],
+//                    ['title'=>'内容列表','href'=>'/admin/Category/post_all_list'],
+//                    ['title'=>'广告管理','href'=>'/admin/Rests/advert'],
+//                    ['title'=>'超链管理','href'=>'/admin/Rests/link'],
+//                    ['title'=>'留言模板','href'=>'/admin/Rests/guessbook'],
+//                    ['title'=>'文章列表Pro','href'=>'/admin/Category/pro_post_list'],
+//                ]
+//            ],
+//            [
+//                'title'=>'网站系统',
+//                'icon'=>'fa fa-file-text-o',
+//                'href'=>'',
+//                'child'=>[
+//                    ['title'=>'网站设置','href'=>'admin/Config/index'],
+//                    ['title'=>'系统参数','href'=>'admin/Config/custom_config'],
+//                    ['title'=>'系统管理员','href'=>'admin/Config/admin_index'],
+//                    ['title'=>'系统权限','href'=>'admin/Config/admin_role'],
+//                    ['title'=>'SQL执行','href'=>'admin/Mysql/sql_exec'],
+//                ]
+//            ]
+//        ]
+//    ];
+//    $arr = array_merge($arr,$temp_arr);
+//    return $arr;
+//}
+//add_filter('admin_menu_append','admin_menu_append_filter_defaultmenu',9);
