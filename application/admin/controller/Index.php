@@ -167,14 +167,11 @@ class Index extends Admin
         $role_arr = explode(',', $role_str);
         $_menu = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=','0']])->select();
         $menu = [];
-        $select_menu = [];
         foreach($_menu as $k=>$vo){
             if($admin['gid']!='1' && !in_array($vo['id'], $role_arr)){
                 unset($_menu[$k]);
                 continue;
             }
-            $select_menu[] = $vo['id'];
-
             $_menu[$k]['href'] = $site_path.'/'.$vo['value'].'?'.$vo['parm'];
             $_menu[$k]['child'] = ZFTB('admin_role')->field("id,pid, name as title,icon,value,parm,'_self' as target")->order("sort asc")->where([['menu','=',1],['status','=',1],['pid','=',$vo['id']]])->select();
             foreach($_menu[$k]['child'] as $kk=>$vv){
