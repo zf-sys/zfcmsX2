@@ -2951,6 +2951,34 @@ function validateHost()
     }
 }
 
+if(!function_exists('funcTra')) {
+    function funcTra($str, $func_replace, $ids, $lang)
+    {
+        // 构造正则表达式模式来匹配函数调用
+        $pattern = '/(' . implode('|', array_map('preg_quote', $func_replace)) . ')\s*\(([^)]*)\)/';
+
+        // 使用闭包进行参数替换
+        $replacement = function ($matches) use ($ids, $lang) {
+            $funcName = $matches[1];
+            $params = $matches[2];
+            $mappingArray = $ids[$funcName] ?? []; // 使用 null 合并运算符简化检查
+            $paramsArray = array_map('trim', explode(',', $params));
+
+            // 替换第一个参数
+            if (isset($paramsArray[0])) {
+                $cleanedParam = trim($paramsArray[0], '\'"');
+                if (array_key_exists($cleanedParam, $mappingArray)) {
+                    $paramsArray[0] = $mappingArray[$cleanedParam];
+                }
+            }
+
+            // 重新组合参数并形成新的函数调用
+            return "ZfLangFunc('$funcName', '$lang'" . (empty($paramsArray) ? '' : ', ' . implode(', ', $paramsArray)) . ")";
+        };
+
+        return preg_replace_callback($pattern, $replacement, $str);
+    }
+}
 
 // 定义预设的 Cron 任务
 // function define_cron_tasks()
