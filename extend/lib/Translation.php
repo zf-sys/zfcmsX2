@@ -60,6 +60,43 @@ class Translation {
             return ['code' => 0, 'msg' => $exception->getMessage()];
         }
     }
+    function aliy_tra_bigmodel($text,$sourceLanguage='cn',$targetLanguage='en') {
+        $sys_message = <<<EOF
+你是一个拥有多年经验的翻译专家, 拥有丰富的经验，精通多国语言,可以按照用户的要求进行翻译。
+
+## 返回数据结构
+{
+  "text": "翻译后的内容"
+}
+
+## 返回解释
+返回json,
+text:翻译后的内容
+
+## 案例
+User question: 你翻译成英文:你好世界
+Model answer: 
+{
+  "text": "Hello World"
+}
+EOF;
+        $content_str = '请将下面的文本由'.$sourceLanguage.'翻译成'.$targetLanguage;
+        $content_str = '我要翻译的内容是:'.$text;
+        $zfai = new \zf\ZfAi();
+        $_data = $zfai->zfyun_openai($content_str,$sys_message);
+        if($_data['code']==0){
+            return ['code' => 0, 'msg' => 'err-返回数据错误'];
+        }
+        $_ret_data_arr = json_decode($_data['msg'],true);
+        if(!$_ret_data_arr){
+            dd($_data['msg']);
+            return ['code'=>0,'msg'=>'err2-返回结构错误'];
+        }
+        if( !isset($_ret_data_arr['text'])){
+            return ['code'=>0,'msg'=>'err3-返回结构错误'];
+        }
+        return ['code'=>1,'msg'=>$_ret_data_arr['text']];
+    }
 
     /**
      * 批量翻译中文文本
