@@ -1902,10 +1902,10 @@ if(!function_exists('widget_st')){
             }
             //裁剪图片
             if(in_array($name,['cropper'])){
-                return "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css' type='text/css'>\n<script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js'></script>\n";
+                return "<link rel='stylesheet' href='$_static/cropper1.5.12/cropper.min.css' type='text/css'>\n<script src='$_static/cropper1.5.12/cropper.min.js'></script>\n";
             }
             if(in_array($name,['sortable'])){
-                return "<script src='https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js'></script>\n";
+                return "<script src='$_static/sortable1.14.0/Sortable.min.js'></script>\n";
             }
         }
 
