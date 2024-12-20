@@ -180,8 +180,11 @@ height: 200px;width: 95%;margin: 0 auto;text-align: center;border: 1px solid #ff
                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-danger ajax_file_del">删除</a>
                   <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_edit_click ">编辑</a>
                   <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_refresh_click ">刷新</a>
-                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
-
+                  <?php if($t=='zfcms_zyk_show'){ ?>
+                    <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">复制链接到剪贴板</a> </a>
+                  <?php }else{ ?>
+                    <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-warm zf_xz_click ">选中</a>
+                  <?php } ?>
               </blockquote>
 <!--            拖拽上传-->
             <div class="layui-upload-drag" style="display: none;" id="up_file">
@@ -325,16 +328,20 @@ $("#toggleButton").click(function() {
       $('.select_item').find('.select_item_'+$(this).attr('_id')).remove()
   
     }else{
-      if(_type!='图片'){
-        layer.msg('多选只支持图片类型')
-        return false
+      if(_type=='图片'){
+        // layer.msg('多选只支持图片类型')
+        var pic_url = $(this).attr('url')
+      }else{
+        var pic_url = 'http://oss002.wangmingchang.com/oss001/box/media/default.png'
       }
+
       $(this).css('border','1px solid red');
       $(this).css('border','1px solid red');
       $(this).children('input').eq(0).val($(this).attr('url'))
       $(this).children('input').eq(1).val($(this).attr('_id'))
+
       //add
-      $('.select_item').append('<div class="select_item_div select_item_'+$(this).attr('_id')+'"><img class="select_item_pic" title="'+$(this).attr('_name')+'" src="'+$(this).attr('url')+'"  > <input type="hidden" name="files[]" value="'+$(this).attr('url')+'"  /></div>')
+      $('.select_item').append('<div class="select_item_div select_item_'+$(this).attr('_id')+'"><img class="select_item_pic" title="'+$(this).attr('_name')+'" src="'+pic_url+'"  > <input type="hidden" name="files[]" value="'+$(this).attr('url')+'"  /></div>')
   
     }
     var url = $(this).children('input').eq(0).val()
@@ -404,7 +411,31 @@ $("#toggleButton").click(function() {
       window.parent.selectedPicInfo = src;
       // 关闭弹窗
       window.parent.layer.closeAll();
-    
+
+    <?php }elseif($t=='zfcms_zyk_show'){ ?>
+      var _url_arr = []
+      for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          _url_arr.push(data[i].value)
+        }
+      }
+      var _url_str = _url_arr.join(',');
+      console.log(_url_str);
+      //复制到剪贴板
+      // 使用原生的API来实现剪贴板的复制功能
+      function copyToClipboard(text) {
+        var textarea = document.createElement('textarea');
+        textarea.value = text; // 将要复制的内容赋值给textarea
+        document.body.appendChild(textarea); // 将textarea添加到文档中
+        textarea.select(); // 选择textarea中的文本
+        document.execCommand('copy'); // 执行复制命令
+        document.body.removeChild(textarea); // 复制后移除textarea
+        layer.msg('已复制到剪贴板', {icon: 1});
+      }
+
+      var textToCopy = _url_str; // 这里假设_url_str是要复制的文本
+      copyToClipboard(textToCopy); // 调用复制函数
+      return false;
     <?php } ?>
   
   
@@ -580,8 +611,7 @@ $("#toggleButton").click(function() {
       html+=`<input class="cate_name" name="name" value="`+name+`" style="width:50px"  />`
       $(this).html(html)
     });
-  
-    
+
     $('.cate_name').live('blur',function(){
       var id = $(this).prev().val();
       var name = $(this).val();

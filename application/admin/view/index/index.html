@@ -57,8 +57,11 @@
                     <a href="javascript:;" data-refresh="刷新"><i class="fa fa_black fa-refresh"></i></a>
                 </li>
                 <li class="layui-nav-item" lay-unselect>
-                    <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa_black fa-trash-o"></i></a>
+                    <a layuimini-content-href="/common/fileupload/upload?ttttt=1&cid=0&t=zfcms_zyk_show&zf_class=" data-title="资源库"><i class="fa fa_black   fa-cloud-upload"></i></a>
                 </li>
+<!--                <li class="layui-nav-item" lay-unselect>-->
+<!--                    <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa_black fa-trash-o"></i></a>-->
+<!--                </li>-->
                 <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa_black fa-arrows-alt"></i></a>
                 </li>
@@ -160,7 +163,7 @@
 
         var options = {
             iniUrl: "{:url('index/get_menu')}",    // 初始化接口
-            clearUrl: "{:url('index/temp_clear')}", // 缓存清理接口
+            // clearUrl: "{:url('index/temp_clear')}", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
             multiModule: true,          // 是否开启多模块
