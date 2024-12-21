@@ -9,8 +9,8 @@
   {:widget_st('layui','css')}
   {:widget_st('admin','css')}
   {:widget_st('jq','js')}
-  {:widget_st('layui','js')}  
-  {:widget_st('common','js')} 
+  {:widget_st('layui','js')}
+  {:widget_st('common','js')}
   {:widget_st('input-select')}
 
 </head>
@@ -44,295 +44,287 @@
 <body>
 
 
-  <div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-      <div class="layui-col-md12">
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
 
-        <div class="layui-card">
-<!--          <div class="layui-card-header layuiadmin-card-header-auto">-->
-<!--            <?php if(ZFC('zf_tpl_suffix')!=''){ ?>-->
-<!--            <a class="layui-btn layui-btn-sm  layui-btn-primary layui-border-green" onclick='zfAdminShow("模板配置","{:url('/i_admin')}")' >-->
-<!--              当前模板配置-->
-<!--            </a>-->
-<!--            <?php } ?>-->
-<!--          </div>-->
-          {include file="public/setting_menu" /}
-  <?php $form_widget = new \app\common\widget\FormPro();  ?>
-          <div class="layui-card-body" pad15>
-            <form class="info_tj" >
-              <div class="layui-form" wid100 lay-filter="">
-                {:do_action('admin_web_setting',$form_widget,$config,$type)}
-               
-                <?php if($type=='系统设置'){ ?>
-                  <?php if($_t==''){ ?>
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">网站作者</a></a>','name'=>'site_author','data'=>isset_arr_key($config,'site_author',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_author")<br></span></div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">网站域名</a></a>','name'=>'site_host','data'=>isset_arr_key($config,'site_host',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_host")<br>参考:  http://www.zf-sys.com , 如果不填则不限制,填写后,当前访问地址不匹配时自动跳转(只用于前台页面)</span></div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">statics文件扩展</a>','name'=>'statics_ext','data'=>isset_arr_key($config,'statics_ext',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.statics_ext") 用于/statics'.base64_decode('Pw==').'p=路径</span></div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">关键词过滤</a></a>','name'=>'key_filter','data'=>isset_arr_key($config,'key_filter',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.key_filter")</span><br>使用说明:$config["content"] = str_replace(explode(",",ZFC("webconfig.key_filter")),"*",$config["content"]);</div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_radio(['title'=>'开启日志','name'=>'is_log','data'=>isset_arr_key($config,'is_log',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_log")</span>开启日志</div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_radio(['title'=>'Yun异常记录','name'=>'yun_trylog_is','data'=>isset_arr_key($config,'yun_trylog_is',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.yun_trylog_is")</span>记录yun.php的异常信息,日志位置:/runtime/log/yun_try.log</div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_radio(['title'=>'站点状态','name'=>'site_closed','data'=>isset_arr_key($config,'site_closed',''),'parm_data'=>['1'=>'关闭','0'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed")</span>站点状态</div>','theme'=>2])|raw}
-                    </div>
-                  
-                
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">关闭站点跳转</a>','name'=>'site_closed_url','data'=>isset_arr_key($config,'site_closed_url',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed_url")</span>站点关闭后跳转的链接</div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">首页跳转链接</a>','name'=>'site_home_url','data'=>isset_arr_key($config,'site_home_url',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_home_url")</span>打开站点首页跳转的链接</div>','theme'=>2])|raw}
-                    </div>
-                  <?php } ?>
-                  <?php if($_t=='admin_path' || $_t==''){ ?>
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">后台自定义登录路径token</a>','name'=>'admin_path','data'=>isset_arr_key($config,'admin_path',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_path")</span>不为空时,后台登录路径改为 /adminLogin/设置的路径token ,原来的登录路径失效</div>','theme'=>2])|raw}
-                    </div>
-                  <?php } ?>
+      <div class="layui-card">
+        <!--          <div class="layui-card-header layuiadmin-card-header-auto">-->
+        <!--            <?php if(ZFC('zf_tpl_suffix')!=''){ ?>-->
+        <!--            <a class="layui-btn layui-btn-sm  layui-btn-primary layui-border-green" onclick='zfAdminShow("模板配置","{:url('/i_admin')}")' >-->
+        <!--              当前模板配置-->
+        <!--            </a>-->
+        <!--            <?php } ?>-->
+        <!--          </div>-->
+        {include file="public/setting_menu" /}
+        <?php $form_widget = new \app\common\widget\FormPro();  ?>
+        <div class="layui-card-body" pad15>
+          <form class="info_tj" >
+            <div class="layui-form" wid100 lay-filter="">
+              {:do_action('admin_web_setting',$form_widget,$config,$type)}
+
+              <?php if($type=='系统设置'){ ?>
+              <?php if($_t==''){ ?>
+              <div  class="list_item" >
+                {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">statics文件扩展</a>','name'=>'statics_ext','data'=>isset_arr_key($config,'statics_ext',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.statics_ext") 用于/statics'.base64_decode('Pw==').'p=路径</span></div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">关键词过滤</a></a>','name'=>'key_filter','data'=>isset_arr_key($config,'key_filter',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.key_filter")</span><br>使用说明:$config["content"] = str_replace(explode(",",ZFC("webconfig.key_filter")),"*",$config["content"]);</div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_radio(['title'=>'开启日志','name'=>'is_log','data'=>isset_arr_key($config,'is_log',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_log")</span>开启日志</div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_radio(['title'=>'Yun异常记录','name'=>'yun_trylog_is','data'=>isset_arr_key($config,'yun_trylog_is',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.yun_trylog_is")</span>记录yun.php的异常信息,日志位置:/runtime/log/yun_try.log</div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_radio(['title'=>'站点状态','name'=>'site_closed','data'=>isset_arr_key($config,'site_closed',''),'parm_data'=>['1'=>'关闭','0'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed")</span>站点状态</div>','theme'=>2])|raw}
+              </div>
 
 
-                <?php }elseif($type=='上传设置'){ ?>
-                    <div class="layui-form-item layui-form-text">
-                      <label class="layui-form-label">上传设置:</label>
-                      <div class="layui-input-inline" style="width: 500px;">
-                        <select name="upload_type">
-                          <option value="" >本地</option>
-                         <?php if(isset($config['upload_type'])){ ?>
-                          <?php if(is_dir('./vendor/aliyuncs/oss-sdk-php')){ ?>
-                            <option value="ali" {$config['upload_type']=='ali'?'selected':''}>
-                              阿里云oss <?php if(ZFC('oss_config.ali_ak')=='' || ZFC('oss_config.ali_sk')=='' || ZFC('oss_config.ali_bucket')==''){ echo '(参数未配置)'; }?>
-                            </option>
-                            <?php } ?>
-                            <?php if(is_dir('./vendor/overtrue/flysystem-qiniu')){ ?>
-                            <option value="qny" {$config['upload_type']=='qny'?'selected':''}>
-                              七牛云oss <?php if(ZFC('oss_config.qny_ak')=='' || ZFC('oss_config.qny_sk')=='' || ZFC('oss_config.qny_bucket')==''){ echo '(参数未配置)'; }?>
-                            </option>
-                            <?php } ?>
-                            <?php if(is_dir('./vendor/upyun/sdk')){ ?>
-                            <option value="upy" {$config['upload_type']=='upy'?'selected':''}>
-                              又拍云oss <?php if(ZFC('oss_config.upy_name')=='' || ZFC('oss_config.upy_user')=='' || ZFC('oss_config.upy_pwd')==''){ echo '(参数未配置)'; }?>
-                            </option>
-                            <?php } ?>
-                            <?php if(is_dir('./vendor/aws/aws-sdk-php')){ ?>
-                            <option value="rain" {$config['upload_type']=='rain'?'selected':''}>
-                              雨云S3 <?php if(ZFC('oss_config.rain_ak')=='' || ZFC('oss_config.rain_sk')=='' || ZFC('oss_config.rain_bucket')==''){ echo '(参数未配置)'; }?>
-                            </option>
-                            <?php } ?>
-                        <?php } ?>
+              <div  class="list_item" >
+                {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">关闭站点跳转</a>','name'=>'site_closed_url','data'=>isset_arr_key($config,'site_closed_url',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_closed_url")</span>站点关闭后跳转的链接</div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">首页跳转链接</a>','name'=>'site_home_url','data'=>isset_arr_key($config,'site_home_url',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.site_home_url")</span>打开站点首页跳转的链接</div>','theme'=>2])|raw}
+              </div>
+              <?php } ?>
+              <?php if($_t=='admin_path' || $_t==''){ ?>
+              <div  class="list_item" >
+                {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">后台自定义登录路径token</a>','name'=>'admin_path','data'=>isset_arr_key($config,'admin_path',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.admin_path")</span>不为空时,后台登录路径改为 /adminLogin/设置的路径token ,原来的登录路径失效</div>','theme'=>2])|raw}
+              </div>
+              <?php } ?>
 
-                        </select>
-                      </div>
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.upload_type") 使用oss上传,请先进行配置</span></div>','theme'=>2])|raw}
 
-                  </div>
-                  
-                  <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">图片上传扩展</a>','name'=>'pic_ext','data'=>isset_arr_key($config,'pic_ext',''),'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.pic_ext") 不适用于oss上传</span></div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">文件上传扩展</a>','name'=>'file_ext','data'=>isset_arr_key($config,'file_ext',''),'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.file_ext") 不适用于oss上传</span></div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'是否压缩图片','name'=>'is_upload_compress','data'=>isset_arr_key($config,'is_upload_compress',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_upload_compress")</span>仅支持本地存储的</div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">限制最大图片宽度</a>','name'=>'upload_pic_max_w','data'=>isset_arr_key($config,'upload_pic_max_w',''),'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.upload_pic_max_w")</span>当上传的图片超过限制最大图片宽度,则进行压缩(仅支持本地存储的,并且开启了压缩功能)</div>','theme'=>2])|raw}
-                  </div>
+              <?php }elseif($type=='上传设置'){ ?>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">上传设置:</label>
+                <div class="layui-input-inline" style="width: 500px;">
+                  <select name="upload_type">
+                    <option value="" >本地</option>
+                    <?php if(isset($config['upload_type'])){ ?>
+                    <?php if(is_dir('./vendor/aliyuncs/oss-sdk-php')){ ?>
+                    <option value="ali" {$config['upload_type']=='ali'?'selected':''}>
+                    阿里云oss <?php if(ZFC('oss_config.ali_ak')=='' || ZFC('oss_config.ali_sk')=='' || ZFC('oss_config.ali_bucket')==''){ echo '(参数未配置)'; }?>
+                    </option>
+                    <?php } ?>
+                    <?php if(is_dir('./vendor/overtrue/flysystem-qiniu')){ ?>
+                    <option value="qny" {$config['upload_type']=='qny'?'selected':''}>
+                    七牛云oss <?php if(ZFC('oss_config.qny_ak')=='' || ZFC('oss_config.qny_sk')=='' || ZFC('oss_config.qny_bucket')==''){ echo '(参数未配置)'; }?>
+                    </option>
+                    <?php } ?>
+                    <?php if(is_dir('./vendor/upyun/sdk')){ ?>
+                    <option value="upy" {$config['upload_type']=='upy'?'selected':''}>
+                    又拍云oss <?php if(ZFC('oss_config.upy_name')=='' || ZFC('oss_config.upy_user')=='' || ZFC('oss_config.upy_pwd')==''){ echo '(参数未配置)'; }?>
+                    </option>
+                    <?php } ?>
+                    <?php if(is_dir('./vendor/aws/aws-sdk-php')){ ?>
+                    <option value="rain" {$config['upload_type']=='rain'?'selected':''}>
+                    雨云S3 <?php if(ZFC('oss_config.rain_ak')=='' || ZFC('oss_config.rain_sk')=='' || ZFC('oss_config.rain_bucket')==''){ echo '(参数未配置)'; }?>
+                    </option>
+                    <?php } ?>
+                    <?php } ?>
 
-                  <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'图片跳转显示:','name'=>'get_file_out_ptype','data'=>isset_arr_key($config,'get_file_out_ptype',''),'list_arr'=>[['id'=>'','name'=>'原图'],['id'=>'slt','name'=>'缩略图']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'文件短链接','name'=>'is_file_dlj','data'=>isset_arr_key($config,'is_file_dlj',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_file_dlj")</span>文件短连接 使用get_file_out跳转</div>','theme'=>2])|raw}
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'图片缓存','name'=>'is_upload_chrome_cache','data'=>isset_arr_key($config,'is_upload_chrome_cache',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_upload_chrome_cache")</span>系统上传本地浏览器缓存,需要开启文件短链接,同时存在Yun.php文件</div>','theme'=>2])|raw}
-                  </div>
+                  </select>
+                </div>
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.upload_type") 使用oss上传,请先进行配置</span></div>','theme'=>2])|raw}
 
-                  <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'上传面板使用范围:','name'=>'upload_pannel_type','data'=>isset_arr_key($config,'upload_pannel_type',''),'list_arr'=>[['id'=>'','name'=>'禁止使用'],['id'=>'1','name'=>'仅限后台后台,需要登录后才能用上传管理面板']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'上传文件名规则:','name'=>'upload_savename_type','data'=>isset_arr_key($config,'upload_savename_type','1'),'list_arr'=>[['id'=>'1','name'=>'日期文件夹+文件名随机'],['id'=>'2','name'=>'日期文件夹+原文件名'],['id'=>'3','name'=>'固定文件夹+原文件名']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw} 
-                  </div>
+              </div>
 
-                  <div  class="list_item" >
-                    {$form_widget->form_radio(['title'=>'上传增加域名前缀','name'=>'is_upload_add_domain','data'=>isset_arr_key($config,'is_upload_add_domain',''),'parm_data'=>['0'=>'否','1'=>'是'],'notes'=>'','theme'=>2])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_upload_add_domain")</span>上传文件的是否是否增加域名前缀</div>','theme'=>2])|raw}
-                  </div>
+              <div  class="list_item" >
+                {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">图片上传扩展</a>','name'=>'pic_ext','data'=>isset_arr_key($config,'pic_ext',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.pic_ext") 不适用于oss上传</span></div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">文件上传扩展</a>','name'=>'file_ext','data'=>isset_arr_key($config,'file_ext',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.file_ext") 不适用于oss上传</span></div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_radio(['title'=>'是否压缩图片','name'=>'is_upload_compress','data'=>isset_arr_key($config,'is_upload_compress',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_upload_compress")</span>仅支持本地存储的</div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">限制最大图片宽度</a>','name'=>'upload_pic_max_w','data'=>isset_arr_key($config,'upload_pic_max_w',''),'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.upload_pic_max_w")</span>当上传的图片超过限制最大图片宽度,则进行压缩(仅支持本地存储的,并且开启了压缩功能)</div>','theme'=>2])|raw}
+              </div>
+
+              <div  class="list_item" >
+                {$form_widget->form_select(['title'=>'图片跳转显示:','name'=>'get_file_out_ptype','data'=>isset_arr_key($config,'get_file_out_ptype',''),'list_arr'=>[['id'=>'','name'=>'原图'],['id'=>'slt','name'=>'缩略图']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_radio(['title'=>'文件短链接','name'=>'is_file_dlj','data'=>isset_arr_key($config,'is_file_dlj',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_file_dlj")</span>文件短连接 使用get_file_out跳转</div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_radio(['title'=>'图片缓存','name'=>'is_upload_chrome_cache','data'=>isset_arr_key($config,'is_upload_chrome_cache',''),'parm_data'=>['0'=>'关闭','1'=>'开启'],'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_upload_chrome_cache")</span>系统上传本地浏览器缓存,需要开启文件短链接,同时存在Yun.php文件</div>','theme'=>2])|raw}
+              </div>
+
+              <div  class="list_item" >
+                {$form_widget->form_select(['title'=>'上传面板使用范围:','name'=>'upload_pannel_type','data'=>isset_arr_key($config,'upload_pannel_type',''),'list_arr'=>[['id'=>'','name'=>'禁止使用'],['id'=>'1','name'=>'仅限后台后台,需要登录后才能用上传管理面板']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_select(['title'=>'上传文件名规则:','name'=>'upload_savename_type','data'=>isset_arr_key($config,'upload_savename_type','1'),'list_arr'=>[['id'=>'1','name'=>'日期文件夹+文件名随机'],['id'=>'2','name'=>'日期文件夹+原文件名'],['id'=>'3','name'=>'固定文件夹+原文件名']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">需要开启文件短链接,同时存在Yun.php文件</span></div>','theme'=>2])|raw}
+              </div>
+
+              <div  class="list_item" >
+                {$form_widget->form_radio(['title'=>'上传增加域名前缀','name'=>'is_upload_add_domain','data'=>isset_arr_key($config,'is_upload_add_domain',''),'parm_data'=>['0'=>'否','1'=>'是'],'notes'=>'','theme'=>2])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.is_upload_add_domain")</span>上传文件的是否是否增加域名前缀</div>','theme'=>2])|raw}
+              </div>
 
 
 
-                <?php }elseif($type=='水印配置'){ ?>
+              <?php }elseif($type=='水印配置'){ ?>
 
-                  <?php if(isset($config['upload_type']) && $config['upload_type']!=''){ ?>
-                    <div class="list_item_">
+              <?php if(isset($config['upload_type']) && $config['upload_type']!=''){ ?>
+              <div class="list_item_">
                         <span class="layui-form-item_" style="margin-left: 50px;margin-bottom: 20px;color: red; border: 1px solid red; ">
                           水印功能仅支持本地存储方式
                         </span>
-                    </div>
-                  <?php } ?>
+              </div>
+              <?php } ?>
 
-                  <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'水印类型:','name'=>'water_type','data'=>isset_arr_key($config,'water_type',''),'list_arr'=>[['id'=>'','name'=>'不开启'],['id'=>'1','name'=>'图片水印'],['id'=>'2','name'=>'文字水印']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
-                    {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw} 
-                  </div>
-                  <div  class="list_item" >
-                    {$form_widget->form_select(['title'=>'水印位置:','name'=>'water_position','data'=>isset_arr_key($config,'water_position',''),'list_arr'=>[['id'=>'1','name'=>'位置1'],['id'=>'2','name'=>'位置2'],['id'=>'3','name'=>'位置3'],['id'=>'4','name'=>'位置4'],['id'=>'5','name'=>'位置5'],['id'=>'6','name'=>'位置6'],['id'=>'7','name'=>'位置7'],['id'=>'8','name'=>'位置8'],['id'=>'9','name'=>'位置9']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
-                    <div class="layui-col-lg5">
+              <div  class="list_item" >
+                {$form_widget->form_select(['title'=>'水印类型:','name'=>'water_type','data'=>isset_arr_key($config,'water_type',''),'list_arr'=>[['id'=>'','name'=>'不开启'],['id'=>'1','name'=>'图片水印'],['id'=>'2','name'=>'文字水印']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan "></span></div>','theme'=>2])|raw}
+              </div>
+              <div  class="list_item" >
+                {$form_widget->form_select(['title'=>'水印位置:','name'=>'water_position','data'=>isset_arr_key($config,'water_position',''),'list_arr'=>[['id'=>'1','name'=>'位置1'],['id'=>'2','name'=>'位置2'],['id'=>'3','name'=>'位置3'],['id'=>'4','name'=>'位置4'],['id'=>'5','name'=>'位置5'],['id'=>'6','name'=>'位置6'],['id'=>'7','name'=>'位置7'],['id'=>'8','name'=>'位置8'],['id'=>'9','name'=>'位置9']],'id_t'=>'id','name_t'=>'name','notes'=>'','theme'=>4])|raw}
+                <div class="layui-col-lg5">
                       <pre>
                   1  2  3
                   4  5  6
                   7  8  9
                       </pre>
-                    </div>
-                  </div>
+                </div>
+              </div>
 
-                  <div class="water_type1 <?php if(isset_arr_key($config,'water_type','')!=1){ echo 'water_type_hide'; } ?>">
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印图片路径</a>','name'=>'water_pic_path','data'=>isset_arr_key($config,'water_pic_path',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_pic_path") </span></div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印图片透明度</a>','name'=>'water_clarity','data'=>isset_arr_key($config,'water_clarity','100'),'type'=>'number','notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_clarity") </span> 0~100，默认值是100</div>','theme'=>2])|raw}
-                    </div>
-                  </div>
-                  
-                  <div class="water_type2 <?php if(isset_arr_key($config,'water_type','')!=2){ echo 'water_type_hide'; } ?>">
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印文字内容</a>','name'=>'water_text','data'=>isset_arr_key($config,'water_text',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text") </span></div>','theme'=>2])|raw}
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印文字大小</a>','name'=>'water_text_size','data'=>isset_arr_key($config,'water_text_size','30'),'type'=>'number','notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text_size") </span></div>','theme'=>2])|raw}
-                    </div>
-                    
-                    <div  class="list_item" >
-                      <!-- {$form_widget->form_input_color(['title'=>'<a class="zf-layui-tips">水印文字颜色</a>','name'=>'water_text_color','data'=>isset_arr_key($config,'water_text_color',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text_color") </span></div>','theme'=>2])|raw} -->
-                      <div class="layui-row layui-col-space10 layui-form-item">
-                        <div class="layui-col-lg5">
-                          <label class="layui-form-label">水印文字颜色:</label>
-                          <div class="layui-input-inline" style="width: 120px;">
-                            <input type="text" name="water_text_color" value="{$config['water_text_color']|default=''}" placeholder="请选择颜色" class="layui-input" id="water_text_color">
-                          </div>
-                          <div class="layui-inline" style="left: -11px;">
-                            <div id="watch_color"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印字体路径</a>','name'=>'water_font_path','data'=>isset_arr_key($config,'water_font_path',''),'notes'=>'例如:  ./public/static/msyh.ttc','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_font_path") </span></div>','theme'=>2])|raw}
-                    </div>
-                  </div>
-                  
+              <div class="water_type1 <?php if(isset_arr_key($config,'water_type','')!=1){ echo 'water_type_hide'; } ?>">
+                <div  class="list_item" >
+                  {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印图片路径</a>','name'=>'water_pic_path','data'=>isset_arr_key($config,'water_pic_path',''),'notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_pic_path") </span></div>','theme'=>2])|raw}
+                </div>
+                <div  class="list_item" >
+                  {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印图片透明度</a>','name'=>'water_clarity','data'=>isset_arr_key($config,'water_clarity','100'),'type'=>'number','notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_clarity") </span> 0~100，默认值是100</div>','theme'=>2])|raw}
+                </div>
+              </div>
 
-                  
-                <?php } ?>
-
-
-                <div class="layui-form-item">
-                  <div class="layui-input-block">
-                    <a href="javascript:;" class="layui-btn layui-btn-sm"  onclick="tijiao_data2('config/index',0)" >确认保存</a>
-                  </div>
+              <div class="water_type2 <?php if(isset_arr_key($config,'water_type','')!=2){ echo 'water_type_hide'; } ?>">
+                <div  class="list_item" >
+                  {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印文字内容</a>','name'=>'water_text','data'=>isset_arr_key($config,'water_text',''),'notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text") </span></div>','theme'=>2])|raw}
+                </div>
+                <div  class="list_item" >
+                  {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印文字大小</a>','name'=>'water_text_size','data'=>isset_arr_key($config,'water_text_size','30'),'type'=>'number','notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text_size") </span></div>','theme'=>2])|raw}
                 </div>
 
-
+                <div  class="list_item" >
+                  <!-- {$form_widget->form_input_color(['title'=>'<a class="zf-layui-tips">水印文字颜色</a>','name'=>'water_text_color','data'=>isset_arr_key($config,'water_text_color',''),'notes'=>'','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_text_color") </span></div>','theme'=>2])|raw} -->
+                  <div class="layui-row layui-col-space10 layui-form-item">
+                    <div class="layui-col-lg5">
+                      <label class="layui-form-label">水印文字颜色:</label>
+                      <div class="layui-input-inline" style="width: 120px;">
+                        <input type="text" name="water_text_color" value="{$config['water_text_color']|default=''}" placeholder="请选择颜色" class="layui-input" id="water_text_color">
+                      </div>
+                      <div class="layui-inline" style="left: -11px;">
+                        <div id="watch_color"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div  class="list_item" >
+                  {$form_widget->form_input(['title'=>'<a class="zf-layui-tips">水印字体路径</a>','name'=>'water_font_path','data'=>isset_arr_key($config,'water_font_path',''),'notes'=>'例如:  ./public/static/msyh.ttc','theme'=>2])|raw}
+                  {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge  layui-bg-cyan ">ZFC("webconfig.water_font_path") </span></div>','theme'=>2])|raw}
+                </div>
               </div>
-            </form>
-          </div>
+
+
+
+              <?php } ?>
+
+
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <a href="javascript:;" class="layui-btn layui-btn-sm"  onclick="tijiao_data2('config/index',0)" >确认保存</a>
+                </div>
+              </div>
+
+
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
+</div>
 
 
 
-  <script>
- layui.define(['form', 'upload','colorpicker'], function(exports){
-  var $ = layui.$
-  ,layer = layui.layer
-  ,laytpl = layui.laytpl
-  ,setter = layui.setter
-  ,view = layui.view
-  ,admin = layui.admin
-  ,form = layui.form
-  ,colorpicker = layui.colorpicker
-  ,upload = layui.upload;
+<script>
+  layui.define(['form', 'upload','colorpicker'], function(exports){
+    var $ = layui.$
+            ,layer = layui.layer
+            ,laytpl = layui.laytpl
+            ,setter = layui.setter
+            ,view = layui.view
+            ,admin = layui.admin
+            ,form = layui.form
+            ,colorpicker = layui.colorpicker
+            ,upload = layui.upload;
 
-  // water_type
-  // water_type改变时
-  form.on('select(water_type)', function(data){
+    // water_type
+    // water_type改变时
+    form.on('select(water_type)', function(data){
 
-    var val=data.value;
-    if(val==1){
-      $('.water_type2').hide()
-      $('.water_type1').show()
-    }else if(val==2){
-      $('.water_type2').show()
-      $('.water_type1').hide()
-    }else{
-      $('.water_type2').hide()
-      $('.water_type1').hide()
-    }
-  })
+      var val=data.value;
+      if(val==1){
+        $('.water_type2').hide()
+        $('.water_type1').show()
+      }else if(val==2){
+        $('.water_type2').show()
+        $('.water_type1').hide()
+      }else{
+        $('.water_type2').hide()
+        $('.water_type1').hide()
+      }
+    })
 
 
 
-  //表单赋值
-  colorpicker.render({
-    elem: '#watch_color'
-    ,color: "{$res.water_text_color|default=''}"
-    ,done: function(color){
-      $('#water_text_color').val(color);
-    }
-  });
-
-  $('.zf-layui-tips').on('click', function(){
-    var othis = $(this).parent().parent().parent().find('div:eq(2)').find('.layui-input-block .zf-tip-content-hidden').html()
-    layer.tips(othis, this, {
-      tips: 1,
-      time: 8000
+    //表单赋值
+    colorpicker.render({
+      elem: '#watch_color'
+      ,color: "{$res.water_text_color|default=''}"
+      ,done: function(color){
+        $('#water_text_color').val(color);
+      }
     });
-  });
+
+    $('.zf-layui-tips').on('click', function(){
+      var othis = $(this).parent().parent().parent().find('div:eq(2)').find('.layui-input-block .zf-tip-content-hidden').html()
+      layer.tips(othis, this, {
+        tips: 1,
+        time: 8000
+      });
+    });
 
     window.tijiao_data2 = function(role,type=1){
       var index = layer.load(2);
-      var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();      
+      var data = $(".info_tj input,.info_tj select,.info_tj textarea,.info_tj radio").serialize();
       $.ajax({
         type:'post',
         url:'../'+role,
@@ -345,23 +337,23 @@
             layer.close(index)
             setTimeout(function() {
               if(type==1){
-              parent.location.reload();
+                parent.location.reload();
               }else{
-              // location.reload();
+                // location.reload();
               }
             }, 2000);
           }else{
             layer.msg(res.msg, {icon: 2});
             layer.close(index)
-          }   
+          }
         }
       })
     }
-   
 
 
- })
-  </script>
+
+  })
+</script>
 </body>
 </html>
 {:do_action('admin_js')}
