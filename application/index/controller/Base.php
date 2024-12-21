@@ -33,7 +33,7 @@ class Base extends Zfb
     }
     private function home_init(){
         do_action('home_init');
-        $this->host = ZFC("webconfig.site_url");
+        $this->host = ZFC("webconfig.site_host");
         if($this->host==''){
             $this->host = get_domain();
         }

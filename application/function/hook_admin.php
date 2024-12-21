@@ -875,13 +875,13 @@ add_action('common_act', 'admin_act_btn_copy_act');
 
 
 add_action('zfcms_config_act', function ($config){
-    if(isset($config['site_url']) && $config['site_url']!=''){
+    if(isset($config['site_host']) && $config['site_host']!=''){
         //判断最后一个字符如是/,则返回报错
-        if(substr($config['site_url'],-1)=='/'){
+        if(substr($config['site_host'],-1)=='/'){
             return jserror('网站域名不能以/结尾');
         }
         //开头必须是http
-        if(substr($config['site_url'],0,4)!='http'){
+        if(substr($config['site_host'],0,4)!='http'){
             return jserror('网站域名必须以http开头');
         }
     }

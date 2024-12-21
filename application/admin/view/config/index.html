@@ -66,8 +66,12 @@
                 <?php if($type=='系统设置'){ ?>
                   <?php if($_t==''){ ?>
                     <div  class="list_item" >
-                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">网站域名</a></a>','name'=>'site_url','data'=>isset_arr_key($config,'site_url',''),'notes'=>'','theme'=>2])|raw}
-                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_url")<br>参考:  http://www.zf-sys.com , 如果不填则不限制,填写后,当前访问地址不匹配时自动跳转(只用于前台页面)</span></div>','theme'=>2])|raw}
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">网站作者</a></a>','name'=>'site_author','data'=>isset_arr_key($config,'site_author',''),'notes'=>'','theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_author")<br></span></div>','theme'=>2])|raw}
+                    </div>
+                    <div  class="list_item" >
+                      {$form_widget->form_input(['title'=>'<a class="zf-layui-tips"><a class="zf-layui-tips">网站域名</a></a>','name'=>'site_host','data'=>isset_arr_key($config,'site_host',''),'notes'=>'','theme'=>2])|raw}
+                      {$form_widget->form_note(['data'=>'<div class="zf-tip-content-hidden"><span class="layui-badge_  layui-bg-cyan_ ">ZFC("webconfig.site_host")<br>参考:  http://www.zf-sys.com , 如果不填则不限制,填写后,当前访问地址不匹配时自动跳转(只用于前台页面)</span></div>','theme'=>2])|raw}
                     </div>
                     <div  class="list_item" >
                       {$form_widget->form_textarea(['title'=>'<a class="zf-layui-tips">statics文件扩展</a>','name'=>'statics_ext','data'=>isset_arr_key($config,'statics_ext',''),'notes'=>'','theme'=>2])|raw}
