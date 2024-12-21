@@ -56,7 +56,7 @@ class Config extends Admin
                 }
                 $config[$k] = $vo;
             }
-            // dd($config);
+            do_action('zfcms_config_act',$config);
             $res = ZFTB('config')->where(['key'=>'webconfig'])->cache('webconfig')->update(['value'=>json_encode($config),'token'=>time()]);
             return ZFRetMsg($res,'保存成功','保存失败');
         }
