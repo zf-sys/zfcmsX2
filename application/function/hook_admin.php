@@ -329,7 +329,7 @@ function add_category_edit_l_view_default($res,$form_widget,$hook_data){
       
     echo $html;
 }
-add_action('add_category_edit_l_view', 'add_category_edit_l_view_default');
+add_action('add_category_edit_l_view', 'add_category_edit_l_view_default',1);
 
 
 //add_action('admin_js', function () {
