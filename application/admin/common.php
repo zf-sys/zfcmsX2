@@ -93,6 +93,7 @@ if (!function_exists( 'formProActionArr')) {
             ['id'=>'form_ueditor','name'=>'ueditor'],
             ['id'=>'form_input_color','name'=>'颜色'],
             ['id'=>'form_cate_checkbox','name'=>'多分组复选框'],
+            ['id'=>'form_meditor','name'=>'meditor编辑器'],
             // ['id'=>'form_meditor','name'=>'']
             // ['id'=>'form_note','name'=>'']
         ];
@@ -121,6 +122,7 @@ if (!function_exists( 'formProActionArrCate')) {
             ['id'=>'form_ueditor','name'=>'ueditor'],
             ['id'=>'form_input_color','name'=>'颜色'],
             ['id'=>'form_cate_checkbox','name'=>'多分组复选框'],
+            ['id'=>'form_meditor','name'=>'meditor编辑器'],
             // ['id'=>'form_tinymce','name'=>'tinymce'],
             // ['id'=>'form_wangeditor','name'=>'wangeditor'],
             // ['id'=>'form_vditor','name'=>'vditor'],
