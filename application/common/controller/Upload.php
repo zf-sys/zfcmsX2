@@ -15,7 +15,7 @@ use OSS\OssClient as AliOssClient;
 use Upyun\Upyun;
 use Upyun\Config as UpyConfig;
 
-// 雨云s3
+// S3存储
 use Aws\S3\S3Client;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 

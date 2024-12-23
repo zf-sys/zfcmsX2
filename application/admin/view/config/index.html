@@ -128,7 +128,7 @@
                     <?php } ?>
                     <?php if(is_dir('./vendor/aws/aws-sdk-php')){ ?>
                     <option value="rain" {$config['upload_type']=='rain'?'selected':''}>
-                    雨云S3 <?php if(ZFC('oss_config.rain_ak')=='' || ZFC('oss_config.rain_sk')=='' || ZFC('oss_config.rain_bucket')==''){ echo '(参数未配置)'; }?>
+                    S3存储 <?php if(ZFC('oss_config.rain_ak')=='' || ZFC('oss_config.rain_sk')=='' || ZFC('oss_config.rain_bucket')==''){ echo '(参数未配置)'; }?>
                     </option>
                     <?php } ?>
                     <?php } ?>

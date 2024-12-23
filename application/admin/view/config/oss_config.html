@@ -38,7 +38,7 @@
 
         <div class="layui-card">
           <div class="layui-card-header layuiadmin-card-header-auto">
-              <?php $menu_type = ['阿里云','七牛云','又拍云','雨云S3']; ?>
+              <?php $menu_type = ['阿里云','七牛云','又拍云','S3存储']; ?>
             <?php foreach($menu_type as $k=>$vo){ ?>
               <a class="layui-btn layui-btn-sm {$vo!=$type?'layui-btn-primary':''}" href='{:url("config/oss_config")}?type={$vo}'>{$vo}</a>
             <?php } ?>
@@ -127,7 +127,7 @@
                   </div>
   
                   
-                <?php }elseif($type=='雨云S3'){ ?>
+                <?php }elseif($type=='S3存储'){ ?>
                   <?php if(!is_dir('./vendor/league/flysystem-aws-s3-v3')){ ?>
                     <blockquote class="layui-elem-quote" style="text-align: center;">
                       使用此功能需先安装扩展 composer require league/flysystem-aws-s3-v3
