@@ -3,7 +3,7 @@ namespace app\common\widget;
 use think\Controller;
 class FormPro {
 
-   public function __construct (){
+    public function __construct (){
         $this->upload_one  = siteUrl('common/upload/upload_one');
         $this->upload_one_file  = siteUrl('common/upload/upload_one_file');
         $this->filesystem_upload  = siteUrl('common/Fileupload/upload').'?ttttt=1';
@@ -14,10 +14,10 @@ class FormPro {
 
 
     private function append_notes($str=''){
-      if($str==''){
-        return '';
-      }
-      return '<div style="font-size: 10px;color: #ccc;">'.$str.'</div>';
+        if($str==''){
+            return '';
+        }
+        return '<div style="font-size: 10px;color: #ccc;">'.$str.'</div>';
     }
     public function form_input($request_data=array())
     {
@@ -31,12 +31,12 @@ class FormPro {
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $readonly = isset($request_data['readonly'])?$request_data['readonly']:'';
         if($readonly!=''){
-          $readonly = 'readonly=""';
+            $readonly = 'readonly=""';
         }
         $zf_html = '';
         $data = str_replace('"',"&quot;",$data);
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -46,7 +46,7 @@ class FormPro {
           </div>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
           <label class="layui-form-label">$title:</label>
           <div class="layui-input-block">
@@ -56,7 +56,7 @@ INFO;
         </div>
 INFO;
         }
-        
+
         return $zf_html;
     }
     public function form_input_tag($request_data=array())
@@ -75,7 +75,7 @@ INFO;
         $data_arr = explode(',',$data);
         // dd($data_arr);
         if($theme==1){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-card-header">'.$title.'</div>
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12 fairy-tag-container">
@@ -84,7 +84,7 @@ INFO;
              </div>
              <input  class="layui-input '.$tpl_id.'" type="hidden" name="'.$name.'"  placeholder="'.$placeholder.'" autocomplete="off"  value="'.$data.'">
           </div>';
-          $zf_html .= '<script>
+            $zf_html .= '<script>
               layui.config({
                   base: "'.$static_dir.'/style/input-tag/"
               }).use(["inputTag", "jquery"], function () {
@@ -92,16 +92,16 @@ INFO;
                   inputTag.render({
                       elem: "#'.$tpl_id.'",
                       data: [';
-                      foreach($data_arr as $k=>$vo){ 
-                        if($data!=''){
-                          if($k<count($data_arr)-1){
-                            $zf_html .=  "'".$vo."',"; 
-                          }else{
-                            $zf_html .=  "'".$vo."'"; 
-                          }
-                        }
-                      }
-                      $zf_html.='],
+            foreach($data_arr as $k=>$vo){
+                if($data!=''){
+                    if($k<count($data_arr)-1){
+                        $zf_html .=  "'".$vo."',";
+                    }else{
+                        $zf_html .=  "'".$vo."'";
+                    }
+                }
+            }
+            $zf_html.='],
                       beforeCreate: function (data, value){ 
                         return value; 
                       },
@@ -120,7 +120,7 @@ INFO;
               })
           </script>';
         }elseif($theme==2){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.':</label>
             <div class="layui-input-block fairy-tag-container">
@@ -129,7 +129,7 @@ INFO;
             </div>
             <input  class="layui-input '.$tpl_id.'" type="hidden" name="'.$name.'"  placeholder="'.$placeholder.'" autocomplete="off"  value="'.$data.'">
           </div>';
-          $zf_html .= '<script>
+            $zf_html .= '<script>
               layui.config({
                   base: "'.$static_dir.'/style/input-tag/"
               }).use(["inputTag", "jquery"], function () {
@@ -137,16 +137,16 @@ INFO;
                   inputTag.render({
                       elem: "#'.$tpl_id.'",
                       data: [';
-                      foreach($data_arr as $k=>$vo){ 
-                        if($data!=''){
-                          if($k<count($data_arr)-1){
-                            $zf_html .=  "'".$vo."',"; 
-                          }else{
-                            $zf_html .=  "'".$vo."'"; 
-                          }
-                        }
-                      }
-                      $zf_html.='],
+            foreach($data_arr as $k=>$vo){
+                if($data!=''){
+                    if($k<count($data_arr)-1){
+                        $zf_html .=  "'".$vo."',";
+                    }else{
+                        $zf_html .=  "'".$vo."'";
+                    }
+                }
+            }
+            $zf_html.='],
                       beforeCreate: function (data, value){ 
                         return value; 
                       },
@@ -165,7 +165,7 @@ INFO;
               })
           </script>';
         }
-        
+
         return $zf_html;
     }
     public function form_input_color($request_data=array())
@@ -179,7 +179,7 @@ INFO;
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html='';
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -206,7 +206,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -233,7 +233,7 @@ INFO;
          </script>
 INFO;
         }
-        
+
         return $zf_html;
     }
     public function form_note($request_data=array())
@@ -243,7 +243,7 @@ INFO;
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $zf_html = '';
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
                $data
@@ -251,7 +251,7 @@ INFO;
           </div>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
           <label class="layui-form-label"></label>
           <div class="layui-input-block">
@@ -260,7 +260,7 @@ INFO;
         </div>
 INFO;
         }elseif($theme==3){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <label class="layui-form-label"></label>
           <div class="layui-input-block">
             $data
@@ -271,7 +271,7 @@ INFO;
     }
 
     /**
-ok   
+    ok
      */
     public function form_textarea($request_data=array())
     {
@@ -284,11 +284,11 @@ ok
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $readonly = isset($request_data['readonly'])?$request_data['readonly']:'';
         if($readonly!=''){
-          $readonly = 'readonly=""';
+            $readonly = 'readonly=""';
         }
         $zf_html = '';
         if($theme==1){
-        $zf_html = <<<INFO
+            $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
@@ -297,8 +297,8 @@ ok
     </div>
 </div>
 INFO;
-      }elseif($theme==2){
-        $zf_html = <<<INFO
+        }elseif($theme==2){
+            $zf_html = <<<INFO
         <div class="layui-form-item">
         <label class="layui-form-label">$title:</label>
         <div class="layui-input-block">
@@ -307,12 +307,12 @@ INFO;
         </div>
       </div>
 INFO;
-      }
+        }
 
         return $zf_html;
     }
 
- 
+
     public function form_radio($request_data=array())
     {
         $tpl_id='zf_'.mt_rand().'_'.time();
@@ -326,7 +326,7 @@ INFO;
             $parm_data = ['0'=>'否','1'=>'是'];
         }
         if(is_string($parm_data)){
-          eval("\$parm_data = ".$request_data['parm_data'].'; ');
+            eval("\$parm_data = ".$request_data['parm_data'].'; ');
         }
         $zf_html='';
         if($theme==1){
@@ -335,9 +335,9 @@ INFO;
             <div class="layui-card-body layui-row layui-col-space8 ">
                 <div class="layui-col-md12 layui-form-item">
                   <div class="layui-form" >';
-                  foreach($parm_data as $k=>$vo){
-                    $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
-                  }
+            foreach($parm_data as $k=>$vo){
+                $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
+            }
             $zf_html.='</div>
             '.$append_notes.'
                 </div>
@@ -347,105 +347,105 @@ INFO;
             <div class="layui-form-item">
               <label class="layui-form-label">'.$title.':</label>
               <div class="layui-input-block layui-form">';
-                  foreach($parm_data as $k=>$vo){
-                    $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
-                  }
-                
-          $zf_html.='</div>
+            foreach($parm_data as $k=>$vo){
+                $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
+            }
+
+            $zf_html.='</div>
           '.$append_notes.'
             </div>';
         }elseif($theme==3){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-card-header">'.$title.'</div>
           <div class="layui-card-body layui-row layui-col-space8 ">
               <div class="layui-col-md12 layui-form-item">
                 <div class="layui-input-inline " >';
-                foreach($parm_data as $k=>$vo){
-                  $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
-                }
-          $zf_html.='</div>
+            foreach($parm_data as $k=>$vo){
+                $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
+            }
+            $zf_html.='</div>
           '.$append_notes.'
               </div>
             </div>';
-      }elseif($theme==4){
-          $zf_html = '
+        }elseif($theme==4){
+            $zf_html = '
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.':</label>
             <div class="layui-input-block ">';
-                foreach($parm_data as $k=>$vo){
-                  $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
-                }
-              
-        $zf_html.='</div>
+            foreach($parm_data as $k=>$vo){
+                $zf_html.='<input type="radio" name="'.$name.'" value="'.$k.'" title="'.$vo.'" '.($data==$k?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
+            }
+
+            $zf_html.='</div>
         '.$append_notes.'
           </div>';
-      }else if($theme==5){
-        $zf_html = '
+        }else if($theme==5){
+            $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
         <div class="layui-card-body layui-row layui-col-space8 ">
             <div class="layui-col-md12 layui-form-item">
               <div class="layui-form" >';
-              foreach($parm_data as $k=>$vo){
+            foreach($parm_data as $k=>$vo){
                 $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
-              }
-        $zf_html.='</div>
+            }
+            $zf_html.='</div>
         '.$append_notes.'
             </div>
           </div>';
-    }elseif($theme==6){
-        $zf_html = '
+        }elseif($theme==6){
+            $zf_html = '
         <div class="layui-form-item">
           <label class="layui-form-label">'.$title.':</label>
           <div class="layui-input-block layui-form">';
-              foreach($parm_data as $k=>$vo){
+            foreach($parm_data as $k=>$vo){
                 $zf_html.='<input type="radio" name="'.$name.'" value="'.$vo.'" title="'.$vo.'" '.($data==$vo?'checked':'').'  ><div class="layui-unselect layui-form-radio"><div>'.$vo.'</div></div>';
-              }
-            
-      $zf_html.='</div>
+            }
+
+            $zf_html.='</div>
       '.$append_notes.'
         </div>';
-    }
-       
+        }
+
         return $zf_html;
     }
     public function layui_switch($request_data=array()){
-      $tpl_id='zf_'.mt_rand().'_'.time();
-      $title = isset($request_data['title'])?$request_data['title']:'';
-      $name = isset($request_data['name'])?$request_data['name']:'';
-      $data = isset($request_data['data'])?$request_data['data']:'';
-      $theme = isset($request_data['theme'])?$request_data['theme']:'1';
-      $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
-      $parm_data = isset($request_data['parm_data'])?$request_data['parm_data']:['是','否'];
-      $parm_data_arr = implode('|', $parm_data);
-      $zf_html='';
-      if($theme==1){
-          $zf_html = '<div class="layui-card-header">'.$title.'</div>
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $title = isset($request_data['title'])?$request_data['title']:'';
+        $name = isset($request_data['name'])?$request_data['name']:'';
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
+        $parm_data = isset($request_data['parm_data'])?$request_data['parm_data']:['是','否'];
+        $parm_data_arr = implode('|', $parm_data);
+        $zf_html='';
+        if($theme==1){
+            $zf_html = '<div class="layui-card-header">'.$title.'</div>
           <div class="layui-card-body layui-row layui-col-space8 ">
             <div class="layui-col-md12 layui-form-item">
               <div class="layui-input-inline layui-form">';
-              $zf_html .=   '<input type="checkbox" name="'.$name.'" lay-skin="switch" lay-text="'.$parm_data_arr.'" ';
-              if($data==1){
+            $zf_html .=   '<input type="checkbox" name="'.$name.'" lay-skin="switch" lay-text="'.$parm_data_arr.'" ';
+            if($data==1){
                 $zf_html .='checked';
-              }
-              $zf_html .='  lay-filter="'.$name.'_change"   >';
-              $zf_html .= '</div>
+            }
+            $zf_html .='  lay-filter="'.$name.'_change"   >';
+            $zf_html .= '</div>
               '.$append_notes.'
             </div>
           </div>';
-      }elseif($theme==2){
-          $zf_html = '<div class="layui-form-item">
+        }elseif($theme==2){
+            $zf_html = '<div class="layui-form-item">
             <label class="layui-form-label">'.$title.':</label>
             <div class="layui-input-block layui-form">';
-              $zf_html .=   '<input type="checkbox" name="'.$name.'" lay-skin="switch" lay-text="'.$parm_data_arr.'" ';
-              if($data==1){
+            $zf_html .=   '<input type="checkbox" name="'.$name.'" lay-skin="switch" lay-text="'.$parm_data_arr.'" ';
+            if($data==1){
                 $zf_html .='checked';
-              }
-              $zf_html .='  lay-filter="'.$name.'_change"   >';
-          $zf_html.='</div>
+            }
+            $zf_html .='  lay-filter="'.$name.'_change"   >';
+            $zf_html.='</div>
           '.$append_notes.'
           </div>';
-      }
-      $zf_html.='<script>
+        }
+        $zf_html.='<script>
       layui.use(["form","element"], function(){
       var $ = layui.$
       ,form = layui.form
@@ -456,7 +456,7 @@ INFO;
         });
       });
       </script>';
-      return $zf_html;
+        return $zf_html;
 
     }
     public function form_checkbox($request_data=array())
@@ -471,46 +471,81 @@ INFO;
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $list = isset($request_data['list_arr'])?$request_data['list_arr']:'';
         if(is_string($list)){
-          eval("\$list = ".$request_data['list_arr'].'; ');
+            eval("\$list = ".$request_data['list_arr'].'; ');
         }
-        
+
         $zf_html='';
         $check_data = explode(',', $data);
         if($theme==1){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-card-header">'.$title.'</div>
               <div class="layui-card-body layui-row layui-col-space8 ">
                 <div class="layui-col-md12 layui-form-item layui-form">
                   <div class="layui-input-inline">';
-                  foreach($list as $k=>$vo){
-                      $zf_html.= '<input type="checkbox" name="zf_list_'.$name.'[]" lay-skin="primary" title="'.$vo[$name_t].'" value="'.$vo[$id_t].'" ';
-                      if(in_array($vo[$id_t],$check_data)){
-                        $zf_html.=  'checked';
-                      }
-                      $zf_html.= ' />';
-                  }
-                    $zf_html.='</div>
+            foreach($list as $k=>$vo){
+                $zf_html.= '<input type="checkbox" name="zf_list_'.$name.'[]" lay-skin="primary" title="'.$vo[$name_t].'" value="'.$vo[$id_t].'" ';
+                if(in_array($vo[$id_t],$check_data)){
+                    $zf_html.=  'checked';
+                }
+                $zf_html.= ' />';
+            }
+            $zf_html.='</div>
               '.$append_notes.'
                 </div>
                 <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
               </div>';
         }elseif($theme==2){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.':</label>
             <div class="layui-input-block layui-form">';
-              foreach($list as $k=>$vo){
+            foreach($list as $k=>$vo){
                 $zf_html.= '<input type="checkbox" name="zf_list_'.$name.'[]" lay-skin="primary" title="'.$vo[$name_t].'" value="'.$vo[$id_t].'" ';
                 if(in_array($vo[$id_t],$check_data)){
-                  $zf_html.=  'checked';
+                    $zf_html.=  'checked';
                 }
                 $zf_html.= ' />';
-              }
-          $zf_html.='</div>
+            }
+            $zf_html.='</div>
           '.$append_notes.'
           </div>
           <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
           ';
+        }elseif($theme==3) {
+            $zf_html = '
+          <div class="layui-form-item">
+            <label class="layui-form-label">' . $title . ':</label>
+            <div class="layui-input-block layui-form">';
+            foreach ($list as $k => $vo) {
+                $zf_html .= '<input type="checkbox" name="zf_list_' . $name . '[]" lay-skin="primary" title="' . $vo . '" value="' . $vo . '" ';
+                if (in_array($vo, $check_data)) {
+                    $zf_html .= 'checked';
+                }
+                $zf_html .= ' />';
+            }
+            $zf_html .= '</div>
+          ' . $append_notes . '
+          </div>
+          <input name="_temp_arr_key[]"  type="hidden" value="' . $name . '" />
+          ';
+        }else if($theme==4){
+            $zf_html = '
+          <div class="layui-card-header">'.$title.'</div>
+              <div class="layui-card-body layui-row layui-col-space8 ">
+                <div class="layui-col-md12 layui-form-item layui-form">
+                  <div class="layui-input-inline" style="width: 100%">';
+            foreach($list as $k=>$vo){
+                $zf_html.= '<input type="checkbox" name="zf_list_'.$name.'[]" lay-skin="primary" title="'.$vo.'" value="'.$vo.'" ';
+                if(in_array($vo,$check_data)){
+                    $zf_html.=  'checked';
+                }
+                $zf_html.= ' />';
+            }
+            $zf_html.='</div>
+              '.$append_notes.'
+                </div>
+                <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
+              </div>';
         }
         return $zf_html;
     }
@@ -527,10 +562,10 @@ INFO;
         $name = $name.'[]';
 
         if($data!='' && $data!=[]){
-          $pics=explode(',',$data);
-          $count=count($pics);
+            $pics=explode(',',$data);
+            $count=count($pics);
         }else{
-          $count=0;
+            $count=0;
         }
         $zf_html ='';
         $zf_html .='
@@ -543,19 +578,19 @@ INFO;
               预览图：
               <div class="layui-row '.$tpl_id.'">';
 
-                  for($i=0;$i<$count;$i++){
-                    $zf_html .='<div class="layui-col-sm2" style="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
+        for($i=0;$i<$count;$i++){
+            $zf_html .='<div class="layui-col-sm2" style="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
                       <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span>
                       </div>';
-                  }
-              $zf_html .='</div>
+        }
+        $zf_html .='</div>
               '.$append_notes.'
           </blockquote>
           <input name="_temp_arr_key[]"  type="hidden" value="'.$_name.'" />
           </div> 
     </div>
 </div>';
-$zf_html .=<<<INFO
+        $zf_html .=<<<INFO
  <script>
  layui.use(['upload'], function(){
     var $ = layui.$
@@ -591,7 +626,7 @@ $zf_html .=<<<INFO
 INFO;
         return $zf_html;
     }
-    
+
     public function upload_album_title($request_data=array())
     {
         $tpl_id='zf_'.mt_rand().'_'.time();
@@ -604,11 +639,11 @@ INFO;
         $_name = $name;
         $name = $name.'[]';
         if($data!='' && $data!=[]){
-          $pics=explode(',',$data);
-          $titles = explode(',',$data_title);
-          $count=count($pics);
+            $pics=explode(',',$data);
+            $titles = explode(',',$data_title);
+            $count=count($pics);
         }else{
-          $count=0;
+            $count=0;
         }
         $zf_html ='';
 
@@ -622,20 +657,20 @@ INFO;
               预览图：
               <div class="layui-row '.$tpl_id.'">';
 
-                  for($i=0;$i<$count;$i++){ 
-                    $zf_html .='<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 70%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" /></div>
+        for($i=0;$i<$count;$i++){
+            $zf_html .='<div class="layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 70%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" /></div>
                       <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" />
                       <input type="text" class="layui-input" name="zf_list_title_'.$name.'" value="'.(isset($titles[$i])?$titles[$i]:'').'" />
                       <span style="cursor: pointer;" onclick="deleteFile(this)">删除</span></div>';
-                  }
-              $zf_html .='</div>
+        }
+        $zf_html .='</div>
               '.$append_notes.'
           </blockquote>
           <input name="_temp_arr_key[]"  type="hidden" value="'.$_name.'" />
         </div> 
     </div>
 </div>';
-$zf_html .=<<<INFO
+        $zf_html .=<<<INFO
  <script>
  layui.use(['upload'], function(){
     var $ = layui.$
@@ -687,10 +722,10 @@ INFO;
         $_name = $name;
         $name = $name.'[]';
         if($data!='' && $data!=[]){
-          $pics=explode(',',$data);
-          $count=count($pics);
+            $pics=explode(',',$data);
+            $count=count($pics);
         }else{
-          $count=0;
+            $count=0;
         }
         $zf_html ='';
         $zf_html .='
@@ -702,19 +737,19 @@ INFO;
           <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
               预览图：
               <div class="layui-row '.$tpl_id.' sortable-list">';
-                for($i=0;$i<$count;$i++){
-                  $zf_html .='<div class="sortable-item layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
+        for($i=0;$i<$count;$i++){
+            $zf_html .='<div class="sortable-item layui-col-sm2" style="border:0px solid #ccc;height:150px; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="width: 100%; height: 80%; display: flex; align-items: center; justify-content: center;"> <img src="'.$pics[$i].'" class="layui-upload-img"  style="max-width:100%; max-height:100%;" > </div>
                     <input type="hidden" name="zf_list_'.$name.'" value="'.$pics[$i].'" /><span style="cursor: pointer;" onclick="deleteFile(this)">删除</span>
                     </div>';
-                }
-              $zf_html .='</div>
+        }
+        $zf_html .='</div>
               '.$append_notes.'
           </blockquote>
           <input name="_temp_arr_key[]"  type="hidden" value="'.$_name.'" />
         </div> 
     </div>
 </div>';
-$zf_html .=<<<INFO
+        $zf_html .=<<<INFO
  <script>
  layui.use(['upload'], function(){
     var $ = layui.$
@@ -749,7 +784,7 @@ INFO;
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
 
         if($theme==1){
-        $zf_html = <<<INFO
+            $zf_html = <<<INFO
  <div class="layui-card-header">$title</div>
 <div class="layui-card-body layui-row layui-col-space8">
     <div class="layui-col-md12">
@@ -765,7 +800,7 @@ INFO;
 </script>
 INFO;
         }else{
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
           <label class="layui-form-label">$title:</label>
           <div class="layui-input-block">
@@ -795,7 +830,7 @@ INFO;
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html='';
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -841,7 +876,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -883,7 +918,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==3){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -929,7 +964,7 @@ INFO;
          </script>
 INFO;
         }
-        
+
         return $zf_html;
     }
     public function upload_dragpic($request_data=array())
@@ -943,7 +978,7 @@ INFO;
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html='';
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -989,7 +1024,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -1035,7 +1070,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==3){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -1081,7 +1116,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==4){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -1141,7 +1176,7 @@ INFO;
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         $zf_html ='';
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -1174,7 +1209,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -1203,7 +1238,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==3){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -1236,7 +1271,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==4){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -1265,7 +1300,7 @@ INFO;
          </script>
 INFO;
         }
-       
+
         return $zf_html;
     }
 
@@ -1322,7 +1357,7 @@ INFO;
     }
 
 
-    
+
     public function filesystem_file($request_data=array())
     {
         $tpl_id='zf_'.mt_rand().'_'.time();
@@ -1333,7 +1368,7 @@ INFO;
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $placeholder = isset($request_data['placeholder'])?$request_data['placeholder']:'';
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
   <div class="layui-card-header">$title</div>
   <div class="layui-card-body layui-row layui-col-space8">
       <div class="layui-col-md12">
@@ -1365,7 +1400,7 @@ INFO;
   </script>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -1393,7 +1428,7 @@ INFO;
            });
          </script>
 INFO;
-      }
+        }
 
         return $zf_html;
     }
@@ -1409,72 +1444,72 @@ INFO;
         $name_t = isset($request_data['name_t'])?$request_data['name_t']:'name';
         $list = isset($request_data['list_arr'])?$request_data['list_arr']:[];
         if(is_string($list)){
-          eval("\$list = ".$request_data['list_arr'].'; ');
+            eval("\$list = ".$request_data['list_arr'].'; ');
         }
         $theme = isset($request_data['theme'])?$request_data['theme']:'1';
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html='';
         if($theme==1){
-          $zf_html = '
+            $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
                   <div class="layui-card-body layui-row layui-col-space10">
                      <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
-                      foreach($list as $k=>$vo){
-                           $zf_html .= '<option value="'.$vo[$id_t].'" ';
-                           if($data==$vo[$id_t]){
-                            $zf_html.='selected';
-                           }
-                            $zf_html.='> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].'</option>';
-                      }
-                      $zf_html.='</select>
+            foreach($list as $k=>$vo){
+                $zf_html .= '<option value="'.$vo[$id_t].'" ';
+                if($data==$vo[$id_t]){
+                    $zf_html.='selected';
+                }
+                $zf_html.='> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].'</option>';
+            }
+            $zf_html.='</select>
             '.$append_notes.'
                   </div>
                   ';
 
         }elseif($theme==2){
-          $zf_html = '
+            $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
                   <div class="layui-card-body layui-row layui-col-space10">
                      <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
-                      foreach($list as $k=>$vo){
-                           $zf_html .= '<option value="'.$vo.'" ';
-                           if($data==$vo){
-                            $zf_html.='selected';
-                           }
-                            $zf_html.='> '.$vo.'</option>';
-                      }
-                      $zf_html.='</select>
+            foreach($list as $k=>$vo){
+                $zf_html .= '<option value="'.$vo.'" ';
+                if($data==$vo){
+                    $zf_html.='selected';
+                }
+                $zf_html.='> '.$vo.'</option>';
+            }
+            $zf_html.='</select>
             '.$append_notes.'
                   </div>
                   ';
         }elseif($theme==3){
-          $zf_html = '
+            $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
                   <div class="layui-card-body layui-row layui-col-space10">
                      <select lay-filter="'.$name.'" name="'.$name.'" class="layui-input '.$name.'" >';
-                      foreach($list as $k=>$vo){
-                           $zf_html .= '<option value="'.$vo[$id_t].'" ';
-                           if($data==$vo[$id_t]){
-                            $zf_html.='selected';
-                           }
-                            $zf_html.='> '.$vo[$name_t].'</option>';
-                      }
-                      $zf_html.='</select>
+            foreach($list as $k=>$vo){
+                $zf_html .= '<option value="'.$vo[$id_t].'" ';
+                if($data==$vo[$id_t]){
+                    $zf_html.='selected';
+                }
+                $zf_html.='> '.$vo[$name_t].'</option>';
+            }
+            $zf_html.='</select>
             '.$append_notes.'
                   </div>
                   ';
         }elseif($theme==4){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.'</label>
             <div class="layui-input-block">
             <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
             foreach($list as $k=>$vo){
-                 $zf_html .= '<option value="'.$vo[$id_t].'" ';
-                 if($data==$vo[$id_t]){
-                  $zf_html.='selected';
-                 }
-                  $zf_html.='> '.$vo[$name_t].'</option>';
+                $zf_html .= '<option value="'.$vo[$id_t].'" ';
+                if($data==$vo[$id_t]){
+                    $zf_html.='selected';
+                }
+                $zf_html.='> '.$vo[$name_t].'</option>';
             }
             $zf_html.='</select>
             '.$append_notes.'
@@ -1482,35 +1517,35 @@ INFO;
           </div>
                     ';
         }elseif($theme==5){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.'</label>
             <div class="layui-input-block">
             <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
             foreach($list as $k=>$vo){
-              $zf_html .= '<option value="'.$vo.'" ';
-              if($data==$vo){
-               $zf_html.='selected';
-              }
-               $zf_html.='> '.$vo.'</option>';
-          }
-          $zf_html.='</select>
+                $zf_html .= '<option value="'.$vo.'" ';
+                if($data==$vo){
+                    $zf_html.='selected';
+                }
+                $zf_html.='> '.$vo.'</option>';
+            }
+            $zf_html.='</select>
             '.$append_notes.'
             </div>
           </div>
                   ';
         }elseif($theme==6){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.'</label>
             <div class="layui-input-block">
             <select lay-filter="'.$name.'" class="layui-input" name="'.$name.'" >';
             foreach($list as $k=>$vo){
-                  $zf_html .= '<option value="'.$vo[$id_t].'" ';
-                  if($data==$vo[$id_t]){
-                  $zf_html.='selected';
-                  }
-                  $zf_html.='> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].'</option>';
+                $zf_html .= '<option value="'.$vo[$id_t].'" ';
+                if($data==$vo[$id_t]){
+                    $zf_html.='selected';
+                }
+                $zf_html.='> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].'</option>';
             }
             $zf_html.='</select>
             '.$append_notes.'
@@ -1518,36 +1553,36 @@ INFO;
           </div>
                   ';
         }elseif($theme==7){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-card-header">'.$title.'</div>
           <div class="layui-card-body layui-row layui-col-space10">
             <select class="layui-input" name="'.$name.'" >';
             foreach($list as $k=>$vo){
-              $zf_html .= '<option value="'.$vo.'" ';
-              if($data==$vo){
-              $zf_html.='selected';
-              }
-              $zf_html.='> '.$vo.'</option>';
-          }
-          $zf_html.='</select>
+                $zf_html .= '<option value="'.$vo.'" ';
+                if($data==$vo){
+                    $zf_html.='selected';
+                }
+                $zf_html.='> '.$vo.'</option>';
+            }
+            $zf_html.='</select>
             '.$append_notes.'
             </div>
                   ';
         }
-        
+
         return $zf_html;
     }
 
-    
-    
-  
-    
-   
-    
-   
-  
-   
-    
+
+
+
+
+
+
+
+
+
+
 
     public function form_ueditor($request_data=array()){
         $tpl_id='zf_'.mt_rand().'_'.time();
@@ -1792,7 +1827,7 @@ INFO;
     }
 
 
-     public function form_meditor($request_data=array()){
+    public function form_meditor($request_data=array()){
         $tpl_id='zf_'.mt_rand().'_'.time();
         $title = isset($request_data['title'])?$request_data['title']:'';
         $name = isset($request_data['name'])?$request_data['name']:'';
@@ -1899,16 +1934,16 @@ INFO;
     }
 
     public function form_vditor($request_data=array()){
-      $tpl_id='zf_'.mt_rand().'_'.time();
-      $title = isset($request_data['title'])?$request_data['title']:'';
-      $name = isset($request_data['name'])?$request_data['name']:'';
-      $data = isset($request_data['data'])?$request_data['data']:'';
-      $vditor_num = isset($request_data['vditor_num'])?$request_data['vditor_num']:'1';
-      $theme = isset($request_data['theme'])?$request_data['theme']:'1';
-      $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
-      $zf_html ='';
-      $vditor_num = 'vditor_'.$vditor_num;
-      $zf_html = <<<INFO
+        $tpl_id='zf_'.mt_rand().'_'.time();
+        $title = isset($request_data['title'])?$request_data['title']:'';
+        $name = isset($request_data['name'])?$request_data['name']:'';
+        $data = isset($request_data['data'])?$request_data['data']:'';
+        $vditor_num = isset($request_data['vditor_num'])?$request_data['vditor_num']:'1';
+        $theme = isset($request_data['theme'])?$request_data['theme']:'1';
+        $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
+        $zf_html ='';
+        $vditor_num = 'vditor_'.$vditor_num;
+        $zf_html = <<<INFO
           <div class="layui-card-header">
             <fieldset class="layui-elem-field layui-field-title site-title">
               <legend><a name="quickstart">$title</a></legend>
@@ -2009,11 +2044,11 @@ const $vditor_num = new Vditor("$tpl_id", {
 
 
 INFO;
-      return $zf_html;
-  }
+        return $zf_html;
+    }
 
 
-  public function form_input_select($request_data=array())
+    public function form_input_select($request_data=array())
     {
         $tpl_id='zf_'.mt_rand().'_'.time();
         $title = isset($request_data['title'])?$request_data['title']:'';
@@ -2026,20 +2061,20 @@ INFO;
         $list = isset($request_data['list_arr'])?$request_data['list_arr']:[];
         $url = isset($request_data['url'])?$request_data['url']:'';
         if(is_string($list)){
-          eval("\$list = ".$request_data['list_arr'].'; ');
+            eval("\$list = ".$request_data['list_arr'].'; ');
         }
         if($url!=''){
-          $url_js = "url: '".$url."',";
-          $data_js = false;
+            $url_js = "url: '".$url."',";
+            $data_js = false;
         }else{
-          $url_js = false;
-          //本地
-          $data_js = " data:".json_encode($list).",";
+            $url_js = false;
+            //本地
+            $data_js = " data:".json_encode($list).",";
         }
         $zf_html='';
 
         if($theme==1){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -2082,7 +2117,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==2){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -2124,7 +2159,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==3){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-card-header">$title</div>
          <div class="layui-card-body layui-row layui-col-space8">
              <div class="layui-col-md12">
@@ -2168,7 +2203,7 @@ INFO;
          </script>
 INFO;
         }elseif($theme==4){
-          $zf_html = <<<INFO
+            $zf_html = <<<INFO
           <div class="layui-form-item">
             <label class="layui-form-label">$title:</label>
             <div class="layui-input-block">
@@ -2221,7 +2256,7 @@ INFO;
      * 多分组复选框
      * 20231208新增
      *{$form_widget->form_cate_checkbox(['title'=>'多分组','name'=>'cids','data'=>$data_res['cids'],'id_t'=>'cid', 'name_t'=>'name','list_arr'=>$plist,'theme'=>1])|raw}
-     * 
+     *
      */
     public function form_cate_checkbox($request_data=array())
     {
@@ -2237,37 +2272,37 @@ INFO;
         $append_notes = $this->append_notes((isset($request_data['notes'])?$request_data['notes']:''));//备注提示
         $zf_html='';
         if($theme==1){
-          $zf_html = '
+            $zf_html = '
         <div class="layui-card-header">'.$title.'</div>
                   <div class="layui-card-body layui-row layui-col-space10">
                     <div style="height: 200px;overflow: auto;">';
-                      foreach($list as $k=>$vo){
-                          $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'"  lay-skin="primary" ';
-                           if(in_array($vo[$id_t],$data_arr)){
-                            $zf_html.='checked';
-                           }
-                            $zf_html.=' /> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].' <br>';
-                      }
-                      $zf_html.='
+            foreach($list as $k=>$vo){
+                $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'"  lay-skin="primary" ';
+                if(in_array($vo[$id_t],$data_arr)){
+                    $zf_html.='checked';
+                }
+                $zf_html.=' /> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].' <br>';
+            }
+            $zf_html.='
                       </div>
                 '.$append_notes.'
                   </div>
                   <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
                   ';
         }elseif($theme==2){
-          $zf_html = '
+            $zf_html = '
           <div class="layui-form-item">
             <label class="layui-form-label">'.$title.'</label>
             <div class="layui-input-block">
               <div style="height: 200px;overflow: auto;">';
-              foreach($list as $k=>$vo){
-                  $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'"  lay-skin="primary" ';
-                    if(in_array($vo[$id_t],$data_arr)){
+            foreach($list as $k=>$vo){
+                $zf_html .= '<input type="checkbox" name="zf_list_'.$name.'[]" value="'.$vo[$id_t].'"  lay-skin="primary" ';
+                if(in_array($vo[$id_t],$data_arr)){
                     $zf_html.='checked';
-                    }
-                    $zf_html.=' /> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].' <br>';
-              }
-              $zf_html.='
+                }
+                $zf_html.=' /> ┃'.str_repeat('━━', substr_count($vo['cname'],'  ')).$vo['name'].' <br>';
+            }
+            $zf_html.='
               </div>
               '.$append_notes.'
             </div>
@@ -2275,14 +2310,14 @@ INFO;
           <input name="_temp_arr_key[]"  type="hidden" value="'.$name.'" />
                   ';
         }
-        
+
         return $zf_html;
     }
 
 
-    
-   
 
 
-   
+
+
+
 }
