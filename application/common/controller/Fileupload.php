@@ -27,15 +27,15 @@ class Fileupload extends Controller
         return view();
     }
     public function upload(){
-       
-
         $this->is_file_dlj = ZFC("webconfig.is_file_dlj");
         $cid = input('cid','0');
         $t = input('t',1);
+        $kk = input('kk','');
         $zf_class = input('zf_class','.zf_list');
         $this->assign('zf_class',$zf_class);
         $this->assign('cid',$cid);
         $this->assign('t',$t);
+        $this->assign('kk',$kk);
         $cate_list =Db::name('upload_cate')->where(['status'=>1,'uniacid'=>session('uniacid')])->order('id desc')->select();
         $this->assign('cate_list',$cate_list);
         $where[] = ['status','=',1];

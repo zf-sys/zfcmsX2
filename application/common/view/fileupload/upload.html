@@ -433,11 +433,23 @@ $("#toggleButton").click(function() {
       var textToCopy = _url_str; // 这里假设_url_str是要复制的文本
       copyToClipboard(textToCopy); // 调用复制函数
       return false;
+    <?php }elseif($t=='sku_goods'){ ?>
+      for (var i = 0; i <= data.length - 1; i++) {
+        if(data[i].value!=''){
+          num++
+          if(num>1){
+            parent.layer.msg('当前只能选择一个', {shade: 0.3})
+            return
+          }
+          src = data[i].value
+        }
+      }
+      parent.$("{$zf_class}:eq({$kk})").parent().find('.main_pic').val(src)
+      parent.$("{$zf_class}:eq({$kk})").find('img').attr('src',src)
     <?php } ?>
   
   
     parent.layer.close(index);
-  
   })
   
   
