@@ -323,6 +323,30 @@ class User extends Admin
 
         }
     }
+    public function set_aff()
+    {
+        admin_role_check($this->z_role_list,$this->mca);
+        $id = input('id');
+        $aff = input('aff');
+        $aff = trim($aff);
+        if ($aff == '') {
+            return jserror('请输入邀请码');
+        }
+        $is = ZFTB('user')->where([['id', '=', $id], ['status', '<>', 9]])->find();
+        if (!$is) {
+            return jserror('用户不存在');
+        }
+        $is = ZFTB('user')->where([['aff', '=', $aff], ['status', '<>', 9]])->find();
+        if ($is) {
+            return jserror('邀请码已存在');
+        }
+        $is_update = ZFTB('user')->where([['id', '=', $id], ['status', '<>', 9]])->update(['aff' => $aff]);
+        if ($is_update) {
+            return jssuccess('设置邀请码成功');
+        } else {
+            return jserror('设置邀请码失败');
+        }
+    }
 
 
 }

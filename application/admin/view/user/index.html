@@ -58,7 +58,14 @@
           <?php foreach($list as $k=>$vo){ ?>
             <tr>
               <td>{$vo['id']}</td>
-              <td>{$vo['name']}</td>
+              <td>
+                {$vo['name']}<br>
+                <?php if($vo['aff']==''){ ?>
+                  <a class="set_aff" href="javascript:;" data-id="{$vo['id']}">设置邀请码</a>
+                <?php }else{ ?>
+                  邀请码:{$vo['aff']}
+                <?php } ?>
+              </td>
               <td><img src="{$vo['pic']}" style="max-width: 50px;max-height: 50px;"></td>
               <td>{:user_group_name($vo['gid'])}</td>
               <td>
@@ -105,7 +112,24 @@
             }
           },"json");
       });
-
+      $('.set_aff').on('click',function(){
+        var id = $(this).attr('data-id');
+        console.log(id)
+        layer.prompt({title: '输入邀请码(具有唯一性,不允许修改)', formType: 3}, function(aff, index){
+          console.log(aff)
+          $.post("{:url('admin/user/set_aff')}",{id:id,aff:aff},function(res){
+            if(res.result==1){
+              layer.msg(res.msg, {icon: 1});
+              setTimeout(function(){
+                window.location.reload();
+              },1000);
+            }else{
+              layer.msg(res.msg, {icon: 2});
+            }
+            layer.close(index);
+          },"json");
+        });
+      })
   });
   </script>
 </body>
