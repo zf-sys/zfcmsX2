@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <?php if($form_parm_arr['static_html']){ ?>
+    {$form_parm_arr['static_html']|raw}
+  <?php }else{ ?>
+    {:widget_st('layui','css')}
+    {:widget_st('admin','css')}
+    {:widget_st('jq','js')}
+    {:widget_st('laydate','js')}
+<!--    {:widget_st('webuploader')}-->
+    {:widget_st('layui','js')}
+    {:widget_st('common','js')}
+<!--    {:widget_st('ueditor')}-->
+  {:widget_st('input-tag')}
+  {:widget_st('tinymce')}
+  {:widget_st('sortable')}
+
+  <?php } ?>
+</head>
+{:do_action('admin_head')}
+<style>
+  html{background-color: #fff;}
+  .layui-card {box-shadow:0 0 0 0;}
+  .layui-card-header{border-bottom: 0;}
+  .layui-row{padding-top: 0;}
+  .layui-fluid{padding-top:0;}
+  .layui-tab{margin:0;}
+</style>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <?php $form_widget = new \app\common\widget\FormPro();  ?>
+      <form class="info_tj" method="post"  >
+        <input type="hidden" name="id" value="{$data_res['id']|default=''}">
+        <div class="layui-tab layui-tab-brief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">基本设置</li>
+            <li>扩展参数</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div class="layui-col-sm12">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-sm9">
+                      <div class="layui-card">
+                      {include file="public/tpl_diy_url"}
+
+                      <?php if($act=='add'){ ?>
+                        {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>'','theme'=>1])|raw}
+                        {$form_widget->filesystem_album(['title'=>'图集','name'=>'album','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_ueditor(['title'=>'内容详情','name'=>'content','data'=>'','theme'=>1])|raw}                    
+                      <?php }else{ ?>
+                        {$form_widget->form_input(['title'=>'标题','name'=>'title','data'=>$data_res['title'],'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'描述','name'=>'summary','data'=>$data_res['summary'],'theme'=>1])|raw}
+                        {$form_widget->form_input_tag(['title'=>'Tag','name'=>'tags','data'=>$data_res['tags'],'theme'=>1])|raw}
+                        {$form_widget->filesystem_album(['title'=>'图集','name'=>'album','data'=>$data_res['album'],'theme'=>1])|raw}
+                        {$form_widget->form_tinymce(['title'=>'内容详情','name'=>'content','data'=>$data_res['content']])|raw}
+
+
+                       <?php } ?> 
+                     
+                      
+                    </div>
+                  </div>
+                    <div class="layui-col-sm3">
+                      <div class="layui-card">
+                      <?php if($act=='add'){ ?>
+                        {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",time()),'theme'=>1])|raw}
+                        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>0,'theme'=>1])|raw}
+                        {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>'','theme'=>1])|raw}
+                        {$form_widget->filesystem_pic(['title'=>'封面图','name'=>'pic','data'=>'','theme'=>1])|raw}
+                        {$form_widget->filesystem_file(['title'=>'文件','name'=>'file','data'=>'','theme'=>1])|raw}
+                        {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$cid,'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
+                        {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>1,'theme'=>1])|raw}
+                      <?php }else{ ?>
+                        {$form_widget->form_input(['title'=>'作者','name'=>'author','data'=>$data_res['author'],'theme'=>1])|raw}
+                        {$form_widget->form_time(['title'=>'时间','name'=>'ctime','data'=>date("Y-m-d H:i:s",$data_res['ctime']),'theme'=>1])|raw}
+                        {$form_widget->form_input(['title'=>'排序','name'=>'sort','data'=>$data_res['sort'],'theme'=>1])|raw}
+                         {$form_widget->form_textarea(['title'=>'扩展参数','name'=>'append','data'=>$data_res['append'],'theme'=>1])|raw}
+<!--                        {$form_widget->form_checkbox(['title'=>'扩展参数','name'=>'append','data'=>$data_res['append'],'list_arr'=>[['id'=>1,'name'=>'aa'],['id'=>2,'name'=>'bb']],'theme'=>1])|raw}-->
+                        {$form_widget->filesystem_pic(['title'=>'封面图','name'=>'pic','data'=>$data_res['pic'],'theme'=>1])|raw}
+                        {$form_widget->filesystem_file(['title'=>'文件','name'=>'file','data'=>$data_res['file'],'theme'=>1])|raw}
+                        {$form_widget->form_select(['title'=>'分类','name'=>'cid','data'=>$data_res['cid'],'list_arr'=>$plist,'id_t'=>'cid','theme'=>1])|raw}
+                        {$form_widget->form_radio(['title'=>'状态','name'=>'status','data'=>$data_res['status'],'theme'=>1])|raw}
+      
+      
+                      <?php } ?>
+                      </div>
+                      {include file="public/widget_submit"}
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-tab-item">
+              <?php $res = $data_res;?>
+              {include file="public/tpl_field_append"}
+            </div>
+          </div>
+        </div>
+
+        
+      </form>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+ layui.use(['form','upload','laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,form = layui.form
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+    
+   
+      $(".tijiao").on("click",function(){
+        var index = layer.load(2);
+        var data = $(".info_tj input,.info_tj textarea,.info_tj select").serialize();      
+        $.ajax({
+            type:'post',
+            url:"{:url('admin/category/post_add')}",
+            data:data,
+            dataType:'json',
+            success:function(res){
+              layer.close(index);
+              if(res.result==1){
+                layer.msg(res.msg, {icon: 1});
+                setTimeout(function() {
+                  window.parent.location.reload();
+                }, 2000);
+              }else{
+                layer.msg(res.msg, {icon: 2});
+                
+              }
+              
+            }
+        })
+      });
+    
+
+
+  
+
+  });
+
+  function deleteFile(obj) {
+   $(obj).parent().remove();
+  }
+ // 选择所有具有 'sortable-list' 类的元素并初始化 Sortable
+ const sortableLists = document.querySelectorAll('.sortable-list');
+ sortableLists.forEach(list => {
+   new Sortable(list, {
+     animation: 150, // 动画效果的持续时间
+     ghostClass: 'sortable-ghost', // 拖拽时的虚影类
+     onEnd: function (evt) {
+       console.log('排序结束:', evt.oldIndex, '->', evt.newIndex);
+     }
+   });
+ });
+
+</script>
+</body>
+</html>
+{:do_action('admin_js')}

@@ -1,0 +1,59 @@
+<?php
+$general_tb = new \general\table(['htmlName'=>'管理中心','formConfig'=>['method'=>'get','action'=>'/admin/category/post_list','id'=>'form_search','class'=>''],'batchDel'=>true,'idType'=>'id']);
+//head
+$html = $general_tb->setHtmlHead([widget_st('layui','css')])
+->setHtmlHead([widget_st('admin','css')])
+->setHtmlHead(widget_st('bootstrap'))
+->setHtmlHead([widget_st('jq','js')])
+->setHtmlHead([widget_st('layui','js')])
+->setHtmlHead([widget_st('common','js')])
+->setDiyCss(".pagination>li img{
+width: 20px !important;
+}")
+//    表单
+->setFormItem('mid','hidden','模型id',$mid)
+->setFormItem('cid','hidden','栏目id',$cid)
+->setFormItem('keyword','text','关键词',$keyword,['theme_type'=>2,'col'=>4,'placeholder'=>'请输入标题或内容或摘要'])
+->setFormItem('cid','select','分类',$cid,['theme_type'=>2,'options'=>$plist,'option_id'=>'cid','option_name'=>'name','placeholder'=>'请选择类别'])
+//    按钮
+
+->setBtnItem('onclick','栏目设置',url('admin/category/category_edit',['cid' => $cid] ))
+->setBtnItem('onclick','新增内容',url('admin/category/post_add',['cid' => $cid,'mid' => $mid] ))
+->setBtnItem('onclick','批量新增',url('admin/category/post_add_pl',['cid' => $cid,'mid' => $mid] ))
+->setBtnItem('href','全部',url('admin/category/post_list',['cid' => $cid,'mid' => $mid] ),['target'=>'_self','class'=>'layui-btn-normal'])
+->setBtnItem('href','新增(新页面打开)',url('admin/category/post_add',['cid' => $cid,'mid' => $mid] ),['target'=>'_blank'])
+//     表格
+->setTableField('id','ID')
+->setTableField('title','产品名称','',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('pic','图片','pic',['append'=>'<img src="{pic}" style="width: 50px;height: 50px;" class="zfcms_picshow">'])
+->setTableField('price','价格','edit',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('sort','排序','edit',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('hits','点击量')
+->setTableField('recommend','推荐','checkbox',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('status','状态','checkbox',['edit_id_type'=>'id','edit_dbname'=>'post'])
+->setTableField('ctime','时间','time',['append'=>'Y-m-d H:i:s']);
+
+
+$act_append = [
+  ['del','删除','/admin/common/del_post?db=post&id=<id>&field=status',['target'=>'_self','width'=>800,'height'=>600]],
+  ['onclick','编辑','/admin/category/post_add?id=<id>&cid=<cid>&mid='.$mid,['target'=>'_self','width'=>800,'height'=>600]],
+  ['href','编辑(新页面打开)','/admin/category/post_add?id=<id>&cid=<cid>&mid='.$mid,['target'=>'_blank'  ]],
+  ['href','预览','/detail/<id>.html?t=show_admin',['target'=>'_blank'  ]],
+ ['onclick','多规格','/admin/products/product_sku_edit?id=<id>',['target'=>'_self','width'=>1100,'height'=>600]],
+];
+$isshow_admincopy = ZFC("webconfig.isshow_admincopy");
+if($isshow_admincopy) {
+  $_act_append = [['href','复制','/common/api/common_act?t=admin_act_btn_copy_act&tb=post&id=<id>.html',['target'=>'_blank'  ]]];
+  $act_append = array_merge($act_append,$_act_append);
+}
+
+//操作
+$html = $html->setTableField('--','操作','act',['append'=>$act_append])
+->setDiyJs('
+
+')
+->setTableData($list)
+->build();
+echo $html;
+
+?>
